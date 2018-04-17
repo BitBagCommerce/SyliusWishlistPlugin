@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Factory;
 
 use BitBag\SyliusWishlistPlugin\Model\WishlistInterface;
-use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
@@ -35,20 +34,10 @@ final class WishlistFactory implements WishlistFactoryInterface
         return $wishlist;
     }
 
-    public function createForProduct(ProductInterface $product): WishlistInterface
+    public function createForUser(ShopUserInterface $shopUser): WishlistInterface
     {
         $wishlist = $this->createNew();
 
-        $wishlist->addProduct($product);
-
-        return $wishlist;
-    }
-
-    public function createForProductAndUser(ProductInterface $product, ShopUserInterface $shopUser): WishlistInterface
-    {
-        $wishlist = $this->createNew();
-
-        $wishlist->addProduct($product);
         $wishlist->setUser($shopUser);
 
         return $wishlist;

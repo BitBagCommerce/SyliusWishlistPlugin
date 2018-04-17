@@ -42,7 +42,7 @@ final class RemoveProductFromWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        $wishlist = $this->wishlistContext->getWishlist();
+        $wishlist = $this->wishlistContext->getWishlist($request);
         /** @var ProductInterface $product */
         $product = $this->productRepository->find($request->get('productId'));
 

@@ -17,8 +17,11 @@ use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class AddProductToWishlistAction
 {
@@ -34,16 +37,26 @@ final class AddProductToWishlistAction
     /** @var EntityManagerInterface */
     private $wishlistManager;
 
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+
+    /** @var string */
+    private $wishlistCookieId;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistContextInterface $wishlistContext,
         WishlistFactoryInterface $wishlistFactory,
-        EntityManagerInterface $wishlistManager
+        EntityManagerInterface $wishlistManager,
+        UrlGeneratorInterface $urlGenerator,
+        string $wishlistCookieId
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistContext = $wishlistContext;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistManager = $wishlistManager;
+        $this->urlGenerator = $urlGenerator;
+        $this->wishlistCookieId = $wishlistCookieId;
     }
 
     public function __invoke(Request $request): Response
@@ -53,7 +66,12 @@ final class AddProductToWishlistAction
         $wishlist = $this->wishlistContext->getWishlist($request);
 
         $wishlist->addProduct($product);
-
         $this->wishlistManager->flush();
+
+        $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('now + one year'));
+        $response = new RedirectResponse($this->urlGenerator->generate('sylius_shop_homepage'));
+        $response->headers->setCookie($cookie);
+
+        return $response;
     }
 }
