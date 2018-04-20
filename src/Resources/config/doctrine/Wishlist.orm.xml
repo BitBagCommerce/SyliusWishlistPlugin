@@ -5,7 +5,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                                       http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="BitBag\SyliusWishlistPlugin\Model\Wishlist" table="bitbag_wishlist">
+    <mapped-superclass name="BitBag\SyliusWishlistPlugin\Entity\Wishlist" table="bitbag_wishlist">
 
         <many-to-many field="products" target-entity="Sylius\Component\Core\Model\ProductInterface">
             <join-table name="bitbag_wishlist_products">
