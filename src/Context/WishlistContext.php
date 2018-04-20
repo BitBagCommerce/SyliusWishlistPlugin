@@ -15,6 +15,7 @@ namespace BitBag\SyliusWishlistPlugin\Context;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -58,9 +59,9 @@ final class WishlistContext implements WishlistContextInterface
             return $this->wishlistRepository->find($cookieWishlistId);
         }
 
-        if (null !== $user) {
-            return $this->wishlistRepository->findByUser($user) ?
-                $this->wishlistRepository->findByUser($user) :
+        if ($user instanceof ShopUserInterface) {
+            return $this->wishlistRepository->findByShopUser($user) ?
+                $this->wishlistRepository->findByShopUser($user) :
                 $this->wishlistFactory->createForUser($user)
             ;
         }

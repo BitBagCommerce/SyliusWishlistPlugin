@@ -30,7 +30,7 @@ interface WishlistInterface extends ResourceInterface
 
     public function removeProduct(ProductInterface $product): void;
 
-    public function getUser(): ?ShopUserInterface;
+    public function getShopUser(): ?ShopUserInterface;
 
-    public function setUser(ShopUserInterface $shopUser): void;
+    public function setShopUser(ShopUserInterface $shopShopUser): void;
 }

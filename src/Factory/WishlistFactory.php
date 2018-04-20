@@ -38,7 +38,7 @@ final class WishlistFactory implements WishlistFactoryInterface
     {
         $wishlist = $this->createNew();
 
-        $wishlist->setUser($shopUser);
+        $wishlist->setShopUser($shopUser);
 
         return $wishlist;
     }

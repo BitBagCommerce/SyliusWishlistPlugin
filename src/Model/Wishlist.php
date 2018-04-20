@@ -26,7 +26,7 @@ class Wishlist implements WishlistInterface
     protected $products;
 
     /** @var ShopUserInterface|null */
-    protected $user;
+    protected $shopUser;
 
     public function __construct()
     {
@@ -60,13 +60,13 @@ class Wishlist implements WishlistInterface
         }
     }
 
-    public function getUser(): ?ShopUserInterface
+    public function getShopUser(): ?ShopUserInterface
     {
-        return $this->user;
+        return $this->shopUser;
     }
 
-    public function setUser(ShopUserInterface $shopUser): void
+    public function setShopUser(ShopUserInterface $shopUser): void
     {
-        $this->user = $shopUser;
+        $this->shopUser = $shopUser;
     }
 }
