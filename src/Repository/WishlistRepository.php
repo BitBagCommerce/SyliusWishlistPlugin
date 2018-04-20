@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Repository;
 
-use BitBag\SyliusWishlistPlugin\Model\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
