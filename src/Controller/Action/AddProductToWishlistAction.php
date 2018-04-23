@@ -61,12 +61,12 @@ final class AddProductToWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        /** @var ProductInterface $product */
+        /** @var null|ProductInterface $product */
         $product = $this->productRepository->find($request->get('productId'));
         $wishlist = $this->wishlistContext->getWishlist($request);
 
         $wishlist->addProduct($product);
-        $wishlist->getId() ?? $this->wishlistManager->persist($wishlist);
+        $wishlist->getId() ?: $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
 
         $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('+1 year'));

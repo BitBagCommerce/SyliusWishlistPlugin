@@ -55,7 +55,7 @@ final class WishlistContext implements WishlistContextInterface
             return $this->wishlistFactory->createNew();
         }
 
-        if (null !== $cookieWishlistId && null === $user) {
+        if (null !== $cookieWishlistId && !$user instanceof ShopUserInterface) {
             return $this->wishlistRepository->find($cookieWishlistId);
         }
 

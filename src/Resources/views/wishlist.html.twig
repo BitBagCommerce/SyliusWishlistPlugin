@@ -1,14 +1,40 @@
 {% extends '@SyliusShop/layout.html.twig' %}
 
 {% block content %}
-    {% for product in wishlist.products %}
-        <div class="ui three column stackable grid" id="products">
-            {% for product in resources.data %}
-                <div class="column">
-                    {% include '@SyliusShop/Product/_box.html.twig' %}
+    <h1 class="ui monster section dividing header">
+        {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}
+    </h1>
+    <div class="ui five column stackable grid" id="wishlist">
+        {% for product in wishlist.products %}
+            <div class="column">
+                {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+
+                {{ sonata_block_render_event('sylius.shop.product.index.before_box', {'product': product}) }}
+
+                <div class="ui fluid card">
+                    <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
+                       class="blurring dimmable image">
+                        <div class="ui dimmer">
+                            <div class="content">
+                                <div class="center">
+                                    <div class="ui inverted button">{{ 'sylius.ui.view_more'|trans }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% include '@SyliusShop/Product/_mainImage.html.twig' with {'product': product} %}
+                    </a>
+                    <div class="content">
+                        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
+                           class="header sylius-product-name">{{ product.name }}</a>
+                        {% if not product.variants.empty() %}
+                            <div class="sylius-product-price">{{ money.calculatePrice(product|sylius_resolve_variant) }}</div>
+                        {% endif %}
+                    </div>
                 </div>
-            {% endfor %}
-        </div>
-        <div class="ui hidden divider"></div>
-    {% endfor %}
+
+                {{ sonata_block_render_event('sylius.shop.product.index.after_box', {'product': product}) }}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="ui hidden divider"></div>
 {% endblock %}

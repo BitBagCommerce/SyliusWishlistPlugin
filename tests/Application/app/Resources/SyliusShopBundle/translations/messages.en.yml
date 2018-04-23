@@ -1,3 +1,4 @@
 bitbag_sylius_wishlist_plugin:
     ui:
+        wishlist: Wishlist
         add_to_wishlist: Add to wishlist
