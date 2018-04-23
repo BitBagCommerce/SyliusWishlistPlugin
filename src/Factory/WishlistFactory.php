@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Factory;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
@@ -21,15 +22,24 @@ final class WishlistFactory implements WishlistFactoryInterface
     /** @var FactoryInterface */
     private $wishlistFactory;
 
-    public function __construct(FactoryInterface $wishlistFactory)
+    /** @var FactoryInterface */
+    private $wishlistProductFactory;
+
+    public function __construct(FactoryInterface $wishlistFactory, FactoryInterface $wishlistProductFactory)
     {
         $this->wishlistFactory = $wishlistFactory;
+        $this->wishlistProductFactory = $wishlistProductFactory;
     }
 
     public function createNew(): WishlistInterface
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
+        /** @var WishlistProductInterface $wishlistProduct */
+        $wishlistProduct = $this->wishlistProductFactory->createNew();
+
+        $wishlistProduct->setWishlist($wishlist);
+        $wishlist->addWishlistProduct($wishlistProduct);
 
         return $wishlist;
     }

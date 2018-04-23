@@ -4,4 +4,11 @@ sylius_resource:
             driver: doctrine/orm
             classes:
                 model: BitBag\SyliusWishlistPlugin\Entity\Wishlist
+                interface: BitBag\SyliusWishlistPlugin\Entity\WishlistInterface
                 repository: BitBag\SyliusWishlistPlugin\Repository\WishlistRepository
+
+        bitbag_sylius_wishlist_plugin.wishlist_product:
+            driver: doctrine/orm
+            classes:
+                model: BitBag\SyliusWishlistPlugin\Entity\WishlistProduct
+                interface: BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface

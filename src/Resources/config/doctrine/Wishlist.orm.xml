@@ -10,16 +10,11 @@
             <generator strategy="AUTO" />
         </id>
 
-        <many-to-many field="products" target-entity="Sylius\Component\Product\Model\ProductInterface">
-            <join-table name="bitbag_wishlist_products">
-                <join-columns>
-                    <join-column name="wishlist_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
-                </join-columns>
-                <inverse-join-columns>
-                    <join-column name="product_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
-                </inverse-join-columns>
-            </join-table>
-        </many-to-many>
+        <one-to-many field="wishlistProducts" target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface" mapped-by="wishlist">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
 
         <!-- @TODO: Change the target entity reference once resolved: https://github.com/Sylius/Sylius/issues/9360 -->
         <one-to-one field="shopUser" target-entity="Sylius\Component\Core\Model\ShopUser">

@@ -14,7 +14,6 @@ namespace BitBag\SyliusWishlistPlugin\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 class Wishlist implements WishlistInterface
@@ -22,15 +21,15 @@ class Wishlist implements WishlistInterface
     /** @var int */
     protected $id;
 
-    /** @var Collection|ProductInterface[] */
-    protected $products;
+    /** @var Collection|WishlistProductInterface[] */
+    protected $wishlistProducts;
 
     /** @var ShopUserInterface|null */
     protected $shopUser;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->wishlistProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -38,25 +37,25 @@ class Wishlist implements WishlistInterface
         return $this->id;
     }
 
-    public function getProducts(): Collection
+    public function getWishlistProducts(): Collection
     {
-        return $this->products;
+        return $this->wishlistProducts;
     }
 
-    public function hasProduct(ProductInterface $product): bool
+    public function hasWishlistProduct(WishlistProductInterface $wishlistProduct): bool
     {
-        return $this->products->contains($product);
+        return $this->wishlistProducts->contains($wishlistProduct);
     }
 
-    public function addProduct(ProductInterface $product): void
+    public function addWishlistProduct(WishlistProductInterface $wishlistProduct): void
     {
-        $this->products->add($product);
+        $this->wishlistProducts->add($wishlistProduct);
     }
 
-    public function removeProduct(ProductInterface $product): void
+    public function removeWishlistProduct(WishlistProductInterface $wishlistProduct): void
     {
-        if ($this->hasProduct($product)) {
-            $this->products->remove($product);
+        if ($this->hasWishlistProduct($wishlistProduct)) {
+            $this->wishlistProducts->remove($wishlistProduct);
         }
     }
 

@@ -66,7 +66,7 @@ final class AddProductToWishlistAction
         $wishlist = $this->wishlistContext->getWishlist($request);
 
         $wishlist->addProduct($product);
-        $wishlist->getId() ?: $this->wishlistManager->persist($wishlist);
+        $wishlist->getId() ?? $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
 
         $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('+1 year'));
