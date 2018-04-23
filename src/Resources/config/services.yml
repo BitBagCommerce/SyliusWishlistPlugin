@@ -23,6 +23,12 @@ services:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@templating.engine.twig"
 
+    bitbag_sylius_wishlist_plugin.controller.action.render_header_template:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@templating.engine.twig"
+
     bitbag_sylius_wishlist_plugin.context.wishlist:
         class: BitBag\SyliusWishlistPlugin\Context\WishlistContext
         arguments:
