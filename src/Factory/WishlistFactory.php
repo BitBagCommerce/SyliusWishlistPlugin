@@ -22,24 +22,15 @@ final class WishlistFactory implements WishlistFactoryInterface
     /** @var FactoryInterface */
     private $wishlistFactory;
 
-    /** @var FactoryInterface */
-    private $wishlistProductFactory;
-
-    public function __construct(FactoryInterface $wishlistFactory, FactoryInterface $wishlistProductFactory)
+    public function __construct(FactoryInterface $wishlistFactory)
     {
         $this->wishlistFactory = $wishlistFactory;
-        $this->wishlistProductFactory = $wishlistProductFactory;
     }
 
     public function createNew(): WishlistInterface
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
-        /** @var WishlistProductInterface $wishlistProduct */
-        $wishlistProduct = $this->wishlistProductFactory->createNew();
-
-        $wishlistProduct->setWishlist($wishlist);
-        $wishlist->addWishlistProduct($wishlistProduct);
 
         return $wishlist;
     }

@@ -49,7 +49,9 @@ class Wishlist implements WishlistInterface
 
     public function addWishlistProduct(WishlistProductInterface $wishlistProduct): void
     {
-        $this->wishlistProducts->add($wishlistProduct);
+        if (!$this->hasWishlistProduct($wishlistProduct)) {
+            $this->wishlistProducts->add($wishlistProduct);
+        }
     }
 
     public function removeWishlistProduct(WishlistProductInterface $wishlistProduct): void

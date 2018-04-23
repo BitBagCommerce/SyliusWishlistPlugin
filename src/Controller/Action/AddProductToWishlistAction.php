@@ -13,7 +13,8 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
+use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class AddProductToWishlistAction
@@ -31,11 +33,11 @@ final class AddProductToWishlistAction
     /** @var WishlistContextInterface */
     private $wishlistContext;
 
-    /** @var WishlistFactoryInterface */
-    private $wishlistFactory;
+    /** @var WishlistProductFactoryInterface */
+    private $wishlistProductFactory;
 
     /** @var EntityManagerInterface */
-    private $wishlistManager;
+    private $entityManager;
 
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
@@ -46,15 +48,16 @@ final class AddProductToWishlistAction
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistContextInterface $wishlistContext,
-        WishlistFactoryInterface $wishlistFactory,
-        EntityManagerInterface $wishlistManager,
+        WishlistProductFactoryInterface $wishlistProductFactory,
+        EntityManagerInterface $entityManager,
         UrlGeneratorInterface $urlGenerator,
         string $wishlistCookieId
-    ) {
+    )
+    {
         $this->productRepository = $productRepository;
         $this->wishlistContext = $wishlistContext;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->wishlistManager = $wishlistManager;
+        $this->wishlistProductFactory = $wishlistProductFactory;
+        $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->wishlistCookieId = $wishlistCookieId;
     }
@@ -63,11 +66,23 @@ final class AddProductToWishlistAction
     {
         /** @var null|ProductInterface $product */
         $product = $this->productRepository->find($request->get('productId'));
-        $wishlist = $this->wishlistContext->getWishlist($request);
 
-        $wishlist->addProduct($product);
-        $wishlist->getId() ?? $this->wishlistManager->persist($wishlist);
-        $this->wishlistManager->flush();
+        if (null === $product) {
+            throw new BadRequestHttpException();
+        }
+
+        $wishlist = $this->wishlistContext->getWishlist($request);
+        /** @var WishlistProductInterface $wishlistProduct */
+        $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
+        $this->entityManager->persist($wishlistProduct);
+
+        $wishlist->addWishlistProduct($wishlistProduct);
+
+        if (null === $wishlist->getId()) {
+            $this->entityManager->persist($wishlist);
+        }
+
+        $this->entityManager->flush();
 
         $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('+1 year'));
         $response = new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));

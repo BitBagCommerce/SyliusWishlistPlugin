@@ -5,11 +5,11 @@
         {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}
     </h1>
     <div class="ui five column stackable grid" id="wishlist">
-        {% for product in wishlist.products %}
+        {% for wishlistProduct in wishlist.wishlistProducts %}
+            {% set product = wishlistProduct.product %}
+
             <div class="column">
                 {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
-
-                {{ sonata_block_render_event('sylius.shop.product.index.before_box', {'product': product}) }}
 
                 <div class="ui fluid card">
                     <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
