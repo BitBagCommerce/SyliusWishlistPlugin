@@ -1,4 +1,14 @@
 {% extends '@SyliusShop/layout.html.twig' %}
 
 {% block content %}
+    {% for product in wishlist.products %}
+        <div class="ui three column stackable grid" id="products">
+            {% for product in resources.data %}
+                <div class="column">
+                    {% include '@SyliusShop/Product/_box.html.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="ui hidden divider"></div>
+    {% endfor %}
 {% endblock %}

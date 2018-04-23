@@ -66,9 +66,10 @@ final class AddProductToWishlistAction
         $wishlist = $this->wishlistContext->getWishlist($request);
 
         $wishlist->addProduct($product);
+        $wishlist->getId() ?? $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
 
-        $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('now + one year'));
+        $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('+1 year'));
         $response = new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
         $response->headers->setCookie($cookie);
 

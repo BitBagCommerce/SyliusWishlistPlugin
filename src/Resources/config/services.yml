@@ -36,3 +36,10 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "%wishlist_cookie_id%"
+
+    bitbag_sylius_wishlist_plugin.custom_factory.wishlist:
+        class: BitBag\SyliusWishlistPlugin\Factory\WishlistFactory
+        decorates: bitbag_sylius_wishlist_plugin.factory.wishlist
+        public: false
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist.inner"

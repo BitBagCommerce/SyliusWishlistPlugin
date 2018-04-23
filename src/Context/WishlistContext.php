@@ -65,5 +65,7 @@ final class WishlistContext implements WishlistContextInterface
                 $this->wishlistFactory->createForUser($user)
             ;
         }
+
+        return $this->wishlistFactory->createNew();
     }
 }
