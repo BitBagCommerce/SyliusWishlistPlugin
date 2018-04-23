@@ -1,2 +1,6 @@
 parameters:
     wishlist_cookie_id: bitbag_sylius_wishlist
+
+imports:
+    - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/services.yml" }
+    - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/resources.yml" }

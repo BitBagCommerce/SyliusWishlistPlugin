@@ -1,0 +1,25 @@
+services:
+    bitbag_sylius_wishlist_plugin.controller.action.add_product_to_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToWishlistAction
+        arguments:
+            - "@sylius.repository.product"
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@router"
+            - "%wishlist_cookie_id%"
+
+    bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\RemoveProductFromWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@sylius.repository.product"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+
+    bitbag_sylius_wishlist_plugin.context.wishlist:
+        class: BitBag\SyliusWishlistPlugin\Context\WishlistContext
+        arguments:
+            - "@security.token_storage"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
+            - "%wishlist_cookie_id%"

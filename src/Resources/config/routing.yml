@@ -1,0 +1,9 @@
+bitbag_sylius_wishlist_plugin_shop_wishlist_add_product:
+    path: /wishlist/add/{productId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.add_product_to_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product:
+    path: /wishlist/remove/{productId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist
