@@ -15,6 +15,13 @@ services:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@sylius.repository.product"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@router"
+
+    bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@templating.engine.twig"
 
     bitbag_sylius_wishlist_plugin.context.wishlist:
         class: BitBag\SyliusWishlistPlugin\Context\WishlistContext
