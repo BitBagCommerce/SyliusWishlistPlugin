@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="http://bitbag.shop" target="_blank">
-        <img src="https://raw.githubusercontent.com/bitbager/BitBagCommerceAssets/master/SyliusWishlistPlugin.png" />
+        <img src="doc/SyliusWishlistPlugin.png" />
     </a>
     <br />
     <a href="https://packagist.org/packages/bitbag/wishlist-plugin" title="License" target="_blank">
@@ -22,16 +22,11 @@
 
 ## Overview
 
-Working [Sylius](https://sylius.com/) [Elasticsearch](https://www.elastic.co/products/wishlist) integration based on [FOSElasticaBundle](https://github.com/FriendsOfSymfony/FOSElasticaBundle). The main goal of this plugin is to support filtering products by 
-options, attributes, taxons, channels and name in the front product list page. It totally replaces the default Sylius `sylius_shop_product_index`
-route.
-
-What is more, the plugin has a nice Sylius-oriented architecture that allows mapping resources to the Elastic document easier. It is flexible as well,
-so that you can customize the existing features for your specific business needs.   
+This plugin allows you to integrate wishlist features with Sylius platform app.
 
 ## Demo
 
-We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop/en_US/products-list/t-shirts) to take a look at it. 
+We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it. 
 The admin can be accessed under [demo.bitbag.shop/admin](https://demo.bitbag.shop/admin) link and `sylius: sylius` credentials.
 
 ## Installation
@@ -88,47 +83,13 @@ $ bin/console doctrine:migrations:migrate
 When you go now to the `/{_locale}/products/taxon/{slug}` page, you should see a totally new set of filters. You should see something like this:
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/bitbager/BitBagCommerceAssets/master/BitBagElasticesearchProductIndex.jpg" />
+    <img src="doc/index.jpg" />
 </div>
 
-You might also want to refer the horizontal menu to a new product list page. Follow below instructions to do so:
+You can  use `@BitBagSyliusWishlistPlugin/_addToWishlist.html.twig`, `@BitBagSyliusWishlistPlugin/_removeFromWishlist.html.twig` and `@BitBagSyliusWishlistPlugin/_removeFromWishlist.html.twig`
+templates to enable adding/removing/displaying wishlist from the Twig UI.  
 
-1. If you haven't done it yet, create a `_horizontalMenu.html.twig` file in `app/Resources/SyliusShopBundle/views/Taxon` directory.
-2. Replace `sylius_shop_product_index` with `bitbag_sylius_wishlist_plugin_shop_list_products`.
-3. Clean your cache with `bin/console cache:clear` command.
-4. :tada:
-
-### Excluding options and attributes in the filter menu
-
-You might not want to show some specific options or attributes in the menu. You can set specific parameters for that:
-
-```yml
-parameters:
-    bitbag_es_excluded_filter_options: []
-    bitbag_es_excluded_filter_attributes: ['book_isbn', 'book_pages']
-```
-
-By default all options and attributes are indexed. After you change these parameters, remember to run `bin/console fo:el:po` command again
-(a shortcut for `fos:elastica:populate`).
-
-### Reindexing
-
-By default, current indexes listen on all Doctrine events. You can override this setting for each index by overriding index definition in your `config.yml` file:
-
-```yml
-fos_elastica:
-    indexes:
-        bitbag_attribute_taxons:
-            types:
-                default:
-                    persistence:
-                        listener:
-                            insert: true
-                            update: false
-                            delete: true
-```
-
-Indexes with `bitbag_shop_product`, `bitbag_attribute_taxons` and `bitbag_option_taxons` keys are available so far.
+For an example on how to do that, take a look at [these source files](https://github.com/BitBagCommerce/SyliusWishlistPlugin/tree/master/tests/Application/app/Resources/SyliusShopBundle/views).
 
 ## Customization
 
@@ -138,7 +99,7 @@ Indexes with `bitbag_shop_product`, `bitbag_attribute_taxons` and `bitbag_option
 ```
 
 ### Parameters you can override in your parameters.yml(.dist) file
-
+wishlist_cookie_id                                                        bitbag_sylius_wishlist
 ```yml
 
 ```
@@ -152,7 +113,6 @@ $ yarn run gulp
 $ bin/console assets:install web -e test
 $ bin/console doctrine:schema:create -e test
 $ wishlist 
-$ bin/console fos:elastica:populate -e test
 $ bin/console server:run 127.0.0.1:8080 -d web -e test
 $ open http://localhost:8080
 $ bin/behat
