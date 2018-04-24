@@ -22,8 +22,10 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 final class AddProductToWishlistAction
 {
@@ -39,6 +41,12 @@ final class AddProductToWishlistAction
     /** @var EntityManagerInterface */
     private $entityManager;
 
+    /** @var FlashBagInterface */
+    private $flashBag;
+
+    /** @var TranslatorInterface */
+    private $translator;
+
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
 
@@ -50,6 +58,8 @@ final class AddProductToWishlistAction
         WishlistContextInterface $wishlistContext,
         WishlistProductFactoryInterface $wishlistProductFactory,
         EntityManagerInterface $entityManager,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         string $wishlistCookieId
     )
@@ -60,21 +70,22 @@ final class AddProductToWishlistAction
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->wishlistCookieId = $wishlistCookieId;
+        $this->flashBag = $flashBag;
+        $this->translator = $translator;
     }
 
     public function __invoke(Request $request): Response
     {
         /** @var null|ProductInterface $product */
         $product = $this->productRepository->find($request->get('productId'));
+        $wishlist = $this->wishlistContext->getWishlist($request);
 
-        if (null === $product) {
-            throw new BadRequestHttpException();
+        if (null === $product || null === $wishlist) {
+            throw new NotFoundHttpException();
         }
 
-        $wishlist = $this->wishlistContext->getWishlist($request);
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
-        $this->entityManager->persist($wishlistProduct);
 
         $wishlist->addWishlistProduct($wishlistProduct);
 
@@ -83,6 +94,7 @@ final class AddProductToWishlistAction
         }
 
         $this->entityManager->flush();
+        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 
         $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('+1 year'));
         $response = new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));

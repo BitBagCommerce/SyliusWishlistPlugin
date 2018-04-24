@@ -6,6 +6,8 @@ services:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
             - "@router"
             - "%wishlist_cookie_id%"
 

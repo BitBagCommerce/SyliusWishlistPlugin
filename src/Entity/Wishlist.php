@@ -14,6 +14,7 @@ namespace BitBag\SyliusWishlistPlugin\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 class Wishlist implements WishlistInterface
@@ -42,6 +43,17 @@ class Wishlist implements WishlistInterface
         return $this->wishlistProducts;
     }
 
+    public function hasProduct(ProductInterface $product): bool
+    {
+        foreach ($this->wishlistProducts as $wishlistProduct) {
+            if ($product === $wishlistProduct->getProduct()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function hasWishlistProduct(WishlistProductInterface $wishlistProduct): bool
     {
         return $this->wishlistProducts->contains($wishlistProduct);
@@ -49,7 +61,7 @@ class Wishlist implements WishlistInterface
 
     public function addWishlistProduct(WishlistProductInterface $wishlistProduct): void
     {
-        if (!$this->hasWishlistProduct($wishlistProduct)) {
+        if (!$this->hasProduct($wishlistProduct->getProduct())) {
             $this->wishlistProducts->add($wishlistProduct);
         }
     }

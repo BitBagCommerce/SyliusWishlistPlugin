@@ -2,3 +2,5 @@ bitbag_sylius_wishlist_plugin:
     ui:
         wishlist: Wishlist
         add_to_wishlist: Add to wishlist
+        your_wishlist_is_empty: Your wishlist is empty
+        added_wishlist_item: Product has been added to your wishlist

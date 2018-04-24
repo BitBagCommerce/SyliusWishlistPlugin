@@ -17,5 +17,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface WishlistContextInterface
 {
-    public function getWishlist(Request $request): WishlistInterface;
+    public function getWishlist(Request $request): ?WishlistInterface;
 }

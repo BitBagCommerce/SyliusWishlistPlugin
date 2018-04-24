@@ -1,40 +1,51 @@
 {% extends '@SyliusShop/layout.html.twig' %}
 
+{% import '@SyliusUi/Macro/messages.html.twig' as messages %}
+
 {% block content %}
     <h1 class="ui monster section dividing header">
         {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}
     </h1>
-    <div class="ui five column stackable grid" id="wishlist">
-        {% for wishlistProduct in wishlist.wishlistProducts %}
-            {% set product = wishlistProduct.product %}
+    {% if wishlist.wishlistProducts.count > 0 %}
+        <div class="ui five column stackable grid" id="wishlist">
 
-            <div class="column">
-                {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+            {% for wishlistProduct in wishlist.wishlistProducts %}
+                {% set product = wishlistProduct.product %}
 
-                <div class="ui fluid card">
-                    <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
-                       class="blurring dimmable image">
-                        <div class="ui dimmer">
-                            <div class="content">
-                                <div class="center">
-                                    <div class="ui inverted button">{{ 'sylius.ui.view_more'|trans }}</div>
+                <div class="column">
+                    {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+
+                    <div class="ui fluid card">
+                        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
+                           class="blurring dimmable image">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <div class="center">
+                                        <div class="ui inverted button">{{ 'sylius.ui.view_more'|trans }}</div>
+                                    </div>
                                 </div>
                             </div>
+                            {% include '@SyliusShop/Product/_mainImage.html.twig' with {'product': product} %}
+                        </a>
+                        <div class="content">
+                            <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
+                               class="header sylius-product-name">{{ product.name }}</a>
+                            {% if not product.variants.empty() %}
+                                <div class="sylius-product-price">{{ money.calculatePrice(product|sylius_resolve_variant) }}</div>
+                            {% endif %}
                         </div>
-                        {% include '@SyliusShop/Product/_mainImage.html.twig' with {'product': product} %}
-                    </a>
-                    <div class="content">
-                        <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
-                           class="header sylius-product-name">{{ product.name }}</a>
-                        {% if not product.variants.empty() %}
-                            <div class="sylius-product-price">{{ money.calculatePrice(product|sylius_resolve_variant) }}</div>
-                        {% endif %}
                     </div>
-                </div>
 
-                {{ sonata_block_render_event('sylius.shop.product.index.after_box', {'product': product}) }}
+                    {{ sonata_block_render_event('sylius.shop.product.index.after_box', {'product': product}) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="ui one column stackable grid">
+            <div class="column">
+                {{ messages.info('bitbag_sylius_wishlist_plugin.ui.your_wishlist_is_empty'|trans) }}
             </div>
-        {% endfor %}
-    </div>
+        </div>
+    {% endif %}
     <div class="ui hidden divider"></div>
 {% endblock %}
