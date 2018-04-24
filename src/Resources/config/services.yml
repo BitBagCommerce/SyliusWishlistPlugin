@@ -16,7 +16,9 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@sylius.repository.product"
-            - "@doctrine.orm.default_entity_manager"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
+            - "@session.flash_bag"
+            - "@translator"
             - "@router"
 
     bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products:

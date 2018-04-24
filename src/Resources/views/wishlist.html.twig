@@ -33,6 +33,8 @@
                             {% if not product.variants.empty() %}
                                 <div class="sylius-product-price">{{ money.calculatePrice(product|sylius_resolve_variant) }}</div>
                             {% endif %}
+
+                            {% include '@BitBagSyliusWishlistPlugin/_removeFromWishlist.html.twig' %}
                         </div>
                     </div>
 

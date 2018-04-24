@@ -11,11 +11,11 @@
         </id>
 
         <many-to-one field="wishlist" target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistInterface" inversed-by="wishlistProducts">
-            <join-column name="wishlist_id" referenced-column-name="id" />
+            <join-column name="wishlist_id" referenced-column-name="id" nullable="false" />
         </many-to-one>
 
         <many-to-one field="product" target-entity="Sylius\Component\Product\Model\ProductInterface">
-            <join-column name="product_id" referenced-column-name="id" />
+            <join-column name="product_id" referenced-column-name="id" nullable="true" />
         </many-to-one>
 
     </mapped-superclass>

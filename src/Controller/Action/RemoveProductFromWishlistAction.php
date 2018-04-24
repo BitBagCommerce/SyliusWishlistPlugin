@@ -19,7 +19,10 @@ use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 final class RemoveProductFromWishlistAction
 {
@@ -30,7 +33,13 @@ final class RemoveProductFromWishlistAction
     private $productRepository;
 
     /** @var EntityManagerInterface */
-    private $wishlistManager;
+    private $wishlistProductManager;
+
+    /** @var FlashBagInterface */
+    private $flashBag;
+
+    /** @var TranslatorInterface */
+    private $translator;
 
     /** @var UrlGeneratorInterface */
     private $urlGenerator;
@@ -38,13 +47,17 @@ final class RemoveProductFromWishlistAction
     public function __construct(
         WishlistContextInterface $wishlistContext,
         ProductRepositoryInterface $productRepository,
-        EntityManagerInterface $wishlistManager,
+        EntityManagerInterface $wishlistProductManager,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->productRepository = $productRepository;
-        $this->wishlistManager = $wishlistManager;
+        $this->wishlistProductManager = $wishlistProductManager;
         $this->urlGenerator = $urlGenerator;
+        $this->flashBag = $flashBag;
+        $this->translator = $translator;
     }
 
     public function __invoke(Request $request): Response
@@ -53,8 +66,18 @@ final class RemoveProductFromWishlistAction
         /** @var ProductInterface $product */
         $product = $this->productRepository->find($request->get('productId'));
 
-        $wishlist->removeProduct($product);
-        $this->wishlistManager->flush();
+        if (null === $product) {
+            throw new NotFoundHttpException();
+        }
+
+        foreach ($wishlist->getWishlistProducts() as $wishlistProduct) {
+            if ($product === $wishlistProduct->getProduct()) {
+                $this->wishlistProductManager->remove($wishlistProduct);
+            }
+        }
+
+        $this->wishlistProductManager->flush();
+        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_wishlist_item'));
 
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
     }

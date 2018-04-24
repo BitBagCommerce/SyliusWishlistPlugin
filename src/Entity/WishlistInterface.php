@@ -30,8 +30,6 @@ interface WishlistInterface extends ResourceInterface
 
     public function addWishlistProduct(WishlistProductInterface $wishlistProduct): void;
 
-    public function removeWishlistProduct(WishlistProductInterface $wishlistProduct): void;
-
     public function getShopUser(): ?ShopUserInterface;
 
     public function setShopUser(ShopUserInterface $shopShopUser): void;

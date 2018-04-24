@@ -39,7 +39,7 @@ final class AddProductToWishlistAction
     private $wishlistProductFactory;
 
     /** @var EntityManagerInterface */
-    private $entityManager;
+    private $wishlistManager;
 
     /** @var FlashBagInterface */
     private $flashBag;
@@ -57,17 +57,16 @@ final class AddProductToWishlistAction
         ProductRepositoryInterface $productRepository,
         WishlistContextInterface $wishlistContext,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        EntityManagerInterface $entityManager,
+        EntityManagerInterface $wishlistManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         string $wishlistCookieId
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->wishlistContext = $wishlistContext;
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->entityManager = $entityManager;
+        $this->wishlistManager = $wishlistManager;
         $this->urlGenerator = $urlGenerator;
         $this->wishlistCookieId = $wishlistCookieId;
         $this->flashBag = $flashBag;
@@ -76,11 +75,11 @@ final class AddProductToWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        /** @var null|ProductInterface $product */
+        /** @var ProductInterface|null $product */
         $product = $this->productRepository->find($request->get('productId'));
         $wishlist = $this->wishlistContext->getWishlist($request);
 
-        if (null === $product || null === $wishlist) {
+        if (null === $product) {
             throw new NotFoundHttpException();
         }
 
@@ -90,10 +89,10 @@ final class AddProductToWishlistAction
         $wishlist->addWishlistProduct($wishlistProduct);
 
         if (null === $wishlist->getId()) {
-            $this->entityManager->persist($wishlist);
+            $this->wishlistManager->persist($wishlist);
         }
 
-        $this->entityManager->flush();
+        $this->wishlistManager->flush();
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 
         $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('+1 year'));

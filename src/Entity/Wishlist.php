@@ -66,13 +66,6 @@ class Wishlist implements WishlistInterface
         }
     }
 
-    public function removeWishlistProduct(WishlistProductInterface $wishlistProduct): void
-    {
-        if ($this->hasWishlistProduct($wishlistProduct)) {
-            $this->wishlistProducts->remove($wishlistProduct);
-        }
-    }
-
     public function getShopUser(): ?ShopUserInterface
     {
         return $this->shopUser;
