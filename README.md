@@ -78,9 +78,7 @@ $ bin/console doctrine:migrations:migrate
 
 ## Usage
 
-### Rendering the shop products list
-
-When you go now to the `/{_locale}/products/taxon/{slug}` page, you should see a totally new set of filters. You should see something like this:
+### Rendering the wishlist
 
 <div align="center">
     <img src="doc/index.jpg" />
