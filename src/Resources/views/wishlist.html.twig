@@ -7,9 +7,10 @@
         {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}
     </h1>
     {% if wishlist.wishlistProducts.count > 0 %}
+        {{ form_start(form) }}
         <div class="ui five column stackable grid" id="wishlist">
 
-            {% for wishlistProduct in wishlist.wishlistProducts %}
+            {% for index, wishlistProduct in wishlist.wishlistProducts %}
                 {% set product = wishlistProduct.product %}
 
                 <div class="column">
@@ -35,6 +36,7 @@
                             {% endif %}
 
                             {% include '@BitBagSyliusWishlistPlugin/_removeFromWishlist.html.twig' %}
+                            {{ form_row(form[index]) }}
                         </div>
                     </div>
 
@@ -42,6 +44,9 @@
                 </div>
             {% endfor %}
         </div>
+        <button type="submit" class="ui huge primary icon labeled button"><i class="cart icon"></i> {{ 'sylius.ui.add_to_cart'|trans }}</button>
+
+        {{ form_end(form) }}
     {% else %}
         <div class="ui one column stackable grid">
             <div class="column">

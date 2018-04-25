@@ -38,6 +38,17 @@ class Wishlist implements WishlistInterface
         return $this->id;
     }
 
+    public function getProducts(): Collection
+    {
+        $products = [];
+
+        foreach ($this->wishlistProducts as $wishlistProduct) {
+            $products[] = $wishlistProduct->getProduct();
+        }
+
+        return new ArrayCollection($products);
+    }
+
     public function getWishlistProducts(): Collection
     {
         return $this->wishlistProducts;

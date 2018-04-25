@@ -20,6 +20,11 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 interface WishlistInterface extends ResourceInterface
 {
     /**
+     * @return Collection|ProductInterface[]
+     */
+    public function getProducts(): Collection;
+
+    /**
      * @return Collection|WishlistProductInterface[]
      */
     public function getWishlistProducts(): Collection;

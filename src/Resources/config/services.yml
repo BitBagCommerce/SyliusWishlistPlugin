@@ -25,6 +25,13 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction
         arguments:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@sylius.context.cart"
+            - "@sylius.factory.order_item"
+            - "@sylius.order_item_quantity_modifier"
+            - "@form.factory"
+            - "@sylius.order_modifier"
+            - "@sylius.manager.order"
+            - "@session.flash_bag"
             - "@templating.engine.twig"
 
     bitbag_sylius_wishlist_plugin.controller.action.render_header_template:
@@ -54,3 +61,20 @@ services:
         public: false
         arguments:
             - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist_product.inner"
+
+    bitbag_sylius_wishlist_plugin.event_listener.merge_user_wishlist_items:
+        class: BitBag\SyliusWishlistPlugin\EventListener\MergeUserWishlistItemsListener
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "%wishlist_cookie_id%"
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
+
+    bitbag_sylius_wishlist_plugin.form.type.add_products_to_cart:
+        class: BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType
+        arguments:
+            - "@sylius.factory.add_to_cart_command"
+        tags:
+            - { name: form.type }
