@@ -21,7 +21,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
     public function findByShopUser(ShopUserInterface $shopUser): ?WishlistInterface
     {
         return $this->createQueryBuilder('o')
-            ->where('o.user = :shopUser')
+            ->where('o.shopUser = :shopUser')
             ->setParameter('shopUser', $shopUser)
             ->getQuery()
             ->getOneOrNullResult()
