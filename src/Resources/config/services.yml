@@ -26,8 +26,6 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@sylius.context.cart"
-            - "@sylius.factory.order_item"
-            - "@sylius.order_item_quantity_modifier"
             - "@form.factory"
             - "@sylius.order_modifier"
             - "@sylius.manager.order"
@@ -76,5 +74,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType
         arguments:
             - "@sylius.factory.add_to_cart_command"
+            - "@sylius.factory.order_item"
+            - "@sylius.order_item_quantity_modifier"
         tags:
             - { name: form.type }

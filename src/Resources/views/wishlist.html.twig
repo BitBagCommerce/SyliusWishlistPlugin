@@ -10,9 +10,8 @@
         {{ form_start(form) }}
         <div class="ui five column stackable grid" id="wishlist">
 
-            {% for index, wishlistProduct in wishlist.wishlistProducts %}
-                {% set product = wishlistProduct.product %}
-
+            {% for childForm in form.children if childForm.vars.name != '_token' %}
+                {% set product = childForm.vars.data.cartItem.variant.product %}
                 <div class="column">
                     {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
 
@@ -36,7 +35,7 @@
                             {% endif %}
 
                             {% include '@BitBagSyliusWishlistPlugin/_removeFromWishlist.html.twig' %}
-                            {{ form_row(form[index]) }}
+                            {{ form_row(childForm) }}
                         </div>
                     </div>
 

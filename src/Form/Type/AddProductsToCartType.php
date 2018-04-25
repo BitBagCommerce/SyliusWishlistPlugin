@@ -7,8 +7,11 @@ namespace BitBag\SyliusWishlistPlugin\Form\Type;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
 use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactoryInterface;
-use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,9 +21,22 @@ final class AddProductsToCartType extends AbstractType
     /** @var AddToCartCommandFactoryInterface */
     private $addToCartCommandFactory;
 
-    public function __construct(AddToCartCommandFactoryInterface $addToCartCommandFactory)
+    /** @var FactoryInterface */
+    private $cartItemFactory;
+
+    /** @var OrderItemQuantityModifierInterface */
+    private $orderItemQuantityModifier;
+
+    public function __construct(
+        AddToCartCommandFactoryInterface $addToCartCommandFactory,
+        CartItemFactoryInterface $cartItemFactory,
+        OrderItemQuantityModifierInterface $orderItemQuantityModifier
+
+    )
     {
         $this->addToCartCommandFactory = $addToCartCommandFactory;
+        $this->cartItemFactory = $cartItemFactory;
+        $this->orderItemQuantityModifier = $orderItemQuantityModifier;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -31,7 +47,10 @@ final class AddProductsToCartType extends AbstractType
                     'label' => false,
                     'required' => false,
                     'product' => $product,
-                    'data' => $this->addToCartCommandFactory->createWithCartAndCartItem($options['cart'], $options['cartItem'])
+                    'data' => $this->addToCartCommandFactory->createWithCartAndCartItem(
+                        $options['cart'],
+                        $this->createCartItem($product)
+                    ),
                 ])
             ;
         }
@@ -41,12 +60,19 @@ final class AddProductsToCartType extends AbstractType
     {
         $resolver
             ->setRequired('cart')
-            ->setAllowedTypes('cart', OrderInterface::class)
-            ->setRequired('cartItem')
-            ->setAllowedTypes('cartItem', OrderItemInterface::class)
             ->setRequired('products')
             ->setAllowedTypes('products', Collection::class)
             ->setDefault('data_class', null)
         ;
+    }
+
+    private function createCartItem(ProductInterface $product): OrderItemInterface
+    {
+        /** @var OrderItemInterface $cartItem */
+        $cartItem = $this->cartItemFactory->createForProduct($product);
+
+        $this->orderItemQuantityModifier->modify($cartItem, 0);
+
+        return $cartItem;
     }
 }

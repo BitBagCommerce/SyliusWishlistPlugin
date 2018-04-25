@@ -16,11 +16,8 @@ use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
-use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
-use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -35,12 +32,6 @@ final class ListWishlistProductsAction
 
     /** @var CartContextInterface */
     private $cartContext;
-
-    /** @var FactoryInterface */
-    private $orderItemFactory;
-
-    /** @var OrderModifierInterface */
-    private $orderItemQuantityModifier;
 
     /** @var FormFactoryInterface */
     private $formFactory;
@@ -60,8 +51,6 @@ final class ListWishlistProductsAction
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
-        FactoryInterface $orderItemFactory,
-        OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         FormFactoryInterface $formFactory,
         OrderModifierInterface $orderModifier,
         EntityManagerInterface $cartManager,
@@ -71,8 +60,6 @@ final class ListWishlistProductsAction
     {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
-        $this->orderItemQuantityModifier = $orderItemQuantityModifier;
-        $this->orderItemFactory = $orderItemFactory;
         $this->formFactory = $formFactory;
         $this->orderModifier = $orderModifier;
         $this->flashBag = $flashBag;
@@ -84,13 +71,9 @@ final class ListWishlistProductsAction
     {
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
-        /** @var OrderItemInterface $orderItem */
-        $cartItem = $this->orderItemFactory->createNew();
-        $this->orderItemQuantityModifier->modify($cartItem, 1);
 
         $form = $this->formFactory->create(AddProductsToCartType::class, null, [
             'cart' => $cart,
-            'cartItem' => $cartItem,
             'products' => $wishlist->getProducts(),
         ]);
 
