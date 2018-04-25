@@ -6,3 +6,4 @@ bitbag_sylius_wishlist_plugin:
         your_wishlist_is_empty: Your wishlist is empty
         added_wishlist_item: Product has been added to your wishlist.
         removed_wishlist_item: Product has been removed from your wishlist.
+        added_to_cart: Wishlist item has been added to your cart.

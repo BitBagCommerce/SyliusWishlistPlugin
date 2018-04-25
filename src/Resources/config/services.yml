@@ -30,6 +30,7 @@ services:
             - "@sylius.order_modifier"
             - "@sylius.manager.order"
             - "@session.flash_bag"
+            - "@translator"
             - "@templating.engine.twig"
 
     bitbag_sylius_wishlist_plugin.controller.action.render_header_template:

@@ -34,8 +34,12 @@
                                 <div class="sylius-product-price">{{ money.calculatePrice(product|sylius_resolve_variant) }}</div>
                             {% endif %}
 
+                            {% if childForm.cartItem.variant is defined %}
+                                {{ form_row(childForm.cartItem.variant) }}
+                            {% endif %}
+                            {{ form_row(childForm.cartItem.quantity, {'attr': {'min': 0}}) }}
+
                             {% include '@BitBagSyliusWishlistPlugin/_removeFromWishlist.html.twig' %}
-                            {{ form_row(childForm) }}
                         </div>
                     </div>
 

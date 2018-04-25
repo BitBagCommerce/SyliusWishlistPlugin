@@ -24,6 +24,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 final class ListWishlistProductsAction
 {
@@ -45,6 +46,9 @@ final class ListWishlistProductsAction
     /** @var FlashBagInterface */
     private $flashBag;
 
+    /** @var TranslatorInterface */
+    private $translator;
+
     /** @var EngineInterface */
     private $templatingEngine;
 
@@ -55,6 +59,7 @@ final class ListWishlistProductsAction
         OrderModifierInterface $orderModifier,
         EntityManagerInterface $cartManager,
         FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
         EngineInterface $templatingEngine
     )
     {
@@ -65,6 +70,7 @@ final class ListWishlistProductsAction
         $this->flashBag = $flashBag;
         $this->templatingEngine = $templatingEngine;
         $this->cartManager = $cartManager;
+        $this->translator = $translator;
     }
 
     public function __invoke(Request $request): Response
@@ -81,6 +87,8 @@ final class ListWishlistProductsAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handleCartItems($form);
+
+            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
         }
 
         return $this->templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/wishlist.html.twig', [
