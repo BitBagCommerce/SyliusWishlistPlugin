@@ -1,0 +1,8 @@
+bitbag_sylius_wishlist_plugin:
+    ui:
+        wishlist: Lista życzeń
+        add_to_wishlist: Dodaj do listy życzeń
+        remove_from_wishlist: Usuń z listy życzeń
+        your_wishlist_is_empty: Twoja lista życzeń jest pusta
+        added_wishlist_item: Produkt został dodany do listy życzeń.
+        removed_wishlist_item: Produkt został usunięty z listy życzeń.
