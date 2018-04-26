@@ -62,13 +62,14 @@ final class RemoveProductFromWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        $wishlist = $this->wishlistContext->getWishlist($request);
         /** @var ProductInterface $product */
         $product = $this->productRepository->find($request->get('productId'));
 
         if (null === $product) {
             throw new NotFoundHttpException();
         }
+
+        $wishlist = $this->wishlistContext->getWishlist($request);
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProduct) {
             if ($product === $wishlistProduct->getProduct()) {

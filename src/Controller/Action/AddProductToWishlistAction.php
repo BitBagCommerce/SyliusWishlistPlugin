@@ -77,12 +77,12 @@ final class AddProductToWishlistAction
     {
         /** @var ProductInterface|null $product */
         $product = $this->productRepository->find($request->get('productId'));
-        $wishlist = $this->wishlistContext->getWishlist($request);
 
         if (null === $product) {
             throw new NotFoundHttpException();
         }
 
+        $wishlist = $this->wishlistContext->getWishlist($request);
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
