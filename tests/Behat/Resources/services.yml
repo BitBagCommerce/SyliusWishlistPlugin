@@ -1,0 +1,46 @@
+services:
+    bitbag_sylius_cms_plugin.behat.context.setup.wishlist:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Setup\WishlistContext
+        arguments:
+            - "@__symfony__.sylius.repository.product"
+            - "@__symfony__.bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@__symfony__.bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+            - "@__symfony__.bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@__symfony__.sylius.factory.taxon"
+            - "@__symfony__.sylius.factory.product_taxon"
+            - "@__symfony__.sylius.manager.product_taxon"
+        tags:
+            - { name: fob.context_service }
+
+    bitbag_sylius_cms_plugin.behat.context.ui.wishlist:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui\WishlistContext
+        arguments:
+            - "@__symfony__.sylius.repository.product"
+            - "@bitbag_sylius_cms_plugin.behat.page.shop.product_index"
+            - "@bitbag_sylius_cms_plugin.behat.page.shop.wishlist"
+            - "@sylius.behat.notification_checker"
+            - "@bitbag_sylius_cms_plugin.behat.loginer"
+            - "@bitbag_sylius_cms_plugin.behat.wishlist_creator"
+        tags:
+            - { name: fob.context_service }
+
+    bitbag_sylius_cms_plugin.behat.context.domain.cart:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Domain\CartContext
+        tags:
+            - { name: fob.context_service }
+
+    bitbag_sylius_cms_plugin.behat.page.shop.wishlist:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage
+        parent: sylius.behat.symfony_page
+        public: false
+
+    bitbag_sylius_cms_plugin.behat.page.shop.product_index:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPage
+        parent: sylius.behat.page.shop.product.index
+        public: false
+
+    bitbag_sylius_cms_plugin.behat.loginer:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Service\Loginer
+
+    bitbag_sylius_cms_plugin.behat.wishlist_creator:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreator

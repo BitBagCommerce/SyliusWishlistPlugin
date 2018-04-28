@@ -1,5 +1,5 @@
 <div style="margin-top: 1rem; text-align: center; width: 100%">
-    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product', {'productId': product.id}) }}" class="ui icon labeled button default">
+    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product', {'productId': product.id}) }}" class="bitbag-remove-from-wishlist ui icon labeled button default" data-product-name="{{ product.name }}">
         <i class="icon remove"></i>
         {{ 'bitbag_sylius_wishlist_plugin.ui.remove_from_wishlist'|trans }}
     </a>

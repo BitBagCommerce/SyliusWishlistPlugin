@@ -12,7 +12,7 @@
 
             {% for childForm in form.children if childForm.vars.name != '_token' %}
                 {% set product = childForm.vars.data.cartItem.variant.product %}
-                <div class="column">
+                <div class="column bitbag-wishlist-item">
                     {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
 
                     <div class="ui fluid card">

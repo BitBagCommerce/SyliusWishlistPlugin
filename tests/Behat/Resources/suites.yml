@@ -1,0 +1,17 @@
+default:
+    suites:
+        ui_wishlist:
+            contexts_services:
+                - sylius.behat.context.hook.doctrine_orm
+
+                - sylius.behat.context.transform.lexical
+
+                - sylius.behat.context.setup.channel
+                - sylius.behat.context.setup.product
+                - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
+
+                - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
+
+                - bitbag_sylius_cms_plugin.behat.context.domain.cart
+            filters:
+                tags: "@wishlist && @ui"
