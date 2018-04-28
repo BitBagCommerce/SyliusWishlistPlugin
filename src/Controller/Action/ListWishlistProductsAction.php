@@ -61,8 +61,7 @@ final class ListWishlistProductsAction
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         EngineInterface $templatingEngine
-    )
-    {
+    ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;

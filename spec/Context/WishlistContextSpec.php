@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\BitBag\SyliusWishlistPlugin\Context;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContext;
@@ -20,8 +22,7 @@ final class WishlistContextSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory
-    )
-    {
+    ) {
         $this->beConstructedWith(
             $tokenStorage,
             $wishlistRepository,
@@ -47,8 +48,7 @@ final class WishlistContextSpec extends ObjectBehavior
         TokenInterface $token,
         WishlistFactoryInterface $wishlistFactory,
         WishlistInterface $wishlist
-    ): void
-    {
+    ): void {
         $request->cookies = $parameterBag;
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(null);
         $tokenStorage->getToken()->willReturn($token);
@@ -65,8 +65,7 @@ final class WishlistContextSpec extends ObjectBehavior
         TokenInterface $token,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistInterface $wishlist
-    ): void
-    {
+    ): void {
         $request->cookies = $parameterBag;
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(1);
         $tokenStorage->getToken()->willReturn($token);
@@ -84,8 +83,7 @@ final class WishlistContextSpec extends ObjectBehavior
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
         WishlistInterface $wishlist
-    ): void
-    {
+    ): void {
         $request->cookies = $parameterBag;
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(1);
         $tokenStorage->getToken()->willReturn($token);
@@ -104,8 +102,7 @@ final class WishlistContextSpec extends ObjectBehavior
         ShopUserInterface $shopUser,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistInterface $wishlist
-    ): void
-    {
+    ): void {
         $request->cookies = $parameterBag;
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(null);
         $tokenStorage->getToken()->willReturn($token);
@@ -124,8 +121,7 @@ final class WishlistContextSpec extends ObjectBehavior
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
         WishlistInterface $wishlist
-    ): void
-    {
+    ): void {
         $request->cookies = $parameterBag;
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(null);
         $tokenStorage->getToken()->willReturn($token);

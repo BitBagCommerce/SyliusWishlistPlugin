@@ -31,9 +31,7 @@ final class AddProductsToCartType extends AbstractType
         AddToCartCommandFactoryInterface $addToCartCommandFactory,
         CartItemFactoryInterface $cartItemFactory,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier
-
-    )
-    {
+    ) {
         $this->addToCartCommandFactory = $addToCartCommandFactory;
         $this->cartItemFactory = $cartItemFactory;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;

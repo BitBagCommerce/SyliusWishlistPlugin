@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\BitBag\SyliusWishlistPlugin\Factory;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProduct;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactory;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
@@ -41,8 +41,7 @@ final class WishlistProductFactorySpec extends ObjectBehavior
         WishlistProductInterface $wishlistProduct,
         WishlistInterface $wishlist,
         ProductInterface $product
-    ): void
-    {
+    ): void {
         $factory->createNew()->willReturn($wishlistProduct);
 
         $wishlistProduct->setWishlist($wishlist)->shouldBeCalled();

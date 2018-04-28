@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\BitBag\SyliusWishlistPlugin\Entity;
 
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
@@ -51,7 +53,6 @@ final class WishlistSpec extends ObjectBehavior
 
         $this->getWishlistProducts()->contains($wishlistProduct)->shouldReturn(true);
     }
-
 
     public function it_gets_shop_user(ShopUserInterface $shopUser): void
     {

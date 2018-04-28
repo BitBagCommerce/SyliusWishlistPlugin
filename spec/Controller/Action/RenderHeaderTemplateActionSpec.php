@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
@@ -28,8 +30,7 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         EngineInterface $templatingEngine,
         Response $response
-    ): void
-    {
+    ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/_wishlistHeader.html.twig', [
             'wishlist' => $wishlist,

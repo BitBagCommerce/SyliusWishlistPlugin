@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
@@ -34,8 +36,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         EngineInterface $templatingEngine
-    ): void
-    {
+    ): void {
         $this->beConstructedWith(
             $wishlistContext,
             $cartContext,
@@ -65,8 +66,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         FormView $formView,
         EngineInterface $templatingEngine,
         Response $response
-    ): void
-    {
+    ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getProducts()->willReturn($products);
@@ -102,8 +102,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         EntityManagerInterface $cartManager,
         EngineInterface $templatingEngine,
         Response $response
-    ): void
-    {
+    ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getProducts()->willReturn($products);

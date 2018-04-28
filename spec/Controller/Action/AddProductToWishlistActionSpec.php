@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
@@ -18,7 +20,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-
 final class AddProductToWishlistActionSpec extends ObjectBehavior
 {
     function let(
@@ -29,8 +30,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator
-    ): void
-    {
+    ): void {
         $this->beConstructedWith(
             $productRepository,
             $wishlistContext,
@@ -68,20 +68,19 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         TranslatorInterface $translator,
         FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator
-    ): void
-    {
+    ): void {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn($product);
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $wishlistProductFactory->createForWishlistAndProduct($wishlist, $product)->willReturn($wishlistProduct);
         $wishlist->getId()->willReturn(null);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn("Product has been added to your wishlist.");
+        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
         $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->persist($wishlist)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
-        $flashBag->add('success', "Product has been added to your wishlist.")->shouldBeCalled();
+        $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
         $wishlist->getId()->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);

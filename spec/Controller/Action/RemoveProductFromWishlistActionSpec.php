@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\RemoveProductFromWishlistAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,8 +29,7 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator
-    ): void
-    {
+    ): void {
         $this->beConstructedWith(
             $wishlistContext,
             $productRepository,
@@ -63,19 +64,18 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
         TranslatorInterface $translator,
         FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator
-    ): void
-    {
+    ): void {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn($product);
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $wishlist->getWishlistProducts()->willReturn(new ArrayCollection([$wishlistProduct->getWrappedObject()]));
         $wishlistProduct->getProduct()->willReturn($product);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_wishlist_item')->willReturn("Product has been removed from your wishlist.");
+        $translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_wishlist_item')->willReturn('Product has been removed from your wishlist.');
         $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
 
         $wishlistProductManager->remove($wishlistProduct)->shouldBeCalled();
         $wishlistProductManager->flush()->shouldBeCalled();
-        $flashBag->add('success', "Product has been removed from your wishlist.")->shouldBeCalled();
+        $flashBag->add('success', 'Product has been removed from your wishlist.')->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
     }
