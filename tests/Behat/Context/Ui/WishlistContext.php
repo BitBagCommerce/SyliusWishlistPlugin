@@ -78,6 +78,8 @@ final class WishlistContext implements Context
      */
     public function iAddProductToMyWishlist(string $productName): void
     {
+        $this->productIndexPage->open(['slug' => 'main']);
+
         $this->productIndexPage->addProductToWishlist($productName);
     }
 
@@ -86,15 +88,26 @@ final class WishlistContext implements Context
      */
     public function iLogInToMyAccountWhichAlreadyHasProductInTheWishlist(string $productName): void
     {
-        $user = $this->loginer->logInAndGetUser();
+        $user = $this->loginer->createUser();
 
         $this->wishlistCreator->createWishlistWithProductAndUser($user, $productName);
+        $this->loginer->logIn();
     }
 
     /**
      * @When I log in
      */
     public function iLogIn(): void
+    {
+        $this->loginer->createUser();
+
+        $this->loginer->logIn();
+    }
+
+    /**
+     * @When I log in again
+     */
+    public function iLogInAgain(): void
     {
         $this->loginer->logIn();
     }
@@ -128,10 +141,7 @@ final class WishlistContext implements Context
      */
     public function iAddMyWishlistProductsToCart(): void
     {
-        /** @var ProductInterface $product */
-        foreach ($this->productRepository->findAll() as $product) {
-            $this->productIndexPage->addProductToWishlist($product->getName());
-        }
+        $this->wishlistPage->addProductToCart();
     }
 
     /**
@@ -167,9 +177,9 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @Then there should be one item in my wishlist
+     * @Then I should have one item in my wishlist
      */
-    public function thereShouldBeOneItemInMyWishlist(): void
+    public function iShouldHaveOnItemInMyWishlist(): void
     {
         Assert::eq(1, $this->wishlistPage->getItemsCount());
     }
@@ -188,5 +198,16 @@ final class WishlistContext implements Context
     public function iShouldHaveProductInMyWishlist(string $productName): void
     {
         Assert::true($this->wishlistPage->hasProduct($productName));
+    }
+
+    /**
+     * @Then I should have :productName product in my cart
+     */
+    public function iShouldHaveProductInMyCart(string $productName): void
+    {
+        Assert::true(
+            $this->wishlistPage->hasProductInCart($productName),
+            sprintf('Product %s was not found in the cart.', $productName)
+        );
     }
 }

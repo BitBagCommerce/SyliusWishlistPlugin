@@ -19,13 +19,14 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 {
     public function getItemsCount(): int
     {
-        return count($this->getDocument()->findAll('css','.bitbag-wishlist-item'));
+        return (int) $this->getDocument()->find('css', '.bitbag-wishlist-items-count')->getText();
     }
 
     public function hasProduct(string $productName): bool
     {
         $productElements = $this->getDocument()->findAll('css', '.bitbag-wishlist-item .sylius-product-name');
 
+        /** @var NodeElement $productElement */
         foreach ($productElements as $productElement) {
             if ($productName === $productElement->getText()) {
                 return true;
@@ -37,11 +38,11 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function removeProduct(string $productName): void
     {
-        $wishlistElements = $this->getDocument()->find('css', '.bitbag-remove-from-wishlist');
+        $wishlistElements = $this->getDocument()->findAll('css', '.bitbag-remove-from-wishlist');
 
         /** @var NodeElement $wishlistElement */
         foreach ($wishlistElements as $wishlistElement) {
-            if ($productName === $wishlistElement->getAttribute('data-name')) {
+            if ($productName === $wishlistElement->getAttribute('data-product-name')) {
                 $wishlistElement->click();
             }
         }
@@ -49,7 +50,26 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function selectProductQuantity(string $productName, int $quantity): void
     {
+        $addToCartElements = $this->getDocument()->findAll('css', '.bitbag-wishlist-add-item-to-cart');
 
+        /** @var NodeElement $addToCartElement */
+        foreach ($addToCartElements as $addToCartElement) {
+            if ($productName === $addToCartElement->getAttribute('data-product-name')) {
+                $addToCartElement->setValue($quantity);
+            }
+        }
+    }
+
+    public function addProductToCart(): void
+    {
+        $this->getDocument()->find('css', '.bitbag-add-products-to-wishlist')->press();
+    }
+
+    public function hasProductInCart(string $productName): bool
+    {
+        $productNameOnPage = $this->getDocument()->find('css', '.ui.cart.popup > .list > .item > strong')->getText();
+
+        return $productName === $productNameOnPage;
     }
 
     public function getRouteName(): string

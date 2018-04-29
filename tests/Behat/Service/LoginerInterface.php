@@ -20,5 +20,5 @@ interface LoginerInterface
 
     public function logOut(): void;
 
-    public function logInAndGetUser(): ShopUserInterface;
+    public function createUser(): ShopUserInterface;
 }

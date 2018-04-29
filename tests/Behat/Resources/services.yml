@@ -9,6 +9,8 @@ services:
             - "@__symfony__.sylius.factory.taxon"
             - "@__symfony__.sylius.factory.product_taxon"
             - "@__symfony__.sylius.manager.product_taxon"
+            - "@sylius.behat.cookie_setter"
+            - "%__symfony__.wishlist_cookie_id%"
         tags:
             - { name: fob.context_service }
 
@@ -24,11 +26,6 @@ services:
         tags:
             - { name: fob.context_service }
 
-    bitbag_sylius_cms_plugin.behat.context.domain.cart:
-        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Domain\CartContext
-        tags:
-            - { name: fob.context_service }
-
     bitbag_sylius_cms_plugin.behat.page.shop.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage
         parent: sylius.behat.symfony_page
@@ -41,6 +38,20 @@ services:
 
     bitbag_sylius_cms_plugin.behat.loginer:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Service\Loginer
+        arguments:
+            - "@__symfony__.sylius.factory.customer"
+            - "@__symfony__.sylius.factory.shop_user"
+            - "@__symfony__.sylius.repository.shop_user"
+            - "@__symfony__.security.token_storage"
+            - "@sylius.behat.page.shop.account.login"
+            - "@sylius.behat.page.shop.home"
 
     bitbag_sylius_cms_plugin.behat.wishlist_creator:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreator
+        arguments:
+            - "@__symfony__.sylius.factory.product"
+            - "@__symfony__.sylius.context.channel"
+            - "@__symfony__.bitbag_sylius_wishlist_plugin.factory.wishlist"
+            - "@__symfony__.bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+            - "@__symfony__.bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@__symfony__.sylius.repository.product"

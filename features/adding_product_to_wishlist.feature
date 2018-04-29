@@ -14,7 +14,7 @@ Feature: Adding a product to wishlist
         When I add this product to wishlist
         Then I should be on my wishlist page
         And I should be notified that the product has been successfully added to my wishlist
-        And there should be one item in my wishlist
+        And I should have one item in my wishlist
 
     @ui
     Scenario: Adding a product as anon user and signing in
@@ -28,9 +28,8 @@ Feature: Adding a product to wishlist
     @ui
     Scenario: Adding a wishlist product signing in and out and in
         Given the store has a product "Red Roses" priced at "$12.00"
-        And all store products appear under a main taxonomy
         And I have this product in my wishlist
         When I log in
         And I log out
-        And I log in
-        Then I should have 1 product in my wishlist
+        And I log in again
+        Then I should have one item in my wishlist

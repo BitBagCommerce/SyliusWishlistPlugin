@@ -17,6 +17,7 @@ use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Sylius\Behat\Service\Setter\CookieSetterInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
@@ -47,6 +48,12 @@ final class WishlistContext implements Context
     /** @var EntityManagerInterface */
     private $productTaxonManager;
 
+    /** @var CookieSetterInterface */
+    private $cookieSetter;
+
+    /** @var string */
+    private $wishlistCookieId;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistContextInterface $wishlistContext,
@@ -54,7 +61,9 @@ final class WishlistContext implements Context
         EntityManagerInterface $wishlistManager,
         FactoryInterface $taxonFactory,
         FactoryInterface $productTaxonFactory,
-        EntityManagerInterface $productTaxonManager
+        EntityManagerInterface $productTaxonManager,
+        CookieSetterInterface $cookieSetter,
+        string $wishlistCookieId
     )
     {
         $this->productRepository = $productRepository;
@@ -64,6 +73,8 @@ final class WishlistContext implements Context
         $this->taxonFactory = $taxonFactory;
         $this->productTaxonFactory = $productTaxonFactory;
         $this->productTaxonManager = $productTaxonManager;
+        $this->cookieSetter = $cookieSetter;
+        $this->wishlistCookieId = $wishlistCookieId;
     }
 
     /**
@@ -126,5 +137,7 @@ final class WishlistContext implements Context
 
         $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
+
+        $this->cookieSetter->setCookie($this->wishlistCookieId, $wishlist->getId());
     }
 }

@@ -19,12 +19,14 @@ class ProductIndexPage extends IndexPage implements ProductIndexPageInterface
 {
     public function addProductToWishlist(string $productName): void
     {
-        $wishlistElements = $this->getDocument()->find('css', '.bitbag-add-to-wishlist');
+        $wishlistElements = $this->getDocument()->findAll('css', '.bitbag-add-to-wishlist');
 
         /** @var NodeElement $wishlistElement */
         foreach ($wishlistElements as $wishlistElement) {
             if ($productName === $wishlistElement->getAttribute('data-product-name')) {
                 $wishlistElement->click();
+
+                return;
             }
         }
     }

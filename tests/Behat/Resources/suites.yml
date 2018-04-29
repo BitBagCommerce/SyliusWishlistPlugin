@@ -11,7 +11,5 @@ default:
                 - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
 
                 - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
-
-                - bitbag_sylius_cms_plugin.behat.context.domain.cart
             filters:
                 tags: "@wishlist && @ui"

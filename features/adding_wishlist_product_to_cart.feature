@@ -14,6 +14,6 @@ Feature: Adding wishlist product to cart
         And the store has a product "Bushmills Black Bush Whiskey" priced at "$230.00"
         And I have these products in my wishlist
         When I go to the wishlist page
-        And I select 1 quantity of "Jack Daniels Gentleman" product
+        And I select 1 quantity of "Bushmills Black Bush Whiskey" product
         And I add my wishlist products to cart
-        Then I should have "Jack Daniels Gentleman" product in my cart
+        Then I should have "Bushmills Black Bush Whiskey" product in my cart
