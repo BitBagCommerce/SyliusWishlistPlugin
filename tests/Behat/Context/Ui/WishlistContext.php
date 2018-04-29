@@ -50,8 +50,7 @@ final class WishlistContext implements Context
         NotificationCheckerInterface $notificationChecker,
         LoginerInterface $loginer,
         WishlistCreatorInterface $wishlistCreator
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
         $this->wishlistPage = $wishlistPage;

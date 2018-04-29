@@ -64,8 +64,7 @@ final class WishlistContext implements Context
         EntityManagerInterface $productTaxonManager,
         CookieSetterInterface $cookieSetter,
         string $wishlistCookieId
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->wishlistContext = $wishlistContext;
         $this->wishlistProductFactory = $wishlistProductFactory;
