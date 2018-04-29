@@ -47,6 +47,8 @@ final class WishlistSpec extends ObjectBehavior
     {
         $wishlistProduct->getProduct()->willReturn($product);
 
+        $wishlistProduct->setWishlist($this)->shouldBeCalled();
+
         $this->hasWishlistProduct($wishlistProduct)->shouldReturn(false);
 
         $this->addWishlistProduct($wishlistProduct);
