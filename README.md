@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="http://bitbag.shop" target="_blank">
-        <img src="doc/SyliusWishlistPlugin.png" />
+        <img src="doc/BitBagSyliusWishlistPlugin.png" />
     </a>
     <br />
     <a href="https://packagist.org/packages/bitbag/wishlist-plugin" title="License" target="_blank">
