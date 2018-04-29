@@ -35,6 +35,7 @@ $ composer require bitbag/wishlist-plugin
 ```
     
 Add plugin dependencies to your AppKernel.php file:
+
 ```php
 public function registerBundles()
 {
@@ -60,7 +61,6 @@ imports:
 Import routing **on top** of your `app/config/routing.yml` file:
 
 ```yaml
-
 # app/config/routing.yml
 
 bitbag_sylius_wishlist_plugin:
@@ -93,16 +93,20 @@ For an example on how to do that, take a look at [these source files](https://gi
 
 ### Available services you can [decorate](https://symfony.com/doc/current/service_container/service_decoration.html) and forms you can [extend](http://symfony.com/doc/current/form/create_form_type_extension.html)
 
+Run the below command to see what Symfony services are shared with this plugin:
+ 
 ```bash
+$ bin/console debug:container bitbag_sylius_wishlist_plugin
 ```
 
 ### Parameters you can override in your parameters.yml(.dist) file
-wishlist_cookie_id                                                        bitbag_sylius_wishlist
-```yml
 
+```yml
+wishlist_cookie_id                                                        bitbag_sylius_wishlist
 ```
 
 ## Testing
+
 ```bash
 $ composer install
 $ cd tests/Application
