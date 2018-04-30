@@ -8,7 +8,7 @@ Feature: Adding wishlist product to cart
         Given the store operates on a single channel in "United States"
 
     @ui
-    Scenario: Removing a product from wishlist
+    Scenario: Adding a wishlist product to cart
         Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
         And all store products appear under a main taxonomy
         And the store has a product "Bushmills Black Bush Whiskey" priced at "$230.00"
