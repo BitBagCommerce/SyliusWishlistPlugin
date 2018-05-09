@@ -1,16 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Entity;
-
 
 class WishlistToken implements WishlistTokenInterface
 {
     protected $value;
 
-    public function __construct()
+    public function __construct(?string $value = null)
     {
-        $this->value = $this->generate(50);
+        if ($value === null) {
+            $this->value = $this->generate(self::VALUE_LENGTH);
+        } else {
+            $this->setValue($value);
+        }
     }
 
     public function getValue(): string
@@ -30,14 +34,14 @@ class WishlistToken implements WishlistTokenInterface
 
     private function generate($length): string
     {
-        $token = "";
-        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
-        $codeAlphabet.= "0123456789";
+        $token = '';
+        $codeAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $codeAlphabet .= 'abcdefghijklmnopqrstuvwxyz';
+        $codeAlphabet .= '0123456789';
         $max = strlen($codeAlphabet); // edited
 
-        for ($i=0; $i < $length; $i++) {
-            $token .= $codeAlphabet[random_int(0, $max-1)];
+        for ($i = 0; $i < $length; ++$i) {
+            $token .= $codeAlphabet[random_int(0, $max - 1)];
         }
 
         return $token;

@@ -10,7 +10,7 @@ services:
             - "@__symfony__.sylius.factory.product_taxon"
             - "@__symfony__.sylius.manager.product_taxon"
             - "@sylius.behat.cookie_setter"
-            - "%__symfony__.wishlist_cookie_id%"
+            - "%__symfony__.wishlist_cookie_token%"
         tags:
             - { name: fob.context_service }
 

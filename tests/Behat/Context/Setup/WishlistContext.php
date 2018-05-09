@@ -52,7 +52,7 @@ final class WishlistContext implements Context
     private $cookieSetter;
 
     /** @var string */
-    private $wishlistCookieId;
+    private $wishlistCookieToken;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -63,7 +63,7 @@ final class WishlistContext implements Context
         FactoryInterface $productTaxonFactory,
         EntityManagerInterface $productTaxonManager,
         CookieSetterInterface $cookieSetter,
-        string $wishlistCookieId
+        string $wishlistCookieToken
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistContext = $wishlistContext;
@@ -73,7 +73,7 @@ final class WishlistContext implements Context
         $this->productTaxonFactory = $productTaxonFactory;
         $this->productTaxonManager = $productTaxonManager;
         $this->cookieSetter = $cookieSetter;
-        $this->wishlistCookieId = $wishlistCookieId;
+        $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
     /**
@@ -137,6 +137,6 @@ final class WishlistContext implements Context
         $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
 
-        $this->cookieSetter->setCookie($this->wishlistCookieId, $wishlist->getId());
+        $this->cookieSetter->setCookie($this->wishlistCookieToken, $wishlist->getToken());
     }
 }

@@ -95,11 +95,11 @@ class Wishlist implements WishlistInterface
 
     public function getToken(): string
     {
-        return $this->token->getValue();
+        return (string) $this->token;
     }
 
     public function setToken(string $token): void
     {
-        $this->token->setValue($token);
+        $this->token = new WishlistToken($token);
     }
 }
