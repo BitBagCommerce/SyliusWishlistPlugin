@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 interface WishlistInterface extends ResourceInterface
 {
@@ -38,4 +39,8 @@ interface WishlistInterface extends ResourceInterface
     public function getShopUser(): ?ShopUserInterface;
 
     public function setShopUser(ShopUserInterface $shopShopUser): void;
+
+    public function getToken(): string;
+
+    public function setToken(string $token): void;
 }

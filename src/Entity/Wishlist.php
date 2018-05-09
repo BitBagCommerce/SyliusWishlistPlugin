@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class Wishlist implements WishlistInterface
 {
@@ -28,9 +29,13 @@ class Wishlist implements WishlistInterface
     /** @var ShopUserInterface|null */
     protected $shopUser;
 
+    /** @var TokenInterface|null */
+    protected $token;
+
     public function __construct()
     {
         $this->wishlistProducts = new ArrayCollection();
+        $this->token = new WishlistToken();
     }
 
     public function getId(): ?int
@@ -86,5 +91,15 @@ class Wishlist implements WishlistInterface
     public function setShopUser(ShopUserInterface $shopUser): void
     {
         $this->shopUser = $shopUser;
+    }
+
+    public function getToken(): string
+    {
+        return $this->token->getValue();
+    }
+
+    public function setToken(string $token): void
+    {
+        $this->token->setValue($token);
     }
 }
