@@ -24,6 +24,11 @@
 
 This plugin allows you to integrate wishlist features with Sylius platform app.
 
+## Support
+
+We work on amazing eCommerce projects on top of Sylius and Pimcore. Need some help or additional resources for a project?
+Write us an email on mikolaj.krol@bitbag.pl or visit [our website](https://bitbag.shop/)! :rocket:
+
 ## Demo
 
 We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it. 
@@ -124,8 +129,3 @@ $ bin/phpspec run
 ## Contribution
 
 Learn more about our contribution workflow on http://docs.sylius.org/en/latest/contributing/.
-
-## Support
-
-We work on amazing eCommerce projects on top of Sylius, Pimcore and Vue JS. Need some help or additional resources for a project?
-Write us an email on mikolaj.krol@bitbag.pl or visit [our website](https://bitbag.shop/)! :rocket:
