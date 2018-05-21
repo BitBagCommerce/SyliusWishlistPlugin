@@ -69,7 +69,7 @@ final class MergeUserWishlistItemsListenerSpec extends ObjectBehavior
         $token->getUser()->willReturn($shopUser);
         $interactiveLoginEvent->getRequest()->willReturn($request);
         $request->cookies = $parameterBag;
-        $parameterBag->get('bitbag_sylius_wishlist')->willReturn(1);
+        $parameterBag->get('bitbag_sylius_wishlist', 0)->willReturn(1);
         $wishlistRepository->find(1)->willReturn($cookieWishlist);
         $wishlistRepository->findByShopUser($shopUser)->willReturn($userWishlist);
         $cookieWishlist->getWishlistProducts()->willReturn(new ArrayCollection([$wishlistProduct->getWrappedObject()]));
@@ -94,7 +94,7 @@ final class MergeUserWishlistItemsListenerSpec extends ObjectBehavior
         $token->getUser()->willReturn($shopUser);
         $interactiveLoginEvent->getRequest()->willReturn($request);
         $request->cookies = $parameterBag;
-        $parameterBag->get('bitbag_sylius_wishlist')->willReturn(1);
+        $parameterBag->get('bitbag_sylius_wishlist', 0)->willReturn(1);
         $wishlistRepository->find(1)->willReturn($cookieWishlist);
         $wishlistRepository->findByShopUser($shopUser)->willReturn(null);
 
