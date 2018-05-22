@@ -19,6 +19,8 @@ class ProductIndexPage extends IndexPage implements ProductIndexPageInterface
 {
     public function addProductToWishlist(string $productName): void
     {
+        $this->getSession()->setCookie('MOCKSESSID', 'foo');
+
         $wishlistElements = $this->getDocument()->findAll('css', '.bitbag-add-to-wishlist');
 
         /** @var NodeElement $wishlistElement */

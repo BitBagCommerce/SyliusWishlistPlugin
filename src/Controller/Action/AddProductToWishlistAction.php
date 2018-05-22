@@ -51,7 +51,7 @@ final class AddProductToWishlistAction
     private $urlGenerator;
 
     /** @var string */
-    private $wishlistCookieId;
+    private $wishlistCookieToken;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -61,14 +61,14 @@ final class AddProductToWishlistAction
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
-        string $wishlistCookieId
+        string $wishlistCookieToken
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistContext = $wishlistContext;
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->wishlistManager = $wishlistManager;
         $this->urlGenerator = $urlGenerator;
-        $this->wishlistCookieId = $wishlistCookieId;
+        $this->wishlistCookieToken = $wishlistCookieToken;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
     }
@@ -95,7 +95,7 @@ final class AddProductToWishlistAction
         $this->wishlistManager->flush();
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 
-        $cookie = new Cookie($this->wishlistCookieId, $wishlist->getId(), strtotime('+1 year'));
+        $cookie = new Cookie($this->wishlistCookieToken, $wishlist->getToken(), strtotime('+1 year'));
         $response = new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
         $response->headers->setCookie($cookie);
 

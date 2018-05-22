@@ -69,8 +69,8 @@ final class MergeUserWishlistItemsListenerSpec extends ObjectBehavior
         $token->getUser()->willReturn($shopUser);
         $interactiveLoginEvent->getRequest()->willReturn($request);
         $request->cookies = $parameterBag;
-        $parameterBag->get('bitbag_sylius_wishlist')->willReturn(1);
-        $wishlistRepository->find(1)->willReturn($cookieWishlist);
+        $parameterBag->get('bitbag_sylius_wishlist')->willReturn("Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId");
+        $wishlistRepository->findByToken("Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId")->willReturn($cookieWishlist);
         $wishlistRepository->findByShopUser($shopUser)->willReturn($userWishlist);
         $cookieWishlist->getWishlistProducts()->willReturn(new ArrayCollection([$wishlistProduct->getWrappedObject()]));
 
@@ -94,8 +94,8 @@ final class MergeUserWishlistItemsListenerSpec extends ObjectBehavior
         $token->getUser()->willReturn($shopUser);
         $interactiveLoginEvent->getRequest()->willReturn($request);
         $request->cookies = $parameterBag;
-        $parameterBag->get('bitbag_sylius_wishlist')->willReturn(1);
-        $wishlistRepository->find(1)->willReturn($cookieWishlist);
+        $parameterBag->get('bitbag_sylius_wishlist')->willReturn("Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId");
+        $wishlistRepository->findByToken("Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId")->willReturn($cookieWishlist);
         $wishlistRepository->findByShopUser($shopUser)->willReturn(null);
 
         $cookieWishlist->setShopUser($shopUser)->shouldBeCalled();

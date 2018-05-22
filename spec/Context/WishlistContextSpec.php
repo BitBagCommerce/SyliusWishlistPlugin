@@ -67,10 +67,10 @@ final class WishlistContextSpec extends ObjectBehavior
         WishlistInterface $wishlist
     ): void {
         $request->cookies = $parameterBag;
-        $parameterBag->get('bitbag_sylius_wishlist')->willReturn(1);
+        $parameterBag->get('bitbag_sylius_wishlist')->willReturn("Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId");
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn(null);
-        $wishlistRepository->find(1)->willReturn($wishlist);
+        $wishlistRepository->findByToken("Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId")->willReturn($wishlist);
 
         $this->getWishlist($request)->shouldReturn($wishlist);
     }
@@ -85,10 +85,10 @@ final class WishlistContextSpec extends ObjectBehavior
         WishlistInterface $wishlist
     ): void {
         $request->cookies = $parameterBag;
-        $parameterBag->get('bitbag_sylius_wishlist')->willReturn(1);
+        $parameterBag->get('bitbag_sylius_wishlist')->willReturn("Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId");
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn(null);
-        $wishlistRepository->find(1)->willReturn(null);
+        $wishlistRepository->findByToken("Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId")->willReturn(null);
         $wishlistFactory->createNew()->willReturn($wishlist);
 
         $this->getWishlist($request)->shouldReturn($wishlist);

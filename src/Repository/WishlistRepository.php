@@ -27,4 +27,14 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ->getOneOrNullResult()
         ;
     }
+
+    public function findByToken(string $token): ?WishlistInterface
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.token = :token')
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
