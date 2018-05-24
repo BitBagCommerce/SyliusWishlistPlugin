@@ -38,4 +38,8 @@ interface WishlistInterface extends ResourceInterface
     public function getShopUser(): ?ShopUserInterface;
 
     public function setShopUser(ShopUserInterface $shopShopUser): void;
+
+    public function getToken(): string;
+
+    public function setToken(string $token): void;
 }

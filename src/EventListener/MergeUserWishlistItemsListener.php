@@ -32,18 +32,18 @@ final class MergeUserWishlistItemsListener
     private $wishlistManager;
 
     /** @var string */
-    private $wishlistCookieId;
+    private $wishlistCookieToken;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
         EntityManagerInterface $wishlistManager,
-        string $wishlistCookieId
+        string $wishlistCookieToken
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistManager = $wishlistManager;
-        $this->wishlistCookieId = $wishlistCookieId;
+        $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
     public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void
@@ -58,9 +58,9 @@ final class MergeUserWishlistItemsListener
 
     private function resolveWishlist(Request $request, ShopUserInterface $shopUser): void
     {
-        $cookieWishlistId = $request->cookies->get($this->wishlistCookieId, 0);
+        $cookieWishlistToken = $request->cookies->get($this->wishlistCookieToken, 0);
         /** @var WishlistInterface|null $cookieWishlist */
-        $cookieWishlist = $this->wishlistRepository->find($cookieWishlistId);
+        $cookieWishlist = $this->wishlistRepository->findByToken($cookieWishlistToken);
         $userWishlist = $this->wishlistRepository->findByShopUser($shopUser);
 
         if (null === $cookieWishlist) {

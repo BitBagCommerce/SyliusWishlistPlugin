@@ -39,7 +39,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
             $flashBag,
             $translator,
             $urlGenerator,
-            'bitbag_wishlist_id'
+            'bitbag_wishlist_token'
         );
     }
 
@@ -81,7 +81,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $wishlistManager->persist($wishlist)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
-        $wishlist->getId()->shouldBeCalled();
+        $wishlist->getToken()->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
     }
