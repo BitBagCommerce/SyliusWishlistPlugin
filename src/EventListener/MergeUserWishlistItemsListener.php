@@ -58,7 +58,7 @@ final class MergeUserWishlistItemsListener
 
     private function resolveWishlist(Request $request, ShopUserInterface $shopUser): void
     {
-        $cookieWishlistToken = $request->cookies->get($this->wishlistCookieToken, 0);
+        $cookieWishlistToken = $request->cookies->get($this->wishlistCookieToken, '');
         /** @var WishlistInterface|null $cookieWishlist */
         $cookieWishlist = $this->wishlistRepository->findByToken($cookieWishlistToken);
         $userWishlist = $this->wishlistRepository->findByShopUser($shopUser);
