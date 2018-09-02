@@ -32,7 +32,7 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
         Response $response
     ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
-        $templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/_wishlistHeader.html.twig', [
+        $templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/Resources/views/_wishlistHeader.html.twig', [
             'wishlist' => $wishlist,
         ])->willReturn($response);
 
