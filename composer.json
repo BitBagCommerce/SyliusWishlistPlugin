@@ -26,7 +26,10 @@
         "se/selenium-server-standalone": "^2.52",
         "sylius-labs/coding-standard": "^1.0",
         "symplify/easy-coding-standard": "^2.4",
-        "nelmio/alice": "^3.3"
+        "nelmio/alice": "^3.3",
+        "symfony/web-server-bundle": "^3.4|^4.1",
+        "symfony/web-profiler-bundle": "^3.4|^4.1",
+        "symfony/debug-bundle": "^3.4|^4.1"
     },
     "prefer-stable": true,
     "autoload": {

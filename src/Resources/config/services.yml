@@ -10,6 +10,8 @@ services:
             - "@translator"
             - "@router"
             - "%wishlist_cookie_token%"
+        tags:
+            - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\RemoveProductFromWishlistAction
@@ -20,6 +22,8 @@ services:
             - "@session.flash_bag"
             - "@translator"
             - "@router"
+        tags:
+            - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction
@@ -32,12 +36,16 @@ services:
             - "@session.flash_bag"
             - "@translator"
             - "@templating.engine.twig"
+        tags:
+            - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.render_header_template:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction
         arguments:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@templating.engine.twig"
+        tags:
+            - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.context.wishlist:
         class: BitBag\SyliusWishlistPlugin\Context\WishlistContext
