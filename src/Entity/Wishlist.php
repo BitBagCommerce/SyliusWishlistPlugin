@@ -29,7 +29,7 @@ class Wishlist implements WishlistInterface
     /** @var ShopUserInterface|null */
     protected $shopUser;
 
-    /** @var TokenInterface|null */
+    /** @var WishlistToken */
     protected $token;
 
     public function __construct()

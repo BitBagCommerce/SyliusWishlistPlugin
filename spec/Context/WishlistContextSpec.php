@@ -120,6 +120,7 @@ final class WishlistContextSpec extends ObjectBehavior
         ShopUserInterface $shopUser,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
+        WishlistInterface $emptyWishlist,
         WishlistInterface $wishlist
     ): void {
         $request->cookies = $parameterBag;
@@ -127,6 +128,7 @@ final class WishlistContextSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($shopUser);
         $wishlistRepository->findByShopUser($shopUser)->willReturn(null);
+        $wishlistFactory->createNew()->willReturn($emptyWishlist);
         $wishlistFactory->createForUser($shopUser)->willReturn($wishlist);
 
         $this->getWishlist($request)->shouldReturn($wishlist);

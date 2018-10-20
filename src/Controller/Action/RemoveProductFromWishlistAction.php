@@ -62,7 +62,7 @@ final class RemoveProductFromWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        /** @var ProductInterface $product */
+        /** @var ProductInterface|null $product */
         $product = $this->productRepository->find($request->get('productId'));
 
         if (null === $product) {

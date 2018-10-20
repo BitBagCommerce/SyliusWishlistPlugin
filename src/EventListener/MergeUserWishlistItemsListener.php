@@ -59,7 +59,7 @@ final class MergeUserWishlistItemsListener
     private function resolveWishlist(Request $request, ShopUserInterface $shopUser): void
     {
         $cookieWishlistToken = $request->cookies->get($this->wishlistCookieToken, '');
-        /** @var WishlistInterface|null $cookieWishlist */
+        
         $cookieWishlist = $this->wishlistRepository->findByToken($cookieWishlistToken);
         $userWishlist = $this->wishlistRepository->findByShopUser($shopUser);
 
@@ -67,13 +67,11 @@ final class MergeUserWishlistItemsListener
             return;
         }
 
-        if (null !== $cookieWishlist && null !== $userWishlist) {
+        if (null !== $userWishlist) {
             foreach ($cookieWishlist->getWishlistProducts() as $wishlistProduct) {
                 $userWishlist->addWishlistProduct($wishlistProduct);
             }
-        }
-
-        if (null !== $cookieWishlist && null === $userWishlist) {
+        } else {
             $cookieWishlist->setShopUser($shopUser);
         }
 
