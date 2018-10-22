@@ -1,18 +1,8 @@
-<<<<<<< HEAD
-/bin/*
-!/bin/.gitkeep
-
-=======
->>>>>>> c08494520e1bd10bdf10b8bddc8029d4f7d63938
 /vendor/
 /node_modules/
 /composer.lock
 
 /etc/build/*
-<<<<<<< HEAD
-!/etc/build/.gitkeep
-=======
 !/etc/build/.gitignore
->>>>>>> c08494520e1bd10bdf10b8bddc8029d4f7d63938
 
 /tests/Application/yarn.lock
