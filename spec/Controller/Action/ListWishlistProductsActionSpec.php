@@ -76,7 +76,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         ])->willReturn($form);
         $form->isSubmitted()->willReturn(false);
         $form->createView()->willReturn($formView);
-        $templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/Resources/views/wishlist.html.twig', [
+        $templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/wishlist.html.twig', [
             'wishlist' => $wishlist,
             'form' => $formView,
         ])->willReturn($response);
@@ -116,7 +116,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $form->getData()->willReturn([$addToCartCommand]);
         $addToCartCommand->getCart()->willReturn($cartItem);
         $cartItem->getQuantity()->willReturn(1);
-        $templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/Resources/views/wishlist.html.twig', [
+        $templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/wishlist.html.twig', [
             'wishlist' => $wishlist,
             'form' => $formView,
         ])->willReturn($response);
