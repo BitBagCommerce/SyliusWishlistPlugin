@@ -35,7 +35,7 @@ final class RenderHeaderTemplateAction
     {
         $wishlist = $this->wishlistContext->getWishlist($request);
 
-        return $this->templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/Resources/views/_wishlistHeader.html.twig', [
+        return $this->templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/_wishlistHeader.html.twig', [
             'wishlist' => $wishlist,
         ]);
     }

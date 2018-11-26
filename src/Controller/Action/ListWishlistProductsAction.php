@@ -90,7 +90,7 @@ final class ListWishlistProductsAction
             $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
         }
 
-        return $this->templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/Resources/views/wishlist.html.twig', [
+        return $this->templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/wishlist.html.twig', [
             'wishlist' => $wishlist,
             'form' => $form->createView(),
         ]);
