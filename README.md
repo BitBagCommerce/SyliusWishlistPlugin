@@ -39,37 +39,23 @@ The admin can be accessed under [demo.bitbag.shop/admin](https://demo.bitbag.sho
 $ composer require bitbag/wishlist-plugin
 ```
     
-Add plugin dependencies to your AppKernel.php file:
-
+Add plugin dependencies to your `config/bundles.php` file:
 ```php
-public function registerBundles()
-{
-    return array_merge(parent::registerBundles(), [
-        ...
-        
-        new \BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin(),
-    ]);
-}
+return [
+    ...
+
+    \BitBag\SyliusWishlisPlugin\BitBagSyliusWishlisPlugin => ['all' => true],
+];
 ```
 
-Import required config in your `app/config/config.yml` file:
-
+Import required config in your `config/packages/_sylius.yaml` file:
 ```yaml
-# app/config/config.yml
+# config/packages/_sylius.yaml
 
 imports:
     ...
     
-    - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
-```
-
-Import routing **on top** of your `app/config/routing.yml` file:
-
-```yaml
-# app/config/routing.yml
-
-bitbag_sylius_wishlist_plugin:
-    resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing.yml"
+    - { resource: "@BitBagSyliusWishlisPlugin/Resources/config/config.yml" }
 ```
 
 Update your database
@@ -99,31 +85,27 @@ For an example on how to do that, take a look at [these source files](https://gi
 ### Available services you can [decorate](https://symfony.com/doc/current/service_container/service_decoration.html) and forms you can [extend](http://symfony.com/doc/current/form/create_form_type_extension.html)
 
 Run the below command to see what Symfony services are shared with this plugin:
- 
 ```bash
-$ bin/console debug:container bitbag_sylius_wishlist_plugin
+$ bin/console debug:container | grep bitbag_sylius_wishlist_plugin
 ```
 
 ### Parameters you can override in your parameters.yml(.dist) file
-
 ```yml
-wishlist_cookie_id                                                        bitbag_sylius_wishlist
+$ bin/console debug:container --parameters | grep bitbag
 ```
 
 ## Testing
-
 ```bash
 $ composer install
 $ cd tests/Application
 $ yarn install
 $ yarn run gulp
-$ bin/console assets:install web -e test
+$ bin/console assets:install public -e test
 $ bin/console doctrine:schema:create -e test
-$ wishlist 
-$ bin/console server:run 127.0.0.1:8080 -d web -e test
+$ bin/console server:run 127.0.0.1:8080 -d public -e test
 $ open http://localhost:8080
-$ bin/behat
-$ bin/phpspec run
+$ vendor/bin/behat
+$ vendor/bin/phpspec run
 ```
 
 ## Contribution
