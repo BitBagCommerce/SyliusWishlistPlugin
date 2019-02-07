@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="http://bitbag.shop" target="_blank">
-        <img src="doc/logo.png" width="65%" />
+        <img src="doc/logo.png" width="55%" />
     </a>
     <br />
     <a href="https://packagist.org/packages/bitbag/wishlist-plugin" title="License" target="_blank">
@@ -20,7 +20,7 @@
     </a>
 </h1>
 
-## Overview
+## BitBag SyliusWishlistPlugin
 
 This plugin allows you to integrate wishlist features with Sylius platform app.
 
