@@ -1,6 +1,6 @@
 <h1 align="center">
     <a href="http://bitbag.shop" target="_blank">
-        <img src="doc/BitBagSyliusWishlistPlugin.png" />
+        <img src="doc/logo.png" width="55%" />
     </a>
     <br />
     <a href="https://packagist.org/packages/bitbag/wishlist-plugin" title="License" target="_blank">
@@ -20,7 +20,7 @@
     </a>
 </h1>
 
-## Overview
+## BitBag SyliusWishlistPlugin
 
 This plugin allows you to integrate wishlist features with Sylius platform app.
 
@@ -78,7 +78,7 @@ $ bin/console doctrine:migrations:migrate
 You can  use `@BitBagSyliusWishlistPlugin/_addToWishlist.html.twig`, `@BitBagSyliusWishlistPlugin/_removeFromWishlist.html.twig` and `@BitBagSyliusWishlistPlugin/_removeFromWishlist.html.twig`
 templates to enable adding/removing/displaying wishlist from the Twig UI.  
 
-For an example on how to do that, take a look at [these source files](https://github.com/BitBagCommerce/SyliusWishlistPlugin/tree/master/tests/Application/app/Resources/SyliusShopBundle/views).
+For an example on how to do that, take a look at [these source files](https://github.com/BitBagCommerce/SyliusWishlistPlugin/tree/master/tests/Application/templates/bundles/SyliusShopBundle).
 
 ## Customization
 
