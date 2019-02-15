@@ -44,7 +44,7 @@ Add plugin dependencies to your `config/bundles.php` file:
 return [
     ...
 
-    \BitBag\SyliusWishlisPlugin\BitBagSyliusWishlisPlugin => ['all' => true],
+    BitBag\SyliusWishlisPlugin\BitBagSyliusWishlisPlugin::class => ['all' => true],
 ];
 ```
 
