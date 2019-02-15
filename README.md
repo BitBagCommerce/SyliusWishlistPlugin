@@ -18,8 +18,10 @@
     <a href="https://packagist.org/packages/bitbag/wishlist-plugin" title="Total Downloads" target="_blank">
         <img src="https://poser.pugx.org/bitbag/wishlist-plugin/downloads" />
     </a>
-    <p>
-        <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
+    <p align="center">
+        <a href="https://sylius.com/plugins/" target="_blank">
+            <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="200">
+        </a>
     </p>
 </h1>
 
