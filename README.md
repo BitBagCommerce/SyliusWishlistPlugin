@@ -63,6 +63,15 @@ imports:
     - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
 ```
 
+Import routing in your `config/routes.yaml` file:
+
+```
+# config/routes.yaml
+
+bitbag_sylius_wishlist_plugin:
+    resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing.yml"
+```
+
 Update your database
 
 ```
