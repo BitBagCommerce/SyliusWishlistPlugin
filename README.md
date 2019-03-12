@@ -49,7 +49,7 @@ Add plugin dependencies to your `config/bundles.php` file:
 return [
     ...
 
-    BitBag\SyliusWishlisPlugin\BitBagSyliusWishlisPlugin::class => ['all' => true],
+    BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
 ];
 ```
 
@@ -60,7 +60,7 @@ Import required config in your `config/packages/_sylius.yaml` file:
 imports:
     ...
     
-    - { resource: "@BitBagSyliusWishlisPlugin/Resources/config/config.yml" }
+    - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
 ```
 
 Update your database
