@@ -15,7 +15,7 @@ namespace BitBag\SyliusWishlistPlugin\EventListener;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -28,7 +28,7 @@ final class MergeUserWishlistItemsListener
     /** @var WishlistFactoryInterface */
     private $wishlistFactory;
 
-    /** @var EntityManagerInterface */
+    /** @var ObjectManager */
     private $wishlistManager;
 
     /** @var string */
@@ -37,7 +37,7 @@ final class MergeUserWishlistItemsListener
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
-        EntityManagerInterface $wishlistManager,
+        ObjectManager $wishlistManager,
         string $wishlistCookieToken
     ) {
         $this->wishlistRepository = $wishlistRepository;
@@ -49,6 +49,7 @@ final class MergeUserWishlistItemsListener
     public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void
     {
         $user = $interactiveLoginEvent->getAuthenticationToken()->getUser();
+
         if (!$user instanceof ShopUserInterface) {
             return;
         }
@@ -59,13 +60,15 @@ final class MergeUserWishlistItemsListener
     private function resolveWishlist(Request $request, ShopUserInterface $shopUser): void
     {
         $cookieWishlistToken = $request->cookies->get($this->wishlistCookieToken, '');
+
         /** @var WishlistInterface|null $cookieWishlist */
         $cookieWishlist = $this->wishlistRepository->findByToken($cookieWishlistToken);
-        $userWishlist = $this->wishlistRepository->findByShopUser($shopUser);
 
         if (null === $cookieWishlist) {
             return;
         }
+
+        $userWishlist = $this->wishlistRepository->findByShopUser($shopUser);
 
         if (null !== $cookieWishlist && null !== $userWishlist) {
             foreach ($cookieWishlist->getWishlistProducts() as $wishlistProduct) {

@@ -13,9 +13,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -38,7 +39,7 @@ final class AddProductToWishlistAction
     /** @var WishlistProductFactoryInterface */
     private $wishlistProductFactory;
 
-    /** @var EntityManagerInterface */
+    /** @var ObjectManager */
     private $wishlistManager;
 
     /** @var FlashBagInterface */
@@ -57,7 +58,7 @@ final class AddProductToWishlistAction
         ProductRepositoryInterface $productRepository,
         WishlistContextInterface $wishlistContext,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        EntityManagerInterface $wishlistManager,
+        ObjectManager $wishlistManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
@@ -83,6 +84,7 @@ final class AddProductToWishlistAction
         }
 
         $wishlist = $this->wishlistContext->getWishlist($request);
+
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
@@ -93,12 +95,24 @@ final class AddProductToWishlistAction
         }
 
         $this->wishlistManager->flush();
+
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 
-        $cookie = new Cookie($this->wishlistCookieToken, $wishlist->getToken(), strtotime('+1 year'));
         $response = new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
-        $response->headers->setCookie($cookie);
+
+        $this->addWishlistToResponseCookie($wishlist, $response, $request->getUser());
 
         return $response;
+    }
+
+    private function addWishlistToResponseCookie(WishlistInterface $wishlist, Response $response, ?string $user): void
+    {
+        if (null !== $user) {
+            return;
+        }
+
+        $cookie = new Cookie($this->wishlistCookieToken, $wishlist->getToken(), strtotime('+1 year'));
+
+        $response->headers->setCookie($cookie);
     }
 }

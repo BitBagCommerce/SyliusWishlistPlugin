@@ -48,6 +48,7 @@ final class WishlistContext implements WishlistContextInterface
     public function getWishlist(Request $request): WishlistInterface
     {
         $cookieWishlistToken = $request->cookies->get($this->wishlistCookieToken);
+
         $token = $this->tokenStorage->getToken();
         $user = $token ? $token->getUser() : null;
 
