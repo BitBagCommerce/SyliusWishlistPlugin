@@ -1,6 +1,7 @@
 /vendor/
 /node_modules/
 /composer.lock
+/phpspec.yml
 
 /etc/build/*
 !/etc/build/.gitignore
