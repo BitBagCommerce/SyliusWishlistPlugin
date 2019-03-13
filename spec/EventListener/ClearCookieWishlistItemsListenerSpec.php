@@ -39,7 +39,6 @@ final class ClearCookieWishlistItemsListenerSpec extends ObjectBehavior
         StorageInterface $cookieStorage
     ): void {
         $interactiveLoginEvent->getAuthenticationToken()->willReturn($token);
-
         $token->getUser()->willReturn($adminUser);
 
         $cookieStorage->set('bitbag_sylius_wishlist', null)->shouldNotBeCalled();
@@ -54,7 +53,6 @@ final class ClearCookieWishlistItemsListenerSpec extends ObjectBehavior
         StorageInterface $cookieStorage
     ): void {
         $interactiveLoginEvent->getAuthenticationToken()->willReturn($token);
-
         $token->getUser()->willReturn($shopUser);
 
         $cookieStorage->set('bitbag_sylius_wishlist', null)->shouldBeCalled();

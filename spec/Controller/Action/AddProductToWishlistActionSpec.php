@@ -51,7 +51,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
     function it_throws_404_when_product_is_not_found(Request $request, ProductRepositoryInterface $productRepository): void
     {
         $request->get('productId')->willReturn(1);
-
         $productRepository->find(1)->willReturn(null);
 
         $this->shouldThrow(NotFoundHttpException::class)->during('__invoke', [$request]);
@@ -74,24 +73,16 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $request->getUser()->willReturn('shop_user');
 
         $productRepository->find(1)->willReturn($product);
-
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
-
         $wishlistProductFactory->createForWishlistAndProduct($wishlist, $product)->willReturn($wishlistProduct);
-
         $wishlist->getId()->willReturn(null);
-
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
-
         $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
-
         $wishlistManager->persist($wishlist)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
-
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
-
         $wishlist->getToken()->shouldNotBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
@@ -112,26 +103,17 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
     ): void {
         $request->get('productId')->willReturn(1);
         $request->getUser()->willReturn(null);
-
         $productRepository->find(1)->willReturn($product);
-
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
-
         $wishlistProductFactory->createForWishlistAndProduct($wishlist, $product)->willReturn($wishlistProduct);
-
         $wishlist->getId()->willReturn(null);
-
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
-
         $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
-
         $wishlistManager->persist($wishlist)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
-
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
-
         $wishlist->getToken()->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
