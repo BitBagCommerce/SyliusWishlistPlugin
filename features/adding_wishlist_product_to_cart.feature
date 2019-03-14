@@ -17,3 +17,13 @@ Feature: Adding wishlist product to cart
         And I select 1 quantity of "Bushmills Black Bush Whiskey" product
         And I add my wishlist products to cart
         Then I should have "Bushmills Black Bush Whiskey" product in my cart
+
+    @ui
+    Scenario: Adding a wishlist product with insufficient stock to cart
+        Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
+        And the product "Jack Daniels Gentleman" is out of stock
+        And I have this product in my wishlist
+        When I go to the wishlist page
+        And I select 1 quantity of "Jack Daniels Gentleman" product
+        And I add my wishlist products to cart
+        Then I should not be notified that "Jack Daniels Gentleman" does not have sufficient stock

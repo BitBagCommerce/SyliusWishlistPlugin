@@ -14,6 +14,7 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop;
 
 use Behat\Mink\Element\NodeElement;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
+use Sylius\Component\Core\Model\ProductInterface;
 
 class WishlistPage extends SymfonyPage implements WishlistPageInterface
 {
@@ -70,6 +71,19 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         $productNameOnPage = $this->getDocument()->find('css', '.ui.cart.popup > .list > .item > strong')->getText();
 
         return $productName === $productNameOnPage;
+    }
+
+    public function hasProductOutOfStockValidationMessage(ProductInterface $product)
+    {
+        $outOfStockValidationErrorElement = $this->getDocument()->find('css', '.sylius-flash-message p');
+
+        if (null === $outOfStockValidationErrorElement) {
+            return false;
+        }
+
+        $message = sprintf('%s does not have sufficient stock.', $product->getName());
+
+        return $outOfStockValidationErrorElement->getText() === $message;
     }
 
     public function getRouteName(): string

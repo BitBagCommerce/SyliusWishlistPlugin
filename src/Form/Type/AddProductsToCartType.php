@@ -27,14 +27,19 @@ final class AddProductsToCartType extends AbstractType
     /** @var OrderItemQuantityModifierInterface */
     private $orderItemQuantityModifier;
 
+    /** @var string[] */
+    private $validationGroups;
+
     public function __construct(
         AddToCartCommandFactoryInterface $addToCartCommandFactory,
         CartItemFactoryInterface $cartItemFactory,
-        OrderItemQuantityModifierInterface $orderItemQuantityModifier
+        OrderItemQuantityModifierInterface $orderItemQuantityModifier,
+        array $validationGroups
     ) {
         $this->addToCartCommandFactory = $addToCartCommandFactory;
         $this->cartItemFactory = $cartItemFactory;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;
+        $this->validationGroups = $validationGroups;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -61,6 +66,7 @@ final class AddProductsToCartType extends AbstractType
             ->setRequired('products')
             ->setAllowedTypes('products', Collection::class)
             ->setDefault('data_class', null)
+            ->setDefault('validation_groups', $this->validationGroups)
         ;
     }
 

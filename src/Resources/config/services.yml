@@ -87,5 +87,6 @@ services:
             - "@sylius.factory.add_to_cart_command"
             - "@sylius.factory.order_item"
             - "@sylius.order_item_quantity_modifier"
+            - "%sylius.form.type.cart_item.validation_groups%"
         tags:
             - { name: form.type }
