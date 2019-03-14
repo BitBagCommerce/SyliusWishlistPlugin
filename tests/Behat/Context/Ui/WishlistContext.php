@@ -209,4 +209,12 @@ final class WishlistContext implements Context
             sprintf('Product %s was not found in the cart.', $productName)
         );
     }
+
+    /**
+     * @Then I should not be notified that :product does not have sufficient stock
+     */
+    public function iShouldBeNotifiedThatThisProductDoesNotHaveSufficientStock(ProductInterface $product)
+    {
+        Assert::true($this->wishlistPage->hasProductOutOfStockValidationMessage($product));
+    }
 }

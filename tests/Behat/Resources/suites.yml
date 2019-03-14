@@ -8,6 +8,9 @@ default:
 
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.setup.product
+
+                - sylius.behat.context.transform.product
+
                 - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
 
                 - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
