@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Entity;
 
+use Ramsey\Uuid\Uuid;
+
 class WishlistToken implements WishlistTokenInterface
 {
     protected $value;
@@ -11,7 +13,7 @@ class WishlistToken implements WishlistTokenInterface
     public function __construct(?string $value = null)
     {
         if ($value === null) {
-            $this->value = $this->generate(self::VALUE_LENGTH);
+            $this->value = $this->generate();
         } else {
             $this->setValue($value);
         }
@@ -32,18 +34,8 @@ class WishlistToken implements WishlistTokenInterface
         return $this->getValue();
     }
 
-    private function generate($length): string
+    private function generate(): string
     {
-        $token = '';
-        $codeAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $codeAlphabet .= 'abcdefghijklmnopqrstuvwxyz';
-        $codeAlphabet .= '0123456789';
-        $max = strlen($codeAlphabet); // edited
-
-        for ($i = 0; $i < $length; ++$i) {
-            $token .= $codeAlphabet[random_int(0, $max - 1)];
-        }
-
-        return $token;
+        return Uuid::uuid4()->toString();
     }
 }
