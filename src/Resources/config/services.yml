@@ -25,6 +25,33 @@ services:
         tags:
             - { name: controller.service_arguments }
 
+    bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductVariantToWishlistAction
+        arguments:
+            - "@sylius.repository.product_variant"
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+            - "%wishlist_cookie_token%"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.remove_product_variant_from_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\RemoveProductVariantFromWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@sylius.repository.product_variant"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+        tags:
+            - { name: controller.service_arguments }
+
+
     bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction
         arguments:
@@ -35,6 +62,8 @@ services:
             - "@sylius.manager.order"
             - "@session.flash_bag"
             - "@translator"
+            - "@sylius.factory.order_item"
+            - "@sylius.order_item_quantity_modifier"
             - "@templating.engine.twig"
         tags:
             - { name: controller.service_arguments }
@@ -98,3 +127,15 @@ services:
             - "%sylius.form.type.cart_item.validation_groups%"
         tags:
             - { name: form.type }
+
+    bitbag_sylius_wishlist_plugin.form.type.extension.add_to_cart_type_extension:
+        class: BitBag\SyliusWishlistPlugin\Form\Extension\AddToCartTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType }
+
+    bitbag.block_event_listener.shop.layout.javascripts:
+        class: Sylius\Bundle\UiBundle\Block\BlockEventListener
+        arguments:
+            - "@@BitBagSyliusWishlistPlugin/Resources/views/_javascripts.html.twig"
+        tags:
+            - { name: kernel.event_listener, event: sonata.block.event.sylius.shop.layout.javascripts, method: onBlockEvent }

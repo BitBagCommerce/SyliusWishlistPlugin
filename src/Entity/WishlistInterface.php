@@ -14,6 +14,7 @@ namespace BitBag\SyliusWishlistPlugin\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
@@ -25,9 +26,18 @@ interface WishlistInterface extends ResourceInterface
     public function getProducts(): Collection;
 
     /**
+     * @return Collection|ProductVariantInterface[]
+     */
+    public function getProductVariants(): Collection;
+
+    public function hasProductVariant(ProductVariantInterface $productVariant): bool;
+
+    /**
      * @return Collection|WishlistProductInterface[]
      */
     public function getWishlistProducts(): Collection;
+
+    public function setWishlistProducts(Collection $wishlistProducts): void;
 
     public function hasProduct(ProductInterface $product): bool;
 
