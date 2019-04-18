@@ -7,20 +7,27 @@ namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType;
+use BitBag\SyliusWishlistPlugin\Form\Type\WishlistType;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
+use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -36,6 +43,8 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         EntityManagerInterface $cartManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
+        CartItemFactoryInterface $cartItemFactory,
+        OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         EngineInterface $templatingEngine
     ): void {
         $this->beConstructedWith(
@@ -46,6 +55,8 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
             $cartManager,
             $flashBag,
             $translator,
+            $cartItemFactory,
+            $orderItemQuantityModifier,
             $templatingEngine
         );
     }
@@ -74,11 +85,10 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $wishlist->getProducts()->willReturn($products);
         $formFactory
             ->create(
-                AddProductsToCartType::class,
+                WishlistType::class,
                 null,
                 [
-                    'cart' => $cart,
-                    'products' => $products,
+                    'wishlist' => $wishlist,
                 ]
             )
             ->willReturn($form)
@@ -109,38 +119,53 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         CartContextInterface $cartContext,
         OrderInterface $cart,
         Collection $products,
+        WishlistProductInterface $wishlistProduct,
         FormFactoryInterface $formFactory,
         FormInterface $form,
         FormErrorIterator $formErrorIterator,
         FormView $formView,
-        AddToCartCommandInterface $addToCartCommand,
         OrderItemInterface $cartItem,
         OrderModifierInterface $orderModifier,
         EntityManagerInterface $cartManager,
         EngineInterface $templatingEngine,
-        Response $response
+        Response $response,
+        SubmitButton $saveButton,
+        ProductInterface $product,
+        ProductVariantInterface $productVariant,
+        CartItemFactoryInterface $cartItemFactory
     ): void {
+        $wishlistProducts = [$wishlistProduct];
+
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getProducts()->willReturn($products);
         $formFactory
             ->create(
-                AddProductsToCartType::class,
+                WishlistType::class,
                 null,
                 [
-                    'cart' => $cart,
-                    'products' => $products,
+                    'wishlist' => $wishlist,
                 ]
             )
             ->willReturn($form)
         ;
+
         $form->isSubmitted()->willReturn(true);
         $form->isValid()->willReturn(true);
+        $form->get('saveButton')->willReturn($saveButton);
+        $saveButton->isClicked()->willReturn(false);
+
         $form->createView()->willReturn($formView);
-        $form->getData()->willReturn([$addToCartCommand]);
+        $form->getData()->willReturn(['wishlistProducts' => $wishlistProducts]);
         $form->getErrors()->willReturn($formErrorIterator);
-        $addToCartCommand->getCart()->willReturn($cartItem);
-        $cartItem->getQuantity()->willReturn(1);
+
+        $wishlistProduct->getProduct()->willReturn($product);
+        $wishlistProduct->getVariant()->willReturn($productVariant);
+        $wishlistProduct->getQuantity()->willReturn(2);
+
+        $cartItemFactory->createForProduct($product)->willReturn($cartItem);
+        $cartItem->setVariant($productVariant)->shouldBeCalled();
+
         $templatingEngine
             ->renderResponse(
                 '@BitBagSyliusWishlistPlugin/wishlist.html.twig',
@@ -150,14 +175,12 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
                 ]
             )->willReturn($response)
         ;
-        $addToCartCommand->getCart()->willReturn($cart);
-        $addToCartCommand->getCartItem()->willReturn($cartItem);
 
         $form->handleRequest($request)->shouldBeCalled();
         $orderModifier->addToOrder($cart, $cartItem)->shouldBeCalled();
         $cartManager->persist($cart)->shouldBeCalled();
         $cartManager->flush()->shouldBeCalled();
-        $form->getErrors()->shouldNotBeCalled();
+        $form->getErrors()->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(Response::class);
     }
