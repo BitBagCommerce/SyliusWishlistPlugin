@@ -83,13 +83,13 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When I log in to my account which already has :productName product in the wishlist
+     * @When I log in to my account which already has :product product in the wishlist
      */
-    public function iLogInToMyAccountWhichAlreadyHasProductInTheWishlist(string $productName): void
+    public function iLogInToMyAccountWhichAlreadyHasProductInTheWishlist(ProductInterface $product): void
     {
         $user = $this->loginer->createUser();
 
-        $this->wishlistCreator->createWishlistWithProductAndUser($user, $productName);
+        $this->wishlistCreator->createWishlistWithProductAndUser($user, $product);
         $this->loginer->logIn();
     }
 
