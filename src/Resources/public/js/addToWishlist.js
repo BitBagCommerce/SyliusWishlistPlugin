@@ -1,4 +1,4 @@
-$('.add-to-wishlist-button').on('click', function(){
+$('.bitbag-add-variant-to-wishlist').on('click', function(){
     var data = $(this).parents('form').first().serializeArray();
     data.push( {'name':$(this).attr('name')});
     $.ajax({

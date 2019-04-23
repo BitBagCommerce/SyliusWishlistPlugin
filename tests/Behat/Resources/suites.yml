@@ -11,6 +11,8 @@ default:
 
                 - sylius.behat.context.transform.product
 
+                - sylius.behat.context.ui.shop.product
+
                 - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
 
                 - bitbag_sylius_cms_plugin.behat.context.ui.wishlist

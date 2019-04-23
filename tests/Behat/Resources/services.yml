@@ -19,6 +19,7 @@ services:
         arguments:
             - "@sylius.repository.product"
             - "@bitbag_sylius_cms_plugin.behat.page.shop.product_index"
+            - "@bitbag_sylius_cms_plugin.behat.page.shop.product_show"
             - "@bitbag_sylius_cms_plugin.behat.page.shop.wishlist"
             - "@sylius.behat.notification_checker"
             - "@bitbag_sylius_cms_plugin.behat.loginer"
@@ -32,6 +33,11 @@ services:
     bitbag_sylius_cms_plugin.behat.page.shop.product_index:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPage
         parent: sylius.behat.page.shop.product.index
+        public: false
+
+    bitbag_sylius_cms_plugin.behat.page.shop.product_show:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPage
+        parent: sylius.behat.page.shop.product.show
         public: false
 
     bitbag_sylius_cms_plugin.behat.loginer:
