@@ -34,7 +34,7 @@ class AddToCartTypeExtension extends AbstractTypeExtension
         ;
     }
 
-    public function getExtendedTypes(): array
+    public static function getExtendedTypes(): array
     {
         return [AddToCartType::class];
     }
