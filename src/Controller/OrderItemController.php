@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller;
@@ -16,7 +17,7 @@ final class OrderItemController extends BaseController
 {
     public function addAction(Request $request): Response
     {
-        $cart          = $this->getCurrentCart();
+        $cart = $this->getCurrentCart();
         $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
         $this->isGrantedOr403($configuration, CartActions::ADD);
@@ -41,7 +42,7 @@ final class OrderItemController extends BaseController
             $addToCartCommand = $form->getData();
 
             /** @var OrderItemInterface $item */
-            $item    = $addToCartCommand->getCartItem();
+            $item = $addToCartCommand->getCartItem();
             $variant = $item->getVariant();
 
             if ($variant === null) {

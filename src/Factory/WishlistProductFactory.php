@@ -46,6 +46,7 @@ final class WishlistProductFactory implements WishlistProductFactoryInterface
 
         return $wishlistProduct;
     }
+
     public function createForWishlistAndVariant(WishlistInterface $wishlist, ProductVariantInterface $variant): WishlistProductInterface
     {
         $wishlistProduct = $this->createNew();
