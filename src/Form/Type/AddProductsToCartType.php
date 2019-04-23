@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Form\Type;
 
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
 use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactoryInterface;
 use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
-use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Form\AbstractType;
@@ -44,16 +44,18 @@ final class AddProductsToCartType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        foreach ($options['products'] as $key => $product) {
+        /** @var WishlistProductInterface $wishlistProduct */
+        foreach ($options['wishlist_products'] as $key => $wishlistProduct) {
             $builder
                 ->add($key, AddToCartType::class, [
                     'label' => false,
                     'required' => false,
-                    'product' => $product,
+                    'product' => $wishlistProduct->getProduct(),
                     'data' => $this->addToCartCommandFactory->createWithCartAndCartItem(
                         $options['cart'],
-                        $this->createCartItem($product)
+                        $this->createCartItem($wishlistProduct)
                     ),
+                    'is_wishlist' => true,
                 ])
             ;
         }
@@ -63,17 +65,18 @@ final class AddProductsToCartType extends AbstractType
     {
         $resolver
             ->setRequired('cart')
-            ->setRequired('products')
-            ->setAllowedTypes('products', Collection::class)
+            ->setRequired('wishlist_products')
+            ->setAllowedTypes('wishlist_products', Collection::class)
             ->setDefault('data_class', null)
             ->setDefault('validation_groups', $this->validationGroups)
         ;
     }
 
-    private function createCartItem(ProductInterface $product): OrderItemInterface
+    private function createCartItem(WishlistProductInterface $wishlistProduct): OrderItemInterface
     {
         /** @var OrderItemInterface $cartItem */
-        $cartItem = $this->cartItemFactory->createForProduct($product);
+        $cartItem = $this->cartItemFactory->createForProduct($wishlistProduct->getProduct());
+        $cartItem->setVariant($wishlistProduct->getVariant());
 
         $this->orderItemQuantityModifier->modify($cartItem, 0);
 

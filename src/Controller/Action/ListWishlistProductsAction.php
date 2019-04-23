@@ -13,19 +13,14 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType;
-use BitBag\SyliusWishlistPlugin\Form\Type\WishlistType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
-use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
-use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -54,12 +49,6 @@ final class ListWishlistProductsAction
     /** @var TranslatorInterface */
     private $translator;
 
-    /** @var CartItemFactoryInterface */
-    private $cartItemFactory;
-
-    /** @var OrderItemQuantityModifierInterface */
-    private $orderItemQuantityModifier;
-
     /** @var EngineInterface */
     private $templatingEngine;
 
@@ -71,8 +60,6 @@ final class ListWishlistProductsAction
         EntityManagerInterface $cartManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        CartItemFactoryInterface $cartItemFactory,
-        OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         EngineInterface $templatingEngine
     ) {
         $this->wishlistContext = $wishlistContext;
@@ -82,38 +69,30 @@ final class ListWishlistProductsAction
         $this->flashBag = $flashBag;
         $this->templatingEngine = $templatingEngine;
         $this->cartManager = $cartManager;
-        $this->cartItemFactory = $cartItemFactory;
-        $this->orderItemQuantityModifier = $orderItemQuantityModifier;
         $this->translator = $translator;
     }
 
     public function __invoke(Request $request): Response
     {
         $wishlist = $this->wishlistContext->getWishlist($request);
+        $cart = $this->cartContext->getCart();
 
-        $form = $this->formFactory->create(WishlistType::class, null, [
-            'wishlist' => $wishlist,
+        $form = $this->formFactory->create(AddProductsToCartType::class, null, [
+            'cart' => $cart,
+            'wishlist_products' => $wishlist->getWishlistProducts(),
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var SubmitButton $saveButton */
-            $saveButton = $form->get('saveButton');
+            $this->handleCartItems($form);
 
-            if (!$saveButton->isClicked()) {
+            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
 
-                $this->handleCartItems($form);
-
-                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
-            } else {
-                $items = $form->getData()['wishlistProducts'];
-
-                $wishlist->setWishlistProducts($items);
-
-                $this->cartManager->persist($wishlist);
-                $this->cartManager->flush();
-            }
+            return $this->templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/wishlist.html.twig', [
+                'wishlist' => $wishlist,
+                'form' => $form->createView(),
+            ]);
         }
 
         foreach ($form->getErrors() as $error) {
@@ -128,21 +107,14 @@ final class ListWishlistProductsAction
 
     private function handleCartItems(FormInterface $form): void
     {
-        $cart = $this->cartContext->getCart();
-
-        /** @var WishlistProductInterface $wishlistProduct */
-        foreach ($form->getData()['wishlistProducts'] as $wishlistProduct) {
-            $cartItem = $this->cartItemFactory->createForProduct($wishlistProduct->getProduct());
-            $cartItem->setVariant($wishlistProduct->getVariant());
-
-            $this->orderItemQuantityModifier->modify($cartItem, $wishlistProduct->getQuantity());
-
-            if (0 < $wishlistProduct->getQuantity()) {
-                $this->orderModifier->addToOrder($cart, $cartItem);
+        /** @var AddToCartCommandInterface $command */
+        foreach ($form->getData() as $command) {
+            if (0 < $command->getCartItem()->getQuantity()) {
+                $this->orderModifier->addToOrder($command->getCart(), $command->getCartItem());
+                $this->cartManager->persist($command->getCart());
             }
         }
 
-        $this->cartManager->persist($cart);
         $this->cartManager->flush();
     }
 }

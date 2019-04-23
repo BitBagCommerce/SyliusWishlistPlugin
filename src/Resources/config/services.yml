@@ -62,8 +62,6 @@ services:
             - "@sylius.manager.order"
             - "@session.flash_bag"
             - "@translator"
-            - "@sylius.factory.order_item"
-            - "@sylius.order_item_quantity_modifier"
             - "@templating.engine.twig"
         tags:
             - { name: controller.service_arguments }
