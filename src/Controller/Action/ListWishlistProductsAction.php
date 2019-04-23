@@ -79,7 +79,7 @@ final class ListWishlistProductsAction
 
         $form = $this->formFactory->create(AddProductsToCartType::class, null, [
             'cart' => $cart,
-            'products' => $wishlist->getProducts(),
+            'wishlist_products' => $wishlist->getWishlistProducts(),
         ]);
 
         $form->handleRequest($request);

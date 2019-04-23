@@ -15,6 +15,7 @@ namespace BitBag\SyliusWishlistPlugin\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -54,6 +55,28 @@ class Wishlist implements WishlistInterface
         return new ArrayCollection($products);
     }
 
+    public function getProductVariants(): Collection
+    {
+        $variants = [];
+
+        foreach ($this->wishlistProducts as $wishlistProduct) {
+            $variants[] = $wishlistProduct->getVariant();
+        }
+
+        return new ArrayCollection($variants);
+    }
+
+    public function hasProductVariant(ProductVariantInterface $productVariant): bool
+    {
+        foreach ($this->wishlistProducts as $wishlistProduct) {
+            if ($productVariant === $wishlistProduct->getVariant()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getWishlistProducts(): Collection
     {
         return $this->wishlistProducts;
@@ -70,6 +93,11 @@ class Wishlist implements WishlistInterface
         return false;
     }
 
+    public function setWishlistProducts(Collection $wishlistProducts): void
+    {
+        $this->wishlistProducts = $wishlistProducts;
+    }
+
     public function hasWishlistProduct(WishlistProductInterface $wishlistProduct): bool
     {
         return $this->wishlistProducts->contains($wishlistProduct);
@@ -77,7 +105,7 @@ class Wishlist implements WishlistInterface
 
     public function addWishlistProduct(WishlistProductInterface $wishlistProduct): void
     {
-        if (!$this->hasProduct($wishlistProduct->getProduct())) {
+        if (!$this->hasProductVariant($wishlistProduct->getVariant())) {
             $wishlistProduct->setWishlist($this);
             $this->wishlistProducts->add($wishlistProduct);
         }

@@ -61,7 +61,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         CartContextInterface $cartContext,
         OrderInterface $cart,
-        Collection $products,
+        Collection $wishlistProducts,
         FormFactoryInterface $formFactory,
         FormInterface $form,
         FormErrorIterator $formErrorIterator,
@@ -71,14 +71,14 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
     ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
-        $wishlist->getProducts()->willReturn($products);
+        $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
         $formFactory
             ->create(
                 AddProductsToCartType::class,
                 null,
                 [
                     'cart' => $cart,
-                    'products' => $products,
+                    'wishlist_products' => $wishlistProducts,
                 ]
             )
             ->willReturn($form)
@@ -108,7 +108,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         CartContextInterface $cartContext,
         OrderInterface $cart,
-        Collection $products,
+        Collection $wishlistProducts,
         FormFactoryInterface $formFactory,
         FormInterface $form,
         FormErrorIterator $formErrorIterator,
@@ -122,14 +122,14 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
     ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
-        $wishlist->getProducts()->willReturn($products);
+        $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
         $formFactory
             ->create(
                 AddProductsToCartType::class,
                 null,
                 [
                     'cart' => $cart,
-                    'products' => $products,
+                    'wishlist_products' => $wishlistProducts,
                 ]
             )
             ->willReturn($form)

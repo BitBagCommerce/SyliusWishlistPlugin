@@ -15,6 +15,7 @@ namespace BitBag\SyliusWishlistPlugin\Factory;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class WishlistProductFactory implements WishlistProductFactoryInterface
@@ -41,6 +42,18 @@ final class WishlistProductFactory implements WishlistProductFactoryInterface
 
         $wishlistProduct->setWishlist($wishlist);
         $wishlistProduct->setProduct($product);
+        $wishlistProduct->setVariant($product->getVariants()->first());
+
+        return $wishlistProduct;
+    }
+
+    public function createForWishlistAndVariant(WishlistInterface $wishlist, ProductVariantInterface $variant): WishlistProductInterface
+    {
+        $wishlistProduct = $this->createNew();
+
+        $wishlistProduct->setWishlist($wishlist);
+        $wishlistProduct->setProduct($variant->getProduct());
+        $wishlistProduct->setVariant($variant);
 
         return $wishlistProduct;
     }

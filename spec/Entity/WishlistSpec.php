@@ -9,6 +9,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class WishlistSpec extends ObjectBehavior
@@ -43,9 +44,9 @@ final class WishlistSpec extends ObjectBehavior
         $this->hasProduct($product)->shouldReturn(false);
     }
 
-    function it_adds_wishlist_product(WishlistProductInterface $wishlistProduct, ProductInterface $product): void
+    function it_adds_wishlist_product(WishlistProductInterface $wishlistProduct, ProductVariantInterface $productVariant): void
     {
-        $wishlistProduct->getProduct()->willReturn($product);
+        $wishlistProduct->getVariant()->willReturn($productVariant);
 
         $wishlistProduct->setWishlist($this)->shouldBeCalled();
 

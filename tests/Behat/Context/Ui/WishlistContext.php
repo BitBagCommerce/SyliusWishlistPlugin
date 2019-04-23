@@ -18,6 +18,7 @@ use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
+use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreatorInterface;
@@ -30,6 +31,9 @@ final class WishlistContext implements Context
 
     /** @var ProductIndexPageInterface */
     private $productIndexPage;
+
+    /** @var ProductShowPageInterface */
+    private $productShowPage;
 
     /** @var WishlistPageInterface */
     private $wishlistPage;
@@ -46,6 +50,7 @@ final class WishlistContext implements Context
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductIndexPageInterface $productIndexPage,
+        ProductShowPageInterface $productShowPage,
         WishlistPageInterface $wishlistPage,
         NotificationCheckerInterface $notificationChecker,
         LoginerInterface $loginer,
@@ -57,6 +62,7 @@ final class WishlistContext implements Context
         $this->notificationChecker = $notificationChecker;
         $this->loginer = $loginer;
         $this->wishlistCreator = $wishlistCreator;
+        $this->productShowPage = $productShowPage;
     }
 
     /**
@@ -83,13 +89,21 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When I log in to my account which already has :productName product in the wishlist
+     * @When I add this product variant to wishlist
      */
-    public function iLogInToMyAccountWhichAlreadyHasProductInTheWishlist(string $productName): void
+    public function iAddThisProductVariantToWishlist(): void
+    {
+        $this->productShowPage->addVariantToWishlist();
+    }
+
+    /**
+     * @When I log in to my account which already has :product product in the wishlist
+     */
+    public function iLogInToMyAccountWhichAlreadyHasProductInTheWishlist(ProductInterface $product): void
     {
         $user = $this->loginer->createUser();
 
-        $this->wishlistCreator->createWishlistWithProductAndUser($user, $productName);
+        $this->wishlistCreator->createWishlistWithProductAndUser($user, $product);
         $this->loginer->logIn();
     }
 

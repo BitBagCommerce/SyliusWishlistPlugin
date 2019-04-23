@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Entity;
 
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 
 class WishlistProduct implements WishlistProductInterface
 {
@@ -24,6 +25,12 @@ class WishlistProduct implements WishlistProductInterface
 
     /** @var ProductInterface */
     protected $product;
+
+    /** @var ProductVariantInterface|null */
+    protected $variant;
+
+    /** @var int */
+    protected $quantity = 0;
 
     public function getId(): ?int
     {
@@ -48,5 +55,25 @@ class WishlistProduct implements WishlistProductInterface
     public function setProduct(ProductInterface $product): void
     {
         $this->product = $product;
+    }
+
+    public function getVariant(): ?ProductVariantInterface
+    {
+        return $this->variant;
+    }
+
+    public function setVariant(?ProductVariantInterface $variant): void
+    {
+        $this->variant = $variant;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): void
+    {
+        $this->quantity = $quantity;
     }
 }

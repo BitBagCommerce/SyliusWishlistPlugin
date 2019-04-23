@@ -131,6 +131,7 @@ final class WishlistContext implements Context
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createNew();
         $wishlistProduct->setProduct($product);
+        $wishlistProduct->setVariant($product->getVariants()->first());
 
         $wishlist->addWishlistProduct($wishlistProduct);
 

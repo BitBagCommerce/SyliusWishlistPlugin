@@ -19,6 +19,7 @@ services:
         arguments:
             - "@sylius.repository.product"
             - "@bitbag_sylius_cms_plugin.behat.page.shop.product_index"
+            - "@bitbag_sylius_cms_plugin.behat.page.shop.product_show"
             - "@bitbag_sylius_cms_plugin.behat.page.shop.wishlist"
             - "@sylius.behat.notification_checker"
             - "@bitbag_sylius_cms_plugin.behat.loginer"
@@ -34,6 +35,11 @@ services:
         parent: sylius.behat.page.shop.product.index
         public: false
 
+    bitbag_sylius_cms_plugin.behat.page.shop.product_show:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPage
+        parent: sylius.behat.page.shop.product.show
+        public: false
+
     bitbag_sylius_cms_plugin.behat.loginer:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Service\Loginer
         arguments:
@@ -47,9 +53,6 @@ services:
     bitbag_sylius_cms_plugin.behat.wishlist_creator:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreator
         arguments:
-            - "@sylius.factory.product"
-            - "@sylius.context.channel"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@sylius.repository.product"
