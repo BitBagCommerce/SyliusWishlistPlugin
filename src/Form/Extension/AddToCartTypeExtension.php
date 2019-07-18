@@ -33,7 +33,12 @@ class AddToCartTypeExtension extends AbstractTypeExtension
             ->setAllowedTypes('is_wishlist', 'bool')
         ;
     }
-
+    
+    public function getExtendedType()
+    {
+        return AddToCartType::class;
+    }
+    
     public static function getExtendedTypes(): array
     {
         return [AddToCartType::class];
