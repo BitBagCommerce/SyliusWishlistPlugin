@@ -18,7 +18,6 @@
             </cascade>
         </one-to-many>
 
-        <!-- @TODO: Change the target entity reference once resolved: https://github.com/Sylius/Sylius/issues/9360 -->
         <one-to-one field="shopUser" target-entity="Sylius\Component\Core\Model\ShopUserInterface">
             <join-column name="shop_user_id" referenced-column-name="id" nullable="true" />
         </one-to-one>
