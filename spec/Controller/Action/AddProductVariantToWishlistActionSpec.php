@@ -34,6 +34,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         UrlGeneratorInterface $urlGenerator
     ): void {
         $this->beConstructedWith(
+            $tokenStorage,
             $productVariantRepository,
             $wishlistContext,
             $wishlistProductFactory,
@@ -86,7 +87,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         $wishlistManager->persist($wishlist)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
-        $wishlist->getToken()->shouldNotBeCalled();
+        $wishlist->getToken()->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
     }

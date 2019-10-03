@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Translation\TranslatorInterface;
 
 final class AddProductToWishlistActionSpec extends ObjectBehavior
@@ -61,7 +63,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
 
     function it_handles_the_request_and_persist_new_wishlist_for_logged_shop_user(
         Request $request,
-        TokenStorageInterface $tokenStorage,
         ProductRepositoryInterface $productRepository,
         ProductInterface $product,
         WishlistContextInterface $wishlistContext,
@@ -74,7 +75,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         UrlGeneratorInterface $urlGenerator
     ): void {
         $request->get('productId')->willReturn(1);
-        $tokenStorage->getToken()->shouldBeCalled();
 
         $productRepository->find(1)->willReturn($product);
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
@@ -87,7 +87,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $wishlistManager->persist($wishlist)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
-        $wishlist->getToken()->shouldNotBeCalled();
+        $wishlist->getToken()->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
     }
