@@ -108,7 +108,7 @@ final class AddProductToWishlistAction
 
         $token = $this->tokenStorage->getToken();
 
-        if (null === $token || !$token->isAuthenticated()) {
+        if (null === $token || !is_object($token->getUser())) {
             $this->addWishlistToResponseCookie($wishlist, $response);
         }
 
