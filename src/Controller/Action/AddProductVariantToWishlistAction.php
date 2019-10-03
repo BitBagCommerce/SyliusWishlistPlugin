@@ -26,10 +26,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 final class AddProductVariantToWishlistAction
 {
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     /** @var ProductVariantRepositoryInterface */
     private $productVariantRepository;
 
@@ -55,6 +59,7 @@ final class AddProductVariantToWishlistAction
     private $wishlistCookieToken;
 
     public function __construct(
+        TokenStorageInterface $tokenStorage,
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistContextInterface $wishlistContext,
         WishlistProductFactoryInterface $wishlistProductFactory,
@@ -64,6 +69,7 @@ final class AddProductVariantToWishlistAction
         UrlGeneratorInterface $urlGenerator,
         string $wishlistCookieToken
     ) {
+        $this->tokenStorage = $tokenStorage;
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistContext = $wishlistContext;
         $this->wishlistProductFactory = $wishlistProductFactory;
@@ -100,17 +106,17 @@ final class AddProductVariantToWishlistAction
 
         $response = new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
 
-        $this->addWishlistToResponseCookie($wishlist, $response, $request->getUser());
+        $token = $this->tokenStorage->getToken();
+
+        if (null === $token || !is_object($token->getUser())) {
+            $this->addWishlistToResponseCookie($wishlist, $response);
+        }
 
         return $response;
     }
 
-    private function addWishlistToResponseCookie(WishlistInterface $wishlist, Response $response, ?string $user): void
+    private function addWishlistToResponseCookie(WishlistInterface $wishlist, Response $response): void
     {
-        if (null !== $user) {
-            return;
-        }
-
         $cookie = new Cookie($this->wishlistCookieToken, $wishlist->getToken(), strtotime('+1 year'));
 
         $response->headers->setCookie($cookie);
