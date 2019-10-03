@@ -29,6 +29,7 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductVariantToWishlistAction
         arguments:
+            - "@security.token_storage"
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
