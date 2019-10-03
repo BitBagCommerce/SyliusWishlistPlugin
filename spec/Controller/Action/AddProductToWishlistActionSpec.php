@@ -94,7 +94,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
 
     function it_handles_the_request_and_persist_new_wishlist_for_anonymous_user(
         Request $request,
-        TokenStorageInterface $tokenStorage,
         ProductRepositoryInterface $productRepository,
         ProductInterface $product,
         WishlistContextInterface $wishlistContext,
@@ -107,7 +106,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         UrlGeneratorInterface $urlGenerator
     ): void {
         $request->get('productId')->willReturn(1);
-        $tokenStorage->getToken()->shouldBeCalled();
         $productRepository->find(1)->willReturn($product);
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $wishlistProductFactory->createForWishlistAndProduct($wishlist, $product)->willReturn($wishlistProduct);
