@@ -2,6 +2,7 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.add_product_to_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToWishlistAction
         arguments:
+            - "@security.token_storage"
             - "@sylius.repository.product"
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
