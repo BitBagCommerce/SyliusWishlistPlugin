@@ -18,11 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
 {
     function let(
+        TokenStorageInterface $tokenStorage,
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistContextInterface $wishlistContext,
         WishlistProductFactoryInterface $wishlistProductFactory,
@@ -32,6 +34,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         UrlGeneratorInterface $urlGenerator
     ): void {
         $this->beConstructedWith(
+            $tokenStorage,
             $productVariantRepository,
             $wishlistContext,
             $wishlistProductFactory,
@@ -70,7 +73,6 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         UrlGeneratorInterface $urlGenerator
     ): void {
         $request->get('variantId')->willReturn(1);
-        $request->getUser()->willReturn('shop_user');
 
         $productVariantRepository->find(1)->willReturn($productVariant);
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
@@ -83,7 +85,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         $wishlistManager->persist($wishlist)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
-        $wishlist->getToken()->shouldNotBeCalled();
+        $wishlist->getToken()->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
     }
@@ -102,7 +104,6 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         UrlGeneratorInterface $urlGenerator
     ): void {
         $request->get('variantId')->willReturn(1);
-        $request->getUser()->willReturn(null);
         $productVariantRepository->find(1)->willReturn($productVariant);
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant)->willReturn($wishlistProduct);
