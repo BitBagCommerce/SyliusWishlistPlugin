@@ -19,7 +19,7 @@
         </one-to-many>
 
         <one-to-one field="shopUser" target-entity="Sylius\Component\Core\Model\ShopUserInterface">
-            <join-column name="shop_user_id" referenced-column-name="id" nullable="true" />
+            <join-column name="shop_user_id" referenced-column-name="id" nullable="true" on-delete="CASCADE" />
         </one-to-one>
 
     </mapped-superclass>
