@@ -25,16 +25,13 @@
     </p>
 </h1>
 
+## About us
+
+At BitBag we do believe in open source. However, we are able to do it just beacuse of our awesome clients, who are kind enough to share some parts of our work with the community. Therefore, if you feel like there is a possibility for us working together, feel free to reach us out. You will find out more about our professional services, technologies and contact details at https://bitbag.io/.
+
 ## BitBag SyliusWishlistPlugin
 
 This plugin allows you to integrate wishlist features with Sylius platform app.
-
-## Support
-
-You can order our support on [this page](https://bitbag.io/contact).
-
-We work on amazing eCommerce projects on top of Sylius and Pimcore. Need some help or additional resources for a project?
-Write us an email on mikolaj.krol@bitbag.pl or visit [our website](https://bitbag.shop)! :rocket:
 
 ## Demo
 
