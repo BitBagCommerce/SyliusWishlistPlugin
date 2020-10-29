@@ -74,7 +74,6 @@ bitbag_sylius_wishlist_plugin:
 Update your database
 
 ```
-$ bin/console doctrine:migrations:diff
 $ bin/console doctrine:migrations:migrate
 ```
 
