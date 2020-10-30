@@ -22,10 +22,11 @@
     <button type="submit" class="ui huge primary icon labeled button"><i class="cart icon"></i> {{ 'sylius.ui.add_to_cart'|trans }}</button>
 
     {# Add variant to wishlist button #}
-    <button id="{{ form.addToWishlist.vars.id }}" name="{{ form.addToWishlist.vars.full_name }}"
-            type="submit" class="{{ form.addToWishlist.vars.attr.class }}">
-        <i class="heart icon"></i> {{ form.addToWishlist.vars.label|trans }}
-    </button>
+    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
+       class="bitbag-add-to-wishlist ui icon labeled button grey" data-product-name="{{ product.name }}">
+        <i class="icon heart"></i>
+        {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+    </a>
 
     {{ form_row(form._token) }}
     {{ form_end(form, {'render_rest': false}) }}
