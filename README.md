@@ -104,6 +104,7 @@ $ bin/console debug:container | grep bitbag_sylius_wishlist_plugin
 ### Parameters you can override in your parameters.yml(.dist) file
 ```yml
 $ bin/console debug:container --parameters | grep bitbag
+$ bin/console debug:container --parameters | grep wishlist
 ```
 
 ## Testing

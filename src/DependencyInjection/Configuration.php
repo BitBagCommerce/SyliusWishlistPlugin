@@ -23,6 +23,10 @@ final class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->getRootNode();
         $rootNode
             ->children()
+            ->scalarNode('wishlist_cookie_token')
+            ->defaultValue('wishlist_cookie_token')
+            ->cannotBeEmpty()
+            ->end()
             ->arrayNode('resources')
             ->addDefaultsIfNotSet()
             ->children()
