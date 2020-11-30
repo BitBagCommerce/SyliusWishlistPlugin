@@ -5,8 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
-        "sylius/sylius": "^1.8",
-        "phpunit/phpunit": "^9.4"
+        "sylius/sylius": "^1.8"
     },
     "require-dev": {
         "behat/behat": "^3.6.1",
@@ -36,7 +35,8 @@
         "symfony/intl": "^4.4|^5.0",
         "symfony/web-profiler-bundle": "^4.4|^5.0",
         "symfony/web-server-bundle": "^4.4|^5.0",
-        "vimeo/psalm": "3.11.4"
+        "vimeo/psalm": "3.11.4",
+        "phpunit/phpunit": "^9.4"
     },
     "conflict": {
         "symfony/symfony": "4.1.8",

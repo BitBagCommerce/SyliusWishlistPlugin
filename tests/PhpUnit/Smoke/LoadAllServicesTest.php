@@ -44,7 +44,8 @@ class LoadAllServicesTest extends KernelTestCase
         static::ensureKernelShutdown();
     }
 
-    private bool $isKernelBooted = false;
+    /** @var bool */
+    private $isKernelBooted = false;
 
     public function setUp(): void
     {
