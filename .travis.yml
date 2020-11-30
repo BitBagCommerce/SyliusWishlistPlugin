@@ -71,6 +71,7 @@ script:
     - composer validate --strict
 
     - vendor/bin/phpspec run
+    - vendor/bin/phpunit tests/PhpUnit/Smoke
     - vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun
 
 after_failure:
