@@ -39,16 +39,6 @@ We created a demo app with some useful use-cases of the plugin! Visit [demo.bitb
 The admin can be accessed under [demo.bitbag.shop/admin](https://demo.bitbag.shop/admin) link and `sylius: sylius` credentials.
 
 ## Installation
-Add `wishlist_cookie_token` to your `config/packages/_sylius.yaml` file:
-```yaml
-# config/packages/_sylius.yaml
-
-parameters:
-    ...
-    
-    wishlist_cookie_token: YOUR_COOKIE_TOKEN
-```
-
 ```bash
 $ composer require bitbag/wishlist-plugin
 ```
