@@ -13,6 +13,6 @@ class ProductShowPage extends ShowPage implements ProductShowPageInterface
         $this->getDocument()->find('css', '.bitbag-add-variant-to-wishlist')->click();
 
         // Wait for the ajax request to finish
-        $this->getSession()->wait(5000, '(0 === jQuery.active)');
+        $this->getSession()->wait(1000, 'typeof jQuery !== "undefined" && 0 === jQuery.active');
     }
 }
