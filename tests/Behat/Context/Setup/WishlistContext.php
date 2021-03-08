@@ -27,32 +27,23 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class WishlistContext implements Context
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    private ProductRepositoryInterface $productRepository;
 
-    /** @var WishlistContextInterface */
-    private $wishlistContext;
+    private WishlistContextInterface $wishlistContext;
 
-    /** @var WishlistProductFactoryInterface */
-    private $wishlistProductFactory;
+    private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    /** @var EntityManagerInterface */
-    private $wishlistManager;
+    private EntityManagerInterface $wishlistManager;
 
-    /** @var FactoryInterface */
-    private $taxonFactory;
+    private FactoryInterface $taxonFactory;
 
-    /** @var FactoryInterface */
-    private $productTaxonFactory;
+    private FactoryInterface $productTaxonFactory;
 
-    /** @var EntityManagerInterface */
-    private $productTaxonManager;
+    private EntityManagerInterface $productTaxonManager;
 
-    /** @var CookieSetterInterface */
-    private $cookieSetter;
+    private CookieSetterInterface $cookieSetter;
 
-    /** @var string */
-    private $wishlistCookieToken;
+    private string $wishlistCookieToken;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,

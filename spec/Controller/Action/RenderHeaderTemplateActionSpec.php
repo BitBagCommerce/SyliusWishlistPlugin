@@ -8,15 +8,15 @@ use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 final class RenderHeaderTemplateActionSpec extends ObjectBehavior
 {
-    function let(WishlistContextInterface $wishlistContext, EngineInterface $templatingEngine): void
+    function let(WishlistContextInterface $wishlistContext, Environment $twigEnvironment): void
     {
-        $this->beConstructedWith($wishlistContext, $templatingEngine);
+        $this->beConstructedWith($wishlistContext, $twigEnvironment);
     }
 
     function it_is_initializable(): void
@@ -28,14 +28,14 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
         Request $request,
         WishlistContextInterface $wishlistContext,
         WishlistInterface $wishlist,
-        EngineInterface $templatingEngine,
+        Environment $twigEnvironment,
         Response $response
     ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
-        $templatingEngine->renderResponse('@BitBagSyliusWishlistPlugin/_wishlistHeader.html.twig', [
-            'wishlist' => $wishlist,
-        ])->willReturn($response);
 
-        $this->__invoke($request)->shouldReturn($response);
+        $twigEnvironment->render('@BitBagSyliusWishlistPlugin/_wishlistHeader.html.twig', [
+            'wishlist' => $wishlist,
+        ])->willReturn('TEMPLATE');
+        $this->__invoke($request)->shouldImplement(Response::class);
     }
 }

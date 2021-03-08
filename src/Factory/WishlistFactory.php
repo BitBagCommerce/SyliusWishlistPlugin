@@ -18,8 +18,7 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class WishlistFactory implements WishlistFactoryInterface
 {
-    /** @var FactoryInterface */
-    private $wishlistFactory;
+    private FactoryInterface $wishlistFactory;
 
     public function __construct(FactoryInterface $wishlistFactory)
     {

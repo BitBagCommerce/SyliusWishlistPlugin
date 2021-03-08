@@ -22,11 +22,6 @@ final class WishlistProductSpec extends ObjectBehavior
         $this->shouldHaveType(WishlistProductInterface::class);
     }
 
-    function it_has_null_id_by_default(): void
-    {
-        $this->getId()->shouldReturn(null);
-    }
-
     function it_gets_wishlist(WishlistInterface $wishlist): void
     {
         $this->setWishlist($wishlist);

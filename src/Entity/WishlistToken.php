@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 class WishlistToken implements WishlistTokenInterface
 {
-    protected $value;
+    protected string $value;
 
     public function __construct(?string $value = null)
     {
@@ -29,7 +29,7 @@ class WishlistToken implements WishlistTokenInterface
         $this->value = $value;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getValue();
     }

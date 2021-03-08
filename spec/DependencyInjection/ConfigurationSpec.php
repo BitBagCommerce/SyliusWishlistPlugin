@@ -17,6 +17,6 @@ final class ConfigurationSpec extends ObjectBehavior
 
     function it_returns_tree_builder(): void
     {
-        $this->getConfigTreeBuilder()->shouldBeAnInstanceOf(TreeBuilder::class );
+        $this->getConfigTreeBuilder()->shouldBeAnInstanceOf(TreeBuilder::class);
     }
 }

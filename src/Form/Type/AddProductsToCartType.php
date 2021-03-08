@@ -18,17 +18,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddProductsToCartType extends AbstractType
 {
-    /** @var AddToCartCommandFactoryInterface */
-    private $addToCartCommandFactory;
+    private AddToCartCommandFactoryInterface $addToCartCommandFactory;
 
     /** @var FactoryInterface */
     private $cartItemFactory;
 
-    /** @var OrderItemQuantityModifierInterface */
-    private $orderItemQuantityModifier;
+    private OrderItemQuantityModifierInterface $orderItemQuantityModifier;
 
     /** @var string[] */
-    private $validationGroups;
+    private array $validationGroups;
 
     public function __construct(
         AddToCartCommandFactoryInterface $addToCartCommandFactory,

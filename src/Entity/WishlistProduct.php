@@ -17,20 +17,20 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 class WishlistProduct implements WishlistProductInterface
 {
-    /** @var int */
-    protected $id;
+    protected ?int $id;
 
-    /** @var WishlistInterface */
-    protected $wishlist;
+    protected WishlistInterface $wishlist;
 
-    /** @var ProductInterface */
-    protected $product;
+    protected ?ProductInterface $product;
 
-    /** @var ProductVariantInterface|null */
-    protected $variant;
+    protected ?ProductVariantInterface $variant;
 
-    /** @var int */
-    protected $quantity = 0;
+    protected int $quantity = 0;
+
+    public function __construct()
+    {
+        $this->id = null;
+    }
 
     public function getId(): ?int
     {
