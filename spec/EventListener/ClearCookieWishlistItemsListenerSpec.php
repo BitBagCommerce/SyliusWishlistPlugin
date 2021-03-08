@@ -6,10 +6,12 @@ namespace spec\BitBag\SyliusWishlistPlugin\EventListener;
 
 use BitBag\SyliusWishlistPlugin\EventListener\ClearCookieWishlistItemsListener;
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\AdminUserInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Core\Model\AdminUser;
+use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Resource\Storage\StorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class ClearCookieWishlistItemsListenerSpec extends ObjectBehavior
@@ -25,30 +27,20 @@ final class ClearCookieWishlistItemsListenerSpec extends ObjectBehavior
     }
 
     function it_does_nothing_if_not_shop_user(
-        InteractiveLoginEvent $interactiveLoginEvent,
-        TokenInterface $token,
-        AdminUserInterface $adminUser,
         StorageInterface $cookieStorage
     ): void {
-        $interactiveLoginEvent->getAuthenticationToken()->willReturn($token);
-        $token->getUser()->willReturn($adminUser);
-
+        $token = new AnonymousToken('TOKEN', new AdminUser());
+        $interactiveLoginEvent = new InteractiveLoginEvent(new Request(), $token);
         $cookieStorage->set('bitbag_sylius_wishlist', null)->shouldNotBeCalled();
-
         $this->onInteractiveLogin($interactiveLoginEvent);
     }
 
     function it_adds_cookie_items_to_user_items_if_both_exist(
-        InteractiveLoginEvent $interactiveLoginEvent,
-        TokenInterface $token,
-        ShopUserInterface $shopUser,
         StorageInterface $cookieStorage
     ): void {
-        $interactiveLoginEvent->getAuthenticationToken()->willReturn($token);
-        $token->getUser()->willReturn($shopUser);
-
+        $token = new PostAuthenticationToken( new ShopUser(), 'test', []);
+        $interactiveLoginEvent = new InteractiveLoginEvent(new Request(), $token);
         $cookieStorage->set('bitbag_sylius_wishlist', null)->shouldBeCalled();
-
         $this->onInteractiveLogin($interactiveLoginEvent);
     }
 }

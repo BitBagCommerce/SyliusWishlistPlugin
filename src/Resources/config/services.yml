@@ -64,7 +64,7 @@ services:
             - "@sylius.manager.order"
             - "@session.flash_bag"
             - "@translator"
-            - "@templating.engine.twig"
+            - "@twig"
         tags:
             - { name: controller.service_arguments }
 
@@ -72,7 +72,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction
         arguments:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
-            - "@templating.engine.twig"
+            - "@twig"
         tags:
             - { name: controller.service_arguments }
 
@@ -132,10 +132,3 @@ services:
         class: BitBag\SyliusWishlistPlugin\Form\Extension\AddToCartTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType }
-
-    bitbag.block_event_listener.shop.layout.javascripts:
-        class: Sylius\Bundle\UiBundle\Block\BlockEventListener
-        arguments:
-            - "@@BitBagSyliusWishlistPlugin/Resources/views/_javascripts.html.twig"
-        tags:
-            - { name: kernel.event_listener, event: sonata.block.event.sylius.shop.layout.javascripts, method: onBlockEvent }

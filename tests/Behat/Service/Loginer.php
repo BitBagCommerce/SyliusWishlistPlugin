@@ -23,25 +23,20 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 final class Loginer implements LoginerInterface
 {
     private const EXAMPLE_USER_LOGIN = 'shop@exaple.com';
+
     private const EXAMPLE_USER_PASSWORD = 'bitbag';
 
-    /** @var FactoryInterface */
-    private $customerFactory;
+    private FactoryInterface $customerFactory;
 
-    /** @var FactoryInterface */
-    private $shopUserFactory;
+    private FactoryInterface $shopUserFactory;
 
-    /** @var RepositoryInterface */
-    private $shopUserRepository;
+    private RepositoryInterface $shopUserRepository;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /** @var LoginPageInterface */
-    private $loginPage;
+    private LoginPageInterface $loginPage;
 
-    /** @var HomePageInterface */
-    private $homePage;
+    private HomePageInterface $homePage;
 
     public function __construct(
         FactoryInterface $customerFactory,

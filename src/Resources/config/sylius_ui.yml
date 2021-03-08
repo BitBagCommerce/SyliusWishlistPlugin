@@ -1,0 +1,7 @@
+sylius_ui:
+  events:
+    sylius.shop.layout.javascripts:
+      blocks:
+        bitbag_wishlist_scripts:
+          template: "@BitBagSyliusWishlistPlugin/_javascripts.html.twig"
+          priority: 0

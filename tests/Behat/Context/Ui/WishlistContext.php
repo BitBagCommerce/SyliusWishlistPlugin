@@ -26,26 +26,19 @@ use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    private ProductRepositoryInterface $productRepository;
 
-    /** @var ProductIndexPageInterface */
-    private $productIndexPage;
+    private ProductIndexPageInterface $productIndexPage;
 
-    /** @var ProductShowPageInterface */
-    private $productShowPage;
+    private ProductShowPageInterface $productShowPage;
 
-    /** @var WishlistPageInterface */
-    private $wishlistPage;
+    private WishlistPageInterface $wishlistPage;
 
-    /** @var NotificationCheckerInterface */
-    private $notificationChecker;
+    private NotificationCheckerInterface $notificationChecker;
 
-    /** @var LoginerInterface */
-    private $loginer;
+    private LoginerInterface $loginer;
 
-    /** @var WishlistCreatorInterface */
-    private $wishlistCreator;
+    private WishlistCreatorInterface $wishlistCreator;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,

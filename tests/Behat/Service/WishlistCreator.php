@@ -20,14 +20,11 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class WishlistCreator implements WishlistCreatorInterface
 {
-    /** @var WishlistFactoryInterface */
-    private $wishlistFactory;
+    private WishlistFactoryInterface $wishlistFactory;
 
-    /** @var WishlistProductFactoryInterface */
-    private $wishlistProductFactory;
+    private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    /** @var RepositoryInterface */
-    private $wishlistRepository;
+    private RepositoryInterface $wishlistRepository;
 
     public function __construct(
         WishlistFactoryInterface $wishlistFactory,
