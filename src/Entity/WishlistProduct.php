@@ -21,9 +21,9 @@ class WishlistProduct implements WishlistProductInterface
 
     protected WishlistInterface $wishlist;
 
-    protected ?ProductInterface $product;
+    protected ?ProductInterface $product = null;
 
-    protected ?ProductVariantInterface $variant;
+    protected ?ProductVariantInterface $variant = null;
 
     protected int $quantity = 0;
 

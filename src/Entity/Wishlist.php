@@ -20,12 +20,12 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 
 class Wishlist implements WishlistInterface
 {
-    protected ?int $id;
+    protected ?int $id = null;
 
     /** @var Collection|WishlistProductInterface[] */
     protected $wishlistProducts;
 
-    protected ?ShopUserInterface $shopUser;
+    protected ?ShopUserInterface $shopUser = null;
 
     /** @var WishlistTokenInterface|null */
     protected $token;
