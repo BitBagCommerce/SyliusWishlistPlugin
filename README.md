@@ -203,6 +203,7 @@ Plugins that we have used in the demo:
 [![](https://bitbag.io/wp-content/uploads/2020/10/button_free_consulatation-1.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_wishlist)
 
 ## Additional resources for developers
+
 ---
 To learn more about our contribution workflow and more, we encourage ypu to use the following resources:
 * [Sylius Documentation](https://docs.sylius.com/en/latest/)
