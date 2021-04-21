@@ -27,10 +27,15 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
             return;
         }
 
+        $doctrineConfig = $container->getExtensionConfig('doctrine_migrations');
+        $migrationsPath = (array) \array_pop($doctrineConfig)['migrations_paths'];
         $container->prependExtensionConfig('doctrine_migrations', [
-            'migrations_paths' => [
-                'BitBag\SyliusWishlistPlugin\Migrations' => '@BitBagSyliusWishlistPlugin/Migrations',
-            ],
+            'migrations_paths' => \array_merge(
+                $migrationsPath ?? [],
+                [
+                    'BitBag\SyliusWishlistPlugin\Migrations' => '@BitBagSyliusWishlistPlugin/Migrations',
+                ]
+            ),
         ]);
 
         $container->prependExtensionConfig('sylius_labs_doctrine_migrations_extra', [
