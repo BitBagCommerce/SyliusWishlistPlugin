@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\DependencyInjection;
 
+use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,6 +13,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class BitBagSyliusWishlistExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
+    use PrependDoctrineMigrationsTrait;
+
     public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
@@ -23,25 +26,21 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
 
     public function prepend(ContainerBuilder $container): void
     {
-        if (!$container->hasExtension('doctrine_migrations') || !$container->hasExtension('sylius_labs_doctrine_migrations_extra')) {
-            return;
-        }
+        $this->prependDoctrineMigrations($container);
+    }
 
-        $doctrineConfig = $container->getExtensionConfig('doctrine_migrations');
-        $migrationsPath = (array) \array_pop($doctrineConfig)['migrations_paths'];
-        $container->prependExtensionConfig('doctrine_migrations', [
-            'migrations_paths' => \array_merge(
-                $migrationsPath ?? [],
-                [
-                    'BitBag\SyliusWishlistPlugin\Migrations' => '@BitBagSyliusWishlistPlugin/Migrations',
-                ]
-            ),
-        ]);
+    protected function getMigrationsNamespace(): string
+    {
+        return 'BitBag\SyliusWishlistPlugin\Migrations';
+    }
 
-        $container->prependExtensionConfig('sylius_labs_doctrine_migrations_extra', [
-            'migrations' => [
-                'BitBag\SyliusWishlistPlugin\Migrations' => ['Sylius\Bundle\CoreBundle\Migrations'],
-            ],
-        ]);
+    protected function getMigrationsDirectory(): string
+    {
+        return '@BitBagSyliusWishlistPlugin/Migrations';
+    }
+
+    protected function getNamespacesOfMigrationsExecutedBefore(): array
+    {
+        return ['Sylius\Bundle\CoreBundle\Migrations'];
     }
 }
