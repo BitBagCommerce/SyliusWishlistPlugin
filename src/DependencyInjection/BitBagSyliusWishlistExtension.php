@@ -26,6 +26,7 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
 
     public function prepend(ContainerBuilder $container): void
     {
+        trigger_deprecation('bitbag/wishlist-plugin', '2.0', 'Doctrine migrations existing in a bundle will be removed, move migrations to the project directory.');
         $this->prependDoctrineMigrations($container);
     }
 
