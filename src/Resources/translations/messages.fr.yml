@@ -1,0 +1,12 @@
+bitbag_sylius_wishlist_plugin:
+    ui:
+        wishlist: Favoris
+        add_to_wishlist: Ajouter aux favoris
+        remove_from_wishlist: Enlever des favoris
+        your_wishlist_is_empty: Aucun favoris
+        added_wishlist_item: Le produit a été ajouté à vos favoris.
+        removed_wishlist_item: Le produit a été retiré de vos favoris.
+        add_items_to_cart: Ajouter les produits au panier
+        added_to_cart: Vos produits favoris ont été ajoutés à votre panier.
+        save_wishlist: Enregistrer les favoris
+        variant_not_unique: Vous avez déjà ajouté ce produit à vos favoris
