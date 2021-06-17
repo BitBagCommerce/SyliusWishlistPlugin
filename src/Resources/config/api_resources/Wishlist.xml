@@ -12,10 +12,23 @@
 
         <attribute name="validation_groups">sylius</attribute>
 
-        <itemOperations>
-            <itemOperation name="shop_add_product_to_wishlist">
-                <attribute name="method">PATCH</attribute>
-                <attribute name="path">/shop/wishlist/{id}/products</attribute>
+        <attribute name="denormalizationContext">
+            <attribute name="groups">
+                <attribute>shop:wishlist:write</attribute>
+            </attribute>
+        </attribute>
+
+        <attribute name="validation_groups">sylius</attribute>
+
+        <collectionOperations>
+            <collectionOperation name="shop_get">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/wishlists</attribute>
+            </collectionOperation>
+
+            <collectionOperation name="shop_add_product_to_wishlist">
+                <attribute name="method">POST</attribute>
+                <attribute name="path">/shop/wishlists/product</attribute>
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist</attribute>
                 <attribute name="denormalization_context">
@@ -24,10 +37,14 @@
                 <attribute name="openapi_context">
                     <attribute name="summary">Adds product to wishlist</attribute>
                 </attribute>
+            </collectionOperation>
+        </collectionOperations>
+
+        <itemOperations>
+            <itemOperation name="shop_get">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/wishlists/{id}</attribute>
             </itemOperation>
         </itemOperations>
-
-        <property name="id" identifier="true" writable="false" />
-        <property name="token" identifier="false" writable="false" />
     </resource>
 </resources>
