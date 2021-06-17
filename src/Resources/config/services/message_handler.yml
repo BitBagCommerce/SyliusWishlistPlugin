@@ -8,7 +8,4 @@ services:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
-            - { name: messenger.message_handler }
-
-
-
+            - { name: messenger.message_handler, bus: sylius_default.bus }
