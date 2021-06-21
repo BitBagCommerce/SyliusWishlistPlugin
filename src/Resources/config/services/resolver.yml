@@ -5,3 +5,8 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist"
 
+    bitbag.sylius_wishlist_plugin.resolver.anonymous_wishlist_resolver:
+        class: BitBag\SyliusWishlistPlugin\Resolver\AnonymousWishlistResolver
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist"
