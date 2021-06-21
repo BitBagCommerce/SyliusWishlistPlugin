@@ -7,7 +7,7 @@ namespace BitBag\SyliusWishlistPlugin\Resolver;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
-interface UserWishlistResolverInterface
+interface ShopUserWishlistResolverInterface
 {
     public function resolve(ShopUserInterface $user): WishlistInterface;
 }

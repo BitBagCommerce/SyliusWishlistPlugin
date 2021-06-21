@@ -1,7 +1,7 @@
 services:
-    bit_bag.sylius_wishlist_plugin.resolver.user_wishlist_resolver:
-        class: BitBag\SyliusWishlistPlugin\Resolver\UserWishlistResolver
+    bitbag.sylius_wishlist_plugin.resolver.user_wishlist_resolver:
+        class: BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolver
         arguments:
-          - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-          - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist"
 

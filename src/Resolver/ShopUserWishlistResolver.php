@@ -9,7 +9,7 @@ use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
-class UserWishlistResolver implements UserWishlistResolverInterface
+class ShopUserWishlistResolver implements ShopUserWishlistResolverInterface
 {
     private WishlistRepositoryInterface $wishlistRepository;
 
