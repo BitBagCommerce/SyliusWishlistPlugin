@@ -41,9 +41,7 @@
                 <attribute name="openapi_context">
                     <attribute name="summary">Adds product to wishlist</attribute>
                 </attribute>
-                <attribute name="security">(!is_granted('ROLE_USER') and object.getShopUser() == null) or
-                    (is_granted('ROLE_USER') and object.getShopUser() == user)
-                </attribute>
+                <attribute name="security">is_granted('update', object)</attribute>
             </itemOperation>
         </itemOperations>
 
