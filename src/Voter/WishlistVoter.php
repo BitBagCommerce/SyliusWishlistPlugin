@@ -45,11 +45,11 @@ final class WishlistVoter extends Voter
     {
         $user = $token->getUser();
 
-        if (!$user instanceof ShopUserInterface) {
-            return false;
+        if(!$user instanceof ShopUserInterface) {
+            $user = null;
         }
 
-        /** @var WishlistInterface $post */
+        /** @var WishlistInterface $wishlist */
         $wishlist = $subject;
 
         switch ($attribute) {
@@ -60,7 +60,7 @@ final class WishlistVoter extends Voter
         throw new \LogicException('This code should not be reached!');
     }
 
-    public function canUpdate(WishlistInterface $wishlist, ShopUserInterface $user): bool
+    public function canUpdate(WishlistInterface $wishlist, ?ShopUserInterface $user): bool
     {
         if(!$this->security->isGranted('ROLE_USER') && null === $wishlist->getShopUser()) {
             return true;
