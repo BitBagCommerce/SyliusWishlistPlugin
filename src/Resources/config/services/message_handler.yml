@@ -15,5 +15,6 @@ services:
         arguments:
             - "@sylius.repository.product"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }
