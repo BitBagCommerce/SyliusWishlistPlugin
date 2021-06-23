@@ -14,7 +14,7 @@ final class WishlistVoter extends Voter
 {
     public const UPDATE = 'update';
 
-    public const VIEW = 'view';
+    public const DELETE = 'delete';
 
     private Security $security;
 
@@ -26,8 +26,8 @@ final class WishlistVoter extends Voter
     protected function supports(string $attribute, $subject): bool
     {
         $attributes = [
-            self::VIEW,
-            self::UPDATE
+            self::UPDATE,
+            self::DELETE
         ];
 
         if (!in_array($attribute, $attributes)) {
@@ -45,7 +45,7 @@ final class WishlistVoter extends Voter
     {
         $user = $token->getUser();
 
-        if(!$user instanceof ShopUserInterface) {
+        if (!$user instanceof ShopUserInterface) {
             $user = null;
         }
 
@@ -62,14 +62,19 @@ final class WishlistVoter extends Voter
 
     public function canUpdate(WishlistInterface $wishlist, ?ShopUserInterface $user): bool
     {
-        if(!$this->security->isGranted('ROLE_USER') && null === $wishlist->getShopUser()) {
+        if (!$this->security->isGranted('ROLE_USER') && null === $wishlist->getShopUser()) {
             return true;
         }
 
-        if($this->security->isGranted('ROLE_USER') && $wishlist->getShopUser() === $user) {
+        if ($this->security->isGranted('ROLE_USER') && $wishlist->getShopUser() === $user) {
             return true;
         }
 
         return false;
+    }
+
+    public function canDelete(WishlistInterface $wishlist, ?ShopUserInterface $user)
+    {
+        return $this->canUpdate($wishlist, $user);
     }
 }
