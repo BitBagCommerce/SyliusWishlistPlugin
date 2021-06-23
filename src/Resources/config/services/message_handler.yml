@@ -10,6 +10,16 @@ services:
             - "@sylius.repository.product"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }
+    bitbag.sylius_wishlist_plugin.command_handler.wishlist.add_product_variant_to_wishlist_handler:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler
+        arguments:
+            - "@security.token_storage"
+            - "@bitbag.sylius_wishlist_plugin.resolver.user_wishlist_resolver"
+            - "@bitbag.sylius_wishlist_plugin.resolver.anonymous_wishlist_resolver"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@sylius.repository.product_variant"
+
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.remove_product_from_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveProductFromWishlistHandler
         arguments:
