@@ -55,6 +55,8 @@ final class WishlistVoter extends Voter
         switch ($attribute) {
             case self::UPDATE:
                 return $this->canUpdate($wishlist, $user);
+            case self::DELETE:
+                return $this->canDelete($wishlist, $user);
         }
 
         throw new \LogicException('This code should not be reached!');
