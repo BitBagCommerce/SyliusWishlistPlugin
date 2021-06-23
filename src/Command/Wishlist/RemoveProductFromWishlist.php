@@ -6,9 +6,9 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 final class RemoveProductFromWishlist
 {
-    protected int $productId;
+    private int $productId;
 
-    protected string $wishlistToken;
+    private string $wishlistToken;
 
     public function __construct(int $product, string $wishlistToken)
     {
