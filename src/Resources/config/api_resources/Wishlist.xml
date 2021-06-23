@@ -30,6 +30,7 @@
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/wishlists/{id}</attribute>
             </itemOperation>
+
             <itemOperation name="shop_add_product_to_wishlist">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="path">/shop/wishlists/{id}/product</attribute>
@@ -42,6 +43,37 @@
                     <attribute name="summary">Adds product to wishlist</attribute>
                 </attribute>
                 <attribute name="security">is_granted('update', object)</attribute>
+            </itemOperation>
+
+            <itemOperation name="shop_remove_product_from_wishlist">
+                <attribute name="method">DELETE</attribute>
+                <attribute name="path">/shop/wishlists/{id}/products/{productId}</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="controller">BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveProductFromWishlistAction</attribute>
+                <attribute name="write">false</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:cart:remove_item</attribute>
+                </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="parameters">
+                        <attribute>
+                            <attribute name="name">id</attribute>
+                            <attribute name="in">path</attribute>
+                            <attribute name="required">true</attribute>
+                            <attribute name="schema">
+                                <attribute name="type">string</attribute>
+                            </attribute>
+                        </attribute>
+                        <attribute>
+                            <attribute name="name">productId</attribute>
+                            <attribute name="in">path</attribute>
+                            <attribute name="required">true</attribute>
+                            <attribute name="schema">
+                                <attribute name="type">string</attribute>
+                            </attribute>
+                        </attribute>
+                    </attribute>
+                </attribute>
             </itemOperation>
         </itemOperations>
 
