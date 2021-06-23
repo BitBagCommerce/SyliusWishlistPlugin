@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-class AddProductToWishlist implements WishlistTokenValueAwareInterface
+final class AddProductToWishlist implements WishlistTokenValueAwareInterface
 {
     public int $product;
 
-    protected string $token;
+    private string $token;
 
     public function __construct(int $product)
     {
