@@ -69,11 +69,12 @@
                             <attribute name="in">path</attribute>
                             <attribute name="required">true</attribute>
                             <attribute name="schema">
-                                <attribute name="type">string</attribute>
+                                <attribute name="type">int</attribute>
                             </attribute>
                         </attribute>
                     </attribute>
                 </attribute>
+                <attribute name="security">is_granted('delete', object)</attribute>
             </itemOperation>
         </itemOperations>
 
