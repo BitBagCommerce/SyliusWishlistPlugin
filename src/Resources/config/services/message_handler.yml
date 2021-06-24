@@ -2,7 +2,6 @@ services:
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.add_product_to_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductToWishlistHandler
         arguments:
-            - "@security.token_storage"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
@@ -12,10 +11,8 @@ services:
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.add_product_variant_to_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler
         arguments:
-            - "@security.token_storage"
-            - "@bitbag.sylius_wishlist_plugin.resolver.user_wishlist_resolver"
-            - "@bitbag.sylius_wishlist_plugin.resolver.anonymous_wishlist_resolver"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
             - "@sylius.repository.product_variant"
 
