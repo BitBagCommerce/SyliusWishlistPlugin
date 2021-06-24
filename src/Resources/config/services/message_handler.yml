@@ -3,9 +3,8 @@ services:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductToWishlistHandler
         arguments:
             - "@security.token_storage"
-            - "@bitbag.sylius_wishlist_plugin.resolver.user_wishlist_resolver"
-            - "@bitbag.sylius_wishlist_plugin.resolver.anonymous_wishlist_resolver"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
             - "@sylius.repository.product"
         tags:
