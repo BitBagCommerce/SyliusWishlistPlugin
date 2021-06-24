@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
@@ -13,6 +14,8 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\AnonymousWishlistResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
 use Doctrine\Persistence\ObjectManager;
+use Sylius\Bundle\CoreBundle\Doctrine\ORM\ProductVariantRepository;
+use Sylius\Component\Core\Model\ProductVariant;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
@@ -22,54 +25,37 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class AddProductVariantToWishlistHandler implements MessageHandlerInterface
 {
-    private TokenStorageInterface $tokenStorage;
-
-    private ShopUserWishlistResolverInterface $shopUserWishlistResolver;
-
-    private AnonymousWishlistResolverInterface $anonymousWishlistResolver;
-
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
     private ObjectManager $wishlistManager;
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
+    private WishlistRepositoryInterface $wishlistRepository;
+
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        ShopUserWishlistResolverInterface $shopUserWishlistResolver,
-        AnonymousWishlistResolverInterface $anonymousWishlistResolver,
         WishlistProductFactoryInterface $wishlistProductFactory,
+        WishlistRepositoryInterface $wishlistRepository,
         ObjectManager $wishlistManager,
         ProductVariantRepositoryInterface $productVariantRepository
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->shopUserWishlistResolver = $shopUserWishlistResolver;
-        $this->anonymousWishlistResolver = $anonymousWishlistResolver;
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->wishlistManager = $wishlistManager;
         $this->productVariantRepository = $productVariantRepository;
+        $this->wishlistRepository = $wishlistRepository;
     }
 
     public function __invoke(AddProductVariantToWishlist $addProductVariantToWishlist): WishlistInterface
     {
-        $token = $this->tokenStorage->getToken();
-        $user = $token ? $token->getUser() : null;
+        $variant = $this->productVariantRepository->find($addProductVariantToWishlist->productVariant);
+        $wishlist = $this->wishlistRepository->findByToken($addProductVariantToWishlist->getWishlistTokenValue());
 
-        $productVariant = $this->productVariantRepository->find($addProductVariantToWishlist->productVariant);
-
-        if (!$productVariant) {
+        if (!$variant && !$wishlist) {
             throw new NotFoundHttpException();
         }
 
-        if ($user instanceof ShopUserInterface) {
-            $wishlist = $this->shopUserWishlistResolver->resolve($user);
-        } else {
-            $wishlistToken = $addProductVariantToWishlist->getWishlistTokenValue();
+        $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
 
-            $wishlist = $this->anonymousWishlistResolver->resolve($wishlistToken);
-        }
-
-        $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant);
         $wishlist->addWishlistProduct($wishlistProduct);
 
         $this->wishlistManager->persist($wishlist);
