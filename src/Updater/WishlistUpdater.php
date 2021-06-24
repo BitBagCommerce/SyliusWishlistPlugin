@@ -17,6 +17,12 @@ final class WishlistUpdater implements WishlistUpdaterInterface
         $this->wishlistManager = $wishlistManager;
     }
 
+    public function updateWishlist(WishlistInterface $wishlist): void
+    {
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
+    }
+
     public function addProductToWishlist(WishlistInterface $wishlist, WishlistProductInterface $product): WishlistInterface
     {
         $wishlist->addWishlistProduct($product);

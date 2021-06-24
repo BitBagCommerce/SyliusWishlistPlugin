@@ -7,8 +7,8 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
+use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
+use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -19,21 +19,21 @@ final class CreateWishlistHandler implements MessageHandlerInterface
 
     private WishlistFactoryInterface $wishlistFactory;
 
-    private WishlistRepositoryInterface $wishlistRepository;
+    private ShopUserWishlistResolverInterface $shopUserWishlistResolver;
 
-    private ObjectManager $wishlistManager;
+    private WishlistUpdaterInterface $wishlistUpdater;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
-        WishlistRepositoryInterface $wishlistRepository,
-        ObjectManager $wishlistManager
+        ShopUserWishlistResolverInterface $shopUserWishlistResolver,
+        WishlistUpdaterInterface $wishlistUpdater
     )
     {
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistManager = $wishlistManager;
+        $this->shopUserWishlistResolver = $shopUserWishlistResolver;
+        $this->wishlistUpdater = $wishlistUpdater;
     }
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
@@ -42,18 +42,13 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         $user = $token ? $token->getUser() : null;
 
         if($user instanceof ShopUserInterface) {
-            $wishlist = $this->wishlistRepository->findByShopUser($user);
-
-            if (!$wishlist) {
-                $wishlist = $this->wishlistFactory->createForUser($user);
-            }
+            $wishlist = $this->shopUserWishlistResolver->resolve($user);
         }
         else {
             $wishlist = $this->wishlistFactory->createNew();
         }
 
-        $this->wishlistManager->persist($wishlist);
-        $this->wishlistManager->flush();
+        $this->wishlistUpdater->updateWishlist($wishlist);
 
         return $wishlist;
     }

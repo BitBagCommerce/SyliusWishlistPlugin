@@ -9,5 +9,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 
 interface WishlistUpdaterInterface
 {
+    public function updateWishlist(WishlistInterface $wishlist): void;
+
     public function addProductToWishlist(WishlistInterface $wishlist, WishlistProductInterface $product): WishlistInterface;
 }
