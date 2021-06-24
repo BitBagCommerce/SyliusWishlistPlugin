@@ -23,9 +23,24 @@
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/wishlists</attribute>
             </collectionOperation>
+
+            <collectionOperation name="shop_create_wishlist">
+                <attribute name="method">POST</attribute>
+                <attribute name="path">/shop/wishlists</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:write</attribute>
+                </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="summary">Creates wishlist resource</attribute>
+                </attribute>
+            </collectionOperation>
         </collectionOperations>
 
         <itemOperations>
+
+
             <itemOperation name="shop_get">
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/wishlists/{id}</attribute>
