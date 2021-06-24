@@ -10,9 +10,9 @@ final class AddProductVariantToWishlist implements WishlistTokenValueAwareInterf
 
     private string $token;
 
-    public function __construct(int $product)
+    public function __construct(int $productVariant)
     {
-        $this->product = $product;
+        $this->productVariant = $productVariant;
     }
 
     public function getWishlistTokenValue(): string

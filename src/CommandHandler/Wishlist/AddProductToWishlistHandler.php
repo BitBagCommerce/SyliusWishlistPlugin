@@ -8,6 +8,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,7 +18,7 @@ class AddProductToWishlistHandler implements MessageHandlerInterface
 {
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    private ObjectManager $wishlistManager;
+    private WishlistUpdaterInterface $wishlistUpdater;
 
     private ProductRepositoryInterface $productRepository;
 
@@ -26,11 +27,11 @@ class AddProductToWishlistHandler implements MessageHandlerInterface
     public function __construct(
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistRepositoryInterface $wishlistRepository,
-        ObjectManager $wishlistManager,
+        WishlistUpdaterInterface $wishlistUpdater,
         ProductRepositoryInterface $productRepository
     ) {
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->wishlistManager = $wishlistManager;
+        $this->wishlistUpdater = $wishlistUpdater;
         $this->productRepository = $productRepository;
         $this->wishlistRepository = $wishlistRepository;
     }
@@ -40,17 +41,12 @@ class AddProductToWishlistHandler implements MessageHandlerInterface
         $product = $this->productRepository->find($addProductToWishlist->product);
         $wishlist = $this->wishlistRepository->findByToken($addProductToWishlist->getWishlistTokenValue());
 
-        if (!$product && !$wishlist) {
+        if (!$product || !$wishlist) {
             throw new NotFoundHttpException();
         }
 
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
-        $wishlist->addWishlistProduct($wishlistProduct);
-
-        $this->wishlistManager->persist($wishlist);
-        $this->wishlistManager->flush();
-
-        return $wishlist;
+        return $this->wishlistUpdater->addProductToWishlist($wishlist, $wishlistProduct);
     }
 }
