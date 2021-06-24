@@ -35,7 +35,7 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
         $product = $this->productRepository->find($removeProductFromWishlist->getProductId());
         $wishlist = $this->wishlistRepository->findByToken($removeProductFromWishlist->getWishlistToken());
 
-        if (null === $product || null === $wishlist) {
+        if (!$product || !$wishlist) {
             throw new NotFoundHttpException();
         }
 
