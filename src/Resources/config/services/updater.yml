@@ -3,3 +3,4 @@ services:
         class: BitBag\SyliusWishlistPlugin\Updater\WishlistUpdater
         arguments:
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
