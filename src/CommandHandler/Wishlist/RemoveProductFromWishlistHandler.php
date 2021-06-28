@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
+use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -23,7 +24,8 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
         ProductRepositoryInterface $productRepository,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistUpdaterInterface $wishlistUpdater
-    ) {
+    )
+    {
         $this->productRepository = $productRepository;
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistUpdater = $wishlistUpdater;
@@ -34,7 +36,13 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
         $product = $this->productRepository->find($removeProductFromWishlist->getProductIdValue());
         $wishlist = $this->wishlistRepository->findByToken($removeProductFromWishlist->getWishlistTokenValue());
 
-        if (!$product || !$wishlist) {
+        if (null === $product) {
+            throw new ProductNotFoundException(
+                sprintf("The Product %s does not exist", $removeProductFromWishlist->getProductIdValue())
+            );
+        }
+
+        if (null === $wishlist) {
             throw new NotFoundHttpException();
         }
 

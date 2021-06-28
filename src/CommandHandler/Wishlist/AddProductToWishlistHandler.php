@@ -6,6 +6,7 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
@@ -41,7 +42,13 @@ class AddProductToWishlistHandler implements MessageHandlerInterface
         $product = $this->productRepository->find($addProductToWishlist->productId);
         $wishlist = $this->wishlistRepository->findByToken($addProductToWishlist->getWishlistTokenValue());
 
-        if (null === $product || null === $wishlist) {
+        if (null === $product) {
+            throw new ProductNotFoundException(
+                sprintf("The Product %s does not exist", $addProductToWishlist->productId)
+            );
+        }
+
+        if (null === $wishlist) {
             throw new NotFoundHttpException();
         }
 
