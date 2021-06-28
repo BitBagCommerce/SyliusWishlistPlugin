@@ -16,12 +16,12 @@ final class RemoveProductFromWishlist
         $this->wishlistToken = $wishlistToken;
     }
 
-    public function getProductId(): int
+    public function getProductIdValue(): int
     {
         return $this->productId;
     }
 
-    public function getWishlistToken(): string
+    public function getWishlistTokenValue(): string
     {
         return $this->wishlistToken;
     }

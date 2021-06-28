@@ -32,8 +32,8 @@ final class RemoveProductVariantFromWishlistHandler implements MessageHandlerInt
 
     public function __invoke(RemoveProductVariantFromWishlist $removeProductVariantFromWishlist)
     {
-        $variant = $this->productVariantRepository->find($removeProductVariantFromWishlist->getProductVariantId());
-        $wishlist = $this->wishlistRepository->findByToken($removeProductVariantFromWishlist->getWishlistToken());
+        $variant = $this->productVariantRepository->find($removeProductVariantFromWishlist->getProductVariantIdValue());
+        $wishlist = $this->wishlistRepository->findByToken($removeProductVariantFromWishlist->getWishlistTokenValue());
 
         if (null === $variant || null === $wishlist) {
             throw new NotFoundHttpException();

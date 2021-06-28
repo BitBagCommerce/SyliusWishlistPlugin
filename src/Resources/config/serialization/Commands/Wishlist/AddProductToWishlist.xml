@@ -7,7 +7,7 @@
         <attribute name="id">
             <group>shop:wishlist:add_product</group>
         </attribute>
-        <attribute name="product">
+        <attribute name="productId">
             <group>shop:wishlist:add_product</group>
         </attribute>
     </class>
