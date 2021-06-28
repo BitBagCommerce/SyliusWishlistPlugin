@@ -12,6 +12,8 @@ interface WishlistUpdaterInterface
 {
     public function updateWishlist(WishlistInterface $wishlist): void;
 
+    public function removeWishlist(WishlistInterface $wishlist): void;
+
     public function addProductToWishlist(WishlistInterface $wishlist, WishlistProductInterface $product): WishlistInterface;
 
     public function removeProductFromWishlist(WishlistInterface $wishlist, WishlistProductInterface $product): WishlistInterface;
