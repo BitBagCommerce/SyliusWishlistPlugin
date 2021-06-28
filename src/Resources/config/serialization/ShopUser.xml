@@ -7,7 +7,7 @@
         <attribute name="id">
             <group>shop:wishlist:read</group>
         </attribute>
-        <attribute name="getEmail">
+        <attribute name="email">
             <group>shop:wishlist:read</group>
         </attribute>
     </class>
