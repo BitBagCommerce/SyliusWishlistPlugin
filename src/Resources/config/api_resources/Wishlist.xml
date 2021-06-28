@@ -135,6 +135,30 @@
                 </attribute>
                 <attribute name="security">is_granted('delete', object)</attribute>
             </itemOperation>
+
+            <itemOperation name="shop_remove_wishlist">
+                <attribute name="method">DELETE</attribute>
+                <attribute name="path">/shop/wishlists/{id}</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="controller">BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveWishlistAction</attribute>
+                <attribute name="write">false</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:remove_wishlist</attribute>
+                </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="parameters">
+                        <attribute>
+                            <attribute name="name">id</attribute>
+                            <attribute name="in">path</attribute>
+                            <attribute name="required">true</attribute>
+                            <attribute name="schema">
+                                <attribute name="type">string</attribute>
+                            </attribute>
+                        </attribute>
+                    </attribute>
+                </attribute>
+                <attribute name="security">is_granted('delete', object)</attribute>
+            </itemOperation>
         </itemOperations>
 
         <property name="id" identifier="false" writable="false"/>
