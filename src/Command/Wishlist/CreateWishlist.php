@@ -6,5 +6,4 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 final class CreateWishlist
 {
-
 }

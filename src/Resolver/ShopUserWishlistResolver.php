@@ -18,8 +18,7 @@ final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterfac
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory
-    )
-    {
+    ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistFactory = $wishlistFactory;
     }
@@ -35,4 +34,3 @@ final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterfac
         return $wishlist;
     }
 }
-

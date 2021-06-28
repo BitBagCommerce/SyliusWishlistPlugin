@@ -24,5 +24,4 @@ final class AddProductVariantToWishlist implements WishlistTokenValueAwareInterf
     {
         $this->token = $token;
     }
-
 }

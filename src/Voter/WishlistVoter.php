@@ -27,7 +27,7 @@ final class WishlistVoter extends Voter
     {
         $attributes = [
             self::UPDATE,
-            self::DELETE
+            self::DELETE,
         ];
 
         if (!in_array($attribute, $attributes)) {

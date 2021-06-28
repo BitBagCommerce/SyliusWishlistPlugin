@@ -30,7 +30,7 @@
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist</attribute>
                 <attribute name="denormalization_context">
-                    <attribute name="groups">shop:wishlist:write</attribute>
+                    <attribute name="groups">shop:wishlist:create</attribute>
                 </attribute>
                 <attribute name="openapi_context">
                     <attribute name="summary">Creates wishlist resource</attribute>
@@ -39,8 +39,6 @@
         </collectionOperations>
 
         <itemOperations>
-
-
             <itemOperation name="shop_get">
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/wishlists/{id}</attribute>
@@ -81,7 +79,7 @@
                 <attribute name="controller">BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveProductFromWishlistAction</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
-                    <attribute name="groups">shop:cart:remove_item</attribute>
+                    <attribute name="groups">shop:wishlist:remove_product</attribute>
                 </attribute>
                 <attribute name="openapi_context">
                     <attribute name="parameters">
@@ -98,7 +96,39 @@
                             <attribute name="in">path</attribute>
                             <attribute name="required">true</attribute>
                             <attribute name="schema">
-                                <attribute name="type">int</attribute>
+                                <attribute name="type">string</attribute>
+                            </attribute>
+                        </attribute>
+                    </attribute>
+                </attribute>
+                <attribute name="security">is_granted('delete', object)</attribute>
+            </itemOperation>
+
+            <itemOperation name="shop_remove_product_variant_from_wishlist">
+                <attribute name="method">DELETE</attribute>
+                <attribute name="path">/shop/wishlists/{id}/productVariants/{productVariantId}</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="controller">BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveProductVariantFromWishlistAction</attribute>
+                <attribute name="write">false</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:remove_product_variant</attribute>
+                </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="parameters">
+                        <attribute>
+                            <attribute name="name">id</attribute>
+                            <attribute name="in">path</attribute>
+                            <attribute name="required">true</attribute>
+                            <attribute name="schema">
+                                <attribute name="type">string</attribute>
+                            </attribute>
+                        </attribute>
+                        <attribute>
+                            <attribute name="name">productVariantId</attribute>
+                            <attribute name="in">path</attribute>
+                            <attribute name="required">true</attribute>
+                            <attribute name="schema">
+                                <attribute name="type">string</attribute>
                             </attribute>
                         </attribute>
                     </attribute>

@@ -28,8 +28,7 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         WishlistFactoryInterface $wishlistFactory,
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
         WishlistUpdaterInterface $wishlistUpdater
-    )
-    {
+    ) {
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
         $this->shopUserWishlistResolver = $shopUserWishlistResolver;
@@ -41,10 +40,9 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         $token = $this->tokenStorage->getToken();
         $user = $token ? $token->getUser() : null;
 
-        if($user instanceof ShopUserInterface) {
+        if ($user instanceof ShopUserInterface) {
             $wishlist = $this->shopUserWishlistResolver->resolve($user);
-        }
-        else {
+        } else {
             $wishlist = $this->wishlistFactory->createNew();
         }
 

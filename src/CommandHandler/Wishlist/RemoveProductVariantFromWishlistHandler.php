@@ -6,7 +6,7 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductVariantFromWishlist;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
+use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -17,17 +17,16 @@ final class RemoveProductVariantFromWishlistHandler implements MessageHandlerInt
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
-    private ObjectManager $wishlistProductManager;
+    private WishlistUpdaterInterface $wishlistUpdater;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
-        ObjectManager $wishlistProductManager
-    )
-    {
+        WishlistUpdaterInterface $wishlistUpdater
+    ) {
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistProductManager = $wishlistProductManager;
+        $this->wishlistUpdater = $wishlistUpdater;
     }
 
     public function __invoke(RemoveProductVariantFromWishlist $removeProductVariantFromWishlist)
@@ -39,12 +38,6 @@ final class RemoveProductVariantFromWishlistHandler implements MessageHandlerInt
             throw new NotFoundHttpException();
         }
 
-        foreach ($wishlist->getWishlistProducts() as $wishlistProduct) {
-            if ($variant === $wishlistProduct->getVariant()) {
-                $this->wishlistProductManager->remove($wishlistProduct);
-            }
-        }
-
-        $this->wishlistProductManager->flush();
+        $this->wishlistUpdater->removeProductVariantFromWishlist($wishlist, $variant);
     }
 }
