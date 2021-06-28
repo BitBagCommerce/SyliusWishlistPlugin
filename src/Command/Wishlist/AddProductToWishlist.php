@@ -6,13 +6,13 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 final class AddProductToWishlist implements WishlistTokenValueAwareInterface
 {
-    public int $product;
+    public int $productId;
 
     private string $token;
 
     public function __construct(int $product)
     {
-        $this->product = $product;
+        $this->productId = $product;
     }
 
     public function getWishlistTokenValue(): string

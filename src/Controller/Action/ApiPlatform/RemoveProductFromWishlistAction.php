@@ -20,7 +20,7 @@ final class RemoveProductFromWishlistAction
 
     public function __invoke(Request $request): JsonResponse
     {
-        $wishlistToken = $request->attributes->get('id');
+        $wishlistToken = (string) $request->attributes->get('id');
         $productId = (int) $request->attributes->get('productId');
 
         $removeProductFromWishlist = new RemoveProductFromWishlist($productId, $wishlistToken);

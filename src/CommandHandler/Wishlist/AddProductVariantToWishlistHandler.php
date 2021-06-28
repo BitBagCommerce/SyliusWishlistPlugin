@@ -28,7 +28,8 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
         WishlistRepositoryInterface $wishlistRepository,
         WishlistUpdaterInterface $wishlistUpdater,
         ProductVariantRepositoryInterface $productVariantRepository
-    ) {
+    )
+    {
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->wishlistUpdater = $wishlistUpdater;
         $this->productVariantRepository = $productVariantRepository;
@@ -37,10 +38,10 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
 
     public function __invoke(AddProductVariantToWishlist $addProductVariantToWishlist): WishlistInterface
     {
-        $variant = $this->productVariantRepository->find($addProductVariantToWishlist->productVariant);
+        $variant = $this->productVariantRepository->find($addProductVariantToWishlist->productVariantId);
         $wishlist = $this->wishlistRepository->findByToken($addProductVariantToWishlist->getWishlistTokenValue());
 
-        if (!$variant || !$wishlist) {
+        if (null === $variant || null === $wishlist) {
             throw new NotFoundHttpException();
         }
 
