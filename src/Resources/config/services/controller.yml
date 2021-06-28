@@ -9,3 +9,8 @@ services:
             - "@api_platform.message_bus"
         tags:
             - { name: controller.service_arguments }
+    BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveWishlistAction:
+        arguments:
+            - "@api_platform.message_bus"
+        tags:
+            - { name: controller.service_arguments }
