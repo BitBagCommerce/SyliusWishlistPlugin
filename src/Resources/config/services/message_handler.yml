@@ -42,3 +42,10 @@ services:
             - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }
+    bitbag.sylius_wishlist_plugin.command_handler.wishlist.remove_wishlist:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveWishlistHandler
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+        tags:
+            - { name: messenger.message_handler, bus: sylius_default.bus }
