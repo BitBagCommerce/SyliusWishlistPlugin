@@ -7,7 +7,6 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveWishlist;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class RemoveWishlistHandler implements MessageHandlerInterface
@@ -28,10 +27,6 @@ final class RemoveWishlistHandler implements MessageHandlerInterface
     public function __invoke(RemoveWishlist $removeWishlist)
     {
         $wishlist = $this->wishlistRepository->findByToken($removeWishlist->getWishlistTokenValue());
-
-        if(null === $wishlist) {
-            throw new NotFoundHttpException();
-        }
 
         $this->wishlistUpdater->removeWishlist($wishlist);
     }

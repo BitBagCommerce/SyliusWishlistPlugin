@@ -9,7 +9,6 @@ use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
@@ -40,10 +39,6 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
             throw new ProductNotFoundException(
                 sprintf("The Product %s does not exist", $removeProductFromWishlist->getProductIdValue())
             );
-        }
-
-        if (null === $wishlist) {
-            throw new NotFoundHttpException();
         }
 
         $this->wishlistUpdater->removeProductFromWishlist($wishlist, $product);
