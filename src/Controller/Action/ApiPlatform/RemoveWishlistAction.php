@@ -7,6 +7,7 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveWishlist;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class RemoveWishlistAction
@@ -25,6 +26,6 @@ final class RemoveWishlistAction
         $removeWishlist = new RemoveWishlist($wishlistToken);
         $this->messageBus->dispatch($removeWishlist);
 
-        return new JsonResponse([], 204);
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
 }
