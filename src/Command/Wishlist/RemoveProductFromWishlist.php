@@ -10,9 +10,9 @@ final class RemoveProductFromWishlist
 
     private string $wishlistToken;
 
-    public function __construct(int $product, string $wishlistToken)
+    public function __construct(int $productId, string $wishlistToken)
     {
-        $this->productId = $product;
+        $this->productId = $productId;
         $this->wishlistToken = $wishlistToken;
     }
 
