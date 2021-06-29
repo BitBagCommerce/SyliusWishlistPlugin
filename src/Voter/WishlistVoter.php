@@ -59,7 +59,7 @@ final class WishlistVoter extends Voter
                 return $this->canDelete($wishlist, $user);
         }
 
-        throw new \LogicException('This code should not be reached!');
+        throw new \LogicException(sprintf('Unsupported attribute: "%s"', $attribute));
     }
 
     public function canUpdate(WishlistInterface $wishlist, ?ShopUserInterface $user): bool
@@ -75,7 +75,7 @@ final class WishlistVoter extends Voter
         return false;
     }
 
-    public function canDelete(WishlistInterface $wishlist, ?ShopUserInterface $user)
+    public function canDelete(WishlistInterface $wishlist, ?ShopUserInterface $user): bool
     {
         return $this->canUpdate($wishlist, $user);
     }
