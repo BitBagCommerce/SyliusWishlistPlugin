@@ -28,23 +28,32 @@ final class WishlistContext implements Context
         $this->wishlistRepository = $wishlistRepository;
     }
 
-    private function getHeaders()
+    private function request(string $method, string $uri, string $json = '{}'): ResponseInterface
     {
-        return [
+        $contentType = 'application/ld+json';
+
+        if($method === 'PATCH') {
+            $contentType = 'application/merge-patch+json';
+        }
+
+        $headers = [
             'Accept' => 'application/ld+json',
-            'Content-Type' => 'application/ld+json'
+            'Content-Type' => $contentType
         ];
+
+        return $this->client->request(
+            $method,
+            $uri,
+            [
+                'headers' => $headers,
+                'body' => $json
+            ]);
     }
 
     /** @Given Anonymous user has a wishlist */
     public function anonymousUserHasAWishlist(): void
     {
-        $response = $this->client->request('POST', 'nginx:80/api/v2/shop/wishlists',
-            [
-                'headers' => $this->getHeaders(),
-                'body' => '{}'
-            ]);
-
+        $response = $this->request('POST', 'nginx:80/api/v2/shop/wishlists');
         $json = json_decode((string)$response->getBody());
 
         /** @var WishlistInterface $wishlist */
@@ -56,18 +65,9 @@ final class WishlistContext implements Context
     public function anonymousUserAddsProductToTheWishlist(ProductInterface $product)
     {
         $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/product', $this->wishlist->getToken());
-        $jsonBody = json_encode(['productId' => $product->getId()]);
-        $headers = [
-            'Accept' => 'application/ld+json',
-            'Content-Type' => 'application/merge-patch+json'
-        ];
+        $json = json_encode(['productId' => $product->getId()]);
 
-        $response = $this->client->patch(
-            $uri,
-            [
-                'headers' => $headers,
-                'body' => $jsonBody
-            ]);
+        $response = $this->request('PATCH', $uri, $json);
 
         Assert::eq($response->getStatusCode(), 200);
     }
