@@ -8,7 +8,9 @@ use Behat\Behat\Context\Context;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use GuzzleHttp\ClientInterface;
+use Psr\Http\Message\ResponseInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context
@@ -32,7 +34,7 @@ final class WishlistContext implements Context
     {
         $contentType = 'application/ld+json';
 
-        if($method === 'PATCH') {
+        if ($method === 'PATCH') {
             $contentType = 'application/merge-patch+json';
         }
 
@@ -47,7 +49,8 @@ final class WishlistContext implements Context
             [
                 'headers' => $headers,
                 'body' => $json
-            ]);
+            ]
+        );
     }
 
     /** @Given Anonymous user has a wishlist */
@@ -87,6 +90,36 @@ final class WishlistContext implements Context
         throw new Exception(
             sprintf('Product %s was not found in the wishlist',
                 $product->getName()
-            ));
+            )
+        );
+    }
+
+    /** @When Anonymous user adds :variant product variant to the wishlist */
+    public function anonymousUserAddsProductVariantToWishlist(ProductVariantInterface $variant)
+    {
+        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/variant', $this->wishlist->getToken());
+        $body = json_encode(['productVariantId' => $variant->getId()]);
+
+        $response = $this->request('PATCH', $uri, $body);
+
+        Assert::eq($response->getStatusCode(), 200);
+    }
+
+    public function anonymousUserHasProductVariantInTheWishlist(ProductVariantInterface $variant)
+    {
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
+
+        foreach ($wishlist->getWishlistProducts() as $wishlistProduct) {
+            if ($variant->getId() === $wishlistProduct->getVariant()->getId()) {
+                return true;
+            }
+        }
+
+        throw new Exception(
+            sprintf('Product variant %s was not found in the wishlist',
+                $variant->getName()
+            )
+        );
     }
 }
