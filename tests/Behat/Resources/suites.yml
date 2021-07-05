@@ -18,3 +18,14 @@ default:
                 - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
             filters:
                 tags: "@wishlist && @ui"
+        api_wishlist:
+            contexts:
+                - sylius.behat.context.hook.doctrine_orm
+                - sylius.behat.context.transform.lexical
+                - sylius.behat.context.setup.channel
+                - sylius.behat.context.setup.product
+                - sylius.behat.context.transform.product
+                - sylius.behat.context.ui.shop.product
+                - bitbag_wishlist_plugin.behat.context.api.wishlist
+            filters:
+                tags: "@api_wishlist && @api"
