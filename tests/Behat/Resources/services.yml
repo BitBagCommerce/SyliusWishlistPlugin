@@ -62,4 +62,5 @@ services:
         arguments:
             - "@sylius.http_client"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@sylius.repository.shop_user"
 
