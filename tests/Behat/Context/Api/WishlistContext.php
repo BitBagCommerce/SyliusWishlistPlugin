@@ -32,6 +32,8 @@ final class WishlistContext implements Context
 
     private const POST = 'POST';
 
+    private const DELETE = 'DELETE';
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         UserRepositoryInterface $userRepository,
@@ -70,7 +72,7 @@ final class WishlistContext implements Context
     }
 
     /** @Given user :email :password is authenticated */
-    public function userIsAuthenticated(string $email, string $password)
+    public function userIsAuthenticated(string $email, string $password): void
     {
         $uri = 'nginx:80/api/v2/shop/authentication-token';
 
@@ -120,7 +122,7 @@ final class WishlistContext implements Context
     }
 
     /** @When user adds product :product to the wishlist */
-    public function userAddsProductToTheWishlist(ProductInterface $product)
+    public function userAddsProductToTheWishlist(ProductInterface $product): void
     {
         $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/product', $this->wishlist->getToken());
 
@@ -128,7 +130,8 @@ final class WishlistContext implements Context
             'productId' => $product->getId()
         ];
 
-        $response = $this->client->request(self::PATCH,
+        $response = $this->client->request(
+            self::PATCH,
             $uri,
             $this->getOptions(self::PATCH, $body)
         );
@@ -137,7 +140,7 @@ final class WishlistContext implements Context
     }
 
     /** @Then user should have product :product in the wishlist */
-    public function userHasProductInTheWishlist(ProductInterface $product)
+    public function userHasProductInTheWishlist(ProductInterface $product): bool
     {
         /** @var WishlistInterface $wishlist */
 
@@ -161,7 +164,7 @@ final class WishlistContext implements Context
     }
 
     /** @When user adds :variant product variant to the wishlist */
-    public function userAddsProductVariantToWishlist(ProductVariantInterface $variant)
+    public function userAddsProductVariantToWishlist(ProductVariantInterface $variant): void
     {
         $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/variant', $this->wishlist->getToken());
 
@@ -169,7 +172,8 @@ final class WishlistContext implements Context
             'productVariantId' => $variant->getId()
         ];
 
-        $response = $this->client->request(self::PATCH,
+        $response = $this->client->request(
+            self::PATCH,
             $uri,
             $this->getOptions(self::PATCH, $body)
         );
@@ -178,7 +182,7 @@ final class WishlistContext implements Context
         Assert::eq($response->getStatusCode(), 200);
     }
 
-    public function userHasProductVariantInTheWishlist(ProductVariantInterface $variant)
+    public function userHasProductVariantInTheWishlist(ProductVariantInterface $variant): bool
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
@@ -194,5 +198,53 @@ final class WishlistContext implements Context
                 $variant->getName()
             )
         );
+    }
+
+    /** @When user removes product :product from the wishlist */
+    public function userRemovesProductFromTheWishlist(ProductInterface $product)
+    {
+        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/products/%s',
+            $this->wishlist->getToken(),
+            $product->getId()
+        );
+
+        $response = $this->client->request(
+            self::DELETE,
+            $uri,
+            $this->getOptions(self::DELETE)
+        );
+
+        Assert::eq($response->getStatusCode(), 204);
+    }
+
+    /** @Then user removes :variant product variant from the wishlist */
+    public function userRemovesProductVariantFromTheWishlist(ProductVariantInterface $variant)
+    {
+        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/productVariants/%s',
+            $this->wishlist->getToken(),
+            $variant->getId()
+        );
+
+        $response = $this->client->request(
+            self::DELETE,
+            $uri,
+            $this->getOptions(self::DELETE)
+        );
+
+        Assert::eq($response->getStatusCode(), 204);
+    }
+
+    /** @Then user should have an empty wishlist */
+    public function userShouldHaveAnEmptyWishlist()
+    {
+        /** @var WishlistInterface $wishlist */
+
+        if (isset($this->user)) {
+            $wishlist = $this->wishlistRepository->findByShopUser($this->user);
+        } else {
+            $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
+        }
+
+        Assert::eq(count($wishlist->getProducts()), 0);
     }
 }
