@@ -8,7 +8,6 @@ use Behat\Behat\Context\Context;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use GuzzleHttp\ClientInterface;
-use Psr\Http\Message\ResponseInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -17,22 +16,26 @@ use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context
 {
-    private ClientInterface $client;
-
-    private WishlistInterface $wishlist;
-
     private WishlistRepositoryInterface $wishlistRepository;
 
     private UserRepositoryInterface $userRepository;
 
-    private ?string $token;
+    private ClientInterface $client;
+
+    private WishlistInterface $wishlist;
 
     private ?ShopUserInterface $user;
 
+    private ?string $token;
+
+    private const PATCH = 'PATCH';
+
+    private const POST = 'POST';
+
     public function __construct(
-        ClientInterface $client,
         WishlistRepositoryInterface $wishlistRepository,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ClientInterface $client
     )
     {
         $this->client = $client;
@@ -40,38 +43,37 @@ final class WishlistContext implements Context
         $this->userRepository = $userRepository;
     }
 
-    private function request(string $method, string $uri, string $json = '{}', $headers = null): ResponseInterface
+    private function getOptions(string $method, $body = null): array
     {
-        if ($headers === null) {
-            if ($method === 'PATCH') {
-                $contentType = 'application/merge-patch+json';
-            } else {
-                $contentType = 'application/ld+json';
-            }
+        if ($method === self::PATCH) {
+            $contentType = 'application/merge-patch+json';
+        } else {
+            $contentType = 'application/ld+json';
+        }
 
-            $headers = [
+        $options = [
+            'headers' => [
                 'Accept' => 'application/ld+json',
                 'Content-Type' => $contentType
-            ];
+            ],
+        ];
+
+        if(isset($body)) {
+            $options['body'] = json_encode($body);
         }
 
         if (isset($this->token)) {
-            $headers['Authorization'] = 'Bearer ' . $this->token;
+            $options['headers']['Authorization'] = 'Bearer ' . $this->token;
         }
 
-        return $this->client->request(
-            $method,
-            $uri,
-            [
-                'headers' => $headers,
-                'body' => $json
-            ]
-        );
+        return $options;
     }
 
     /** @Given user :email :password is authenticated */
     public function userIsAuthenticated(string $email, string $password)
     {
+        $uri = 'nginx:80/api/v2/shop/authentication-token';
+
         $body = [
             'email' => $email,
             'password' => $password
@@ -82,11 +84,13 @@ final class WishlistContext implements Context
             'Content-Type' => 'application/json'
         ];
 
-        $response = $this->request(
-            'POST',
-            'nginx:80/api/v2/shop/authentication-token',
-            json_encode($body),
-            $headers
+        $response = $this->client->request(
+            self::POST,
+            $uri,
+            [
+                'headers' => $headers,
+                'body' => json_encode($body)
+            ]
         );
 
         Assert::eq($response->getStatusCode(), 200);
@@ -100,11 +104,18 @@ final class WishlistContext implements Context
     /** @Given user has a wishlist */
     public function userHasAWishlist(): void
     {
-        $response = $this->request('POST', 'nginx:80/api/v2/shop/wishlists');
-        $json = json_decode((string)$response->getBody());
+        $uri = 'nginx:80/api/v2/shop/wishlists';
+
+        $response = $this->client->request(
+            self::POST,
+            $uri,
+            $this->getOptions(self::POST, [])
+        );
+
+        $jsonBody = json_decode((string)$response->getBody());
 
         /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->find((int)$json->id);
+        $wishlist = $this->wishlistRepository->find((int)$jsonBody->id);
         $this->wishlist = $wishlist;
     }
 
@@ -112,9 +123,15 @@ final class WishlistContext implements Context
     public function userAddsProductToTheWishlist(ProductInterface $product)
     {
         $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/product', $this->wishlist->getToken());
-        $json = json_encode(['productId' => $product->getId()]);
 
-        $response = $this->request('PATCH', $uri, $json);
+        $body = [
+            'productId' => $product->getId()
+        ];
+
+        $response = $this->client->request(self::PATCH,
+            $uri,
+            $this->getOptions(self::PATCH, $body)
+        );
 
         Assert::eq($response->getStatusCode(), 200);
     }
@@ -124,7 +141,7 @@ final class WishlistContext implements Context
     {
         /** @var WishlistInterface $wishlist */
 
-        if(isset($this->user)) {
+        if (isset($this->user)) {
             $wishlist = $this->wishlistRepository->findByShopUser($this->user);
         } else {
             $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
@@ -147,9 +164,16 @@ final class WishlistContext implements Context
     public function userAddsProductVariantToWishlist(ProductVariantInterface $variant)
     {
         $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/variant', $this->wishlist->getToken());
-        $body = json_encode(['productVariantId' => $variant->getId()]);
 
-        $response = $this->request('PATCH', $uri, $body);
+        $body = [
+            'productVariantId' => $variant->getId()
+        ];
+
+        $response = $this->client->request(self::PATCH,
+            $uri,
+            $this->getOptions(self::PATCH, $body)
+        );
+
 
         Assert::eq($response->getStatusCode(), 200);
     }

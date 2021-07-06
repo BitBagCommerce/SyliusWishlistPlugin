@@ -60,7 +60,7 @@ services:
     bitbag_wishlist_plugin.behat.context.api.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Api\WishlistContext
         arguments:
-            - "@sylius.http_client"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@sylius.repository.shop_user"
+            - "@sylius.http_client"
 
