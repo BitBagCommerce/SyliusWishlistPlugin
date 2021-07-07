@@ -62,5 +62,9 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@sylius.repository.shop_user"
-            - "@sylius.http_client"
+            - "@bitbag_wishlist_plugin.http_client"
 
+    bitbag_wishlist_plugin.http_client:
+        class: GuzzleHttp\Client
+        arguments:
+            - http_errors: false

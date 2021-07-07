@@ -60,7 +60,6 @@ final class WishlistContext implements Context
                 'Accept' => 'application/ld+json',
                 'Content-Type' => $contentType
             ],
-            'http_errors' => false
         ];
 
         if (isset($body)) {
