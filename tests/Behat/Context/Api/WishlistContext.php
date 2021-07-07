@@ -74,6 +74,15 @@ final class WishlistContext implements Context
         return $options;
     }
 
+    private function resolveStatusCodeForUnauthenticatedUser(?ShopUserInterface $user, int $statusCode): void
+    {
+        if (isset($user)) {
+            Assert::eq($statusCode, Response::HTTP_FORBIDDEN);
+        } else {
+            Assert::eq($statusCode, Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
     private function addProductToTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
     {
         $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/product', $wishlist->getToken());
@@ -101,6 +110,20 @@ final class WishlistContext implements Context
             self::PATCH,
             $uri,
             $this->getOptions(self::PATCH, $body)
+        );
+    }
+
+    private function removeProductFromTheWishlist(WishlistInterface $wishlist, ProductInterface $product)
+    {
+        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/products/%s',
+            $this->wishlist->getToken(),
+            $product->getId()
+        );
+
+        return $this->client->request(
+            self::DELETE,
+            $uri,
+            $this->getOptions(self::DELETE)
         );
     }
 
@@ -243,11 +266,7 @@ final class WishlistContext implements Context
         $response = $this->addProductToTheWishlist($this->wishlist, $product);
         $statusCode = $response->getStatusCode();
 
-        if (isset($this->user)) {
-            Assert::eq($statusCode, Response::HTTP_FORBIDDEN);
-        } else {
-            Assert::eq($statusCode, Response::HTTP_UNAUTHORIZED);
-        }
+        $this->resolveStatusCodeForUnauthenticatedUser($this->user, $statusCode);
     }
 
     /** @Then user tries to add :variant product variant to the wishlist  */
@@ -256,11 +275,7 @@ final class WishlistContext implements Context
         $response = $this->addProductVariantToTheWishlist($this->wishlist, $variant);
         $statusCode = $response->getStatusCode();
 
-        if (isset($this->user)) {
-            Assert::eq($statusCode, Response::HTTP_FORBIDDEN);
-        } else {
-            Assert::eq($statusCode, Response::HTTP_UNAUTHORIZED);
-        }
+        $this->resolveStatusCodeForUnauthenticatedUser($this->user, $statusCode);
     }
 
     /** @Then user removes :variant product variant from the wishlist */
@@ -278,6 +293,15 @@ final class WishlistContext implements Context
         );
 
         Assert::eq($response->getStatusCode(), 204);
+    }
+
+    /** @Then user tries to remove product :product from the wishlist */
+    public function userTriesToRemoveProductFromTheWishlist(ProductInterface $product)
+    {
+        $response = $this->removeProductFromTheWishlist($this->wishlist, $product);
+        $statusCode = $response->getStatusCode();
+
+        $this->resolveStatusCodeForUnauthenticatedUser($this->user, $statusCode);
     }
 
     /** @Then user should have an empty wishlist */
