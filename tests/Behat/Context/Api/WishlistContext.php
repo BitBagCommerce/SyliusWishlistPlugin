@@ -8,10 +8,12 @@ use Behat\Behat\Context\Context;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use GuzzleHttp\ClientInterface;
+use Psr\Http\Message\ResponseInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context
@@ -58,9 +60,10 @@ final class WishlistContext implements Context
                 'Accept' => 'application/ld+json',
                 'Content-Type' => $contentType
             ],
+            'http_errors' => false
         ];
 
-        if(isset($body)) {
+        if (isset($body)) {
             $options['body'] = json_encode($body);
         }
 
@@ -69,6 +72,36 @@ final class WishlistContext implements Context
         }
 
         return $options;
+    }
+
+    private function addProductToTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
+    {
+        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/product', $wishlist->getToken());
+
+        $body = [
+            'productId' => $product->getId()
+        ];
+
+        return $this->client->request(
+            self::PATCH,
+            $uri,
+            $this->getOptions(self::PATCH, $body)
+        );
+    }
+
+    private function addProductVariantToTheWishlist(WishlistInterface $wishlist, ProductVariantInterface $variant)
+    {
+        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/variant', $wishlist->getToken());
+
+        $body = [
+            'productVariantId' => $variant->getId()
+        ];
+
+        return $this->client->request(
+            self::PATCH,
+            $uri,
+            $this->getOptions(self::PATCH, $body)
+        );
     }
 
     /** @Given user :email :password is authenticated */
@@ -103,6 +136,13 @@ final class WishlistContext implements Context
         $this->token = (string)$json->token;
     }
 
+    /** @Given user is unauthenticated */
+    public function userIsUnauthenticated()
+    {
+        $this->user = null;
+        $this->token = null;
+    }
+
     /** @Given user has a wishlist */
     public function userHasAWishlist(): void
     {
@@ -124,23 +164,13 @@ final class WishlistContext implements Context
     /** @When user adds product :product to the wishlist */
     public function userAddsProductToTheWishlist(ProductInterface $product): void
     {
-        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/product', $this->wishlist->getToken());
-
-        $body = [
-            'productId' => $product->getId()
-        ];
-
-        $response = $this->client->request(
-            self::PATCH,
-            $uri,
-            $this->getOptions(self::PATCH, $body)
-        );
+        $response = $this->addProductToTheWishlist($this->wishlist, $product);
 
         Assert::eq($response->getStatusCode(), 200);
     }
 
     /** @Then user should have product :product in the wishlist */
-    public function userHasProductInTheWishlist(ProductInterface $product): bool
+    public function userShouldHaveProductInTheWishlist(ProductInterface $product): bool
     {
         /** @var WishlistInterface $wishlist */
 
@@ -164,25 +194,15 @@ final class WishlistContext implements Context
     }
 
     /** @When user adds :variant product variant to the wishlist */
-    public function userAddsProductVariantToWishlist(ProductVariantInterface $variant): void
+    public function userAddsProductVariantToTheWishlist(ProductVariantInterface $variant): void
     {
-        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/variant', $this->wishlist->getToken());
-
-        $body = [
-            'productVariantId' => $variant->getId()
-        ];
-
-        $response = $this->client->request(
-            self::PATCH,
-            $uri,
-            $this->getOptions(self::PATCH, $body)
-        );
-
+        $response = $this->addProductVariantToTheWishlist($this->wishlist, $variant);
 
         Assert::eq($response->getStatusCode(), 200);
     }
 
-    public function userHasProductVariantInTheWishlist(ProductVariantInterface $variant): bool
+    /** @Then user should have :variant product variant in the wishlist */
+    public function userShouldHaveProductVariantInTheWishlist(ProductVariantInterface $variant): bool
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
@@ -215,6 +235,32 @@ final class WishlistContext implements Context
         );
 
         Assert::eq($response->getStatusCode(), 204);
+    }
+
+    /** @Then user tries to add product :product to the wishlist */
+    public function userTriesToAddProductToTheWishlist(ProductInterface $product)
+    {
+        $response = $this->addProductToTheWishlist($this->wishlist, $product);
+        $statusCode = $response->getStatusCode();
+
+        if (isset($this->user)) {
+            Assert::eq($statusCode, Response::HTTP_FORBIDDEN);
+        } else {
+            Assert::eq($statusCode, Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
+    /** @Then user tries to add :variant product variant to the wishlist  */
+    public function userTriesToAddProductVariantToTheWishlist(ProductVariantInterface $variant)
+    {
+        $response = $this->addProductVariantToTheWishlist($this->wishlist, $variant);
+        $statusCode = $response->getStatusCode();
+
+        if (isset($this->user)) {
+            Assert::eq($statusCode, Response::HTTP_FORBIDDEN);
+        } else {
+            Assert::eq($statusCode, Response::HTTP_UNAUTHORIZED);
+        }
     }
 
     /** @Then user removes :variant product variant from the wishlist */
