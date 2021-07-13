@@ -14,7 +14,7 @@
 
         <one-to-many field="wishlistProducts" target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface" mapped-by="wishlist">
             <cascade>
-                <cascade-all/>
+                <cascade-remove />
             </cascade>
         </one-to-many>
 
