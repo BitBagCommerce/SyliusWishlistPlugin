@@ -19,9 +19,9 @@
         <attribute name="validation_groups">sylius</attribute>
 
         <collectionOperations>
-            <collectionOperation name="shop_get">
+            <collectionOperation name="shop_get_wishlists">
                 <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/wishlists</attribute>
+                <attribute name="path">/admin/wishlists</attribute>
             </collectionOperation>
 
             <collectionOperation name="shop_create_wishlist">
@@ -39,7 +39,7 @@
         </collectionOperations>
 
         <itemOperations>
-            <itemOperation name="shop_get">
+            <itemOperation name="shop_get_wishlist">
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/wishlists/{id}</attribute>
             </itemOperation>
