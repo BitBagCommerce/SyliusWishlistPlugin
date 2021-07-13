@@ -8,7 +8,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -16,19 +16,19 @@ class AddProductToWishlistHandler implements MessageHandlerInterface
 {
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    private WishlistUpdaterInterface $wishlistUpdater;
-
     private ProductRepositoryInterface $productRepository;
+
+    private ObjectManager $wishlistManager;
 
     public function __construct(
         WishlistProductFactoryInterface $wishlistProductFactory,
-        WishlistUpdaterInterface $wishlistUpdater,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        ObjectManager $wishlistManager
     )
     {
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->wishlistUpdater = $wishlistUpdater;
         $this->productRepository = $productRepository;
+        $this->wishlistManager = $wishlistManager;
     }
 
     public function __invoke(AddProductToWishlist $addProductToWishlist): WishlistInterface
@@ -46,6 +46,11 @@ class AddProductToWishlistHandler implements MessageHandlerInterface
 
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
-        return $this->wishlistUpdater->addProductToWishlist($wishlist, $wishlistProduct);
+        $wishlist->addWishlistProduct($wishlistProduct);
+
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
+
+        return $wishlist;
     }
 }

@@ -11,10 +11,7 @@
         </id>
 
         <many-to-one field="wishlist" target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistInterface" inversed-by="wishlistProducts">
-            <cascade>
-                <cascade-persist />
-            </cascade>
-            <join-column name="wishlist_id" referenced-column-name="id" nullable="false" />
+            <join-column name="wishlist_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
         </many-to-one>
 
         <many-to-one field="product" target-entity="Sylius\Component\Product\Model\ProductInterface">

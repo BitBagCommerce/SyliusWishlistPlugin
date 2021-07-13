@@ -8,7 +8,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -16,19 +16,19 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
 {
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    private WishlistUpdaterInterface $wishlistUpdater;
-
     private ProductVariantRepositoryInterface $productVariantRepository;
+
+    private ObjectManager $wishlistManager;
 
     public function __construct(
         WishlistProductFactoryInterface $wishlistProductFactory,
-        WishlistUpdaterInterface $wishlistUpdater,
-        ProductVariantRepositoryInterface $productVariantRepository
+        ProductVariantRepositoryInterface $productVariantRepository,
+        ObjectManager $wishlistManager
     )
     {
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->wishlistUpdater = $wishlistUpdater;
         $this->productVariantRepository = $productVariantRepository;
+        $this->wishlistManager = $wishlistManager;
     }
 
     public function __invoke(AddProductVariantToWishlist $addProductVariantToWishlist): WishlistInterface
@@ -46,6 +46,11 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
 
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
 
-        return $this->wishlistUpdater->addProductToWishlist($wishlist, $wishlistProduct);
+        $wishlist->addWishlistProduct($wishlistProduct);
+
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
+
+        return $wishlist;
     }
 }

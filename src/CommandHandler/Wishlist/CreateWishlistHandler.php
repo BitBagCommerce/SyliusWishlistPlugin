@@ -8,7 +8,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
-use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -21,18 +21,18 @@ final class CreateWishlistHandler implements MessageHandlerInterface
 
     private ShopUserWishlistResolverInterface $shopUserWishlistResolver;
 
-    private WishlistUpdaterInterface $wishlistUpdater;
+    private ObjectManager $wishlistManager;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
-        WishlistUpdaterInterface $wishlistUpdater
+        ObjectManager $wishlistManager
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
         $this->shopUserWishlistResolver = $shopUserWishlistResolver;
-        $this->wishlistUpdater = $wishlistUpdater;
+        $this->wishlistManager = $wishlistManager;
     }
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
@@ -46,7 +46,8 @@ final class CreateWishlistHandler implements MessageHandlerInterface
             $wishlist = $this->wishlistFactory->createNew();
         }
 
-        $this->wishlistUpdater->updateWishlist($wishlist);
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
 
         return $wishlist;
     }

@@ -310,8 +310,10 @@ final class WishlistContext implements Context
 
         if (isset($this->user)) {
             $wishlist = $this->wishlistRepository->findByShopUser($this->user);
+            var_dump($wishlist->getId());
         } else {
             $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
+            var_dump($wishlist->getId());
         }
 
         Assert::eq(count($wishlist->getProducts()), 0);
