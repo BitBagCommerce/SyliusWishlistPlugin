@@ -76,7 +76,7 @@
                 <attribute name="method">DELETE</attribute>
                 <attribute name="path">/shop/wishlists/{id}/products/{productId}</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="controller">BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveProductFromWishlistAction</attribute>
+                <attribute name="controller">bitbag.sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:remove_product</attribute>
@@ -108,7 +108,7 @@
                 <attribute name="method">DELETE</attribute>
                 <attribute name="path">/shop/wishlists/{id}/productVariants/{productVariantId}</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="controller">BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveProductVariantFromWishlistAction</attribute>
+                <attribute name="controller">bitbag.sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:remove_product_variant</attribute>
@@ -140,7 +140,7 @@
                 <attribute name="method">DELETE</attribute>
                 <attribute name="path">/shop/wishlists/{id}</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="controller">BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveWishlistAction</attribute>
+                <attribute name="controller">bitbag.sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:remove_wishlist</attribute>
