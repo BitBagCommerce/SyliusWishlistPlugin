@@ -1,3 +1,6 @@
+imports:
+    - { resource: "services/**/*.yml" }
+
 services:
     bitbag_sylius_wishlist_plugin.controller.action.add_product_to_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToWishlistAction

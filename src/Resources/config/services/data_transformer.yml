@@ -1,0 +1,5 @@
+services:
+    bitbag.sylius_wishlist_plugin.data_transformer.wishlist.wishlist_token_value_aware_input_command_data_transformer:
+        class: BitBag\SyliusWishlistPlugin\DataTransformer\Wishlist\WishlistTokenValueAwareInputCommandDataTransformer
+        tags:
+            - { name: sylius.api.command_data_transformer }

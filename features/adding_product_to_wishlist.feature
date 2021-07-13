@@ -43,3 +43,5 @@ Feature: Adding a product to wishlist
         And I log out
         And I log in again
         Then I should have one item in my wishlist
+
+
