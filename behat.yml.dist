@@ -58,5 +58,4 @@ default:
 
         FriendsOfBehat\SuiteSettingsExtension:
             paths:
-                - "vendor/sylius/sylius/features"
                 - "features"
