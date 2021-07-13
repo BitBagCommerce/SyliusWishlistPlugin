@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+
 final class AddProductVariantToWishlist implements WishlistTokenValueAwareInterface
 {
     public int $productVariantId;
 
-    private string $token;
+    private WishlistInterface $wishlist;
 
     public function __construct(int $productVariantId)
     {
         $this->productVariantId = $productVariantId;
     }
 
-    public function getWishlistTokenValue(): string
+    public function getWishlist(): WishlistInterface
     {
-        return $this->token;
+        return $this->wishlist;
     }
 
-    public function setWishListTokenValue(string $token): void
+    public function setWishlist(WishlistInterface $wishlist): void
     {
-        $this->token = $token;
+        $this->wishlist = $wishlist;
     }
 }

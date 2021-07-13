@@ -8,7 +8,6 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -21,11 +20,8 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
-    private WishlistRepositoryInterface $wishlistRepository;
-
     public function __construct(
         WishlistProductFactoryInterface $wishlistProductFactory,
-        WishlistRepositoryInterface $wishlistRepository,
         WishlistUpdaterInterface $wishlistUpdater,
         ProductVariantRepositoryInterface $productVariantRepository
     )
@@ -33,13 +29,12 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->wishlistUpdater = $wishlistUpdater;
         $this->productVariantRepository = $productVariantRepository;
-        $this->wishlistRepository = $wishlistRepository;
     }
 
     public function __invoke(AddProductVariantToWishlist $addProductVariantToWishlist): WishlistInterface
     {
         $variant = $this->productVariantRepository->find($addProductVariantToWishlist->productVariantId);
-        $wishlist = $this->wishlistRepository->findByToken($addProductVariantToWishlist->getWishlistTokenValue());
+        $wishlist = $addProductVariantToWishlist->getWishlist();
 
         if (null === $variant) {
             throw new ProductVariantNotFoundException(

@@ -3,7 +3,6 @@ services:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductToWishlistHandler
         arguments:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
             - "@sylius.repository.product"
         tags:
@@ -12,7 +11,6 @@ services:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler
         arguments:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
             - "@sylius.repository.product_variant"
         tags:
