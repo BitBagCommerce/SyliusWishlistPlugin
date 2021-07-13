@@ -33,12 +33,14 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
 
     public function __invoke(AddProductVariantToWishlist $addProductVariantToWishlist): WishlistInterface
     {
-        $variant = $this->productVariantRepository->find($addProductVariantToWishlist->productVariantId);
+        $variantId = $addProductVariantToWishlist->productVariantId;
+
+        $variant = $this->productVariantRepository->find($variantId);
         $wishlist = $addProductVariantToWishlist->getWishlist();
 
         if (null === $variant) {
             throw new ProductVariantNotFoundException(
-                sprintf("The ProductVariant %s does not exist", $addProductVariantToWishlist->productVariantId)
+                sprintf("The ProductVariant %s does not exist", $variantId)
             );
         }
 

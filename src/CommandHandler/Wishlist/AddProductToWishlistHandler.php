@@ -33,12 +33,14 @@ class AddProductToWishlistHandler implements MessageHandlerInterface
 
     public function __invoke(AddProductToWishlist $addProductToWishlist): WishlistInterface
     {
-        $product = $this->productRepository->find($addProductToWishlist->productId);
+        $productId = $addProductToWishlist->productId;
+
+        $product = $this->productRepository->find($productId);
         $wishlist = $addProductToWishlist->getWishlist();
 
         if (null === $product) {
             throw new ProductNotFoundException(
-                sprintf("The Product %s does not exist", $addProductToWishlist->productId)
+                sprintf("The Product %s does not exist", $productId)
             );
         }
 
