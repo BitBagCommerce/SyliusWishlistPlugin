@@ -3,6 +3,12 @@ imports:
     - tests/Behat/Resources/suites.yml
 
 default:
+    formatters:
+        pretty:
+            verbose: true
+            paths: false
+            snippets: false
+
     extensions:
         DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
 
