@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
+use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
@@ -17,30 +20,48 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
 
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private WishlistUpdaterInterface $wishlistUpdater;
+    private RepositoryInterface $wishlistProductRepository;
+
+    private ObjectManager $wishlistManager;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistUpdaterInterface $wishlistUpdater
+        RepositoryInterface $wishlistProductRepository,
+        ObjectManager $wishlistManager
     )
     {
         $this->productRepository = $productRepository;
         $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistUpdater = $wishlistUpdater;
+        $this->wishlistProductRepository = $wishlistProductRepository;
+        $this->wishlistManager = $wishlistManager;
     }
 
-    public function __invoke(RemoveProductFromWishlist $removeProductFromWishlist)
+    public function __invoke(RemoveProductFromWishlist $removeProductFromWishlist): WishlistInterface
     {
-        $product = $this->productRepository->find($removeProductFromWishlist->getProductIdValue());
-        $wishlist = $this->wishlistRepository->findByToken($removeProductFromWishlist->getWishlistTokenValue());
+        $productId = $removeProductFromWishlist->getProductIdValue();
+        $token = $removeProductFromWishlist->getWishlistTokenValue();
 
-        if (null === $product) {
+        $product = $this->productRepository->find($productId);
+        $wishlistProduct = $this->wishlistProductRepository->findOneBy(['product' => $product]);
+
+        $wishlist = $this->wishlistRepository->findByToken($token);
+
+        if (null === $product || null === $wishlistProduct) {
             throw new ProductNotFoundException(
-                sprintf("The Product %s does not exist", $removeProductFromWishlist->getProductIdValue())
+                sprintf("The Product %s does not exist", $productId)
             );
         }
 
-        $this->wishlistUpdater->removeProductFromWishlist($wishlist, $product);
+        if (null === $wishlist) {
+            throw new WishlistNotFoundException(
+                sprintf("The Wishlist %s does not exist", $token)
+            );
+        }
+
+        $wishlist = $wishlist->removeProduct($wishlistProduct);
+        $this->wishlistManager->flush();
+
+        return $wishlist;
     }
 }

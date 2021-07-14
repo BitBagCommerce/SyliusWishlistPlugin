@@ -52,4 +52,8 @@ interface WishlistInterface extends ResourceInterface
     public function getToken(): string;
 
     public function setToken(string $token): void;
+
+    public function removeProduct(WishlistProductInterface $product): self;
+
+    public function removeProductVariant(ProductVariantInterface $variant): self;
 }

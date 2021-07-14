@@ -12,9 +12,9 @@
 
         <field name="token" type="string" column="token" unique="true" />
 
-        <one-to-many field="wishlistProducts" target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface" mapped-by="wishlist">
+        <one-to-many field="wishlistProducts" target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface" mapped-by="wishlist" orphan-removal="true">
             <cascade>
-                <cascade-all/>
+                <cascade-all />
             </cascade>
         </one-to-many>
 

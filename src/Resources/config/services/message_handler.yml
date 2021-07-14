@@ -3,49 +3,54 @@ services:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductToWishlistHandler
         arguments:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
             - "@sylius.repository.product"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }
+
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.add_product_variant_to_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler
         arguments:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
             - "@sylius.repository.product_variant"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }
+
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.remove_product_from_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveProductFromWishlistHandler
         arguments:
             - "@sylius.repository.product"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist_product"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }
+
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.remove_product_variant_from_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveProductVariantFromWishlistHandler
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@sylius.repository.product_variant"
-            - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist_product"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }
+
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.create_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateWishlistHandler
         arguments:
             - "@security.token_storage"
             - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist"
             - "@bitbag.sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver"
-            - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }
+
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.remove_wishlist:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveWishlistHandler
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
             - { name: messenger.message_handler, bus: sylius_default.bus }

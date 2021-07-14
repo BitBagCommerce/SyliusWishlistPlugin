@@ -9,8 +9,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Updater\WishlistUpdaterInterface;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -19,44 +18,41 @@ class AddProductToWishlistHandler implements MessageHandlerInterface
 {
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    private WishlistUpdaterInterface $wishlistUpdater;
-
     private ProductRepositoryInterface $productRepository;
 
-    private WishlistRepositoryInterface $wishlistRepository;
+    private ObjectManager $wishlistManager;
 
     public function __construct(
         WishlistProductFactoryInterface $wishlistProductFactory,
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistUpdaterInterface $wishlistUpdater,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        ObjectManager $wishlistManager
     )
     {
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->wishlistUpdater = $wishlistUpdater;
         $this->productRepository = $productRepository;
-        $this->wishlistRepository = $wishlistRepository;
+        $this->wishlistManager = $wishlistManager;
     }
 
     public function __invoke(AddProductToWishlist $addProductToWishlist): WishlistInterface
     {
-        $product = $this->productRepository->find($addProductToWishlist->productId);
-        $wishlist = $this->wishlistRepository->findByToken($addProductToWishlist->getWishlistTokenValue());
+        $productId = $addProductToWishlist->productId;
+
+        $product = $this->productRepository->find($productId);
+        $wishlist = $addProductToWishlist->getWishlist();
 
         if (null === $product) {
             throw new ProductNotFoundException(
-                sprintf("The Product %s does not exist", $addProductToWishlist->productId)
-            );
-        }
-
-        if (null === $wishlist) {
-            throw new WishlistNotFoundException(
-                sprintf("The Wishlist with token %s does not exist", $addProductToWishlist->getWishlistTokenValue())
+                sprintf("The Product %s does not exist", $productId)
             );
         }
 
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
-        return $this->wishlistUpdater->addProductToWishlist($wishlist, $wishlistProduct);
+        $wishlist->addWishlistProduct($wishlistProduct);
+
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
+
+        return $wishlist;
     }
 }

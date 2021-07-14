@@ -1,6 +1,0 @@
-services:
-    bitbag.sylius_wishlist_plugin.updater.wishlist.wishlist_updater:
-        class: BitBag\SyliusWishlistPlugin\Updater\WishlistUpdater
-        arguments:
-            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
-            - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"

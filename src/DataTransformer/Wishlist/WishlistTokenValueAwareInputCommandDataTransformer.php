@@ -13,10 +13,11 @@ class WishlistTokenValueAwareInputCommandDataTransformer implements CommandDataT
 {
     public function transform($object, string $to, array $context = []): WishlistTokenValueAwareInterface
     {
-        /** @var WishlistInterface $wishList */
-        $wishList = $context[AbstractItemNormalizer::OBJECT_TO_POPULATE];
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $context[AbstractItemNormalizer::OBJECT_TO_POPULATE];
 
-        $object->setWishlistTokenValue($wishList->getToken());
+        /** @var WishlistTokenValueAwareInterface $object */
+        $object->setWishlist($wishlist);
 
         return $object;
     }

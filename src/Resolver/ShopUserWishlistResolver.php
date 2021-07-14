@@ -27,7 +27,7 @@ final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterfac
     {
         $wishlist = $this->wishlistRepository->findByShopUser($user);
 
-        if (!$wishlist) {
+        if (null === $wishlist) {
             $wishlist = $this->wishlistFactory->createForUser($user);
         }
 

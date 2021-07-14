@@ -30,7 +30,7 @@ final class WishlistVoter extends Voter
             self::DELETE,
         ];
 
-        if (!in_array($attribute, $attributes)) {
+        if (!in_array($attribute, $attributes, true)) {
             return false;
         }
 
