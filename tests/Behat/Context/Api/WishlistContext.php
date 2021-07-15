@@ -15,7 +15,6 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
@@ -93,7 +92,9 @@ final class WishlistContext extends MinkContext implements Context
 
     private function addProductToTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
     {
-        $uri = sprintf('/api/v2/shop/wishlists/%s/product', $wishlist->getToken());
+        $uri = $this->router->generate('api_wishlists_shop_add_product_to_wishlist_item',[
+            $wishlist->getToken()
+        ]);
 
         $body = [
             'productId' => $product->getId()
@@ -101,14 +102,16 @@ final class WishlistContext extends MinkContext implements Context
 
         return $this->client->request(
             self::PATCH,
-            $uri,
+            sprintf('%s%s', self::$domain, $uri),
             $this->getOptions(self::PATCH, $body)
         );
     }
 
     private function addProductVariantToTheWishlist(WishlistInterface $wishlist, ProductVariantInterface $variant)
     {
-        $uri = sprintf('/api/v2/shop/wishlists/%s/variant', $wishlist->getToken());
+        $uri = $this->router->generate('api_wishlists_shop_add_product_variant_to_wishlist_item',[
+            $wishlist->getToken()
+        ]);
 
         $body = [
             'productVariantId' => $variant->getId()
@@ -116,21 +119,21 @@ final class WishlistContext extends MinkContext implements Context
 
         return $this->client->request(
             self::PATCH,
-            $uri,
+            sprintf('%s%s', self::$domain, $uri),
             $this->getOptions(self::PATCH, $body)
         );
     }
 
-    private function removeProductFromTheWishlist(WishlistInterface $wishlist, ProductInterface $product)
+    private function removeProductFromTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
     {
-        $uri = sprintf('/api/v2/shop/wishlists/%s/products/%s',
-            $this->wishlist->getToken(),
+        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item',[
+            $wishlist->getToken(),
             $product->getId()
-        );
+        ]);
 
         return $this->client->request(
             self::DELETE,
-            $uri,
+            sprintf('%s%s', self::$domain, $uri),
             $this->getOptions(self::DELETE)
         );
     }
