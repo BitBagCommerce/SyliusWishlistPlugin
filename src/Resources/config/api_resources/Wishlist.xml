@@ -161,7 +161,7 @@
             </itemOperation>
         </itemOperations>
 
-        <property name="id" identifier="false" writable="false"/>
-        <property name="token" identifier="true" writable="false"/>
+        <property name="id" identifier="false" writable="false" readable="true"/>
+        <property name="token" identifier="true" writable="false" readable="true"/>
     </resource>
 </resources>

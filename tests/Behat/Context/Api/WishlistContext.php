@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Api;
 
 use Behat\Behat\Context\Context;
+use Behat\MinkExtension\Context\MinkContext;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use GuzzleHttp\ClientInterface;
@@ -14,17 +15,23 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
-final class WishlistContext implements Context
+final class WishlistContext extends MinkContext implements Context
 {
     private WishlistRepositoryInterface $wishlistRepository;
+
+    protected static string $domain;
 
     private UserRepositoryInterface $userRepository;
 
     private ClientInterface $client;
 
     private WishlistInterface $wishlist;
+
+    private RouterInterface $router;
 
     private ?ShopUserInterface $user;
 
@@ -39,12 +46,14 @@ final class WishlistContext implements Context
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         UserRepositoryInterface $userRepository,
-        ClientInterface $client
+        ClientInterface $client,
+        RouterInterface $router
     )
     {
         $this->client = $client;
         $this->wishlistRepository = $wishlistRepository;
         $this->userRepository = $userRepository;
+        $this->router = $router;
     }
 
     private function getOptions(string $method, $body = null): array
@@ -84,7 +93,7 @@ final class WishlistContext implements Context
 
     private function addProductToTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
     {
-        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/product', $wishlist->getToken());
+        $uri = sprintf('/api/v2/shop/wishlists/%s/product', $wishlist->getToken());
 
         $body = [
             'productId' => $product->getId()
@@ -99,7 +108,7 @@ final class WishlistContext implements Context
 
     private function addProductVariantToTheWishlist(WishlistInterface $wishlist, ProductVariantInterface $variant)
     {
-        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/variant', $wishlist->getToken());
+        $uri = sprintf('/api/v2/shop/wishlists/%s/variant', $wishlist->getToken());
 
         $body = [
             'productVariantId' => $variant->getId()
@@ -114,7 +123,7 @@ final class WishlistContext implements Context
 
     private function removeProductFromTheWishlist(WishlistInterface $wishlist, ProductInterface $product)
     {
-        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/products/%s',
+        $uri = sprintf('/api/v2/shop/wishlists/%s/products/%s',
             $this->wishlist->getToken(),
             $product->getId()
         );
@@ -129,7 +138,7 @@ final class WishlistContext implements Context
     /** @Given user :email :password is authenticated */
     public function userIsAuthenticated(string $email, string $password): void
     {
-        $uri = 'nginx:80/api/v2/shop/authentication-token';
+        $uri = '/api/v2/shop/authentication-token';
 
         $body = [
             'email' => $email,
@@ -143,7 +152,7 @@ final class WishlistContext implements Context
 
         $response = $this->client->request(
             self::POST,
-            $uri,
+            sprintf('%s%s', self::$domain, $uri),
             [
                 'headers' => $headers,
                 'body' => json_encode($body)
@@ -168,16 +177,16 @@ final class WishlistContext implements Context
     /** @Given user has a wishlist */
     public function userHasAWishlist(): void
     {
-        $uri = 'nginx:80/api/v2/shop/wishlists';
-
+        $uri = $this->router->generate('api_wishlists_shop_create_wishlist_collection');
         $response = $this->client->request(
             self::POST,
-            $uri,
-            $this->getOptions(self::POST, [])
+            sprintf('%s%s', self::$domain, $uri),
+            $this->getOptions(self::POST)
         );
 
         $jsonBody = json_decode((string)$response->getBody());
 
+        dump($jsonBody);
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$jsonBody->id);
         $this->wishlist = $wishlist;
@@ -245,14 +254,15 @@ final class WishlistContext implements Context
     /** @When user removes product :product from the wishlist */
     public function userRemovesProductFromTheWishlist(ProductInterface $product)
     {
-        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/products/%s',
+
+        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item',[
             $this->wishlist->getToken(),
             $product->getId()
-        );
+        ]);
 
         $response = $this->client->request(
             self::DELETE,
-            $uri,
+            sprintf('%s%s', self::$domain, $uri),
             $this->getOptions(self::DELETE)
         );
 
@@ -268,7 +278,7 @@ final class WishlistContext implements Context
         $this->resolveStatusCodeForUnauthenticatedUser($this->user, $statusCode);
     }
 
-    /** @Then user tries to add :variant product variant to the wishlist  */
+    /** @Then user tries to add :variant product variant to the wishlist */
     public function userTriesToAddProductVariantToTheWishlist(ProductVariantInterface $variant)
     {
         $response = $this->addProductVariantToTheWishlist($this->wishlist, $variant);
@@ -280,14 +290,14 @@ final class WishlistContext implements Context
     /** @Then user removes :variant product variant from the wishlist */
     public function userRemovesProductVariantFromTheWishlist(ProductVariantInterface $variant)
     {
-        $uri = sprintf('nginx:80/api/v2/shop/wishlists/%s/productVariants/%s',
+        $uri = $this->router->generate('api_wishlists_shop_remove_product_variant_from_wishlist_item',[
             $this->wishlist->getToken(),
             $variant->getId()
-        );
+        ]);
 
         $response = $this->client->request(
             self::DELETE,
-            $uri,
+            sprintf('%s%s', self::$domain, $uri),
             $this->getOptions(self::DELETE)
         );
 
@@ -317,5 +327,14 @@ final class WishlistContext implements Context
         }
 
         Assert::eq(count($wishlist->getProducts()), 0);
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function setupDomain()
+    {
+        $domain = (string)$this->getMinkParameter("base_url");;
+        self::$domain = trim($domain, "/");
     }
 }

@@ -6,9 +6,13 @@
     <class name="BitBag\SyliusWishlistPlugin\Entity\Wishlist">
         <attribute name="id">
             <group>shop:wishlist:read</group>
+            <group>shop:wishlist:create</group>
+            <group>shop:wishlist:write</group>
         </attribute>
         <attribute name="token">
             <group>shop:wishlist:read</group>
+            <group>shop:wishlist:create</group>
+            <group>shop:wishlist:write</group>
         </attribute>
         <attribute name="shopUser">
             <group>shop:wishlist:read</group>
