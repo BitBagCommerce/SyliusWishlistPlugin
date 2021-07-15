@@ -53,6 +53,9 @@ class Wishlist implements WishlistInterface
         return new ArrayCollection($products);
     }
 
+    /**
+     * @return Collection<int,ProductVariantInterface|null>
+     */
     public function getProductVariants(): Collection
     {
         $variants = [];
@@ -121,7 +124,7 @@ class Wishlist implements WishlistInterface
 
     public function getToken(): string
     {
-        return (string)$this->token;
+        return (string) $this->token;
     }
 
     public function setToken(string $token): void

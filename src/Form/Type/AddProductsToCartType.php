@@ -20,8 +20,7 @@ final class AddProductsToCartType extends AbstractType
 {
     private AddToCartCommandFactoryInterface $addToCartCommandFactory;
 
-    /** @var FactoryInterface */
-    private $cartItemFactory;
+    private CartItemFactoryInterface $cartItemFactory;
 
     private OrderItemQuantityModifierInterface $orderItemQuantityModifier;
 

@@ -21,7 +21,7 @@ final class RemoveProductVariantFromWishlistAction
 
     public function __invoke(Request $request): JsonResponse
     {
-        $wishlistToken = (string) $request->attributes->get('id');
+        $wishlistToken = (string) $request->attributes->get('token');
         $productVariantId = (int) $request->attributes->get('productVariantId');
 
         $removeProductVariantFromWishlist = new RemoveProductVariantFromWishlist($productVariantId, $wishlistToken);

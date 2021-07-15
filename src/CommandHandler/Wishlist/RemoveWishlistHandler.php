@@ -19,8 +19,7 @@ final class RemoveWishlistHandler implements MessageHandlerInterface
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         ObjectManager $wishlistManager
-    )
-    {
+    ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistManager = $wishlistManager;
     }
@@ -32,7 +31,7 @@ final class RemoveWishlistHandler implements MessageHandlerInterface
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
-                sprintf("The Wishlist %s does not exist", $token)
+                sprintf('The Wishlist %s does not exist', $token)
             );
         }
 

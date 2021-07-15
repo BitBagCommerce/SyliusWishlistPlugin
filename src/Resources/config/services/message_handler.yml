@@ -6,7 +6,7 @@ services:
             - "@sylius.repository.product"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
-            - { name: messenger.message_handler, bus: sylius_default.bus }
+            - { name: messenger.message_handler}
 
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.add_product_variant_to_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler
@@ -15,7 +15,7 @@ services:
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
-            - { name: messenger.message_handler, bus: sylius_default.bus }
+            - { name: messenger.message_handler }
 
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.remove_product_from_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveProductFromWishlistHandler
@@ -25,7 +25,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist_product"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
-            - { name: messenger.message_handler, bus: sylius_default.bus }
+            - { name: messenger.message_handler }
 
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.remove_product_variant_from_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveProductVariantFromWishlistHandler
@@ -35,7 +35,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist_product"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
-            - { name: messenger.message_handler, bus: sylius_default.bus }
+            - { name: messenger.message_handler}
 
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.create_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateWishlistHandler
@@ -45,7 +45,7 @@ services:
             - "@bitbag.sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
-            - { name: messenger.message_handler, bus: sylius_default.bus }
+            - { name: messenger.message_handler }
 
     bitbag.sylius_wishlist_plugin.command_handler.wishlist.remove_wishlist:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveWishlistHandler
@@ -53,4 +53,4 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
-            - { name: messenger.message_handler, bus: sylius_default.bus }
+            - { name: messenger.message_handler}

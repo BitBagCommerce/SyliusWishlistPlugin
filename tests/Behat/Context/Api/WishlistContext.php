@@ -9,6 +9,7 @@ use Behat\MinkExtension\Context\MinkContext;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -92,8 +93,8 @@ final class WishlistContext extends MinkContext implements Context
 
     private function addProductToTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
     {
-        $uri = $this->router->generate('api_wishlists_shop_add_product_to_wishlist_item',[
-            $wishlist->getToken()
+        $uri = $this->router->generate('api_wishlists_shop_add_product_to_wishlist_item', [
+            "token" => $wishlist->getToken()
         ]);
 
         $body = [
@@ -107,10 +108,10 @@ final class WishlistContext extends MinkContext implements Context
         );
     }
 
-    private function addProductVariantToTheWishlist(WishlistInterface $wishlist, ProductVariantInterface $variant)
+    private function addProductVariantToTheWishlist(WishlistInterface $wishlist, ProductVariantInterface $variant): ResponseInterface
     {
-        $uri = $this->router->generate('api_wishlists_shop_add_product_variant_to_wishlist_item',[
-            $wishlist->getToken()
+        $uri = $this->router->generate('api_wishlists_shop_add_product_variant_to_wishlist_item', [
+            "token" => $wishlist->getToken()
         ]);
 
         $body = [
@@ -124,11 +125,14 @@ final class WishlistContext extends MinkContext implements Context
         );
     }
 
+    /**
+     * @throws GuzzleException
+     */
     private function removeProductFromTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
     {
-        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item',[
-            $wishlist->getToken(),
-            $product->getId()
+        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item', [
+            "token" => $wishlist->getToken(),
+            "productId" => $product->getId()
         ]);
 
         return $this->client->request(
@@ -138,7 +142,9 @@ final class WishlistContext extends MinkContext implements Context
         );
     }
 
-    /** @Given user :email :password is authenticated */
+    /** @Given user :email :password is authenticated
+     * @throws GuzzleException
+     */
     public function userIsAuthenticated(string $email, string $password): void
     {
         $uri = '/api/v2/shop/authentication-token';
@@ -161,7 +167,6 @@ final class WishlistContext extends MinkContext implements Context
                 'body' => json_encode($body)
             ]
         );
-
         Assert::eq($response->getStatusCode(), 200);
 
         $json = json_decode((string)$response->getBody());
@@ -177,19 +182,20 @@ final class WishlistContext extends MinkContext implements Context
         $this->token = null;
     }
 
-    /** @Given user has a wishlist */
+    /** @Given user has a wishlist
+     * @throws GuzzleException
+     */
     public function userHasAWishlist(): void
     {
         $uri = $this->router->generate('api_wishlists_shop_create_wishlist_collection');
         $response = $this->client->request(
             self::POST,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::POST)
+            $this->getOptions(self::POST, [])
         );
 
         $jsonBody = json_decode((string)$response->getBody());
 
-        dump($jsonBody);
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$jsonBody->id);
         $this->wishlist = $wishlist;
@@ -199,11 +205,12 @@ final class WishlistContext extends MinkContext implements Context
     public function userAddsProductToTheWishlist(ProductInterface $product): void
     {
         $response = $this->addProductToTheWishlist($this->wishlist, $product);
-
         Assert::eq($response->getStatusCode(), 200);
     }
 
-    /** @Then user should have product :product in the wishlist */
+    /** @Then user should have product :product in the wishlist
+     * @throws \Exception
+     */
     public function userShouldHaveProductInTheWishlist(ProductInterface $product): bool
     {
         /** @var WishlistInterface $wishlist */
@@ -235,7 +242,9 @@ final class WishlistContext extends MinkContext implements Context
         Assert::eq($response->getStatusCode(), 200);
     }
 
-    /** @Then user should have :variant product variant in the wishlist */
+    /** @Then user should have :variant product variant in the wishlist
+     * @throws \Exception
+     */
     public function userShouldHaveProductVariantInTheWishlist(ProductVariantInterface $variant): bool
     {
         /** @var WishlistInterface $wishlist */
@@ -257,16 +266,15 @@ final class WishlistContext extends MinkContext implements Context
     /** @When user removes product :product from the wishlist */
     public function userRemovesProductFromTheWishlist(ProductInterface $product)
     {
-
-        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item',[
-            $this->wishlist->getToken(),
-            $product->getId()
+        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item', [
+            "token" => $this->wishlist->getToken(),
+            "productId" => $product->getId()
         ]);
 
         $response = $this->client->request(
             self::DELETE,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::DELETE)
+            $this->getOptions(self::DELETE,[])
         );
 
         Assert::eq($response->getStatusCode(), 204);
@@ -276,6 +284,7 @@ final class WishlistContext extends MinkContext implements Context
     public function userTriesToAddProductToTheWishlist(ProductInterface $product)
     {
         $response = $this->addProductToTheWishlist($this->wishlist, $product);
+
         $statusCode = $response->getStatusCode();
 
         $this->resolveStatusCodeForUnauthenticatedUser($this->user, $statusCode);
@@ -290,12 +299,14 @@ final class WishlistContext extends MinkContext implements Context
         $this->resolveStatusCodeForUnauthenticatedUser($this->user, $statusCode);
     }
 
-    /** @Then user removes :variant product variant from the wishlist */
+    /** @Then user removes :variant product variant from the wishlist
+     * @throws GuzzleException
+     */
     public function userRemovesProductVariantFromTheWishlist(ProductVariantInterface $variant)
     {
-        $uri = $this->router->generate('api_wishlists_shop_remove_product_variant_from_wishlist_item',[
-            $this->wishlist->getToken(),
-            $variant->getId()
+        $uri = $this->router->generate('api_wishlists_shop_remove_product_variant_from_wishlist_item', [
+            "token" => $this->wishlist->getToken(),
+            "productVariantId" => $variant->getId()
         ]);
 
         $response = $this->client->request(
@@ -323,10 +334,10 @@ final class WishlistContext extends MinkContext implements Context
 
         if (isset($this->user)) {
             $wishlist = $this->wishlistRepository->findByShopUser($this->user);
-            var_dump($wishlist->getId());
+            var_dump(sprintf("Got user id : %d, wishlist id : %d",$this->user->getId(),$wishlist->getId()));
         } else {
             $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
-            var_dump($wishlist->getId());
+            var_dump(sprintf("Empty user, wishlist id : %d",$wishlist->getId()));
         }
 
         Assert::eq(count($wishlist->getProducts()), 0);
