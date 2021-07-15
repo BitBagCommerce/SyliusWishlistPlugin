@@ -189,5 +189,5 @@ jobs:
         if: failure()
         with:
           name: Var logs
-          path: test/Application/var/log/
+          path: tests/Application/var/log/
           if-no-files-found: ignore
