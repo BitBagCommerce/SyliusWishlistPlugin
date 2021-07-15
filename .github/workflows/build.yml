@@ -183,3 +183,11 @@ jobs:
           name: Behat logs
           path: etc/build/
           if-no-files-found: ignore
+
+      - name: Upload test log logs
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: Var logs
+          path: test/Application/var/log/
+          if-no-files-found: ignore
