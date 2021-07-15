@@ -63,6 +63,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@sylius.repository.shop_user"
             - "@bitbag_wishlist_plugin.http_client"
+            - "@router"
 
     bitbag_wishlist_plugin.http_client:
         class: GuzzleHttp\Client

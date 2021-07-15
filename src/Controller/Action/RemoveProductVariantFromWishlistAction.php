@@ -56,7 +56,7 @@ final class RemoveProductVariantFromWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        /** @var ProductVariantInterface $variant */
+        /** @var ProductVariantInterface|null $variant */
         $variant = $this->productVariantRepository->find($request->get('variantId'));
 
         if (null === $variant) {

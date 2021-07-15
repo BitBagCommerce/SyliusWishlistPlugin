@@ -8,5 +8,4 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductVariantNotFoundException extends NotFoundHttpException
 {
-
 }

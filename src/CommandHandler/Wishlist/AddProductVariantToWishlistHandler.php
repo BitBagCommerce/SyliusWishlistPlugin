@@ -24,8 +24,7 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
         WishlistProductFactoryInterface $wishlistProductFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
         ObjectManager $wishlistManager
-    )
-    {
+    ) {
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistManager = $wishlistManager;
@@ -40,7 +39,7 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
 
         if (null === $variant) {
             throw new ProductVariantNotFoundException(
-                sprintf("The ProductVariant %s does not exist", $variantId)
+                sprintf('The ProductVariant %s does not exist', $variantId)
             );
         }
 

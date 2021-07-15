@@ -29,8 +29,7 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
         WishlistRepositoryInterface $wishlistRepository,
         RepositoryInterface $wishlistProductRepository,
         ObjectManager $wishlistManager
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistProductRepository = $wishlistProductRepository;
@@ -39,6 +38,7 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
 
     public function __invoke(RemoveProductFromWishlist $removeProductFromWishlist): WishlistInterface
     {
+        dump($removeProductFromWishlist);
         $productId = $removeProductFromWishlist->getProductIdValue();
         $token = $removeProductFromWishlist->getWishlistTokenValue();
 
@@ -49,13 +49,13 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
 
         if (null === $product || null === $wishlistProduct) {
             throw new ProductNotFoundException(
-                sprintf("The Product %s does not exist", $productId)
+                sprintf('The Product %s does not exist', $productId)
             );
         }
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
-                sprintf("The Wishlist %s does not exist", $token)
+                sprintf('The Wishlist %s does not exist', $token)
             );
         }
 
