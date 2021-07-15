@@ -23,7 +23,7 @@ final class WishlistVoter extends Voter
         $this->security = $security;
     }
 
-    protected function supports(string $attribute, $subject): bool
+    protected function supports($attribute, $subject): bool
     {
         $attributes = [
             self::UPDATE,
