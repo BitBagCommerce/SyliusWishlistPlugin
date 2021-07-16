@@ -11,12 +11,14 @@ use Sylius\Bundle\ApiBundle\DataTransformer\CommandDataTransformerInterface;
 
 class WishlistTokenValueAwareInputCommandDataTransformer implements CommandDataTransformerInterface
 {
+    /**
+     * @param WishlistTokenValueAwareInterface|mixed $object
+     */
     public function transform($object, string $to, array $context = []): WishlistTokenValueAwareInterface
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $context[AbstractItemNormalizer::OBJECT_TO_POPULATE];
 
-        /** @var WishlistTokenValueAwareInterface $object */
         $object->setWishlist($wishlist);
 
         return $object;
