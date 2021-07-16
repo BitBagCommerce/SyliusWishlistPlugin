@@ -9,4 +9,6 @@ interface WishlistTokenInterface
     public function getValue(): string;
 
     public function setValue(string $value): void;
+
+    public function __toString(): string;
 }

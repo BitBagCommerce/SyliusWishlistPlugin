@@ -1,0 +1,21 @@
+services:
+    bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveProductFromWishlistAction
+        arguments:
+            - "@api_platform.message_bus"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveProductVariantFromWishlistAction
+        arguments:
+            - "@api_platform.message_bus"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveWishlistAction
+        arguments:
+            - "@api_platform.message_bus"
+        tags:
+            - { name: controller.service_arguments }

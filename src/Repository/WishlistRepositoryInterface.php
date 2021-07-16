@@ -18,7 +18,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 interface WishlistRepositoryInterface extends RepositoryInterface
 {
-    public function findByShopUser(ShopUserInterface $shopUser): ?WishlistInterface;
+    public function findOneByShopUser(ShopUserInterface $shopUser): ?WishlistInterface;
 
     public function findByToken(string $token): ?WishlistInterface;
 }

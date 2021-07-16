@@ -18,7 +18,7 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 
 class WishlistRepository extends EntityRepository implements WishlistRepositoryInterface
 {
-    public function findByShopUser(ShopUserInterface $shopUser): ?WishlistInterface
+    public function findOneByShopUser(ShopUserInterface $shopUser): ?WishlistInterface
     {
         return $this->createQueryBuilder('o')
             ->where('o.shopUser = :shopUser')

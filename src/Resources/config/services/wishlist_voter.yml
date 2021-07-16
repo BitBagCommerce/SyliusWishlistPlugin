@@ -1,0 +1,7 @@
+services:
+    bitbag_sylius_wishlist_plugin.voter.wishlist_voter:
+        class: BitBag\SyliusWishlistPlugin\Voter\WishlistVoter
+        arguments:
+            - "@security.helper"
+        tags: ['security.voter']
+

@@ -56,3 +56,16 @@ services:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+
+    bitbag_wishlist_plugin.behat.context.api.wishlist:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Api\WishlistContext
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@sylius.repository.shop_user"
+            - "@bitbag_wishlist_plugin.http_client"
+            - "@router"
+
+    bitbag_wishlist_plugin.http_client:
+        class: GuzzleHttp\Client
+        arguments:
+            - http_errors: false
