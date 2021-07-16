@@ -107,7 +107,7 @@ final class WishlistContextSpec extends ObjectBehavior
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(null);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($shopUser);
-        $wishlistRepository->findByShopUser($shopUser)->willReturn($wishlist);
+        $wishlistRepository->findOneByShopUser($shopUser)->willReturn($wishlist);
 
         $this->getWishlist($request)->shouldReturn($wishlist);
     }
@@ -126,7 +126,7 @@ final class WishlistContextSpec extends ObjectBehavior
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(null);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($shopUser);
-        $wishlistRepository->findByShopUser($shopUser)->willReturn(null);
+        $wishlistRepository->findOneByShopUser($shopUser)->willReturn(null);
         $wishlistFactory->createForUser($shopUser)->willReturn($wishlist);
 
         $this->getWishlist($request)->shouldReturn($wishlist);

@@ -1,5 +1,5 @@
 services:
-    bitbag.sylius_wishlist_plugin.voter.wishlist_voter:
+    bitbag_sylius_wishlist_plugin.voter.wishlist_voter:
         class: BitBag\SyliusWishlistPlugin\Voter\WishlistVoter
         arguments:
             - "@security.helper"

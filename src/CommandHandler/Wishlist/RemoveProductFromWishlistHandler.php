@@ -38,7 +38,6 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
 
     public function __invoke(RemoveProductFromWishlist $removeProductFromWishlist): WishlistInterface
     {
-        dump($removeProductFromWishlist);
         $productId = $removeProductFromWishlist->getProductIdValue();
         $token = $removeProductFromWishlist->getWishlistTokenValue();
 

@@ -9,7 +9,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistTokenValueAwareInterfac
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\ApiBundle\DataTransformer\CommandDataTransformerInterface;
 
-class WishlistTokenValueAwareInputCommandDataTransformer implements CommandDataTransformerInterface
+final class WishlistTokenValueAwareInputCommandDataTransformer implements CommandDataTransformerInterface
 {
     /**
      * @param WishlistTokenValueAwareInterface|mixed $object

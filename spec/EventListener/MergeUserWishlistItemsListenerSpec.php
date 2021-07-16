@@ -73,7 +73,7 @@ final class MergeUserWishlistItemsListenerSpec extends ObjectBehavior
         ]);
         $interactiveLoginEvent = new InteractiveLoginEvent($request, $token->getWrappedObject());
         $wishlistRepository->findByToken('Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId')->willReturn($cookieWishlist);
-        $wishlistRepository->findByShopUser($shopUser)->willReturn($userWishlist);
+        $wishlistRepository->findOneByShopUser($shopUser)->willReturn($userWishlist);
         $cookieWishlist->getWishlistProducts()->willReturn(new ArrayCollection([$wishlistProduct->getWrappedObject()]));
 
         $userWishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
@@ -97,7 +97,7 @@ final class MergeUserWishlistItemsListenerSpec extends ObjectBehavior
         $interactiveLoginEvent = new InteractiveLoginEvent($request, $token->getWrappedObject());
 
         $wishlistRepository->findByToken('Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId')->willReturn($cookieWishlist);
-        $wishlistRepository->findByShopUser($shopUser)->willReturn(null);
+        $wishlistRepository->findOneByShopUser($shopUser)->willReturn(null);
 
         $cookieWishlist->setShopUser($shopUser)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();

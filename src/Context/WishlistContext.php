@@ -60,8 +60,8 @@ final class WishlistContext implements WishlistContextInterface
         }
 
         if ($user instanceof ShopUserInterface) {
-            return $this->wishlistRepository->findByShopUser($user) ?
-                $this->wishlistRepository->findByShopUser($user) :
+            return $this->wishlistRepository->findOneByShopUser($user) ?
+                $this->wishlistRepository->findOneByShopUser($user) :
                 $this->wishlistFactory->createForUser($user)
             ;
         }

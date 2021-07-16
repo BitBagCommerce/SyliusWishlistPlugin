@@ -68,7 +68,7 @@ final class MergeUserWishlistItemsListener
             return;
         }
 
-        $userWishlist = $this->wishlistRepository->findByShopUser($shopUser);
+        $userWishlist = $this->wishlistRepository->findOneByShopUser($shopUser);
 
         if (null !== $userWishlist) {
             foreach ($cookieWishlist->getWishlistProducts() as $wishlistProduct) {

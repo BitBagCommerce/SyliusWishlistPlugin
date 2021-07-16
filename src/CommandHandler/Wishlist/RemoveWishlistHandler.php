@@ -24,7 +24,7 @@ final class RemoveWishlistHandler implements MessageHandlerInterface
         $this->wishlistManager = $wishlistManager;
     }
 
-    public function __invoke(RemoveWishlist $removeWishlist)
+    public function __invoke(RemoveWishlist $removeWishlist): void
     {
         $token = $removeWishlist->getWishlistTokenValue();
         $wishlist = $this->wishlistRepository->findByToken($token);

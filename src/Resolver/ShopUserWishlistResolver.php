@@ -25,12 +25,6 @@ final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterfac
 
     public function resolve(ShopUserInterface $user): WishlistInterface
     {
-        $wishlist = $this->wishlistRepository->findByShopUser($user);
-
-        if (null === $wishlist) {
-            $wishlist = $this->wishlistFactory->createForUser($user);
-        }
-
-        return $wishlist;
+        return $this->wishlistRepository->findOneByShopUser($user) ?? $this->wishlistFactory->createForUser($user);
     }
 }

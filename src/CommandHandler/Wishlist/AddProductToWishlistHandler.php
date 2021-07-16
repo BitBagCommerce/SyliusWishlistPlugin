@@ -12,7 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class AddProductToWishlistHandler implements MessageHandlerInterface
+final class AddProductToWishlistHandler implements MessageHandlerInterface
 {
     private WishlistProductFactoryInterface $wishlistProductFactory;
 

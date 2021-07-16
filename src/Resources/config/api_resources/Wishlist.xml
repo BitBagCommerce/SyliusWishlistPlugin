@@ -19,7 +19,7 @@
         <attribute name="validation_groups">sylius</attribute>
 
         <collectionOperations>
-            <collectionOperation name="shop_get_wishlists">
+            <collectionOperation name="admin_get_wishlists">
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/admin/wishlists</attribute>
             </collectionOperation>
@@ -75,7 +75,7 @@
             <itemOperation name="shop_remove_product_from_wishlist">
                 <attribute name="method">DELETE</attribute>
                 <attribute name="path">/shop/wishlists/{token}/products/{productId}</attribute>
-                <attribute name="controller">bitbag.sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action</attribute>
+                <attribute name="controller">bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:remove_product</attribute>
@@ -106,7 +106,7 @@
             <itemOperation name="shop_remove_product_variant_from_wishlist">
                 <attribute name="method">DELETE</attribute>
                 <attribute name="path">/shop/wishlists/{token}/productVariants/{productVariantId}</attribute>
-                <attribute name="controller">bitbag.sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action</attribute>
+                <attribute name="controller">bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:remove_product_variant</attribute>
@@ -137,7 +137,7 @@
             <itemOperation name="shop_remove_wishlist">
                 <attribute name="method">DELETE</attribute>
                 <attribute name="path">/shop/wishlists/{token}</attribute>
-                <attribute name="controller">bitbag.sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action</attribute>
+                <attribute name="controller">bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:remove_wishlist</attribute>
