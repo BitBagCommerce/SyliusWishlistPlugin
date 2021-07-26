@@ -8,3 +8,6 @@ bitbag_sylius_wishlist_plugin:
         removed_wishlist_item: Produkt został usunięty z listy życzeń.
         add_items_to_cart: Dodaj produkty z listy życzeń do koszyka
         added_to_cart: Produkty z listy życzeń zostały dodane do koszyka.
+        save_wishlist: Zapisz listę życzeń
+        variant_not_unique: Ten wariant jest już na Twojej liście życzeń
+        increase_quantity: Zwiększ ilość przynajmniej jednego z produktów.

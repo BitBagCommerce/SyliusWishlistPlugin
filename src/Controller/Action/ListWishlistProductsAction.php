@@ -77,9 +77,12 @@ final class ListWishlistProductsAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCartItems($form);
 
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+            if ($this->handleCartItems($form)) {
+                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+            } else {
+                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
+            }
 
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/wishlist.html.twig', [
@@ -101,16 +104,21 @@ final class ListWishlistProductsAction
         );
     }
 
-    private function handleCartItems(FormInterface $form): void
+    private function handleCartItems(FormInterface $form): bool
     {
+        $result = false;
+
         /** @var AddToCartCommandInterface $command */
         foreach ($form->getData() as $command) {
             if (0 < $command->getCartItem()->getQuantity()) {
+                $result = true;
                 $this->orderModifier->addToOrder($command->getCart(), $command->getCartItem());
                 $this->cartManager->persist($command->getCart());
             }
         }
 
         $this->cartManager->flush();
+
+        return $result;
     }
 }
