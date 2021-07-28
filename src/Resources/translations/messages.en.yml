@@ -10,3 +10,4 @@ bitbag_sylius_wishlist_plugin:
         added_to_cart: Wishlist items have been added to your cart.
         save_wishlist: Save wishlist
         variant_not_unique: You already have this variant on your wishlist
+        increase_quantity: Increase the quantity of at least one item.
