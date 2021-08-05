@@ -141,6 +141,17 @@ class Wishlist implements WishlistInterface
         return $this;
     }
 
+    public function removeProduct(ProductInterface $product): self
+    {
+        foreach ($this->wishlistProducts as $wishlistProduct) {
+            if ($wishlistProduct->getProduct() === $product) {
+                $this->wishlistProducts->removeElement($wishlistProduct);
+            }
+        }
+
+        return $this;
+    }
+
     public function removeProductVariant(ProductVariantInterface $variant): self
     {
         foreach ($this->wishlistProducts as $wishlistProduct) {
