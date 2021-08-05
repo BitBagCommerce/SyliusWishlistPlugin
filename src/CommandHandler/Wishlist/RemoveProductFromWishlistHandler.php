@@ -58,7 +58,7 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
             );
         }
 
-        $wishlist = $wishlist->removeProduct($wishlistProduct);
+        $wishlist = $wishlist->removeWishlistProduct($wishlistProduct);
         $this->wishlistManager->flush();
 
         return $wishlist;

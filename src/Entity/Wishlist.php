@@ -132,7 +132,7 @@ class Wishlist implements WishlistInterface
         $this->token = new WishlistToken($token);
     }
 
-    public function removeProduct(WishlistProductInterface $product): self
+    public function removeWishlistProduct(WishlistProductInterface $product): self
     {
         if ($this->hasWishlistProduct($product)) {
             $this->wishlistProducts->removeElement($product);
