@@ -41,12 +41,12 @@
         <itemOperations>
             <itemOperation name="shop_get_wishlist">
                 <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/wishlists/{token}</attribute>
+                <attribute name="path">/shop/wishlists/{id}</attribute>
             </itemOperation>
 
             <itemOperation name="shop_add_product_to_wishlist">
                 <attribute name="method">PATCH</attribute>
-                <attribute name="path">/shop/wishlists/{token}/product</attribute>
+                <attribute name="path">/shop/wishlists/{id}/product</attribute>
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist</attribute>
                 <attribute name="denormalization_context">
@@ -60,7 +60,7 @@
 
             <itemOperation name="shop_add_product_variant_to_wishlist">
                 <attribute name="method">PATCH</attribute>
-                <attribute name="path">/shop/wishlists/{token}/variant</attribute>
+                <attribute name="path">/shop/wishlists/{id}/variant</attribute>
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist</attribute>
                 <attribute name="denormalization_context">
@@ -74,7 +74,7 @@
 
             <itemOperation name="shop_remove_product_from_wishlist">
                 <attribute name="method">DELETE</attribute>
-                <attribute name="path">/shop/wishlists/{token}/products/{productId}</attribute>
+                <attribute name="path">/shop/wishlists/{id}/products/{productId}</attribute>
                 <attribute name="controller">bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
@@ -105,7 +105,7 @@
 
             <itemOperation name="shop_remove_product_variant_from_wishlist">
                 <attribute name="method">DELETE</attribute>
-                <attribute name="path">/shop/wishlists/{token}/productVariants/{productVariantId}</attribute>
+                <attribute name="path">/shop/wishlists/{id}/productVariants/{productVariantId}</attribute>
                 <attribute name="controller">bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
@@ -136,7 +136,7 @@
 
             <itemOperation name="shop_remove_wishlist">
                 <attribute name="method">DELETE</attribute>
-                <attribute name="path">/shop/wishlists/{token}</attribute>
+                <attribute name="path">/shop/wishlists/{id}</attribute>
                 <attribute name="controller">bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
