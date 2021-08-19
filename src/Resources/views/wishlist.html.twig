@@ -16,6 +16,7 @@
                 {% set variant = childForm.vars.data.cartItem.variant %}
                 <div class="column bitbag-wishlist-item">
                     {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+                    {% include '@BitBagSyliusWishlistPlugin/_variantsPricing.html.twig' with {'pricing': sylius_product_variant_prices(product, sylius.channel)} %}
 
                     <div class="ui fluid card">
                         <a href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
@@ -37,7 +38,7 @@
                             {% endif %}
 
                             {% if childForm.cartItem.variant is defined %}
-                                {{ form_row(childForm.cartItem.variant) }}
+                                {{ form_row(childForm.cartItem.variant, {'attr': {'class': 'bitbag-wishlist-change-variant' }}) }}
                             {% endif %}
                             {{ form_row(childForm.cartItem.quantity, {'attr': {'min': 0, 'class': 'bitbag-wishlist-add-item-to-cart', 'data-product-name': product.name}}) }}
 
