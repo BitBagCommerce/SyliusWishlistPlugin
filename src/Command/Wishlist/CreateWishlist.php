@@ -12,4 +12,10 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 final class CreateWishlist
 {
+    public ?string $tokenValue;
+
+    public function __construct(?string $tokenValue)
+    {
+        $this->tokenValue = $tokenValue;
+    }
 }
