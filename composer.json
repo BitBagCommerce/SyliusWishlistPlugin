@@ -5,7 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.4 || ^8.0",
-        "sylius/sylius": "^1.9 || ^1.10"
+        "sylius/sylius": "^1.9 || ^1.10",
+        "symfony/webpack-encore-bundle": "^1.12"
     },
     "require-dev": {
         "behat/behat": "^3.7",
