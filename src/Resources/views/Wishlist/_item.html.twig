@@ -1,0 +1,41 @@
+{% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+
+{% set variant = childForm.vars.data.cartItem.variant %}
+{% set product = variant.product %}
+{% set productUrl = path('sylius_shop_product_show', { slug: product.slug, _locale: product.translation.locale }) %}
+
+<div class="bitbag-wishlist-item ui stackable grid">
+
+    <div class="ui seven wide column">
+        <div class="ui header">
+            {% include '@SyliusShop/Product/_mainImage.html.twig' %}
+            <div class="content">
+                <a href="{{ productUrl }}" class="sylius-product-name">{{ product.name }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui five wide column">
+        {% if childForm.cartItem.variant is defined %}
+            <div class="ui two columns grid">
+                {% for child in childForm.cartItem.variant.children  %}
+                    <div class="ui eight wide column" data-tooltip="{{ form_label(child)|striptags }}">
+                        {{ form_widget(child) }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="ui two wide column">
+        {{ form_widget(childForm.cartItem.quantity, {'attr': {'min': 0, 'class': 'bitbag-wishlist-add-item-to-cart', 'data-product-name': product.name}}) }}
+    </div>
+
+    <div class="ui two wide column">
+        {% include '@BitBagSyliusWishlistPlugin/Common/_removeFromWishlist.html.twig' %}
+    </div>
+
+    {{ sonata_block_render_event('sylius.shop.product.index.after_box', {'product': product}) }}
+
+</div>
+<div class="ui divider"></div>
