@@ -56,6 +56,18 @@ $ bin/console doctrine:migrations:migrate
 $ bin/console doctrine:migrations:version BitBag\\SyliusWishlistPlugin\\Migrations\\Version20201029161558 --add --no-interaction
 ```
 
-6. Add assets to your project
+6. Add plugin assets to your project
 
-TBD
+We recommend you to use Webpack (Encore), for which we have prepared four different instructions on how to add this plugin's assets to your project:
+
+- [Import webpack config](./01.1-webpack-config.md)*
+- [Add entry to existing config](./01.2-webpack-entry.md))
+- [Import entries in your entry.js files](./01.3-import-entry.md))
+- [Your own custom config](./01.4-custom-solution.md))
+
+<small>* Default option for plugin development</small>
+
+
+However, if you are not using Webpack, here are instructions on how to add optimized and compressed assets directly to your project templates:
+
+- [Non webpack solution](./01.5-non-webpack.md)
