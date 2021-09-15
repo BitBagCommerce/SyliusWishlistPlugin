@@ -37,7 +37,7 @@ Like what we do? Want to join us? Check out our job listings on our [career page
 ----
 This plugin allows you to integrate wishlist features with Sylius platform app.
 
-- [Instalation](./doc/01-instalation.md)
+- [Installation](./doc/01-installation.md)
 - [Usage](./doc/02-usage.md)
 - [Customization](./doc/03-customization.md)
 - [Development](./doc/04-development.md)

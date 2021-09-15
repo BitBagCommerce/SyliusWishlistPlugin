@@ -6,7 +6,7 @@
 ## Usage
 
 <div align="center">
-    <img src="doc/index.png"/>
+    <img src="./images/index.png"/>
 </div>
 
 You can use these templates to enable adding/removing/displaying wishlist:
