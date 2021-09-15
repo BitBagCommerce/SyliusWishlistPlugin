@@ -3,7 +3,7 @@
 - [⬅️ Back](../README.md#overview)
 - [➡️ Usage](./02-usage.md)
 
-## Instalation
+## Installation
 
 
 1. *We work on stable, supported and up-to-date versions of packages. We recommend you to do the same.*
