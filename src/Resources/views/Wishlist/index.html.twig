@@ -8,7 +8,13 @@
         <i class="circular heart icon"></i>
         <div class="content">{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}</div>
     </h1>
-
+    {% if wishlist.wishlistProducts.count > 0%}
+        <div class="middle aligned column">
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
+                <i class="icon remove"></i>Clear wishlist
+            </a>
+        </div>
+    {% endif %}
     <div class="ui hidden divider"></div>
 
     {% if wishlist.wishlistProducts.count > 0 %}

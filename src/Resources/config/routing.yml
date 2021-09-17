@@ -27,3 +27,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_render_header_template:
     path: /wishlist/header-template
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.render_header_template
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_clean:
+    path: /wishlist/clear/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist

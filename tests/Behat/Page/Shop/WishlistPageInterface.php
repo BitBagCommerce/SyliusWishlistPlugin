@@ -12,12 +12,15 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop;
 
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 
 interface WishlistPageInterface extends SymfonyPageInterface
 {
     public function getItemsCount(): int;
 
     public function hasProduct(string $productName): bool;
+
+    public function cleanWishlist(int $wishlistId): void;
 
     public function removeProduct(string $productName): void;
 
