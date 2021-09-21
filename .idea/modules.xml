@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/MyWishlistPlugin.iml" filepath="$PROJECT_DIR$/.idea/MyWishlistPlugin.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/SyliusWishlistPlugin.iml" filepath="$PROJECT_DIR$/.idea/SyliusWishlistPlugin.iml" />
+>>>>>>> cf951ae08ebeb19ca70b921daff6291210561ee4
     </modules>
   </component>
 </project>

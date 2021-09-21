@@ -13,6 +13,8 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop;
 use Behat\Mink\Element\NodeElement;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 use Sylius\Component\Core\Model\ProductInterface;
+use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 
 class WishlistPage extends SymfonyPage implements WishlistPageInterface
 {
@@ -33,6 +35,12 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         }
 
         return false;
+    }
+
+    public function cleanWishlist(int $wishlistId): void
+    {
+        $wishlistElements = $this->getDocument()->findAll('css', '.bitbag-clean-wishlist');
+        $wishlistElements[0]->click();
     }
 
     public function removeProduct(string $productName): void

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
@@ -21,6 +22,7 @@ use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreatorInterface;
 use Webmozart\Assert\Assert;
+use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 
 final class WishlistContext implements Context
 {
@@ -38,6 +40,9 @@ final class WishlistContext implements Context
 
     private WishlistCreatorInterface $wishlistCreator;
 
+    private WishlistRepositoryInterface $wishlistRepository;
+
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductIndexPageInterface $productIndexPage,
@@ -45,7 +50,8 @@ final class WishlistContext implements Context
         WishlistPageInterface $wishlistPage,
         NotificationCheckerInterface $notificationChecker,
         LoginerInterface $loginer,
-        WishlistCreatorInterface $wishlistCreator
+        WishlistCreatorInterface $wishlistCreator,
+        WishlistRepositoryInterface $wishlistRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
@@ -54,6 +60,7 @@ final class WishlistContext implements Context
         $this->loginer = $loginer;
         $this->wishlistCreator = $wishlistCreator;
         $this->productShowPage = $productShowPage;
+        $this->wishlistRepository = $wishlistRepository;
     }
 
     /**
@@ -157,6 +164,15 @@ final class WishlistContext implements Context
     }
 
     /**
+     * @When I clean wishlist
+     */
+    public function iCleanWishlist(): void
+    {
+        $this->wishlistPage->cleanWishlist($this->wishlistRepository->findOneBy([])->getId());
+
+    }
+
+    /**
      * @Then I should be on my wishlist page
      */
     public function iShouldBeOnMyWishlistPage(): void
@@ -178,6 +194,14 @@ final class WishlistContext implements Context
     public function iShouldBeNotifiedThatTheProductHasBeenRemovedFromMyWishlist(): void
     {
         $this->notificationChecker->checkNotification('Product has been removed from your wishlist.', NotificationType::success());
+    }
+
+    /**
+     * @Then I should be notified that the wishlist has been cleaned
+     */
+    public function iShouldBeNotifiedThatTheWishlistHasBeenCleared(): void
+    {
+        $this->notificationChecker->checkNotification('Wishlist has been cleared.', NotificationType::success());
     }
 
     /**

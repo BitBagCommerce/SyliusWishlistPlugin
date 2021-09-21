@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+<<<<<<< HEAD
     <data-source source="LOCAL" name="data" uuid="e515d6e5-ff57-4028-a66e-ce90665d6332">
+=======
+    <data-source source="LOCAL" name="@localhost" uuid="74ccb61b-d743-4789-bb91-4ce44d606760">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="data.db" uuid="0429cd1a-524d-42e8-a424-3792749c6fb8">
+>>>>>>> cf951ae08ebeb19ca70b921daff6291210561ee4
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/tests/Application/var/data.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+<<<<<<< HEAD
       <libraries>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.34.0/sqlite-jdbc-3.34.0.jar</url>
         </library>
       </libraries>
+=======
+>>>>>>> cf951ae08ebeb19ca70b921daff6291210561ee4
     </data-source>
   </component>
 </project>

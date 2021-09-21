@@ -7,6 +7,14 @@
     <h1 class="ui monster section dividing header">
         {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}
     </h1>
+    {% if wishlist.wishlistProducts.count > 0%}
+        <div class="middle aligned column">
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
+                <i class="icon remove"></i>Clear wishlist
+            </a>
+        </div>
+    {% endif %}
+
     {% if wishlist.wishlistProducts.count > 0 %}
         {{ form_start(form, {attr: {'class': 'ui form'}}) }}
         <div class="ui five column stackable grid" id="wishlist">
