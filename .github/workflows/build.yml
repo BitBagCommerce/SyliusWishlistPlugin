@@ -18,13 +18,13 @@ jobs:
   name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, MySQL ${{ matrix.mysql }}"
 
   strategy:
-   fail-fast: false
-   matrix:
-    php: [ 7.4, 8.0 ]
-    symfony: [ ^4.4, ^5.2 ]
-    sylius: [ ^1.9, ~1.10 ]
-    node: [ 10.x ]
-    mysql: [ 5.7 ]
+    fail-fast: false
+    matrix:
+      php: ["8.0", "7.4"]
+      symfony: ["^4.4", "^5.2"]
+      sylius: ["~1.10.0"]
+      node: ["10.x"]
+      mysql: ["8.0"]
 
   env:
    APP_ENV: test

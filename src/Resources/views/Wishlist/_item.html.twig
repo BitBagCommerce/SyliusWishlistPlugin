@@ -4,6 +4,8 @@
 {% set product = variant.product %}
 {% set productUrl = path('sylius_shop_product_show', { slug: product.slug, _locale: product.translation.locale }) %}
 
+{% include '@BitBagSyliusWishlistPlugin/_variantsPricing.html.twig' with {'pricing': sylius_product_variant_prices(product, sylius.channel)} %}
+
 <div class="bitbag-wishlist-item ui stackable grid">
 
     <div class="ui seven wide column">
@@ -20,7 +22,7 @@
             <div class="ui two columns grid">
                 {% for child in childForm.cartItem.variant.children  %}
                     <div class="ui eight wide column" data-tooltip="{{ form_label(child)|striptags }}">
-                        {{ form_widget(child) }}
+                        {{ form_widget(child, {'attr': {'class': 'bitbag-wishlist-change-variant' }}) }}
                     </div>
                 {% endfor %}
             </div>

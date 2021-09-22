@@ -4,6 +4,9 @@ imports:
     - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
     - { resource: "@SyliusApiBundle/Resources/config/app/config.yaml" }
 
+sylius_api:
+    enabled: true      
+
 parameters:
     sylius_core.public_dir: '%kernel.project_dir%/public'
 
