@@ -37,3 +37,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist:
     path: /wishlist/createWishlist
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists:
+    path: /wishlist/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlists
