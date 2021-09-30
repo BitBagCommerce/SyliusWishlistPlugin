@@ -50,6 +50,7 @@ final class CreateNewWishlistAction
 
         $this->wishlistManager->flush();
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist'));
+
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
     }
 
