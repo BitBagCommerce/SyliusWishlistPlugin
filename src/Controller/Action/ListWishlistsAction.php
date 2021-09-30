@@ -53,9 +53,9 @@ final class ListWishlistsAction
 
     public function __invoke(int $wishlistId, Request $request): Response
     {
-        /** @var WishlistInterface $wl */
+        /** @var WishlistInterface $wishlists */
         $wishlists = $this->wishlistRepository->find($wishlistId);
-
+        dump($wishlists); die;
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
     }
 
