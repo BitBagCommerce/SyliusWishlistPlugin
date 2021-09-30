@@ -59,3 +59,13 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf:
     path: /wishlist/export/pdf
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_clean:
+    path: /wishlist/clear/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist:
+    path: /wishlist/createWishlist
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist

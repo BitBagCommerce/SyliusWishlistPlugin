@@ -5,6 +5,9 @@
             {{ sonata_block_render_event('sylius.shop.layout.header') }}
         </div>
         <div class="right aligned column">
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist') }}" class="ui circular button">
+                <i class="icon add"></i> New wishlist
+            </a>
             {{ render(url('bitbag_sylius_wishlist_plugin_shop_wishlist_render_header_template')) }}
             {{ render(url('sylius_shop_partial_cart_summary', {'template': '@SyliusShop/Cart/_widget.html.twig'})) }}
         </div>
