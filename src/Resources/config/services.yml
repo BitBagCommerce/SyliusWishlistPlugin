@@ -147,3 +147,13 @@ services:
         class: BitBag\SyliusWishlistPlugin\Form\Extension\AddToCartTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType }
+
+    bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\CreateNewWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+        tags:
+            - { name: controller.service_arguments }
