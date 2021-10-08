@@ -47,7 +47,7 @@ final class CreateNewWishlistAction
     {
         $wishlist = new Wishlist();
         $this->wishlistManager->persist($wishlist);
-        //ad comment
+
         $this->wishlistManager->flush();
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist'));
 
