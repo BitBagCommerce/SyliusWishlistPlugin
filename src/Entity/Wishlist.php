@@ -16,6 +16,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use JMS\Serializer\Annotation as Serializer;
+use Doctrine\ORM\Mapping as ORM;
 
 class Wishlist implements WishlistInterface
 {
