@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +46,10 @@ final class CreateNewWishlistAction
 
     public function __invoke(Request $request): Response
     {
+        /** @var WishlistInterface $wishlist */
         $wishlist = new Wishlist();
+        //$wishlist->setName('test');
+
         $this->wishlistManager->persist($wishlist);
 
         $this->wishlistManager->flush();
