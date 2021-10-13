@@ -104,19 +104,19 @@ final class ListWishlistProductsAction
 
     private function handleCartItems(FormInterface $form): bool
     {
-        $result = false;
-
+        $itemsAdded=0;
         /** @var AddToCartCommandInterface $command */
         foreach ($form->getData() as $command) {
             if (0 < $command->getCartItem()->getQuantity()) {
-                $result = true;
                 $this->orderModifier->addToOrder($command->getCart(), $command->getCartItem());
                 $this->cartManager->persist($command->getCart());
+                ++$itemsAdded;
             }
         }
-
         $this->cartManager->flush();
-
-        return $result;
+        if (0 < $itemsAdded) {
+            return true;
+        }
+        return false;
     }
 }
