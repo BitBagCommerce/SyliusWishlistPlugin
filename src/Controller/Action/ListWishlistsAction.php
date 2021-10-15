@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 final class ListWishlistsAction
 {
@@ -35,13 +36,16 @@ final class ListWishlistsAction
 
     private UrlGeneratorInterface $urlGenerator;
 
+    private Environment $twigEnvironment;
+
     public function __construct(
         WishlistContextInterface $wishlistContext,
         WishlistRepositoryInterface $wishlistRepository,
         EntityManagerInterface $wishlistManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        Environment $twigEnvironment
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->wishlistRepository = $wishlistRepository;
@@ -49,14 +53,20 @@ final class ListWishlistsAction
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
+        $this->twigEnvironment = $twigEnvironment;
     }
 
-    public function __invoke(int $wishlistId, Request $request): Response
+    public function __invoke(Request $request): Response
     {
         /** @var WishlistInterface $wishlists */
-        $wishlists = $this->wishlistRepository->find($wishlistId);
-        dump($wishlists); die;
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+        $wishlists = $this->wishlistRepository->findAll();
+
+        return new Response(
+            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/Wishlist/wishlists.html.twig', [
+                'wishlist' => $wishlists,
+
+            ])
+        );
     }
 
 }
