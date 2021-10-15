@@ -7,9 +7,9 @@
         <h1 class="ui header">
             <i class="circular heart icon"></i>
             {% if wishlist.name == null %}
-                <div class="content">{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}</div>
+                <div class="content">{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}, id: {{ wishlist.id }}</div>
             {% else %}
-                <div class="content">{{ wishlist.name|trans }}</div>
+                <div class="content">{{ wishlist.name|trans }}, id: {{ wishlist.id }}</div>
             {% endif %}
         </h1>
 
