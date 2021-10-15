@@ -2,11 +2,16 @@
 
 {% import '@SyliusUi/Macro/messages.html.twig' as messages %}
 {% block content %}
-
     {% for wishlist in wishlist %}
 
-        {{ wishlist.id }}
+        <h1 class="ui header">
+            <i class="circular heart icon"></i>
+            {% if wishlist.name == null %}
+                <div class="content">{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}</div>
+            {% else %}
+                <div class="content">{{ wishlist.name|trans }}</div>
+            {% endif %}
+        </h1>
 
     {% endfor %}
-
 {% endblock %}
