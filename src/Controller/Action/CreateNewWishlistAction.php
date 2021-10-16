@@ -12,13 +12,16 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 final class CreateNewWishlistAction
 {
@@ -30,32 +33,57 @@ final class CreateNewWishlistAction
 
     private UrlGeneratorInterface $urlGenerator;
 
+    private FormFactoryInterface $formFactory;
+
+    private Environment $twigEnvironment;
 
     public function __construct(
         ObjectManager $wishlistManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        FormFactoryInterface $formFactory,
+        Environment $twigEnvironment
 
     ) {
         $this->wishlistManager = $wishlistManager;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
         $this->urlGenerator = $urlGenerator;
+        $this->formFactory = $formFactory;
+        $this->twigEnvironment = $twigEnvironment;
     }
 
     public function __invoke(Request $request): Response
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = new Wishlist();
-        //$wishlist->setName('test');
 
-        $this->wishlistManager->persist($wishlist);
+        $form = $this->formFactory->create(CreateNewWishlistType::class, $wishlist);
+        $form->handleRequest($request);
 
-        $this->wishlistManager->flush();
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist'));
+        if ($form->isSubmitted() && $form->isValid()) {
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
+            $wishlist = $form->getData();
+
+            $this->wishlistManager->persist($wishlist);
+            $this->wishlistManager->flush();
+
+            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist'));
+
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
+        }
+
+
+        return new Response(
+            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/Wishlist/createWishlist.html.twig', [
+                'wishlist' => $wishlist,
+                'form' => $form->createView(),
+
+            ])
+        );
+
+
     }
 
 }
