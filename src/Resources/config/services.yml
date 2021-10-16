@@ -236,8 +236,16 @@ services:
             - "@session.flash_bag"
             - "@translator"
             - "@router"
+            - "@form.factory"
+            - "@twig"
         tags:
             - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.form.type.create_new_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType
+        arguments:
+        tags:
+            - { name: form.type }
 
     bitbag_sylius_wishlist_plugin.controller.action.list_wishlists:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistsAction
