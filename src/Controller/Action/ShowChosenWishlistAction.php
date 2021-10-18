@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final class ShowChosenWishlist
+final class ShowChosenWishlistAction
 {
     private WishlistRepositoryInterface $wishlistRepository;
 

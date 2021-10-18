@@ -25,3 +25,4 @@ bitbag_sylius_wishlist_plugin:
         variant_already_in_wishlist: Variant already in wishlist
         selected_wishlist_items_successfully_exported: Selected products successfully exported.
         create_new_wishlist: New wishlist has been created.
+        remove_wishlist: Wishlist has been removed.

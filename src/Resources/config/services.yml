@@ -261,7 +261,7 @@ services:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist:
-        class: BitBag\SyliusWishlistPlugin\Controller\Action\ShowChosenWishlist
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ShowChosenWishlistAction
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@sylius.context.cart"
@@ -271,5 +271,16 @@ services:
             - "@session.flash_bag"
             - "@translator"
             - "@twig"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.remove_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\RemoveWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
         tags:
             - { name: controller.service_arguments }
