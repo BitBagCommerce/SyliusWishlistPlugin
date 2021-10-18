@@ -178,3 +178,17 @@ services:
             - "@twig"
         tags:
             - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ShowChosenWishlist
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@sylius.context.cart"
+            - "@form.factory"
+            - "@sylius.order_modifier"
+            - "@sylius.manager.order"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@twig"
+        tags:
+            - { name: controller.service_arguments }

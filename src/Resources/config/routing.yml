@@ -42,3 +42,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists:
     path: /wishlists
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlists
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist:
+    path: /wishlist/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist

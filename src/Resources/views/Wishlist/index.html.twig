@@ -13,8 +13,6 @@
         {% endif %}
     </h1>
 
-    {{ wishlist.id }}
-
     {% if wishlist.wishlistProducts.count > 0%}
         <div class="middle aligned column">
             <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
