@@ -7,9 +7,13 @@
         <h1 class="ui header">
             <i class="circular heart icon"></i>
             {% if wishlist.name == null %}
-                <div class="content">{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}, id: {{ wishlist.id }}</div>
+                <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', {'wishlistId': wishlist.id}) }}">
+                    <div class="content">{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}, id: {{ wishlist.id }}</div>
+                </a>
             {% else %}
-                <div class="content">{{ wishlist.name|trans }}, id: {{ wishlist.id }}</div>
+                <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', {'wishlistId': wishlist.id}) }}">
+                    <div class="content">{{ wishlist.name|trans }}, id: {{ wishlist.id }}</div>
+                </a>
             {% endif %}
         </h1>
 
