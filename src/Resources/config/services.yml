@@ -203,3 +203,16 @@ services:
             - "@router"
         tags:
             - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.edit_wishlist_name:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\EditWishlistNameAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+            - "@form.factory"
+            - "@twig"
+        tags:
+            - { name: controller.service_arguments }

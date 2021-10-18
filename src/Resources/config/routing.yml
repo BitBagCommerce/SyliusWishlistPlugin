@@ -52,3 +52,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_remove_wishlist:
     path: /wishlists/{wishlistId}
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_edit_wishlist_name:
+    path: /wishlists/{wishlistId}/edit
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.edit_wishlist_name
