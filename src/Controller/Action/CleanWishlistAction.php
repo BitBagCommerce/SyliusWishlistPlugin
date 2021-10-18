@@ -53,16 +53,18 @@ final class CleanWishlistAction
 
     public function __invoke(int $wishlistId, Request $request): Response
     {
-        /** @var WishlistInterface $wl */
-        $wl = $this->wishlistRepository->find($wishlistId);
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->find($wishlistId);
 
-        //$wishlist = $this->wishlistContext->getWishlist($request);
-        $wishlistProducts = $wl->getProducts();
-        //dd($wishlistProducts);
-        $this->wishlistManager->remove($wl);
+        $wishlistProducts = $wishlist->getWishlistProducts();
 
+        foreach ($wishlistProducts as $products) {
+            $wishlist->removeProduct($products);
+
+        }
 
         $this->wishlistManager->flush();
+
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.clear_wishlist'));
 
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
