@@ -13,3 +13,4 @@ bitbag_sylius_wishlist_plugin:
         variant_not_unique: You already have this variant on your wishlist
         increase_quantity: Increase the quantity of at least one item.
         create_new_wishlist: New wishlist has been created.
+        remove_wishlist: Wishlist has been removed.

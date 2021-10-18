@@ -34,7 +34,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_clean:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist:
-    path: /wishlist/createWishlist
+    path: /createWishlist
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist
 
@@ -47,3 +47,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist:
     path: /wishlist/{wishlistId}
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_remove_wishlist:
+    path: /wishlists/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_wishlist
