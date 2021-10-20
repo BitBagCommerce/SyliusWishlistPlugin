@@ -1,6 +1,10 @@
-<a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
-    <i class="icon heart"></i>
-    <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
-        {{- wishlist.wishlistProducts.count -}}
-    </span>
-</a>
+{% if injectWishlists()|length < 2 %}
+    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
+        <i class="icon heart"></i>
+        <span class="bitbag-wishlist-items-count">{{ wishlist.wishlistProducts.count }}</span>
+    </a>
+{% else %}
+    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists') }}" class="ui circular button">
+        <i class="icon list"></i>
+    </a>
+{% endif %}
