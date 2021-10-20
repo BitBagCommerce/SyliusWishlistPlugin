@@ -5,5 +5,10 @@
     {{ sylius_test_html_attribute('wishlist-add-product') }}
 >
     <i class="icon heart"></i>
-    {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+    Add to
+    <select>
+        {% for wishlist in injectWishlists()  %}
+            <option value="wl-name"> {{ wishlist.name }}</option>
+        {% endfor %}
+    </select>
 </a>
