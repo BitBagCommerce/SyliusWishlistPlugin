@@ -217,8 +217,8 @@ services:
         tags:
             - { name: controller.service_arguments }
 
-    bitbag_sylius_wishlist_plugin.controller.action.select_wishlist_before_add_product:
-        class: BitBag\SyliusWishlistPlugin\Controller\Action\SelectWishlistBeforeAddProductAction
+    bitbag_sylius_wishlist_plugin.controller.action.add_product_to_selected_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToSelectedWishlistAction
         arguments:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
@@ -227,6 +227,8 @@ services:
             - "@translator"
             - "@router"
             - "@twig"
+            - "@sylius.repository.product"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
         tags:
             - { name: controller.service_arguments }
 
