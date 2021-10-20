@@ -88,6 +88,7 @@ final class AddProductToWishlistAction
 
         if (null === $wishlist->getId()) {
             $this->wishlistManager->persist($wishlist);
+            $wishlist->setName('Wishlist');
         }
 
         $this->wishlistManager->flush();

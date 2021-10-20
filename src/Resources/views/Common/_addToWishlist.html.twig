@@ -13,7 +13,9 @@
     <span class="text">Add to wishlist</span>
     <div class="menu">
         {% for wishlist in injectWishlists()  %}
-                <a href="#" class="item">{{ wishlist.name }}</a>
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}" class="item">
+                {{ wishlist.name }}
+            </a>
         {% endfor %}
     </div>
 </div>
