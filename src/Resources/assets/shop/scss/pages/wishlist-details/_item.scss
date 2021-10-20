@@ -7,11 +7,11 @@
 
         @media screen and (max-width: $breakpoint-md) {
             grid-template-areas:
-                "image name name"
-                "image price price"
-                "variant variant variant"
-                "quantity quantity actions";
-            grid-template-columns: 1fr 1.5fr 1fr;
+                "select image name name"
+                "select image price price"
+                "variant variant variant variant"
+                "quantity quantity quantity actions";
+            grid-template-columns: 0.2fr 1fr 1.5fr 1fr;
             grid-column-gap: $spacer * 0.5;
             grid-row-gap: $spacer * 0.75;
 
@@ -22,11 +22,23 @@
 
         @media screen and (min-width: $breakpoint-md) {
             grid-template-areas:
-                "image name price quantity actions"
-                "image variant price quantity actions";
-            grid-template-columns: 100px 5fr 1fr 1fr 1fr;
+                "select image name price quantity actions"
+                "select image variant price quantity actions";
+            grid-template-columns: 20px 100px 5fr 1fr 1fr 1fr;
             grid-template-rows: 1fr auto;
             grid-column-gap: $spacer;
+        }
+
+        &.active {
+            background: rgba($primary, 5%);
+        }
+
+        &-select {
+            grid-area: select;
+
+            input {
+                width: 20px;
+            }
         }
 
         &-image {
