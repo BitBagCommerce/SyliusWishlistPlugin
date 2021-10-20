@@ -216,3 +216,23 @@ services:
             - "@twig"
         tags:
             - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.select_wishlist_before_add_product:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\SelectWishlistBeforeAddProductAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+            - "@twig"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.twig.extension.wishlist_extension:
+        class: BitBag\SyliusWishlistPlugin\Twig\WishlistExtension
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+        tags:
+            - { name: twig.extension }

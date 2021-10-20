@@ -57,3 +57,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_edit_wishlist_name:
     path: /wishlists/{wishlistId}/edit
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.edit_wishlist_name
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_select_wishlist_before_add_product:
+    path: /selectWishlist
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.select_wishlist_before_add_product
