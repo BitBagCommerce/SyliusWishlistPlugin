@@ -94,7 +94,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $form->getErrors()->willReturn($formErrorIterator);
         $twigEnvironment
             ->render(
-                '@BitBagSyliusWishlistPlugin/Wishlist/index.html.twig',
+                '@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig',
                 [
                     'wishlist' => $wishlist,
                     'form' => $formView,
@@ -149,7 +149,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $cartItem->getQuantity()->willReturn(1);
         $twigEnvironment
             ->render(
-                '@BitBagSyliusWishlistPlugin/Wishlist/index.html.twig',
+                '@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig',
                 [
                     'wishlist' => $wishlist,
                     'form' => $formView,
