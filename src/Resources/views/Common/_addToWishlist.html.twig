@@ -6,9 +6,14 @@
 >
     <i class="icon heart"></i>
     Add to
-    <select>
-        {% for wishlist in injectWishlists()  %}
-            <option value="wl-name"> {{ wishlist.name }}</option>
-        {% endfor %}
-    </select>
 </a>
+
+<div class="ui dropdown button">
+    <i class="heart icon"></i>
+    <span class="text">Add to wishlist</span>
+    <div class="menu">
+        {% for wishlist in injectWishlists()  %}
+                <a href="#" class="item">{{ wishlist.name }}</a>
+        {% endfor %}
+    </div>
+</div>
