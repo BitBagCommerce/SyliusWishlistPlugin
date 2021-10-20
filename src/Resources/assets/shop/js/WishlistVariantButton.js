@@ -1,33 +1,29 @@
 export class WishlistVariantButton {
-    #node
-
     constructor(node) {
         if (!node?.nodeType) throw new Error("The first parameter must be a NodeElement")
-        this.#node = node;
 
-        this.#init();
-
-        return this
+        this.node = node;
+        this._init();
     }
 
-    #init() {
-        this.#node.addEventListener('click', event => this.#addVariantToWishlist(event))
+    _init() {
+        this.node.addEventListener('click', event => this._addVariantToWishlist(event))
     }
 
-    async #addVariantToWishlist(event) {
+    async _addVariantToWishlist(event) {
         event.preventDefault();
 
-        const url = await this.#getWishlistVariantUri();
+        const url = await this._getWishlistVariantUri();
 
-        this.#redirectToWishlist(url);
+        this._redirectToWishlist(url);
     }
 
-    async #getWishlistVariantUri() {
+    async _getWishlistVariantUri() {
         try {
-            const form = this.#node.closest('form');
+            const form = this.node.closest('form');
             const data = new FormData(form);
 
-            data.append(this.#node.name, '')
+            data.append(this.node.name, '')
 
             const response = await fetch(form.action, { method: 'POST', body: data })
 
@@ -37,7 +33,7 @@ export class WishlistVariantButton {
         }
     }
 
-    #redirectToWishlist(path) {
+    _redirectToWishlist(path) {
         location.href = path;
     }
 }

@@ -1,0 +1,43 @@
+{% extends '@SyliusShop/layout.html.twig' %}
+
+{% import '@SyliusUi/Macro/messages.html.twig' as messages %}
+
+{% block content %}
+    <h1 class="ui header">
+        <i class="circular heart icon"></i>
+        <div class="content">{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}</div>
+    </h1>
+
+    <div class="ui hidden divider"></div>
+
+    {% if wishlist.wishlistProducts.count > 0 %}
+        {{ form_start(form, { attr: { class: 'ui form' } }) }}
+
+        <div class="ui segment" id="wishlist">
+
+            <div class="bb-wishlist-item">
+                <div class="bb-wishlist-item-image">{{ 'sylius.ui.product'|trans }}</div>
+                <div class="bb-wishlist-item-price">{{ 'sylius.ui.price'|trans }}</div>
+                <div class="bb-wishlist-item-quantity">{{ 'sylius.ui.quantity'|trans }}</div>
+                <div class="bb-wishlist-item-actions">{{ 'sylius.ui.actions'|trans }}</div>
+            </div>
+
+            {% for childForm in form.children if childForm.vars.name != '_token' %}
+                {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_item.html.twig" %}
+            {% endfor %}
+
+            <div class="bb-wishlist-actions">
+                {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_globalActions.html.twig" %}
+            </div>
+
+        </div>
+
+        {{ form_end(form) }}
+    {% else %}
+        <div class="ui one column stackable grid">
+            <div class="column">
+                {{ messages.info('bitbag_sylius_wishlist_plugin.ui.your_wishlist_is_empty'|trans) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
