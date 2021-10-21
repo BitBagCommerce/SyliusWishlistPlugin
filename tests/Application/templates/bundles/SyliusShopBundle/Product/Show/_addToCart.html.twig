@@ -45,6 +45,7 @@
         name="{{ form.addToWishlist.vars.full_name }}"
         class="{{ form.addToWishlist.vars.attr.class }}"
         data-bb-toggle="wishlist-variant"
+        {{ sylius_test_html_attribute('wishlist-add-variant') }}
     >
         <i class="heart icon"></i>
         {{ form.addToWishlist.vars.label|trans }}
