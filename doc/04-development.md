@@ -12,7 +12,7 @@
 
 #### Installation
 
-Clone this repo, go to the plugin root directory and run
+Clone this repository, go to the plugin root directory and run
 
 ```bash
 $ composer install
