@@ -29,6 +29,18 @@ services:
         tags:
             - { name: controller.service_arguments }
 
+    bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\CleanWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+        tags:
+            - { name: controller.service_arguments }
+
     bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductVariantToWishlistAction
         arguments:
@@ -135,3 +147,94 @@ services:
         class: BitBag\SyliusWishlistPlugin\Form\Extension\AddToCartTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType }
+
+    bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\CreateNewWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+            - "@form.factory"
+            - "@twig"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.form.type.create_new_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType
+        arguments:
+        tags:
+            - { name: form.type }
+
+    bitbag_sylius_wishlist_plugin.controller.action.list_wishlists:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistsAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+            - "@twig"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ShowChosenWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@sylius.context.cart"
+            - "@form.factory"
+            - "@sylius.order_modifier"
+            - "@sylius.manager.order"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@twig"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.remove_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\RemoveWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.edit_wishlist_name:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\EditWishlistNameAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+            - "@form.factory"
+            - "@twig"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.add_product_to_selected_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToSelectedWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
+            - "@twig"
+            - "@sylius.repository.product"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.twig.extension.wishlist_extension:
+        class: BitBag\SyliusWishlistPlugin\Twig\WishlistExtension
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+        tags:
+            - { name: twig.extension }

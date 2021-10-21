@@ -216,6 +216,24 @@ final class WishlistContext extends MinkContext implements Context
     }
 
     /**
+     * @When user clean the wishlist
+     */
+    public function userCleanWishlist(): void
+    {
+        $uri = $this->router->generate('api_wishlists_shop_clean_wishlist', [
+            'id' => $this->wishlist->getId(),
+        ]);
+
+        $response = $this->client->request(
+            self::DELETE,
+            sprintf('%s%s', self::$domain, $uri),
+            $this->getOptions(self::DELETE, [])
+        );
+
+        Assert::eq($response->getStatusCode(), 204);
+    }
+
+    /**
      * @Then user tries to add product :product to the wishlist
      */
     public function userTriesToAddProductToTheWishlist(ProductInterface $product): void
@@ -262,6 +280,17 @@ final class WishlistContext extends MinkContext implements Context
     public function userTriesToRemoveProductFromTheWishlist(ProductInterface $product): void
     {
         $response = $this->removeProductFromTheWishlist($this->wishlist, $product);
+        $statusCode = $response->getStatusCode();
+
+        $this->resolveStatusCodeForUnauthenticatedUser($this->user, $statusCode);
+    }
+
+    /**
+     * @Then user tries to clean the wishlist
+     */
+    public function userTriesToCleanWishlist(): void
+    {
+        $response = $this->cleanWishlist($this->wishlist);
         $statusCode = $response->getStatusCode();
 
         $this->resolveStatusCodeForUnauthenticatedUser($this->user, $statusCode);
@@ -377,4 +406,21 @@ final class WishlistContext extends MinkContext implements Context
             $this->getOptions(self::DELETE)
         );
     }
+
+    /**
+     * @throws GuzzleException
+     */
+    private function cleanWishlist(WishlistInterface $wishlist): ResponseInterface
+    {
+        $uri = $this->router->generate('api_wishlists_shop_clean_wishlist', [
+            'id' => $wishlist->getId(),
+        ]);
+
+        return $this->client->request(
+            self::DELETE,
+            sprintf('%s%s', self::$domain, $uri),
+            $this->getOptions(self::DELETE)
+        );
+    }
+
 }
