@@ -11,11 +11,15 @@
     <div class="ui hidden divider"></div>
 
     {% if wishlist.wishlistProducts.count > 0 %}
-        {{ form_start(form, { attr: { class: 'ui form' } }) }}
+        {{ form_start(form, { attr: { class: 'ui form', id: "wishlist_form" } }) }}
 
         <div class="ui segment" id="wishlist">
 
             <div class="bb-wishlist-item">
+                <div class="bb-wishlist-item-select">
+                    <b>{{ 'bitbag_sylius_wishlist_plugin.ui.toggle_checkboxes'|trans }}</b>
+                    <input type="checkbox" onclick="toggleCheckboxes(this)">
+                </div>
                 <div class="bb-wishlist-item-image">{{ 'sylius.ui.product'|trans }}</div>
                 <div class="bb-wishlist-item-price">{{ 'sylius.ui.price'|trans }}</div>
                 <div class="bb-wishlist-item-quantity">{{ 'sylius.ui.quantity'|trans }}</div>
@@ -27,6 +31,7 @@
             {% endfor %}
 
             <div class="bb-wishlist-actions">
+                {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_collectiveActions.html.twig" %}
                 {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_globalActions.html.twig" %}
             </div>
 
@@ -40,4 +45,27 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        let submitButton = document.getElementById('wishlist_action_submit');
+        submitButton.innerText = '{{ 'bitbag_sylius_wishlist_plugin.ui.select_action'|trans }}';
+
+        const changeFormAction = (value) => {
+            document.getElementById('wishlist_form').setAttribute('action', value);
+            submitButton.disabled = false;
+            submitButton.innerText = '{{ 'bitbag_sylius_wishlist_plugin.ui.execute'|trans }}';
+        }
+
+        const toggleCheckboxes = (source) => {
+            checkboxes = document.getElementsByClassName('wishlist_checkbox_class');
+            for (let i=0; i<checkboxes.length; i++) {
+                checkboxes[i].checked = source.checked;
+                checkboxes[i].onchange;
+            }
+        }
+    </script>
 {% endblock %}

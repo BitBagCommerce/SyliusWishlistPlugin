@@ -13,10 +13,20 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product:
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist
 
+bitbag_sylius_wishlist_plugin_shop_wishlist_remove_selected_products:
+    path: /wishlist/selected/remove
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist
+
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_variant:
     path: /wishlist/add/variant/{variantId}
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_add_selected_products:
+    path: /wishlist/selected/add
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product_variant:
     path: /wishlist/remove/variant/{variantId}

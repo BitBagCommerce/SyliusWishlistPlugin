@@ -64,6 +64,11 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         $this->getDocument()->find('css', '[data-test-wishlist-add-all-to-cart]')->press();
     }
 
+    public function addSelectedProductsToCart(): void
+    {
+        $this->getDocument()->find('css', '.bitbag-action')->press();
+    }
+
     public function hasProductInCart(string $productName): bool
     {
         $productNameOnPage = $this->getDocument()->find('css', '.ui.cart.popup > .list > .item > strong')->getText();

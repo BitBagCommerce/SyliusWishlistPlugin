@@ -11,3 +11,11 @@ bitbag_sylius_wishlist_plugin:
         save_wishlist: Save wishlist
         variant_not_unique: You already have this variant on your wishlist
         increase_quantity: Increase the quantity of at least one item.
+        select_products: Select at least one item.
+        added_selected_wishlist_items_to_cart: Selected wishlist items have been added to your cart.
+        removed_selected_wishlist_items: Selected products have been removed from your wishlist.
+        toggle_checkboxes: Toggle
+        select_action: Choose action
+        remove_selected: Remove selected
+        add_selected: Add selected
+        execute: Execute

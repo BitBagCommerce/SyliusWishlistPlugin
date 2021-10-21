@@ -56,6 +56,34 @@ services:
         tags:
             - { name: controller.service_arguments }
 
+    bitbag_sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\RemoveSelectedProductsFromWishlistAction
+        arguments:
+                - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+                - "@sylius.context.cart"
+                - "@form.factory"
+                - "@session.flash_bag"
+                - "@translator"
+                - "@sylius.repository.product_variant"
+                - "@router"
+                - "@sylius.manager.order"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddSelectedProductsToCart
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@sylius.context.cart"
+            - "@form.factory"
+            - "@sylius.order_modifier"
+            - "@sylius.manager.order"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@twig"
+            - '@sylius.order_item_quantity_modifier'
+        tags:
+            - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction

@@ -11,10 +11,13 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
+use Behat\MinkExtension\Context\MinkContext;
+use Sylius\Behat\Context\Api\Shop\CartContext;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Order\Context\CartContextInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
@@ -22,7 +25,7 @@ use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreatorInterface;
 use Webmozart\Assert\Assert;
 
-final class WishlistContext implements Context
+final class WishlistContext extends MinkContext implements Context
 {
     private ProductRepositoryInterface $productRepository;
 
@@ -146,6 +149,14 @@ final class WishlistContext implements Context
     public function iAddMyWishlistProductsToCart(): void
     {
         $this->wishlistPage->addProductToCart();
+    }
+
+    /**
+     * @When I add selected products to cart
+     */
+    public function iAddSelectedProductsToCart(): void
+    {
+        $this->wishlistPage->addSelectedProductsToCart();
     }
 
     /**

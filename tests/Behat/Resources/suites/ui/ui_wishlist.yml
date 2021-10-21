@@ -8,6 +8,7 @@ default:
     - sylius.behat.context.transform.lexical
     - sylius.behat.context.transform.product
     - sylius.behat.context.ui.shop.product
+    - sylius.behat.context.ui.shop.cart
 
     - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
     - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
