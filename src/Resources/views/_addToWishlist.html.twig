@@ -1,6 +1,3 @@
-<div style="margin-top: 1rem; text-align: center; width: 100%">
-    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}" class="bitbag-add-to-wishlist ui icon labeled button blue" data-product-name="{{ product.name }}">
-        <i class="icon heart"></i>
-        {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
-    </a>
-</div>
+{% deprecated "This template has been moved to @BitBagSyliusWishlistPlugin/Common/_addToWishlist.html.twig" %}
+
+{% include "@BitBagSyliusWishlistPlugin/Common/_addToWishlist.html.twig" %}

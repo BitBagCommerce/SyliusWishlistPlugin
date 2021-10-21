@@ -20,6 +20,9 @@ class Wishlist implements WishlistInterface
 {
     protected ?int $id = null;
 
+    /** @var string|null */
+    protected $name;
+
     /** @var Collection|WishlistProductInterface[] */
     protected $wishlistProducts;
 
@@ -38,6 +41,16 @@ class Wishlist implements WishlistInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 
     public function getProducts(): Collection

@@ -27,3 +27,38 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_render_header_template:
     path: /wishlist/header-template
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.render_header_template
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_clean:
+    path: /wishlist/clear/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist:
+    path: /createWishlist
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists:
+    path: /wishlists
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlists
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist:
+    path: /wishlist/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_remove_wishlist:
+    path: /wishlists/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_edit_wishlist_name:
+    path: /wishlists/{wishlistId}/edit
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.edit_wishlist_name
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist:
+    path: /wishlist/{wishlistId}/add/{productId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.add_product_to_selected_wishlist
