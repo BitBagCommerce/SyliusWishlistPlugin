@@ -67,7 +67,10 @@ final class CleanWishlistAction
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.clear_wishlist'));
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
+        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+            'wishlistId' => $wishlistId,
+        ])
+        );
     }
 
 }

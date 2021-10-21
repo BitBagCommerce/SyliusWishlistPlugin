@@ -88,7 +88,10 @@ final class AddProductToSelectedWishlistAction
         $this->wishlistManager->flush();
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
+        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+            'wishlistId' => $wishlistId,
+        ])
+        );
 
     }
 
