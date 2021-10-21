@@ -1,0 +1,42 @@
+<select name="wishlist_actions" id="" onchange="changeFormAction(this.value)">
+    <div class="options">
+        <option
+                value="default" selected="true" disabled>
+                {{ 'bitbag_sylius_wishlist_plugin.ui.select_action'|trans }}
+        </option>
+        <option
+                value="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_remove_selected_products') }}">
+                {{ 'bitbag_sylius_wishlist_plugin.ui.remove_selected'|trans }}
+        </option>
+        <option
+                value="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_selected_products') }}">
+                {{ 'bitbag_sylius_wishlist_plugin.ui.add_selected'|trans }}
+        </option>
+    </div>
+    <div class="action-submit">
+        <button type="submit">asd</button>
+    </div>
+</select>
+
+<button type="submit" class="bitbag-action ui large primary icon right floated labeled button" id="wishlist_action_submit">
+
+</button>
+
+<div class="ui dropdown button">
+    <i class="angle down icon"></i>
+    <span class="text">with selected</span>
+    <div class="menu">
+        <div class="item">
+            <i class="copy icon"></i>
+            Copy to wishlist
+        </div>
+        <div class="item">
+            <i class="times icon"></i>
+            Remove
+        </div>
+        <div class="item">
+            <i class="cart icon"></i>
+            Add to cart
+        </div>
+    </div>
+</div>

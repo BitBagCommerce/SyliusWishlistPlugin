@@ -7,6 +7,10 @@
 
 <div id="{{ itemId }}" class="bb-wishlist-item">
 
+    <div class="bb-wishlist-item-select">
+        <input type="checkbox" name="variantId[]" value="{{ variant.id }}" id="{{ product.name }}" class="wishlist_checkbox_class">
+    </div>
+
     <div class="bb-wishlist-item-image">
         {% include '@SyliusShop/Product/_mainImage.html.twig' %}
     </div>
