@@ -19,7 +19,7 @@ class ProductIndexPage extends IndexPage implements ProductIndexPageInterface
     {
         $this->getSession()->setCookie('MOCKSESSID', 'foo');
 
-        $wishlistElements = $this->getDocument()->findAll('css', '.bitbag-add-to-wishlist');
+        $wishlistElements = $this->getDocument()->findAll('css', '[data-test-wishlist-add-product]');
 
         /** @var NodeElement $wishlistElement */
         foreach ($wishlistElements as $wishlistElement) {

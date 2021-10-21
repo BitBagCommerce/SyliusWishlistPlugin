@@ -9,7 +9,9 @@
 
     <div class="bb-wishlist-item-image">{% include '@SyliusShop/Product/_mainImage.html.twig' %}</div>
 
-    <div class="bb-wishlist-item-name"><a href="{{ productUrl }}">{{ product.name }}</a></div>
+    <div class="bb-wishlist-item-name">
+        <a href="{{ productUrl }}" {{ sylius_test_html_attribute('wishlist-item-name') }}>{{ product.name }}</a>
+    </div>
 
     <div class="bb-wishlist-item-variant">
         {%  if childForm.cartItem.variant is defined  %}
@@ -30,11 +32,10 @@
         {% endif %}
     </div>
 
-    <div class="bb-wishlist-item-quantity">
+    <div class="bb-wishlist-item-quantity" {{ sylius_test_html_attribute('wishlist-item-quantity') }}>
         {{ form_widget(childForm.cartItem.quantity, {
             'attr': {
                 'min': 0,
-                'class': 'bitbag-wishlist-add-item-to-cart',
                 'data-product-name': product.name,
                 'value': childForm.cartItem.quantity.vars.value is same as("0") ? 1 : childForm.cartItem.quantity.vars.value
             }

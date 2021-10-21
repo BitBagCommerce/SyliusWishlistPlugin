@@ -18,12 +18,12 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 {
     public function getItemsCount(): int
     {
-        return (int) $this->getDocument()->find('css', '.bitbag-wishlist-items-count')->getText();
+        return (int) $this->getDocument()->find('css', '[data-test-wishlist-primary-items-count]')->getText();
     }
 
     public function hasProduct(string $productName): bool
     {
-        $productElements = $this->getDocument()->findAll('css', '.bitbag-wishlist-item .sylius-product-name');
+        $productElements = $this->getDocument()->findAll('css', '[data-test-wishlisst-item-name]');
 
         /** @var NodeElement $productElement */
         foreach ($productElements as $productElement) {
@@ -37,7 +37,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function removeProduct(string $productName): void
     {
-        $wishlistElements = $this->getDocument()->findAll('css', '.bitbag-remove-from-wishlist');
+        $wishlistElements = $this->getDocument()->findAll('css', '[data-test-wishlist-remove-item]');
 
         /** @var NodeElement $wishlistElement */
         foreach ($wishlistElements as $wishlistElement) {
@@ -49,7 +49,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function selectProductQuantity(string $productName, int $quantity): void
     {
-        $addToCartElements = $this->getDocument()->findAll('css', '.bitbag-wishlist-add-item-to-cart');
+        $addToCartElements = $this->getDocument()->findAll('css', '[data-test-wishlist-item-quantity] input');
 
         /** @var NodeElement $addToCartElement */
         foreach ($addToCartElements as $addToCartElement) {
@@ -61,7 +61,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function addProductToCart(): void
     {
-        $this->getDocument()->find('css', '.bitbag-add-products-to-wishlist')->press();
+        $this->getDocument()->find('css', '[data-test-wishlist-add-all-to-cart]')->press();
     }
 
     public function hasProductInCart(string $productName): bool
