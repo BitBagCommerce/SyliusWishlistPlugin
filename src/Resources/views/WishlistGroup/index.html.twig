@@ -1,0 +1,24 @@
+{% extends '@SyliusShop/layout.html.twig' %}
+
+{% import '@SyliusUi/Macro/messages.html.twig' as messages %}
+
+{% block content %}
+    {% for wishlist in wishlist %}
+        <h1 class="ui header">
+            <i class="circular heart icon"></i>
+            <div class="content">
+                <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', {'wishlistId': wishlist.id}) }}">
+                    {{ wishlist.name == null ? 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans : wishlist.name|trans }}
+                </a>
+                <div class="middle aligned column">
+                    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_remove_wishlist', {'wishlistId': wishlist.id}) }}" class="ui icon button default">
+                        <i class="icon remove"></i>
+                    </a>
+                    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_edit_wishlist_name', {'wishlistId': wishlist.id}) }}" class="ui icon button default">
+                        <i class="icon edit"></i>
+                    </a>
+                </div>
+            </div>
+        </h1>
+    {% endfor %}
+{% endblock %}

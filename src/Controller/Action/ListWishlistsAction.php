@@ -65,7 +65,7 @@ final class ListWishlistsAction
         $wishlists = $this->wishlistRepository->findAll();
 
         return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/Wishlist/wishlists.html.twig', [
+            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistGroup/index.html.twig', [
                 'wishlist' => $wishlists,
 
             ])

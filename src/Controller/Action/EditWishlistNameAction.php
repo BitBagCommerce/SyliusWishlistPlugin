@@ -77,7 +77,7 @@ final class EditWishlistNameAction
 
 
         return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/Wishlist/createWishlist.html.twig', [
+            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig', [
                 'wishlist' => $wishlist,
                 'form' => $form->createView(),
 
