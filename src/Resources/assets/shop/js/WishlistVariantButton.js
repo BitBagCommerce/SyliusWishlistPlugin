@@ -7,7 +7,7 @@ export class WishlistVariantButton {
     }
 
     _init() {
-        this.node.addEventListener('click', event => this._addVariantToWishlist(event))
+        this.node.addEventListener('click', event => this._addVariantToWishlist(event));
     }
 
     async _addVariantToWishlist(event) {
@@ -23,13 +23,13 @@ export class WishlistVariantButton {
             const form = this.node.closest('form');
             const data = new FormData(form);
 
-            data.append(this.node.name, '')
+            data.append(this.node.name, '');
 
-            const response = await fetch(form.action, { method: 'POST', body: data })
+            const response = await fetch(form.action, { method: 'POST', body: data });
 
             return await response.text();
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
 

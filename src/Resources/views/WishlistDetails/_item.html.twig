@@ -7,10 +7,14 @@
 
 <div id="{{ itemId }}" class="bb-wishlist-item">
 
-    <div class="bb-wishlist-item-image">{% include '@SyliusShop/Product/_mainImage.html.twig' %}</div>
+    <div class="bb-wishlist-item-image">
+        {% include '@SyliusShop/Product/_mainImage.html.twig' %}
+    </div>
 
     <div class="bb-wishlist-item-name">
-        <a href="{{ productUrl }}" {{ sylius_test_html_attribute('wishlist-item-name') }}>{{ product.name }}</a>
+        <a href="{{ productUrl }}" {{ sylius_test_html_attribute('wishlist-item-name') }}>
+            {{ product.name }}
+        </a>
     </div>
 
     <div class="bb-wishlist-item-variant">

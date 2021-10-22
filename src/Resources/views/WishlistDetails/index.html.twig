@@ -5,7 +5,9 @@
 {% block content %}
     <h1 class="ui header">
         <i class="circular heart icon"></i>
-        <div class="content">{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}</div>
+        <div class="content">
+            {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans }}
+        </div>
     </h1>
 
     <div class="ui hidden divider"></div>
@@ -16,10 +18,18 @@
         <div class="ui segment" id="wishlist">
 
             <div class="bb-wishlist-item">
-                <div class="bb-wishlist-item-image">{{ 'sylius.ui.product'|trans }}</div>
-                <div class="bb-wishlist-item-price">{{ 'sylius.ui.price'|trans }}</div>
-                <div class="bb-wishlist-item-quantity">{{ 'sylius.ui.quantity'|trans }}</div>
-                <div class="bb-wishlist-item-actions">{{ 'sylius.ui.actions'|trans }}</div>
+                <div class="bb-wishlist-item-image">
+                    {{ 'sylius.ui.product'|trans }}
+                </div>
+                <div class="bb-wishlist-item-price">
+                    {{ 'sylius.ui.price'|trans }}
+                </div>
+                <div class="bb-wishlist-item-quantity">
+                    {{ 'sylius.ui.quantity'|trans }}
+                </div>
+                <div class="bb-wishlist-item-actions">
+                    {{ 'sylius.ui.actions'|trans }}
+                </div>
             </div>
 
             {% for childForm in form.children if childForm.vars.name != '_token' %}
