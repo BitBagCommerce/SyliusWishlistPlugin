@@ -18,7 +18,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 {
     public function getItemsCount(): int
     {
-        return (int) $this->getDocument()->find('css', '[data-test-wishlist-primary-items-count]')->getText();
+        return (int)$this->getDocument()->find('css', '[data-test-wishlist-primary-items-count]')->getText();
     }
 
     public function hasProduct(string $productName): bool
@@ -47,6 +47,11 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         }
     }
 
+    public function removeSelectedProductsFromWishlist(): void
+    {
+        $this->getDocument()->find('css', '[data-test-wishlist-remove-selected-from-wishlist]')->press();
+    }
+
     public function selectProductQuantity(string $productName, int $quantity): void
     {
         $addToCartElements = $this->getDocument()->findAll('css', '[data-test-wishlist-item-quantity] input');
@@ -66,7 +71,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function addSelectedProductsToCart(): void
     {
-        $this->getDocument()->find('css', '.bitbag-action')->press();
+        $this->getDocument()->find('css', '[data-test-wishlist-add-selected-to-cart]')->press();
     }
 
     public function hasProductInCart(string $productName): bool

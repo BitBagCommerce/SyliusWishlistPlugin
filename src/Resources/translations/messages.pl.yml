@@ -15,7 +15,6 @@ bitbag_sylius_wishlist_plugin:
         added_selected_wishlist_items_to_cart: Wybrane produkty zostały dodane do koszyka.
         removed_selected_wishlist_items: Wybrane produkty zostały usunięte z listy życzeń.
         toggle_checkboxes: Przełącz
-        select_action: Wybierz akcję
-        remove_selected: Usuń zaznaczone
-        add_selected: Dodaj zaznaczone
-        execute: Wykonaj
+        remove: Usuń
+        add: Dodaj
+        copy_to_wishlist: Kopiuj do listy życzeń

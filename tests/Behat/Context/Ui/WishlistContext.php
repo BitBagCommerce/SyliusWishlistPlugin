@@ -12,12 +12,10 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\MinkContext;
-use Sylius\Behat\Context\Api\Shop\CartContext;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Sylius\Component\Order\Context\CartContextInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
@@ -42,14 +40,15 @@ final class WishlistContext extends MinkContext implements Context
     private WishlistCreatorInterface $wishlistCreator;
 
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        ProductIndexPageInterface $productIndexPage,
-        ProductShowPageInterface $productShowPage,
-        WishlistPageInterface $wishlistPage,
+        ProductRepositoryInterface   $productRepository,
+        ProductIndexPageInterface    $productIndexPage,
+        ProductShowPageInterface     $productShowPage,
+        WishlistPageInterface        $wishlistPage,
         NotificationCheckerInterface $notificationChecker,
-        LoginerInterface $loginer,
-        WishlistCreatorInterface $wishlistCreator
-    ) {
+        LoginerInterface             $loginer,
+        WishlistCreatorInterface     $wishlistCreator
+    )
+    {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
         $this->wishlistPage = $wishlistPage;
@@ -165,6 +164,14 @@ final class WishlistContext extends MinkContext implements Context
     public function iRemoveThisProduct(): void
     {
         $this->wishlistPage->removeProduct($this->productRepository->findOneBy([])->getName());
+    }
+
+    /**
+     * @When I remove selected products from wishlist
+     */
+    public function iRemoveSelectedProductsFromWishlist(): void
+    {
+        $this->wishlistPage->removeSelectedProductsFromWishlist();
     }
 
     /**
