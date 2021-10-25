@@ -163,3 +163,11 @@ services:
         class: BitBag\SyliusWishlistPlugin\Form\Extension\AddToCartTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType }
+
+    bitbag_sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ExportWishlistToPdfAction
+        arguments:
+            - "@twig"
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+        tags:
+            - { name: controller.service_arguments }
