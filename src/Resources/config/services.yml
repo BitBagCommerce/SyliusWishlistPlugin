@@ -67,6 +67,7 @@ services:
                 - "@sylius.repository.product_variant"
                 - "@router"
                 - "@sylius.manager.order"
+                - "@twig"
         tags:
             - { name: controller.service_arguments }
 
