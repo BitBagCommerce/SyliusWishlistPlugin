@@ -1,0 +1,55 @@
+{% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+
+{% set variant = childForm.vars.data.cartItem.variant %}
+{% set product = variant.product %}
+{% set productUrl = path('sylius_shop_product_show', { slug: product.slug, _locale: product.translation.locale }) %}
+{% set itemId = "wishlist_item_#{ variant.id }_#{ product.id }" %}
+
+<div id="{{ itemId }}" class="bb-wishlist-item">
+
+    <div class="bb-wishlist-item-image">
+        {% include '@SyliusShop/Product/_mainImage.html.twig' %}
+    </div>
+
+    <div class="bb-wishlist-item-name">
+        <a href="{{ productUrl }}" {{ sylius_test_html_attribute('wishlist-item-name') }}>
+            {{ product.name }}
+        </a>
+    </div>
+
+    <div class="bb-wishlist-item-variant">
+        {%  if childForm.cartItem.variant is defined  %}
+            <div class="bb-wishlist-variant">
+                {% for child in childForm.cartItem.variant.children %}
+                    <div class="bb-wishlist-variant-option">
+                        {{ form_label(child, null, { label_attr: { class: 'bb-wishlist-variant-label'} } ) }}
+                        {{ form_widget(child, { attr: { class: 'bb-wishlist-variant-select', 'data-name': child.vars.name } } ) }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="bb-wishlist-item-price">
+        {% if not product.variants.empty() %}
+            {% include '@BitBagSyliusWishlistPlugin/WishlistDetails/_variantPrice.html.twig' %}
+        {% endif %}
+    </div>
+
+    <div class="bb-wishlist-item-quantity" {{ sylius_test_html_attribute('wishlist-item-quantity') }}>
+        {{ form_widget(childForm.cartItem.quantity, {
+            'attr': {
+                'min': 0,
+                'data-product-name': product.name,
+                'value': childForm.cartItem.quantity.vars.value is same as("0") ? 1 : childForm.cartItem.quantity.vars.value
+            }
+        }) }}
+    </div>
+
+    <div class="bb-wishlist-item-actions">
+        {% include '@BitBagSyliusWishlistPlugin/Common/_removeFromWishlist.html.twig' %}
+    </div>
+
+    {{ sonata_block_render_event('sylius.shop.product.index.after_box', {'product': product}) }}
+
+</div>

@@ -16,9 +16,9 @@ class ProductShowPage extends ShowPage implements ProductShowPageInterface
 {
     public function addVariantToWishlist(): void
     {
-        $this->getDocument()->find('css', '.bitbag-add-variant-to-wishlist')->click();
+        $this->getDocument()->find('css', '[data-test-wishlist-add-variant]')->click();
 
         // Wait for the ajax request to finish
-        $this->getSession()->wait(1000, 'typeof jQuery !== "undefined" && 0 === jQuery.active');
+        $this->getSession()->wait(5000, 'document.querySelectorAll("[data-test-flash-messages]").length > 0');
     }
 }

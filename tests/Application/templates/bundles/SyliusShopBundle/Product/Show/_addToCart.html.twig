@@ -5,9 +5,20 @@
 <div class="ui segment" id="sylius-product-selecting-variant">
     {{ sonata_block_render_event('sylius.shop.product.show.before_add_to_cart', {'product': product, 'order_item': order_item}) }}
 
-    {{ form_start(form, {'action': path('sylius_shop_ajax_cart_add_item', {'productId': product.id}), 'attr': {'id': 'sylius-product-adding-to-cart', 'class': 'ui loadable form', 'novalidate': 'novalidate', 'data-redirect': path(configuration.getRedirectRoute('summary'))}}) }}
+    {{ form_start(form, {
+        'action': path('sylius_shop_ajax_cart_add_item', {'productId': product.id}),
+        'attr': {
+            'id': 'sylius-product-adding-to-cart',
+            'class': 'ui loadable form',
+            'novalidate': 'novalidate',
+            'data-redirect': path(configuration.getRedirectRoute('summary'))
+        }
+    }) }}
+
     {{ form_errors(form) }}
+
     <div class="ui red label bottom pointing hidden sylius-validation-error" id="sylius-cart-validation-error"></div>
+
     {% if not product.simple %}
         {% if product.variantSelectionMethodChoice %}
             {% include '@SyliusShop/Product/Show/_variants.html.twig' %}
@@ -15,16 +26,29 @@
             {% include '@SyliusShop/Product/Show/_options.html.twig' %}
         {% endif %}
     {% endif %}
+
     {{ form_row(form.cartItem.quantity) }}
 
-    {{ sonata_block_render_event('sylius.shop.product.show.add_to_cart_form', {'product': product, 'order_item': order_item}) }}
+    {{ sonata_block_render_event('sylius.shop.product.show.add_to_cart_form', {
+        'product': product,
+        'order_item': order_item
+    }) }}
 
-    <button type="submit" class="ui huge primary icon labeled button"><i class="cart icon"></i> {{ 'sylius.ui.add_to_cart'|trans }}</button>
+    <button type="submit" class="ui large right floated primary icon labeled button">
+        <i class="cart icon"></i>
+        {{ 'sylius.ui.add_to_cart'|trans }}
+    </button>
 
     {# Add variant to wishlist button #}
-    <button id="{{ form.addToWishlist.vars.id }}" name="{{ form.addToWishlist.vars.full_name }}"
-            class="{{ form.addToWishlist.vars.attr.class }}">
-        <i class="heart icon"></i> {{ form.addToWishlist.vars.label|trans }}
+    <button
+        id="{{ form.addToWishlist.vars.id }}"
+        name="{{ form.addToWishlist.vars.full_name }}"
+        class="{{ form.addToWishlist.vars.attr.class }}"
+        data-bb-toggle="wishlist-variant"
+        {{ sylius_test_html_attribute('wishlist-add-variant') }}
+    >
+        <i class="heart icon"></i>
+        {{ form.addToWishlist.vars.label|trans }}
     </button>
 
     {{ form_row(form._token) }}
