@@ -1,12 +1,18 @@
+const DEFAULT_SELECTORS = {
+    form: '#sylius-product-adding-to-cart'
+}
+
 export class WishlistVariantButton {
-    constructor(node) {
+    constructor(node, options = {}) {
         if (!node?.nodeType) throw new Error("The first parameter must be a NodeElement")
 
+        const { selectors } = options;
+
         this.node = node;
-        this._init();
+        this.selectors = Object.assign({}, DEFAULT_SELECTORS, selectors)
     }
 
-    _init() {
+    init() {
         this.node.addEventListener('click', event => this._addVariantToWishlist(event));
     }
 
@@ -20,7 +26,7 @@ export class WishlistVariantButton {
 
     async _getWishlistVariantUri() {
         try {
-            const form = this.node.closest('form');
+            const form = document.querySelector(this.selectors.form);
             const data = new FormData(form);
 
             data.append(this.node.name, '');
