@@ -6,6 +6,29 @@
 </head>
 <body>
 <h4>{{ title }}</h4>
-lorem ipsum
+<table>
+    <thead style="border: 1px solid #000;">
+    <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Numer</th>
+        <th>Variant</th>
+        <th>Quantity</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in products %}
+    <tr style="border: 1px solid #000;">
+        <td style="border: 1px solid #000;"><small>{{ product.productCode }}</small></td>
+        <td style="border: 1px solid #000;"><small>{{ product.productName }}</small></td>
+        <td style="border: 1px solid #000;"><small>{{ product.productCode }}</small></td>
+        <td style="border: 1px solid #000;"><small>{{ product.productVariant }}</small></td>
+        <td style="border: 1px solid #000;"><small>{{ product.productQuantity }}</small></td>
+        <td style="border: 1px solid #000;"><small>{{ product.productPrice }}</small></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>
