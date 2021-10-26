@@ -167,7 +167,15 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ExportWishlistToPdfAction
         arguments:
-            - "@twig"
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@sylius.context.cart"
+            - "@form.factory"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@sylius.repository.product_variant"
+            - "@router"
+            - "@sylius.manager.order"
+            - "@twig"
+            - "@sylius.context.channel"
         tags:
             - { name: controller.service_arguments }
