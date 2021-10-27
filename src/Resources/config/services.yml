@@ -178,5 +178,13 @@ services:
             - "@sylius.manager.order"
             - "@twig"
             - "@sylius.context.channel"
+            - "@bitbag_sylius_wishlist_plugin.resolver.variant.image.path.resolver"
+            - "@bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory"
         tags:
             - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.resolver.variant.image.path.resolver:
+        class: BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolver
+
+    bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory:
+        class: BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory
