@@ -23,10 +23,8 @@ class WishlistExtension extends AbstractExtension
     public function __construct(
 
         WishlistRepositoryInterface $wishlistRepository
-
     ) {
         $this->wishlistRepository = $wishlistRepository;
-
     }
 
     public function getFunctions()

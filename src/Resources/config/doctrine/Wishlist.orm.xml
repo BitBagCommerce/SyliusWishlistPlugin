@@ -9,7 +9,6 @@
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
-
         <field name="name" type="string" column="name" nullable="true" />
 
         <field name="token" type="string" column="token" unique="true" />
