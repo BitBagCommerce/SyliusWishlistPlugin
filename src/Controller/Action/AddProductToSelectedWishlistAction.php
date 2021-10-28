@@ -10,30 +10,23 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToSelectedWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final class AddProductToSelectedWishlistAction
 {
-    private WishlistContextInterface $wishlistContext;
-
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private EntityManagerInterface $wishlistManager;
+    private ProductRepositoryInterface $productRepository;
 
     private FlashBagInterface $flashBag;
 
@@ -41,58 +34,39 @@ final class AddProductToSelectedWishlistAction
 
     private UrlGeneratorInterface $urlGenerator;
 
-    private Environment $twigEnvironment;
-
-    private ProductRepositoryInterface $productRepository;
-
-    private WishlistProductFactoryInterface $wishlistProductFactory;
+    private MessageBusInterface $commandBus;
 
     public function __construct(
-        WishlistContextInterface $wishlistContext,
         WishlistRepositoryInterface $wishlistRepository,
-        EntityManagerInterface $wishlistManager,
+        ProductRepositoryInterface $productRepository,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
-        Environment $twigEnvironment,
-        ProductRepositoryInterface $productRepository,
-        WishlistProductFactoryInterface $wishlistProductFactory
+        MessageBusInterface $commandBus
     ) {
-        $this->wishlistContext = $wishlistContext;
         $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistManager = $wishlistManager;
-        $this->urlGenerator = $urlGenerator;
+        $this->productRepository = $productRepository;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
-        $this->twigEnvironment = $twigEnvironment;
-        $this->productRepository = $productRepository;
-        $this->wishlistProductFactory = $wishlistProductFactory;
+        $this->urlGenerator = $urlGenerator;
+        $this->commandBus = $commandBus;
     }
 
-    public function __invoke(int $wishlistId,Request $request): Response
+    public function __invoke(int $wishlistId, int $productId): Response
     {
-        /** @var ProductInterface|null $product */
-        $product = $this->productRepository->find($request->get('productId'));
-
-        if (null === $product) {
-            throw new NotFoundHttpException();
-        }
-
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
-        /** @var WishlistProductInterface $wishlistProduct */
-        $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
+        /** @var ProductInterface $product */
+        $product = $this->productRepository->find($productId);
 
-        $wishlist->addWishlistProduct($wishlistProduct);
-        $this->wishlistManager->flush();
+        $addProductToSelectedWishlist = new AddProductToSelectedWishlist($wishlist, $product);
+        $this->commandBus->dispatch($addProductToSelectedWishlist);
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
             'wishlistId' => $wishlistId,
         ])
         );
-
     }
-
 }

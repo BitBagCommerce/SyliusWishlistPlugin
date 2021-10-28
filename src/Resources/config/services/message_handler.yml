@@ -111,3 +111,11 @@ services:
             - "@bitbag_sylius_wishlist_plugin.services.exporter"
         tags:
             - { name: messenger.message_handler, bus: sylius.command_bus }
+
+    bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_product_to_selected_wishlist_handler:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductToSelectedWishlistHandler
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+        tags:
+            - { name: messenger.message_handler }

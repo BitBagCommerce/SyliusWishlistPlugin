@@ -301,15 +301,12 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.add_product_to_selected_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToSelectedWishlistAction
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@sylius.repository.product"
             - "@session.flash_bag"
             - "@translator"
             - "@router"
-            - "@twig"
-            - "@sylius.repository.product"
-            - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
+            - "@sylius.command_bus"
         tags:
             - { name: controller.service_arguments }
 

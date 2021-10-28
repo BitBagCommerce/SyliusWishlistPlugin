@@ -27,3 +27,4 @@ bitbag_sylius_wishlist_plugin:
         create_new_wishlist: New wishlist has been created.
         remove_wishlist: Wishlist has been removed.
         edit_wishlist_name: Wishlist name has been edited.
+        clear_wishlist: Wishlist has been cleared.
