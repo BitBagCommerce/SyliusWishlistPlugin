@@ -10,17 +10,18 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType;
+use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
 use Doctrine\Persistence\ObjectManager;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -40,6 +41,10 @@ final class CreateNewWishlistAction
 
     private WishlistFactoryInterface $wishlistFactory;
 
+    private TokenStorageInterface $tokenStorage;
+
+    private ShopUserWishlistResolverInterface $shopUserWishlistResolver;
+
     public function __construct(
         ObjectManager $wishlistManager,
         FlashBagInterface $flashBag,
@@ -47,7 +52,9 @@ final class CreateNewWishlistAction
         UrlGeneratorInterface $urlGenerator,
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
-        WishlistFactoryInterface $wishlistFactory
+        WishlistFactoryInterface $wishlistFactory,
+        TokenStorageInterface $tokenStorage,
+        ShopUserWishlistResolverInterface $shopUserWishlistResolver
     ) {
         $this->wishlistManager = $wishlistManager;
         $this->flashBag = $flashBag;
@@ -56,11 +63,20 @@ final class CreateNewWishlistAction
         $this->formFactory = $formFactory;
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistFactory = $wishlistFactory;
+        $this->tokenStorage = $tokenStorage;
+        $this->shopUserWishlistResolver = $shopUserWishlistResolver;
     }
 
     public function __invoke(Request $request): Response
     {
+        $token = $this->tokenStorage->getToken();
+        $user = $token ? $token->getUser() : null;
         $wishlist = $this->wishlistFactory->createNew();
+
+        if ($user instanceof ShopUserInterface) {
+            $wishlist = $this->shopUserWishlistResolver->resolve($user);
+            //$wishlist = $this->wishlistFactory->createForUser($user);
+        }
 
         $form = $this->formFactory->create(CreateNewWishlistType::class, $wishlist);
         $form->handleRequest($request);
