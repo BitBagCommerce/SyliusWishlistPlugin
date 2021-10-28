@@ -52,8 +52,13 @@ final class RemoveWishlistAction
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
-        $this->wishlistManager->remove($wishlist);
-        $this->wishlistManager->flush();
+        $wishlistToken = $wishlist->getToken();
+        $token = $this->wishlistRepository->findOneBy(['token' => $wishlistToken])->getToken();
+
+        if ($token === $wishlistToken) {
+            $this->wishlistManager->remove($wishlist);
+            $this->wishlistManager->flush();
+        }
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.remove_wishlist'));
 
