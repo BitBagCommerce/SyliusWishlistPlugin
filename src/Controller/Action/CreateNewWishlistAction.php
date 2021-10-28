@@ -12,6 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -37,14 +38,16 @@ final class CreateNewWishlistAction
 
     private Environment $twigEnvironment;
 
+    private WishlistFactoryInterface $wishlistFactory;
+
     public function __construct(
         ObjectManager $wishlistManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         FormFactoryInterface $formFactory,
-        Environment $twigEnvironment
-
+        Environment $twigEnvironment,
+        WishlistFactoryInterface $wishlistFactory
     ) {
         $this->wishlistManager = $wishlistManager;
         $this->flashBag = $flashBag;
@@ -52,12 +55,12 @@ final class CreateNewWishlistAction
         $this->urlGenerator = $urlGenerator;
         $this->formFactory = $formFactory;
         $this->twigEnvironment = $twigEnvironment;
+        $this->wishlistFactory = $wishlistFactory;
     }
 
     public function __invoke(Request $request): Response
     {
-        /** @var WishlistInterface $wishlist */
-        $wishlist = new Wishlist();
+        $wishlist = $this->wishlistFactory->createNew();
 
         $form = $this->formFactory->create(CreateNewWishlistType::class, $wishlist);
         $form->handleRequest($request);
@@ -74,7 +77,6 @@ final class CreateNewWishlistAction
             return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
         }
 
-
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig', [
                 'wishlist' => $wishlist,
@@ -82,8 +84,5 @@ final class CreateNewWishlistAction
 
             ])
         );
-
-
     }
-
 }

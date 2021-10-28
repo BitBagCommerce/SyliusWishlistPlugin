@@ -238,6 +238,7 @@ services:
             - "@router"
             - "@form.factory"
             - "@twig"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
         tags:
             - { name: controller.service_arguments }
 
