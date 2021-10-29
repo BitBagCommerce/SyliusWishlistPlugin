@@ -12,6 +12,7 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
@@ -23,7 +24,7 @@ use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreatorInterface;
 use Webmozart\Assert\Assert;
 
-final class WishlistContext extends MinkContext implements Context
+final class WishlistContext extends RawMinkContext implements Context
 {
     private ProductRepositoryInterface $productRepository;
 
@@ -234,7 +235,7 @@ final class WishlistContext extends MinkContext implements Context
     }
 
     /**
-     * @Then I should not be notified that :product does not have sufficient stock
+     * @Then I should be notified that :product does not have sufficient stock
      */
     public function iShouldBeNotifiedThatThisProductDoesNotHaveSufficientStock(ProductInterface $product)
     {

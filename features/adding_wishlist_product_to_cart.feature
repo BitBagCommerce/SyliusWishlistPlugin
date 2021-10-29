@@ -26,7 +26,7 @@ Feature: Adding wishlist product to cart
         When I go to the wishlist page
         And I select 1 quantity of "Jack Daniels Gentleman" product
         And I add my wishlist products to cart
-        Then I should not be notified that "Jack Daniels Gentleman" does not have sufficient stock
+        Then I should be notified that "Jack Daniels Gentleman" does not have sufficient stock
 
     @ui
     Scenario: Adding selected wishlist products to cart
