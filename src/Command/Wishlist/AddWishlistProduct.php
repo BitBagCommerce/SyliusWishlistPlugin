@@ -7,7 +7,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 
-final class AddWishlistProduct
+class AddWishlistProduct
 {
     /** @var WishlistProductInterface  */
     private WishlistProductInterface $wishlistProduct;

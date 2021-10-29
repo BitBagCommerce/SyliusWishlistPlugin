@@ -6,6 +6,7 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
@@ -66,12 +67,12 @@ final class RemoveSelectedProductsFromWishlistAction
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
 
-        $commandsArray = [];
+        $commandsArray = new ArrayCollection();
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
             $wishlistProductCommand = new AddWishlistProduct();
             $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
-            $commandsArray[] = $wishlistProductCommand;
+            $commandsArray->add($wishlistProductCommand);
         }
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
@@ -82,9 +83,7 @@ final class RemoveSelectedProductsFromWishlistAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $wishlistProducts = $form->get("items")->getData();
-
-            if ($this->handleCartItems($wishlistProducts, $request)) {
+            if ($this->handleCartItems($form->getData(), $request)) {
                 $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
             } else {
                 $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
@@ -105,25 +104,27 @@ final class RemoveSelectedProductsFromWishlistAction
         );
     }
 
-    private function handleCartItems(array $wishlistProducts, Request $request): bool
+    private function handleCartItems(array $wishlistProductsCommands, Request $request): bool
     {
         $result = false;
 
-        /** @var AddWishlistProduct $wishlistProduct */
-        foreach ($wishlistProducts as $wishlistProduct) {
-            if ($wishlistProduct->isSelected()) {
-                $result = true;
-                $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
+        foreach ($wishlistProductsCommands as $wishlistProducts) {
+            /** @var AddWishlistProduct $wishlistProduct */
+            foreach ($wishlistProducts as $wishlistProduct) {
+                if ($wishlistProduct->isSelected()) {
+                    $result = true;
+                    $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 
-                if (null === $variant) {
-                    throw new NotFoundHttpException();
-                }
+                    if (null === $variant) {
+                        throw new NotFoundHttpException();
+                    }
 
-                $wishlist = $this->wishlistContext->getWishlist($request);
+                    $wishlist = $this->wishlistContext->getWishlist($request);
 
-                foreach ($wishlist->getWishlistProducts() as $wishlistProductEntity) {
-                    if ($variant === $wishlistProductEntity->getVariant()) {
-                        $this->wishlistProductManager->remove($wishlistProductEntity);
+                    foreach ($wishlist->getWishlistProducts() as $wishlistProductEntity) {
+                        if ($variant === $wishlistProductEntity->getVariant()) {
+                            $this->wishlistProductManager->remove($wishlistProductEntity);
+                        }
                     }
                 }
             }

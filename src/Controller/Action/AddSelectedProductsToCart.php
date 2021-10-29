@@ -6,6 +6,7 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
@@ -65,12 +66,12 @@ final class AddSelectedProductsToCart
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
 
-        $commandsArray = [];
+        $commandsArray = new ArrayCollection();
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
             $wishlistProductCommand = new AddWishlistProduct();
             $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
-            $commandsArray[] = $wishlistProductCommand;
+            $commandsArray->add($wishlistProductCommand);
         }
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
@@ -81,10 +82,7 @@ final class AddSelectedProductsToCart
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $wishlistProducts = $form->get("items")->getData();
-
-            if ($this->handleCartItems($wishlistProducts)) {
+            if ($this->handleCartItems($form->getData())) {
                 $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_selected_wishlist_items_to_cart'));
             } else {
                 $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
@@ -110,23 +108,25 @@ final class AddSelectedProductsToCart
         );
     }
 
-    private function handleCartItems(array $wishlistProducts): bool
+    private function handleCartItems(array $wishlistProductsCommand): bool
     {
         $result = false;
 
-        /** @var AddWishlistProduct $wishlistProduct */
-        foreach ($wishlistProducts as $wishlistProduct) {
-            if ($wishlistProduct->isSelected()) {
-                $result = true;
-                $cartItem = $wishlistProduct->getCartItem()->getCartItem();
-                $cart = $wishlistProduct->getCartItem()->getCart();
+        foreach($wishlistProductsCommand as $wishlistProducts) {
+            /** @var AddWishlistProduct $wishlistProduct */
+            foreach ($wishlistProducts as $wishlistProduct) {
+                if ($wishlistProduct->isSelected()) {
+                    $result = true;
+                    $cartItem = $wishlistProduct->getCartItem()->getCartItem();
+                    $cart = $wishlistProduct->getCartItem()->getCart();
 
-                if (0 === $cartItem->getQuantity()) {
-                    $this->itemQuantityModifier->modify($cartItem, 1);
+                    if (0 === $cartItem->getQuantity()) {
+                        $this->itemQuantityModifier->modify($cartItem, 1);
+                    }
+
+                    $this->orderModifier->addToOrder($cart, $cartItem);
+                    $this->cartManager->persist($cart);
                 }
-
-                $this->orderModifier->addToOrder($cart, $cartItem);
-                $this->cartManager->persist($cart);
             }
         }
         $this->cartManager->flush();
