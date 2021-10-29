@@ -71,11 +71,12 @@ final class CreateNewWishlistAction
     {
         $token = $this->tokenStorage->getToken();
         $user = $token ? $token->getUser() : null;
-        $wishlist = $this->wishlistFactory->createNew();
 
         if ($user instanceof ShopUserInterface) {
-            $wishlist = $this->shopUserWishlistResolver->resolve($user);
-            //$wishlist = $this->wishlistFactory->createForUser($user);
+            //$wishlist = $this->shopUserWishlistResolver->resolve($user);
+            $wishlist = $this->wishlistFactory->createForUser($user);
+        } else {
+            $wishlist = $this->wishlistFactory->createNew();
         }
 
         $form = $this->formFactory->create(CreateNewWishlistType::class, $wishlist);
@@ -97,7 +98,6 @@ final class CreateNewWishlistAction
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig', [
                 'wishlist' => $wishlist,
                 'form' => $form->createView(),
-
             ])
         );
     }

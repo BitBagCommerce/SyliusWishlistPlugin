@@ -127,7 +127,7 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.render_header_template:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@twig"
         tags:
             - { name: controller.service_arguments }
