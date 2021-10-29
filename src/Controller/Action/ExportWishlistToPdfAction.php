@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
@@ -6,6 +13,8 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
+use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory;
+use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolverInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -44,6 +53,10 @@ final class ExportWishlistToPdfAction
 
     private ChannelContextInterface $channelContext;
 
+    private VariantImagePathResolverInterface $variantImagePathResolver;
+    
+    private VariantPdfModelFactory $variantPdfModelFactory;
+
     public function __construct(
         WishlistContextInterface          $wishlistContext,
         CartContextInterface              $cartContext,
@@ -54,7 +67,9 @@ final class ExportWishlistToPdfAction
         UrlGeneratorInterface             $urlGenerator,
         EntityManagerInterface            $wishlistProductManager,
         Environment                       $twigEnvironment,
-        ChannelContextInterface           $channelContext
+        ChannelContextInterface           $channelContext,
+        VariantImagePathResolverInterface $variantImagePathResolver,
+        VariantPdfModelFactory            $variantPdfModelFactory
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
@@ -66,6 +81,8 @@ final class ExportWishlistToPdfAction
         $this->wishlistProductManager = $wishlistProductManager;
         $this->twigEnvironment = $twigEnvironment;
         $this->channelContext = $channelContext;
+        $this->variantImagePathResolver = $variantImagePathResolver;
+        $this->variantPdfModelFactory = $variantPdfModelFactory;
     }
 
     public function __invoke(Request $request): Response
@@ -91,9 +108,7 @@ final class ExportWishlistToPdfAction
         if ($form->isSubmitted() && $form->isValid()) {
             $wishlistProducts = $form->get("items")->getData();
 
-            if ($this->handleCartItems($wishlistProducts, $request)) {
-                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
-            } else {
+            if (!$this->handleCartItems($wishlistProducts, $request)) {
                 $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
             }
 
@@ -127,50 +142,36 @@ final class ExportWishlistToPdfAction
                 }
 
                 $cartItem = $wishlistProduct->getCartItem()->getCartItem();
-                $actualVariant = $wishlistProduct->getWishlistProduct()->getVariant();
-                $actualProduct = $actualVariant->getProduct();
+                $quantity = $cartItem->getQuantity();
+                $baseUrl = $request->getSchemeAndHttpHost();
+                $urlToImage = $this->variantImagePathResolver->resolve($variant, $baseUrl);
+                $actualVariant = $cartItem->getVariant()->getCode();
 
-                $productName = $actualProduct->getName();
-                $productCode = $actualProduct->getCode();
-                $productImage = $actualProduct->getImages();
-                $productVariant = $actualVariant->getName();
-                $productPrice = $actualVariant->getChannelPricingForChannel($this->channelContext->getChannel())->getPrice();
-                $productQuantity = $cartItem->getQuantity();
-
-                $selectedProducts[] =
-                    [
-                        'productName' => $productName,
-                        'productCode' => $productCode,
-//                        'productImage' => $productImage,
-                        'productVariant' => $productVariant,
-                        'productQuantity' => $productQuantity,
-                        'productPrice' => $productPrice
-                    ];
+                $selectedProducts[] = $this->variantPdfModelFactory->createWithVariantAndImagePath($variant,$urlToImage,$quantity,$actualVariant);
             }
         }
-
-        $this->ExportToPdf($selectedProducts);
+        if (true === $result) {
+            $this->exportToPdf($selectedProducts);
+        }
 
         return $result;
     }
 
-    public function ExportToPdf(array $selectedProducts)
+    public function exportToPdf(array $selectedProducts): void
     {
         $pdfOptions = new Options();
+        $pdfOptions->set('isRemoteEnabled', true);
         $pdfOptions->set('defaultFont', 'Arial');
-
         $dompdf = new Dompdf($pdfOptions);
-
         $html = $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/_wishlist_pdf.html.twig', [
-            'title' => "Welcome to our PDF Test",
+            'title' => "My wishlist products",
+            'date' => date("d.m.Y"),
             'products' => $selectedProducts
         ]);
 
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $dompdf->stream("wishlist.pdf", [
-            "Attachment" => true
-        ]);
+        $dompdf->stream('wishlist.pdf', ["Attachment" => true]);
     }
 }
