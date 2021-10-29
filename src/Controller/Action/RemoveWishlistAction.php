@@ -62,6 +62,9 @@ final class RemoveWishlistAction
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.remove_wishlist'));
 
+        if ($this->wishlistRepository->find($wishlistId) !== null){
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+        }
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
     }
 }

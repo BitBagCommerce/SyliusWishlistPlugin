@@ -46,7 +46,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_import_from_csv:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.import_from_csv
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product_variant:
-    path: /wishlist/remove/variant/{variantId}
+    path: /wishlist/{wishlistId}/remove/variant/{variantId}
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_product_variant_from_wishlist
 
