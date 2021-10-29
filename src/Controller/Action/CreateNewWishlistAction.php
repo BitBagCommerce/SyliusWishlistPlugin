@@ -12,7 +12,6 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType;
-use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -43,8 +42,6 @@ final class CreateNewWishlistAction
 
     private TokenStorageInterface $tokenStorage;
 
-    private ShopUserWishlistResolverInterface $shopUserWishlistResolver;
-
     public function __construct(
         ObjectManager $wishlistManager,
         FlashBagInterface $flashBag,
@@ -53,8 +50,7 @@ final class CreateNewWishlistAction
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
         WishlistFactoryInterface $wishlistFactory,
-        TokenStorageInterface $tokenStorage,
-        ShopUserWishlistResolverInterface $shopUserWishlistResolver
+        TokenStorageInterface $tokenStorage
     ) {
         $this->wishlistManager = $wishlistManager;
         $this->flashBag = $flashBag;
@@ -64,7 +60,6 @@ final class CreateNewWishlistAction
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistFactory = $wishlistFactory;
         $this->tokenStorage = $tokenStorage;
-        $this->shopUserWishlistResolver = $shopUserWishlistResolver;
     }
 
     public function __invoke(Request $request): Response
@@ -73,7 +68,6 @@ final class CreateNewWishlistAction
         $user = $token ? $token->getUser() : null;
 
         if ($user instanceof ShopUserInterface) {
-            //$wishlist = $this->shopUserWishlistResolver->resolve($user);
             $wishlist = $this->wishlistFactory->createForUser($user);
         } else {
             $wishlist = $this->wishlistFactory->createNew();

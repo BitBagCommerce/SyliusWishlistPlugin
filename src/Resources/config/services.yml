@@ -240,7 +240,6 @@ services:
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "@security.token_storage"
-            - "@bitbag_sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver"
         tags:
             - { name: controller.service_arguments }
 
