@@ -25,7 +25,7 @@ final class VariantPdfModelFactory implements VariantPdfModelFactoryInterface
     {
         $productPdfModel = new VariantPdfModel();
 
-        $productPdfModel->setvariant($variant);
+        $productPdfModel->setVariant($variant);
         $productPdfModel->setImagePath($path);
         $productPdfModel->setQuantity($quantity);
         $productPdfModel->setActualVariant($actualVariant);

@@ -172,13 +172,9 @@ services:
             - "@form.factory"
             - "@session.flash_bag"
             - "@translator"
-            - "@sylius.repository.product_variant"
             - "@router"
-            - "@sylius.manager.order"
             - "@twig"
-            - "@sylius.context.channel"
-            - "@bitbag_sylius_wishlist_plugin.resolver.variant.image.path.resolver"
-            - "@bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory"
+            - "@bitbag_sylius_wishlist_plugin.exporter.exporter.wishlist.to.pdf"
         tags:
             - { name: controller.service_arguments }
 
@@ -187,3 +183,11 @@ services:
 
     bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory:
         class: BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory
+
+    bitbag_sylius_wishlist_plugin.exporter.exporter.wishlist.to.pdf:
+        class: BitBag\SyliusWishlistPlugin\Exporter\ExporterWishlistToPdf
+        arguments:
+            - "@sylius.repository.product_variant"
+            - "@bitbag_sylius_wishlist_plugin.resolver.variant.image.path.resolver"
+            - "@bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory"
+            - "@twig"
