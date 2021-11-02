@@ -12,6 +12,7 @@ Feature: Adding wishlist product to cart
         Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
         And all store products appear under a main taxonomy
         And the store has a product "Bushmills Black Bush Whiskey" priced at "$230.00"
+        And there is 5 units of product "Bushmills Black Bush Whiskey" available in the inventory
         And I have these products in my wishlist
         When I go to the wishlist page
         And I select 1 quantity of "Bushmills Black Bush Whiskey" product
@@ -33,6 +34,7 @@ Feature: Adding wishlist product to cart
         Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
         And all store products appear under a main taxonomy
         And the store has a product "Bushmills Black Bush Whiskey" priced at "$230.00"
+        And there is 5 units of product "Bushmills Black Bush Whiskey" available in the inventory
         And I have these products in my wishlist
         When I go to the wishlist page
         And I select 1 quantity of "Bushmills Black Bush Whiskey" product
@@ -45,18 +47,10 @@ Feature: Adding wishlist product to cart
         Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
         And all store products appear under a main taxonomy
         And the store has a product "Bushmills Black Bush Whiskey" priced at "$230.00"
+        And there is 5 units of product "Bushmills Black Bush Whiskey" available in the inventory
         And I have these products in my wishlist
         When I go to the wishlist page
         And I select 0 quantity of "Bushmills Black Bush Whiskey" product
         And I check "Bushmills Black Bush Whiskey"
         And I add selected products to cart
         Then I should have "Bushmills Black Bush Whiskey" product in my cart
-
-
-
-
-
-
-
-
-

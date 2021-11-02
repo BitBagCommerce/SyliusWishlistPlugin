@@ -53,8 +53,7 @@ final class ListWishlistProductsAction
         FlashBagInterface        $flashBag,
         TranslatorInterface      $translator,
         Environment              $twigEnvironment
-    )
-    {
+    ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
@@ -85,11 +84,7 @@ final class ListWishlistProductsAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->handleCartItems($form->getData())) {
-                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
-            } else {
-                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
-            }
+            $this->handleCartItems($form->getData());
 
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
@@ -111,25 +106,28 @@ final class ListWishlistProductsAction
         );
     }
 
-    private function handleCartItems(array $wishlistProductsCommand): bool
+    private function handleCartItems(array $wishlistProductsCommand): void
     {
-        $result = false;
         foreach ($wishlistProductsCommand as $wishlistProducts) {
             /** @var AddWishlistProduct $wishlistProduct */
             foreach ($wishlistProducts as $wishlistProduct) {
                 $addToCartCommand = $wishlistProduct->getCartItem();
                 $cart = $addToCartCommand->getCart();
                 $cartItem = $addToCartCommand->getCartItem();
-
-                if (0 < $cartItem->getQuantity()) {
-                    $result = true;
+                if (0 >= $cartItem->getVariant()->getOnHand()) {
+                    $message = sprintf('%s does not have sufficient stock.', $cartItem->getProductName());
+                    $this->flashBag->add('error', $this->translator->trans($message));
+                } elseif (0 >= $cartItem->getQuantity()) {
+                    $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
+                } else {
                     $this->orderModifier->addToOrder($cart, $cartItem);
                     $this->cartManager->persist($cart);
+                    if (!$this->flashBag->has('success')) {
+                        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+                    }
                 }
             }
         }
         $this->cartManager->flush();
-
-        return $result;
     }
 }

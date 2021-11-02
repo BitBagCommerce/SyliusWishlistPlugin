@@ -48,8 +48,7 @@ final class AddSelectedProductsToCart
         TranslatorInterface                $translator,
         Environment                        $twigEnvironment,
         OrderItemQuantityModifierInterface $itemQuantityModifier
-    )
-    {
+    ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
@@ -82,11 +81,7 @@ final class AddSelectedProductsToCart
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->handleCartItems($form->getData())) {
-                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_selected_wishlist_items_to_cart'));
-            } else {
-                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
-            }
+            $this->handleCartItems($form->getData());
 
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
@@ -108,29 +103,27 @@ final class AddSelectedProductsToCart
         );
     }
 
-    private function handleCartItems(array $wishlistProductsCommand): bool
+    private function handleCartItems(array $wishlistProductsCommand): void
     {
-        $result = false;
-
-        foreach($wishlistProductsCommand as $wishlistProducts) {
+        foreach ($wishlistProductsCommand as $wishlistProducts) {
             /** @var AddWishlistProduct $wishlistProduct */
             foreach ($wishlistProducts as $wishlistProduct) {
-                if ($wishlistProduct->isSelected()) {
-                    $result = true;
-                    $cartItem = $wishlistProduct->getCartItem()->getCartItem();
-                    $cart = $wishlistProduct->getCartItem()->getCart();
-
-                    if (0 === $cartItem->getQuantity()) {
-                        $this->itemQuantityModifier->modify($cartItem, 1);
-                    }
-
+                $addToCartCommand = $wishlistProduct->getCartItem();
+                $cart = $addToCartCommand->getCart();
+                $cartItem = $addToCartCommand->getCartItem();
+                if (0 >= $cartItem->getVariant()->getOnHand()) {
+                    $message = sprintf('%s does not have sufficient stock.', $cartItem->getProductName());
+                    $this->flashBag->add('error', $this->translator->trans($message));
+                } else {
+                    $this->itemQuantityModifier->modify($cartItem, 1);
                     $this->orderModifier->addToOrder($cart, $cartItem);
                     $this->cartManager->persist($cart);
+                    if (!$this->flashBag->has('success')) {
+                        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+                    }
                 }
             }
         }
         $this->cartManager->flush();
-
-        return $result;
     }
 }
