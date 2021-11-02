@@ -20,5 +20,11 @@
                 {{ 'bitbag_sylius_wishlist_plugin.ui.copy_to_wishlist'|trans }}
             </button>
         </div>
+        <div class="item">
+            <button type="submit" class="ui green button" {{ sylius_test_html_attribute('wishlist-export-to-csv') }} formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlsit_export_selected_products_to_csv') }}">
+                <i class="copy icon"></i>
+                {{ 'bitbag_sylius_wishlist_plugin.ui.export_to_csv'|trans }}
+            </button>
+        </div>
     </div>
 </div>

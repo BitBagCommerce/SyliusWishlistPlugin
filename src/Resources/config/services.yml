@@ -82,6 +82,11 @@ services:
         tags:
             - { name: controller.service_arguments }
 
+    bitbag_sylius_wishlist_plugin.controller.action.export_selected_products_to_csv:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ExportSelectedProductsToCsv
+        tags:
+            - { name: controller.service_arguments }
+
     bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction
         arguments:

@@ -35,6 +35,11 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_add_selected_products:
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart
 
+bitbag_sylius_wishlist_plugin_shop_wishlsit_export_selected_products_to_csv:
+    path: /wishlist/export/csv
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.export_selected_products_to_csv
+
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product_variant:
     path: /wishlist/remove/variant/{variantId}
     defaults:
