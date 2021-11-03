@@ -49,29 +49,26 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
     {
         $result = false;
         $selectedProducts = [];
+
         /** @var AddWishlistProduct $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
                 $result = true;
                 $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
-
                 if (null === $variant) {
                     throw new NotFoundHttpException();
                 }
-
                 $cartItem = $wishlistProduct->getCartItem()->getCartItem();
                 $quantity = $cartItem->getQuantity();
                 $baseUrl = $request->getSchemeAndHttpHost();
                 $urlToImage = $this->variantImagePathResolver->resolve($variant, $baseUrl);
                 $actualVariant = $cartItem->getVariant()->getCode();
-
                 $selectedProducts[] = $this->variantPdfModelFactory->createWithVariantAndImagePath($variant,$urlToImage,$quantity,$actualVariant);
             }
         }
         if (true === $result) {
             $this->exportToPdf($selectedProducts);
         }
-
         return $result;
     }
 

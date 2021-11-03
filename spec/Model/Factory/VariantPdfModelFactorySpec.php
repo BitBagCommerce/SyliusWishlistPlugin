@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusWishlistPlugin\Model\Factory;
 
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory;
+use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModel;
+use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariant;
 
@@ -14,6 +16,11 @@ final class VariantPdfModelFactorySpec extends ObjectBehavior
     function it_is_initializable(): void
     {
         $this->shouldHaveType(VariantPdfModelFactory::class);
+    }
+
+    function it_implements_variant_pdf_model_factory_interface(): void
+    {
+        $this->shouldHaveType(VariantPdfModelFactoryInterface::class);
     }
 
     function it_returns_product_pdf_model(): void

@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Exporter\ExporterWishlistToPdfInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -67,28 +68,25 @@ final class ExportWishlistToPdfAction
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
 
-        $commandsArray = [];
+        $commandsArray = new ArrayCollection();
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
             $wishlistProductCommand = new AddWishlistProduct();
             $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
-            $commandsArray[] = $wishlistProductCommand;
+            $commandsArray->add($wishlistProductCommand);
         }
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
-
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $wishlistProducts = $form->get("items")->getData();
-
             if (!$this->exporterWishlistToPdf->handleCartItems($wishlistProducts, $request)) {
                 $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
             }
-
             return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
         }
 
