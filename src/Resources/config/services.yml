@@ -89,6 +89,12 @@ services:
             - '@sylius.context.cart.new_shop_based.inner'
             - '@form.factory'
             - '@twig'
+            - '@session.flash_bag'
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.import_from_csv:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ImportWishlistFromCsv
         tags:
             - { name: controller.service_arguments }
 
