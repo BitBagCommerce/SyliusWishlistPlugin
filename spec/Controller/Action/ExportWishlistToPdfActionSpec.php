@@ -22,7 +22,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Order\Model\OrderInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -76,12 +75,12 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         OrderInterface                      $cart,
         FormFactoryInterface                $formFactory,
         FormInterface                       $form,
-        AddWishlistProductInterface         $addWishlistProduct,
         FormErrorIterator                   $formErrorIterator,
         ExporterWishlistToPdfInterface      $exporterWishlistToPdf,
         FlashBagInterface                   $flashBag,
         TranslatorInterface                 $translator,
-        UrlGeneratorInterface               $urlGenerator
+        UrlGeneratorInterface               $urlGenerator,
+        ArrayCollection                     $arrayCollection
 
     ):  void
     {
@@ -112,10 +111,10 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $form->isSubmitted()->willReturn(true);
         $form->isValid()->willReturn(true);
         $form->get("items")->willReturn($form);
-        $form->getData()->willReturn([$addWishlistProduct]);
+        $form->getData()->willReturn($arrayCollection);
         $form->getErrors()->willReturn($formErrorIterator);
 
-        $exporterWishlistToPdf->handleCartItems([$addWishlistProduct],$request)->willReturn(false);
+        $exporterWishlistToPdf->handleCartItems($arrayCollection,$request)->willReturn(false);
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')->willReturn("Select at least one item.");
         $flashBag->add('error', "Select at least one item.");
         $urlGenerator

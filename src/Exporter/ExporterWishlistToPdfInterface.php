@@ -11,9 +11,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Exporter;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 
 interface ExporterWishlistToPdfInterface
 {
-    public function handleCartItems(array $wishlistProducts, Request $request): bool;
+    public function handleCartItems(ArrayCollection $wishlistProducts, Request $request): bool;
 }

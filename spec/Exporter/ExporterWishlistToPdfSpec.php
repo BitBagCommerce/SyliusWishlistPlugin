@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Exporter;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Exporter\ExporterWishlistToPdf;
 use BitBag\SyliusWishlistPlugin\Exporter\ExporterWishlistToPdfInterface;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModel;
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Sylius\Component\Product\Model\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
@@ -51,11 +51,11 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
         $this->shouldHaveType(ExporterWishlistToPdfInterface::class);
     }
 
-    function it_returns_false(): void
+    function it_returns_false(AddWishlistProductInterface $addWishlistProduct): void
     {
-        $wishlistProduct = new AddWishlistProduct();
-        $wishlistProduct->setSelected(false);
-        $this->handleCartItems([$wishlistProduct], new Request())->shouldReturn(false);
+        $arrayCollection = new ArrayCollection();
+        $addWishlistProduct->isSelected()->willReturn(false);
+        $this->handleCartItems($arrayCollection, new Request())->shouldReturn(false);
     }
 
     function it_throws_404_when_product_is_not_found
@@ -67,12 +67,15 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
         WishlistProductInterface $product
     ): void
     {
+
         $wishlistProduct->isSelected()->willReturn(true);
         $productVariantRepository->find(null)->willReturn(null);
         $wishlistProduct->getWishlistProduct()->willReturn($product);
         $product->getVariant()->willReturn(null);
 
-        $this->shouldThrow(NotFoundHttpException::class)->during('handleCartItems',[[$wishlistProduct],$request]);
+        $this
+            ->shouldThrow(NotFoundHttpException::class)
+            ->during('handleCartItems',[new ArrayCollection([$wishlistProduct->getWrappedObject()]),$request]);
     }
 
     function it_call_to_export_to_pdf_function
@@ -108,6 +111,6 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
             'variant-0'
         )->willReturn(new VariantPdfModel);
 
-        $this->handleCartItems([$wishlistProduct],$request)->shouldReturn(true);
+        $this->handleCartItems(new ArrayCollection([$wishlistProduct->getWrappedObject()]),$request)->shouldReturn(true);
     }
 }
