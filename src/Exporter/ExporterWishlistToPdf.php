@@ -10,9 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Exporter;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
@@ -45,12 +46,12 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
     }
 
 
-    public function handleCartItems(array $wishlistProducts, Request $request): bool
+    public function handleCartItems(ArrayCollection $wishlistProducts, Request $request): bool
     {
         $result = false;
         $selectedProducts = [];
 
-        /** @var AddWishlistProduct $wishlistProduct */
+        /** @var AddWishlistProductInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
                 $result = true;
