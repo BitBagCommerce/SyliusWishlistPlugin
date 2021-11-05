@@ -20,8 +20,7 @@ final class VariantPdfModelFactory implements VariantPdfModelFactoryInterface
         string $path,
         int $quantity,
         string $actualVariant
-    ):  VariantPdfModel
-    {
+    ): VariantPdfModel {
         $productPdfModel = new VariantPdfModel();
 
         $productPdfModel->setVariant($variant);

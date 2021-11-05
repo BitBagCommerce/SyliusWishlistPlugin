@@ -20,5 +20,5 @@ interface VariantPdfModelFactoryInterface
         string $path,
         int $quantity,
         string $actualVariant
-    ):  VariantPdfModel;
+    ): VariantPdfModel;
 }
