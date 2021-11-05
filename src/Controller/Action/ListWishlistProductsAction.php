@@ -73,9 +73,11 @@ final class ListWishlistProductsAction
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
             $wishlistProductCommand = new AddWishlistProduct();
+
             $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
             $commandsArray->add($wishlistProductCommand);
         }
+
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
         ]);
@@ -86,10 +88,13 @@ final class ListWishlistProductsAction
             $this->handleCartItems($form->getData());
 
             return new Response(
-                $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                    'wishlist' => $wishlist,
-                    'form' => $form->createView(),
-                ])
+                $this->twigEnvironment->render(
+                    '@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig',
+                    [
+                        'wishlist' => $wishlist,
+                        'form' => $form->createView(),
+                    ]
+                )
             );
         }
 
@@ -98,10 +103,13 @@ final class ListWishlistProductsAction
         }
 
         return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                'wishlist' => $wishlist,
-                'form' => $form->createView(),
-            ])
+            $this->twigEnvironment->render(
+                '@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig',
+                [
+                    'wishlist' => $wishlist,
+                    'form' => $form->createView(),
+                ]
+            )
         );
     }
 
@@ -113,6 +121,7 @@ final class ListWishlistProductsAction
                 $addToCartCommand = $wishlistProduct->getCartItem();
                 $cart = $addToCartCommand->getCart();
                 $cartItem = $addToCartCommand->getCartItem();
+
                 if (0 >= $cartItem->getVariant()->getOnHand()) {
                     $message = sprintf('%s does not have sufficient stock.', $cartItem->getProductName());
                     $this->flashBag->add('error', $this->translator->trans($message));
@@ -121,6 +130,7 @@ final class ListWishlistProductsAction
                 } else {
                     $this->orderModifier->addToOrder($cart, $cartItem);
                     $this->cartManager->persist($cart);
+
                     if (!$this->flashBag->has('success')) {
                         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
                     }

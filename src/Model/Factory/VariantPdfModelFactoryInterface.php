@@ -15,8 +15,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 interface VariantPdfModelFactoryInterface
 {
-    public function createWithVariantAndImagePath
-    (
+    public function createWithVariantAndImagePath(
         ProductVariantInterface $variant,
         string $path,
         int $quantity,

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
+
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Exporter;
@@ -24,20 +30,18 @@ use Twig\Environment;
 
 final class ExporterWishlistToPdfSpec extends ObjectBehavior
 {
-    function let
-    (
-        ProductVariantRepositoryInterface $productVariantRepository,
-        VariantImagePathResolverInterface $variantImagePathResolver,
-        VariantPdfModelFactoryInterface $variantPdfModelFactory,
-        Environment $twigEnvironment
+    function let(
+        ProductVariantRepositoryInterface   $productVariantRepository,
+        VariantImagePathResolverInterface   $variantImagePathResolver,
+        VariantPdfModelFactoryInterface     $variantPdfModelFactory,
+        Environment                         $twigEnvironment
     ): void
     {
-        $this->beConstructedWith
-        (
-        $productVariantRepository,
-        $variantImagePathResolver,
-        $variantPdfModelFactory,
-        $twigEnvironment
+        $this->beConstructedWith(
+            $productVariantRepository,
+            $variantImagePathResolver,
+            $variantPdfModelFactory,
+            $twigEnvironment
         );
     }
 
@@ -54,20 +58,18 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
     function it_returns_false(AddWishlistProductInterface $addWishlistProduct): void
     {
         $arrayCollection = new ArrayCollection();
+
         $addWishlistProduct->isSelected()->willReturn(false);
         $this->handleCartItems($arrayCollection, new Request())->shouldReturn(false);
     }
 
-    function it_throws_404_when_product_is_not_found
-    (
-        Request $request,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        ProductVariantInterface $productVariant,
-        AddWishlistProductInterface $wishlistProduct,
-        WishlistProductInterface $product
+    function it_throws_404_when_product_is_not_found(
+        Request                             $request,
+        ProductVariantRepositoryInterface   $productVariantRepository,
+        AddWishlistProductInterface         $wishlistProduct,
+        WishlistProductInterface            $product
     ): void
     {
-
         $wishlistProduct->isSelected()->willReturn(true);
         $productVariantRepository->find(null)->willReturn(null);
         $wishlistProduct->getWishlistProduct()->willReturn($product);
@@ -78,17 +80,16 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
             ->during('handleCartItems',[new ArrayCollection([$wishlistProduct->getWrappedObject()]),$request]);
     }
 
-    function it_call_to_export_to_pdf_function
-    (
-        Request $request,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        ProductVariantInterface $productVariant,
-        AddWishlistProductInterface $wishlistProduct,
-        WishlistProductInterface $product,
-        AddToCartCommandInterface $addToCartCommand,
-        OrderItemInterface $orderItem,
-        VariantImagePathResolverInterface $variantImagePathResolver,
-        VariantPdfModelFactoryInterface $variantPdfModelFactory
+    function it_call_to_export_to_pdf_function(
+        Request                             $request,
+        ProductVariantRepositoryInterface   $productVariantRepository,
+        ProductVariantInterface             $productVariant,
+        AddWishlistProductInterface         $wishlistProduct,
+        WishlistProductInterface            $product,
+        AddToCartCommandInterface           $addToCartCommand,
+        OrderItemInterface                  $orderItem,
+        VariantImagePathResolverInterface   $variantImagePathResolver,
+        VariantPdfModelFactoryInterface     $variantPdfModelFactory
     ): void
     {
         $wishlistProduct->isSelected()->willReturn(true);
@@ -111,6 +112,13 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
             'variant-0'
         )->willReturn(new VariantPdfModel);
 
-        $this->handleCartItems(new ArrayCollection([$wishlistProduct->getWrappedObject()]),$request)->shouldReturn(true);
+        $this->handleCartItems(
+            new ArrayCollection(
+                [
+                    $wishlistProduct->getWrappedObject()
+                ]
+            ),
+            $request
+        )->shouldReturn(true);
     }
 }

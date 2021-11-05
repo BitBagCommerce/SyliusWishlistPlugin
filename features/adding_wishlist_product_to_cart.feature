@@ -52,12 +52,3 @@ Feature: Adding wishlist product to cart
         And I check "Bushmills Black Bush Whiskey"
         And I add selected products to cart
         Then I should have "Bushmills Black Bush Whiskey" product in my cart
-
-
-
-
-
-
-
-
-

@@ -15,8 +15,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class VariantPdfModelFactory implements VariantPdfModelFactoryInterface
 {
-    public function createWithVariantAndImagePath
-    (
+    public function createWithVariantAndImagePath(
         ProductVariantInterface $variant,
         string $path,
         int $quantity,

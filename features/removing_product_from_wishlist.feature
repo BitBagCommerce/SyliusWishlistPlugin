@@ -24,5 +24,3 @@ Feature: Removing a product from wishlist
         Then I check "Jack Daniels Gentleman"
         And I remove selected products from wishlist
         And I should have 0 products in my wishlist
-
-

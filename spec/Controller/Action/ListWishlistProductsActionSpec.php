@@ -20,7 +20,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
@@ -76,8 +75,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         FormInterface            $form,
         FormErrorIterator        $formErrorIterator,
         FormView                 $formView,
-        Environment              $twigEnvironment,
-        Response                 $response
+        Environment              $twigEnvironment
     ):  void
     {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
@@ -96,7 +94,9 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $formFactory
             ->create(
                 WishlistCollectionType::class,
-                ['items' => $commandsArray],
+                [
+                    'items' => $commandsArray
+                ],
                 [
                     'cart' => $cart,
                 ]
@@ -122,23 +122,21 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
     }
 
     function it_adds_wishlist_items_to_the_cart(
-        WishlistContextInterface  $wishlistContext,
-        Request                   $request,
-        WishlistInterface         $wishlist,
-        CartContextInterface      $cartContext,
-        OrderInterface            $cart,
-        Collection                $wishlistProducts,
-        FormFactoryInterface      $formFactory,
-        FormInterface             $form,
-        FormErrorIterator         $formErrorIterator,
-        FormView                  $formView,
-        AddToCartCommandInterface $addToCartCommand,
-        OrderItemInterface        $cartItem,
-        OrderModifierInterface    $orderModifier,
-        EntityManagerInterface    $cartManager,
-        Environment               $twigEnvironment,
-        Response                  $response,
-        AddWishlistProductInterface        $wishlistProductsCommand
+        WishlistContextInterface        $wishlistContext,
+        Request                         $request,
+        WishlistInterface               $wishlist,
+        CartContextInterface            $cartContext,
+        OrderInterface                  $cart,
+        Collection                      $wishlistProducts,
+        FormFactoryInterface            $formFactory,
+        FormInterface                   $form,
+        FormErrorIterator               $formErrorIterator,
+        FormView                        $formView,
+        OrderItemInterface              $cartItem,
+        OrderModifierInterface          $orderModifier,
+        EntityManagerInterface          $cartManager,
+        Environment                     $twigEnvironment,
+        AddWishlistProductInterface     $wishlistProductsCommand
     ): void
     {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
@@ -157,7 +155,9 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $formFactory
             ->create(
                 WishlistCollectionType::class,
-                ['items' => $commandsArray],
+                [
+                    'items' => $commandsArray
+                ],
                 [
                     'cart' => $cart,
                 ]
