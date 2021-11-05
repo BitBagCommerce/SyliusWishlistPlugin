@@ -11,12 +11,14 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
@@ -40,6 +42,10 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private WishlistCreatorInterface $wishlistCreator;
 
+    private Session $session;
+
+    private RouterInterface $router;
+
     public function __construct(
         ProductRepositoryInterface   $productRepository,
         ProductIndexPageInterface    $productIndexPage,
@@ -47,7 +53,9 @@ final class WishlistContext extends RawMinkContext implements Context
         WishlistPageInterface        $wishlistPage,
         NotificationCheckerInterface $notificationChecker,
         LoginerInterface             $loginer,
-        WishlistCreatorInterface     $wishlistCreator
+        WishlistCreatorInterface     $wishlistCreator,
+        Session                      $session,
+        RouterInterface              $router
     )
     {
         $this->productRepository = $productRepository;
@@ -57,6 +65,8 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->loginer = $loginer;
         $this->wishlistCreator = $wishlistCreator;
         $this->productShowPage = $productShowPage;
+        $this->session = $session;
+        $this->router = $router;
     }
 
     /**
@@ -176,6 +186,37 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @When I export to pdf selected products from wishlist and file is downloaded
+     */
+    public function iExportToPdfSelectedProductsFromWishlistAndFileIsDownloaded(): void
+    {
+        $this->wishlistPage->exportToPdfSelectedProductsFromWishlist();
+
+        $cookieName = $this->session->getName();
+        $sessionId = $this->session->getId();
+        $baseUrl = $this->getMinkParameter('base_url');
+        $domain = parse_url($baseUrl)['host'];
+
+        $cookieJar = \GuzzleHttp\Cookie\CookieJar::fromArray(array(
+            $cookieName => $sessionId,
+        ), $domain);
+
+        $guzzle = new \GuzzleHttp\Client(array(
+            'timeout' => 10,
+            'cookies' => $cookieJar,
+        ));
+
+        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf',[], UrlGeneratorInterface::ABSOLUTE_URL);
+        $response = $guzzle->get('https://127.0.0.1:8080/wishlist/export/pdf');
+
+        $driver = $this->getSession()->getDriver();
+        $contentType = $response->getHeader('Content-Type')[0];
+        if ($contentType !== "text/html; charset=UTF-8") {
+            throw new \Behat\Mink\Exception\ExpectationException('The content type of the downloaded file is not correct.', $driver);
+        }
+    }
+
+    /**
      * @Then I should be on my wishlist page
      */
     public function iShouldBeOnMyWishlistPage(): void
@@ -224,7 +265,7 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
-     * @Then I should have :productName product in my cart
+     * @Then I should have ":productName" product in my cart
      */
     public function iShouldHaveProductInMyCart(string $productName): void
     {
