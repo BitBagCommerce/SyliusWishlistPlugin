@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\ExportWishlistToPdfAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
@@ -36,8 +35,7 @@ use Twig\Environment;
 
 final class ExportWishlistToPdfActionSpec extends ObjectBehavior
 {
-    function let
-    (
+    function let(
         WishlistContextInterface          $wishlistContext,
         CartContextInterface              $cartContext,
         FormFactoryInterface              $formFactory,
@@ -48,8 +46,7 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         ExporterWishlistToPdfInterface    $exporterWishlistToPdf
     ): void
     {
-        $this->beConstructedWith
-        (
+        $this->beConstructedWith(
             $wishlistContext,
             $cartContext,
             $formFactory,
@@ -66,8 +63,7 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $this->shouldHaveType(ExportWishlistToPdfAction::class);
     }
 
-    function it_renders_header_template
-    (
+    function it_renders_header_template(
         WishlistContextInterface            $wishlistContext,
         Request                             $request,
         WishlistInterface                   $wishlist,
@@ -100,7 +96,9 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $formFactory
             ->create(
                 WishlistCollectionType::class,
-                ['items' => $commandsArray],
+                [
+                    'items' => $commandsArray
+                ],
                 [
                     'cart' => $cart,
                 ]
@@ -125,8 +123,7 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
     }
 
 
-    function it_renders_template_with_error
-    (
+    function it_renders_template_with_error(
         WishlistContextInterface            $wishlistContext,
         Request                             $request,
         WishlistInterface                   $wishlist,
@@ -156,7 +153,9 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $formFactory
             ->create(
                 WishlistCollectionType::class,
-                ['items' => $commandsArray],
+                [
+                    'items' => $commandsArray
+                ],
                 [
                     'cart' => $cart,
                 ]

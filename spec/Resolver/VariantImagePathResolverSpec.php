@@ -25,25 +25,20 @@ final class VariantImagePathResolverSpec extends ObjectBehavior
         $this->shouldHaveType(VariantImagePathResolver::class);
     }
 
-    function it_resolve_empty_image_path
-    (
+    function it_resolve_empty_image_path(
         ProductVariantInterface $variant,
         ProductInterface $product,
         Collection $productImages
     ):  void
     {
-
         $variant->getProduct()->willReturn($product);
-
         $product->getImages()->willReturn($productImages);
-
         $productImages->first()->willReturn(false);
 
         $this->resolve($variant, 'test:8000/')->shouldReturn('http://placehold.it/150x150');
     }
 
-    function it_resolve_image_path
-    (
+    function it_resolve_image_path(
         ProductVariantInterface $variant,
         ProductInterface $product,
         Collection $productImages,

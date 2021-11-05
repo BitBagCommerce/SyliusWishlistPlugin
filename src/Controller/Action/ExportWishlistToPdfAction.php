@@ -72,22 +72,36 @@ final class ExportWishlistToPdfAction
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
             $wishlistProductCommand = new AddWishlistProduct();
+
             $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
             $commandsArray->add($wishlistProductCommand);
         }
 
-        $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
+        $form = $this->formFactory->create(
+            WishlistCollectionType::class,
+            [
+                'items' => $commandsArray
+            ],
+            [
             'cart' => $cart,
-        ]);
+            ]
+        );
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $wishlistProducts = $form->get("items")->getData();
+
             if (!$this->exporterWishlistToPdf->handleCartItems($wishlistProducts, $request)) {
-                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
+                $this->flashBag->add(
+                    'error',
+                    $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')
+                );
             }
-            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+
+            return new RedirectResponse(
+                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')
+            );
         }
 
         foreach ($form->getErrors() as $error) {
@@ -95,10 +109,12 @@ final class ExportWishlistToPdfAction
         }
 
         return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                'wishlist' => $wishlist,
-                'form' => $form->createView(),
-            ])
+            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig',
+                [
+                    'wishlist' => $wishlist,
+                    'form' => $form->createView(),
+                ]
+            )
         );
     }
 }

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
+
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Model\Factory;
@@ -26,8 +32,7 @@ final class VariantPdfModelFactorySpec extends ObjectBehavior
     function it_returns_product_pdf_model(): void
     {
         $productVariant = new ProductVariant();
-        $productPdfModel = $this->createWithVariantAndImagePath
-        (
+        $productPdfModel = $this->createWithVariantAndImagePath(
             $productVariant,
             'http://127.0.0.1:8000/media/image/b4/c2/fc6b3202ee567e0fb05f293b709c.jpg',
             10,
@@ -39,8 +44,7 @@ final class VariantPdfModelFactorySpec extends ObjectBehavior
         $productPdfModel->getQuantity()->shouldReturn(10);
         $productPdfModel->getActualVariant()->shouldReturn('variant test');
 
-        $this->createWithVariantAndImagePath
-        (
+        $this->createWithVariantAndImagePath(
             $productVariant,
             'http://127.0.0.1:8000/media/image/b4/c2/fc6b3202ee567e0fb05f293b709c.jpg',
             10,

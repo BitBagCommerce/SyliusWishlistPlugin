@@ -31,12 +31,11 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
 
     private Environment $twigEnvironment;
 
-    public function __construct
-    (
-        ProductVariantRepositoryInterface $productVariantRepository,
-        VariantImagePathResolverInterface $variantImagePathResolver,
-        VariantPdfModelFactoryInterface $variantPdfModelFactory,
-        Environment $twigEnvironment
+    public function __construct(
+        ProductVariantRepositoryInterface   $productVariantRepository,
+        VariantImagePathResolverInterface   $variantImagePathResolver,
+        VariantPdfModelFactoryInterface     $variantPdfModelFactory,
+        Environment                         $twigEnvironment
     )
     {
         $this->productVariantRepository = $productVariantRepository;
@@ -44,7 +43,6 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
         $this->variantPdfModelFactory = $variantPdfModelFactory;
         $this->twigEnvironment = $twigEnvironment;
     }
-
 
     public function handleCartItems(ArrayCollection $wishlistProducts, Request $request): bool
     {
@@ -56,9 +54,11 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
             if ($wishlistProduct->isSelected()) {
                 $result = true;
                 $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
+
                 if (null === $variant) {
                     throw new NotFoundHttpException();
                 }
+
                 $cartItem = $wishlistProduct->getCartItem()->getCartItem();
                 $quantity = $cartItem->getQuantity();
                 $baseUrl = $request->getSchemeAndHttpHost();
@@ -67,9 +67,11 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
                 $selectedProducts[] = $this->variantPdfModelFactory->createWithVariantAndImagePath($variant,$urlToImage,$quantity,$actualVariant);
             }
         }
+
         if (true === $result) {
             $this->exportToPdf($selectedProducts);
         }
+
         return $result;
     }
 
@@ -84,7 +86,6 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
             'date' => date("d.m.Y"),
             'products' => $selectedProducts
         ]);
-
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
