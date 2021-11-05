@@ -30,11 +30,11 @@ class WishlistExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('injectWishlists', [$this, 'injectWishlists']),
+            new TwigFunction('getWishlists', [$this, 'getWishlists']),
         ];
     }
 
-    public function injectWishlists()
+    public function getWishlists()
     {
         /** @var WishlistInterface $wishlists */
         $wishlists = $this->wishlistRepository->findAll();

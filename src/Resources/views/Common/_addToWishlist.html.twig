@@ -1,4 +1,4 @@
-{% if injectWishlists()|length < 2 %}
+{% if getWishlists()|length < 2 %}
     <a
         href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
         class="bitbag-add-to-wishlist ui icon labeled button blue"
@@ -12,7 +12,7 @@
         <i class="heart icon"></i>
         <span class="text">Add to wishlist</span>
         <div class="menu">
-            {% for wishlist in injectWishlists()  %}
+            {% for wishlist in getWishlists()  %}
                 <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}" class="item">
                     {{ wishlist.name }}
                 </a>
