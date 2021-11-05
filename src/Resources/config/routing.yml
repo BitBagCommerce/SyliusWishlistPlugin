@@ -66,7 +66,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_clean:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist:
-    path: /wishlist/create
+    path: /wishlists/create
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist
 
