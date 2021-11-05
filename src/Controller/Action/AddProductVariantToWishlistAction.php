@@ -83,17 +83,27 @@ final class AddProductVariantToWishlistAction
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
 
-        $wishlist->addWishlistProduct($wishlistProduct);
+        if ($wishlist->hasProductVariant($variant)) {
+            $message = sprintf('%s variant is already in wishlist.', $wishlistProduct->getProduct()->getName());
+            $this->flashBag->add('error', $this->translator->trans($message));
+        } else {
+            $wishlist->addWishlistProduct($wishlistProduct);
 
-        if (null === $wishlist->getId()) {
-            $this->wishlistManager->persist($wishlist);
+            if (null === $wishlist->getId()) {
+                $this->wishlistManager->persist($wishlist);
+            }
+
+            $this->wishlistManager->flush();
+
+            $this->flashBag->add(
+                'success',
+                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')
+            );
         }
 
-        $this->wishlistManager->flush();
-
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
-
-        $response = new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+        $response = new RedirectResponse(
+            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')
+        );
 
         $token = $this->tokenStorage->getToken();
 

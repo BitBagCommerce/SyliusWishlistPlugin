@@ -83,18 +83,27 @@ services:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.export_selected_products_to_csv:
-        class: BitBag\SyliusWishlistPlugin\Controller\Action\ExportSelectedProductsToCsv
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ExportSelectedProductsToCsvAction
         arguments:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - '@sylius.context.cart.new_shop_based.inner'
             - '@form.factory'
             - '@twig'
             - '@session.flash_bag'
+            - '@translator'
+            - "@router"
         tags:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.import_from_csv:
-        class: BitBag\SyliusWishlistPlugin\Controller\Action\ImportWishlistFromCsv
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ImportWishlistFromCsvAction
+        arguments:
+            - "@form.factory"
+            - '@twig'
+            - '@bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist'
+            - '@session.flash_bag'
+            - "@sylius.repository.product_variant"
+            - '@translator'
         tags:
             - { name: controller.service_arguments }
 

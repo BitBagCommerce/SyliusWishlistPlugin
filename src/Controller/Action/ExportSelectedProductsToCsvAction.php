@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
@@ -9,12 +10,15 @@ use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final class ExportSelectedProductsToCsv
+final class ExportSelectedProductsToCsvAction
 {
     private WishlistContextInterface $wishlistContext;
 
@@ -26,19 +30,26 @@ final class ExportSelectedProductsToCsv
 
     private FlashBagInterface $flashBag;
 
+    private TranslatorInterface $translator;
+
+    private UrlGeneratorInterface $urlGenerator;
+
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
-        FlashBagInterface $flashBag
-
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
         $this->twigEnvironment = $twigEnvironment;
         $this->flashBag = $flashBag;
+        $this->translator = $translator;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): Response
@@ -55,7 +66,7 @@ final class ExportSelectedProductsToCsv
         }
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
-            'cart' => $cart,
+                'cart' => $cart,
 
         ]);
 
@@ -64,18 +75,20 @@ final class ExportSelectedProductsToCsv
         if ($form->isSubmitted() && $form->isValid()) {
             $file = fopen('php://temp', 'w');
 
-            $this->exportToCSV($form->getData(), $file);
+            if ($this->exportToCSV($form->getData(), $file)) {
+                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.selected_wishlist_items_successfully_exported'));
+                rewind($file);
+                $response = new Response(stream_get_contents($file));
+                fclose($file);
 
-            rewind($file);
-            $response = new Response(stream_get_contents($file));
-            fclose($file);
+                $response->headers->set('Content-Type', 'text/csv');
+                $response->headers->set('Content-Disposition', 'attachment; filename=export.csv');
 
-            $response->headers->set('Content-Type', 'text/csv');
-            $dateTime = new \DateTime('now');
-            $dateTimeString = $dateTime->format('Y-m-d H:i:s');
-            $response->headers->set('Content-Disposition', 'attachment; filename=export' .$dateTimeString .'.csv');
-
-            return $response;
+                return $response;
+            } else {
+                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
+                return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+            }
         }
 
         foreach ($form->getErrors() as $error) {
@@ -84,35 +97,30 @@ final class ExportSelectedProductsToCsv
 
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                'wishlist' => $wishlist,
-                'form' => $form->createView(),
-            ])
+                        'wishlist' => $wishlist,
+                        'form' => $form->createView(),
+                ])
         );
     }
 
-    private function exportToCSV(array $wishlistProductsCommands, $file): void
+    private function exportToCSV(array $wishlistProductsCommands, $file): bool
     {
-        $csvWishlistHeaders = [
-            'variantId',
-            'quantity',
-        ];
+        $result = false;
 
-        fputcsv($file, $csvWishlistHeaders);
-        $csvWishlistBody = [];
         foreach ($wishlistProductsCommands as $wishlistProducts) {
             /** @var AddWishlistProduct $wishlistProduct */
             foreach ($wishlistProducts as $wishlistProduct) {
                 if ($wishlistProduct->isSelected()) {
+                    $result = true;
                     $csvWishlistItem = [
-                        $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),
-                        $wishlistProduct->getCartItem()->getCartItem()->getQuantity(),
+                            $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),
+                            $wishlistProduct->getWishlistProduct()->getProduct()->getId(),
+                            $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getCode()
                     ];
-                    $csvWishlistBody[] = $csvWishlistItem;
+                    fputcsv($file, $csvWishlistItem);
                 }
             }
         }
-        foreach ($csvWishlistBody as $data) {
-            fputcsv($file, $data);
-        }
+        return $result;
     }
 }
