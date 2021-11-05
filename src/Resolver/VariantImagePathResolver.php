@@ -16,12 +16,12 @@ final class VariantImagePathResolver implements VariantImagePathResolverInterfac
 {
     public function resolve(ProductVariantInterface $variant, string $baseUrl)
     {
-        if ( false === $variant->getProduct()->getImages()->first()) {
+        if (false === $variant->getProduct()->getImages()->first()) {
             return 'http://placehold.it/150x150';
         }
 
         $imagePath = $variant->getProduct()->getImages()->first()->getPath();
 
-        return $baseUrl.'/media/image/'.$imagePath;
+        return $baseUrl . '/media/image/' . $imagePath;
     }
 }

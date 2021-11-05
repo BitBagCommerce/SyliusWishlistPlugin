@@ -32,12 +32,11 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
     private Environment $twigEnvironment;
 
     public function __construct(
-        ProductVariantRepositoryInterface   $productVariantRepository,
-        VariantImagePathResolverInterface   $variantImagePathResolver,
-        VariantPdfModelFactoryInterface     $variantPdfModelFactory,
-        Environment                         $twigEnvironment
-    )
-    {
+        ProductVariantRepositoryInterface $productVariantRepository,
+        VariantImagePathResolverInterface $variantImagePathResolver,
+        VariantPdfModelFactoryInterface $variantPdfModelFactory,
+        Environment $twigEnvironment
+    ) {
         $this->productVariantRepository = $productVariantRepository;
         $this->variantImagePathResolver = $variantImagePathResolver;
         $this->variantPdfModelFactory = $variantPdfModelFactory;
@@ -64,7 +63,7 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
                 $baseUrl = $request->getSchemeAndHttpHost();
                 $urlToImage = $this->variantImagePathResolver->resolve($variant, $baseUrl);
                 $actualVariant = $cartItem->getVariant()->getCode();
-                $selectedProducts[] = $this->variantPdfModelFactory->createWithVariantAndImagePath($variant,$urlToImage,$quantity,$actualVariant);
+                $selectedProducts[] = $this->variantPdfModelFactory->createWithVariantAndImagePath($variant, $urlToImage, $quantity, $actualVariant);
             }
         }
 
@@ -82,13 +81,13 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
         $pdfOptions->set('defaultFont', 'Arial');
         $dompdf = new Dompdf($pdfOptions);
         $html = $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/_wishlist_pdf.html.twig', [
-            'title' => "My wishlist products",
-            'date' => date("d.m.Y"),
-            'products' => $selectedProducts
+            'title' => 'My wishlist products',
+            'date' => date('d.m.Y'),
+            'products' => $selectedProducts,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $dompdf->stream('wishlist.pdf', ["Attachment" => true]);
+        $dompdf->stream('wishlist.pdf', ['Attachment' => true]);
     }
 }

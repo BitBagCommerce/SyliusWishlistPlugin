@@ -44,14 +44,14 @@ final class ExportWishlistToPdfAction
     private ExporterWishlistToPdfInterface $exporterWishlistToPdf;
 
     public function __construct(
-        WishlistContextInterface          $wishlistContext,
-        CartContextInterface              $cartContext,
-        FormFactoryInterface              $formFactory,
-        FlashBagInterface                 $flashBag,
-        TranslatorInterface               $translator,
-        UrlGeneratorInterface             $urlGenerator,
-        Environment                       $twigEnvironment,
-        ExporterWishlistToPdfInterface    $exporterWishlistToPdf
+        WishlistContextInterface $wishlistContext,
+        CartContextInterface $cartContext,
+        FormFactoryInterface $formFactory,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
+        UrlGeneratorInterface $urlGenerator,
+        Environment $twigEnvironment,
+        ExporterWishlistToPdfInterface $exporterWishlistToPdf
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
@@ -80,7 +80,7 @@ final class ExportWishlistToPdfAction
         $form = $this->formFactory->create(
             WishlistCollectionType::class,
             [
-                'items' => $commandsArray
+                'items' => $commandsArray,
             ],
             [
             'cart' => $cart,
@@ -90,7 +90,7 @@ final class ExportWishlistToPdfAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $wishlistProducts = $form->get("items")->getData();
+            $wishlistProducts = $form->get('items')->getData();
 
             if (!$this->exporterWishlistToPdf->handleCartItems($wishlistProducts, $request)) {
                 $this->flashBag->add(

@@ -47,15 +47,15 @@ final class RemoveSelectedProductsFromWishlistAction
     private Environment $twigEnvironment;
 
     public function __construct(
-        WishlistContextInterface          $wishlistContext,
-        CartContextInterface              $cartContext,
-        FormFactoryInterface              $formFactory,
-        FlashBagInterface                 $flashBag,
-        TranslatorInterface               $translator,
+        WishlistContextInterface $wishlistContext,
+        CartContextInterface $cartContext,
+        FormFactoryInterface $formFactory,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
         ProductVariantRepositoryInterface $productVariantRepository,
-        UrlGeneratorInterface             $urlGenerator,
-        EntityManagerInterface            $wishlistProductManager,
-        Environment                       $twigEnvironment
+        UrlGeneratorInterface $urlGenerator,
+        EntityManagerInterface $wishlistProductManager,
+        Environment $twigEnvironment
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
@@ -83,13 +83,12 @@ final class RemoveSelectedProductsFromWishlistAction
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
-
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $wishlistProducts = $form->get("items")->getData();
+            $wishlistProducts = $form->get('items')->getData();
 
             if ($this->handleCartItems($wishlistProducts, $request)) {
                 $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));

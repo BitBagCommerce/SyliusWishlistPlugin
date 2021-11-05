@@ -45,17 +45,16 @@ final class AddSelectedProductsToCart
     private OrderItemQuantityModifierInterface $itemQuantityModifier;
 
     public function __construct(
-        WishlistContextInterface           $wishlistContext,
-        CartContextInterface               $cartContext,
-        FormFactoryInterface               $formFactory,
-        OrderModifierInterface             $orderModifier,
-        EntityManagerInterface             $cartManager,
-        FlashBagInterface                  $flashBag,
-        TranslatorInterface                $translator,
-        Environment                        $twigEnvironment,
+        WishlistContextInterface $wishlistContext,
+        CartContextInterface $cartContext,
+        FormFactoryInterface $formFactory,
+        OrderModifierInterface $orderModifier,
+        EntityManagerInterface $cartManager,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
+        Environment $twigEnvironment,
         OrderItemQuantityModifierInterface $itemQuantityModifier
-    )
-    {
+    ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
@@ -82,14 +81,12 @@ final class AddSelectedProductsToCart
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
-
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $wishlistProducts = $form->get("items")->getData();
+            $wishlistProducts = $form->get('items')->getData();
 
             if ($this->handleCartItems($wishlistProducts)) {
                 $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_selected_wishlist_items_to_cart'));

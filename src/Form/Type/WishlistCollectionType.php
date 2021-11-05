@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Form\Type;
@@ -17,7 +18,7 @@ final class WishlistCollectionType extends AbstractType
                 'entry_type' => AddProductsToCartType::class,
                 'entry_options' => [
                     'cart' => $options['cart'],
-                ]
+                ],
             ]);
     }
 

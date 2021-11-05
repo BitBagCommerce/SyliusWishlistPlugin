@@ -35,14 +35,12 @@ final class AddProductsToCartType extends AbstractType
     /** @var string[] */
     private array $validationGroups;
 
-    public function __construct
-    (
-        AddToCartCommandFactoryInterface   $addToCartCommandFactory,
-        CartItemFactoryInterface           $cartItemFactory,
+    public function __construct(
+        AddToCartCommandFactoryInterface $addToCartCommandFactory,
+        CartItemFactoryInterface $cartItemFactory,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
-        array                              $validationGroups
-    )
-    {
+        array $validationGroups
+    ) {
         $this->addToCartCommandFactory = $addToCartCommandFactory;
         $this->cartItemFactory = $cartItemFactory;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;
@@ -71,7 +69,6 @@ final class AddProductsToCartType extends AbstractType
                     'required' => false,
                 ]);
         });
-
     }
 
     private function createCartItem(WishlistProductInterface $wishlistProduct): OrderItemInterface

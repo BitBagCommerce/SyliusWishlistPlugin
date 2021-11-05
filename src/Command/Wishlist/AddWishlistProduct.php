@@ -15,10 +15,8 @@ use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 
 final class AddWishlistProduct implements AddWishlistProductInterface
 {
-    /** @var WishlistProductInterface  */
     private WishlistProductInterface $wishlistProduct;
 
-    /** @var AddToCartCommandInterface  */
     private AddToCartCommandInterface $cartItem;
 
     private bool $selected;
@@ -52,5 +50,4 @@ final class AddWishlistProduct implements AddWishlistProductInterface
     {
         $this->cartItem = $cartItem;
     }
-
 }
