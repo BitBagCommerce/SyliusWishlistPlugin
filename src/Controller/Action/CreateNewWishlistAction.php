@@ -10,89 +10,45 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType;
-use Doctrine\Persistence\ObjectManager;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final class CreateNewWishlistAction
 {
-    private ObjectManager $wishlistManager;
-
-    private FlashBagInterface $flashBag;
-
-    private TranslatorInterface $translator;
-
-    private UrlGeneratorInterface $urlGenerator;
-
-    private FormFactoryInterface $formFactory;
-
-    private Environment $twigEnvironment;
+    private TokenStorageInterface $tokenStorage;
 
     private WishlistFactoryInterface $wishlistFactory;
 
-    private TokenStorageInterface $tokenStorage;
+    private FormFactoryInterface $formFactory;
+
+    private MessageBusInterface $commandBus;
 
     public function __construct(
-        ObjectManager $wishlistManager,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator,
-        FormFactoryInterface $formFactory,
-        Environment $twigEnvironment,
+        TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
-        TokenStorageInterface $tokenStorage
+        FormFactoryInterface $formFactory,
+        MessageBusInterface $commandBus
     ) {
-        $this->wishlistManager = $wishlistManager;
-        $this->flashBag = $flashBag;
-        $this->translator = $translator;
-        $this->urlGenerator = $urlGenerator;
-        $this->formFactory = $formFactory;
-        $this->twigEnvironment = $twigEnvironment;
-        $this->wishlistFactory = $wishlistFactory;
         $this->tokenStorage = $tokenStorage;
+        $this->wishlistFactory = $wishlistFactory;
+        $this->formFactory = $formFactory;
+        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Request $request): Response
     {
-        $token = $this->tokenStorage->getToken();
-        $user = $token ? $token->getUser() : null;
+        $token = $this->tokenStorage;
+        $wishlist = $this->wishlistFactory;
+        $form = $this->formFactory;
 
-        if ($user instanceof ShopUserInterface) {
-            $wishlist = $this->wishlistFactory->createForUser($user);
-        } else {
-            $wishlist = $this->wishlistFactory->createNew();
-        }
+        $createNewWishlist = new CreateNewWishlist($token, $wishlist, $form);
+        $this->commandBus->dispatch($createNewWishlist);
 
-        $form = $this->formFactory->create(CreateNewWishlistType::class, $wishlist);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $wishlist = $form->getData();
-
-            $this->wishlistManager->persist($wishlist);
-            $this->wishlistManager->flush();
-
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist'));
-
-            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
-        }
-
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig', [
-                'wishlist' => $wishlist,
-                'form' => $form->createView(),
-            ])
-        );
+        return new Response('success');
     }
 }
