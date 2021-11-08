@@ -54,37 +54,14 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
         $token = $createNewWishlist->getTokenStorage();
         $wishlistFactory = $createNewWishlist->getWishlistFactory();
         $user = $token->getToken() ? $token->getToken()->getUser() : null;
-        $formFactory = $createNewWishlist->getFormFactory();
 
         if ($user instanceof ShopUserInterface) {
             $wishlist = $wishlistFactory->createForUser($user);
         } else {
             $wishlist = $wishlistFactory->createNew();
         }
-
-        $form = $formFactory->create(CreateNewWishlistType::class, $wishlist);
-        //$form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $wishlist = $form->getData();
-
-            $this->wishlistManager->persist($wishlist);
-            $this->wishlistManager->flush();
-
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist'));
-
-            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
-        }
-
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig', [
-                'wishlist' => $wishlist,
-                'form' => $form->createView(),
-            ])
-        );
-
-
+        $wishlist->setName('amen');
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
     }
-
 }
