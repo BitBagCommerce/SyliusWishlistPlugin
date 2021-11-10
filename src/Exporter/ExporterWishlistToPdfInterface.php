@@ -8,11 +8,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Resolver;
+namespace BitBag\SyliusWishlistPlugin\Exporter;
 
-use Sylius\Component\Core\Model\ProductVariantInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\Request;
 
-interface VariantImagePathResolverInterface
+interface ExporterWishlistToPdfInterface
 {
-    public function resolve(ProductVariantInterface $variant, string $baseUrl): string;
+    public function handleCartItems(ArrayCollection $wishlistProducts, Request $request): bool;
 }

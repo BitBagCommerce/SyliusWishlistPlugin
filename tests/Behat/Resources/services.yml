@@ -24,6 +24,8 @@ services:
             - "@sylius.behat.notification_checker"
             - "@bitbag_sylius_cms_plugin.behat.loginer"
             - "@bitbag_sylius_cms_plugin.behat.wishlist_creator"
+            - "@session"
+            - "@router"
 
     bitbag_sylius_cms_plugin.behat.page.shop.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage

@@ -12,6 +12,7 @@ Feature: Adding wishlist product to cart
         Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
         And all store products appear under a main taxonomy
         And the store has a product "Bushmills Black Bush Whiskey" priced at "$230.00"
+        And there is 5 units of product "Bushmills Black Bush Whiskey" available in the inventory
         And I have these products in my wishlist
         When I go to the wishlist page
         And I select 1 quantity of "Bushmills Black Bush Whiskey" product
@@ -26,7 +27,7 @@ Feature: Adding wishlist product to cart
         When I go to the wishlist page
         And I select 1 quantity of "Jack Daniels Gentleman" product
         And I add my wishlist products to cart
-        Then I should not be notified that "Jack Daniels Gentleman" does not have sufficient stock
+        Then I should be notified that "Jack Daniels Gentleman" does not have sufficient stock
 
     @ui
     Scenario: Adding selected wishlist products to cart
@@ -51,12 +52,3 @@ Feature: Adding wishlist product to cart
         And I check "Bushmills Black Bush Whiskey"
         And I add selected products to cart
         Then I should have "Bushmills Black Bush Whiskey" product in my cart
-
-
-
-
-
-
-
-
-

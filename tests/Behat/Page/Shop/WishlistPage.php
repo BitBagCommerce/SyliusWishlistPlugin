@@ -52,6 +52,11 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         $this->getDocument()->find('css', '[data-test-wishlist-remove-selected-from-wishlist]')->press();
     }
 
+    public function exportToPdfSelectedProductsFromWishlist(): void
+    {
+        $this->getDocument()->find('css', '[data-test-wishlist-export-to-pdf-from-wishlist]')->press();
+    }
+
     public function selectProductQuantity(string $productName, int $quantity): void
     {
         $addToCartElements = $this->getDocument()->findAll('css', '[data-test-wishlist-item-quantity] input');
