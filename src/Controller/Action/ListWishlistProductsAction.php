@@ -99,7 +99,6 @@ final class ListWishlistProductsAction
         foreach ($form->getErrors() as $error) {
             $this->flashBag->add('error', $error->getMessage());
         }
-
         return new Response(
             $this->twigEnvironment->render(
                 '@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig',
