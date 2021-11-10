@@ -134,10 +134,10 @@ final class RemoveSelectedProductsFromWishlistAction
         }
 
         if (!isset($result) || true !== $result) {
-            $this->wishlistProductManager->flush();
-
             return false;
         }
+
+        $this->wishlistProductManager->flush();
         return true;
     }
 }
