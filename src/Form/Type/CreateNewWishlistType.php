@@ -29,9 +29,4 @@ final class CreateNewWishlistType extends AbstractType
             ->add('save', SubmitType::class)
         ;
     }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefault('data_class', CreateNewWishlist::class);
-    }
 }
