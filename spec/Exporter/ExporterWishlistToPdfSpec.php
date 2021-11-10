@@ -35,8 +35,7 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
         VariantImagePathResolverInterface   $variantImagePathResolver,
         VariantPdfModelFactoryInterface     $variantPdfModelFactory,
         Environment                         $twigEnvironment
-    ): void
-    {
+    ): void {
         $this->beConstructedWith(
             $productVariantRepository,
             $variantImagePathResolver,
@@ -68,8 +67,7 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
         ProductVariantRepositoryInterface   $productVariantRepository,
         AddWishlistProductInterface         $wishlistProduct,
         WishlistProductInterface            $product
-    ): void
-    {
+    ): void {
         $wishlistProduct->isSelected()->willReturn(true);
         $productVariantRepository->find(null)->willReturn(null);
         $wishlistProduct->getWishlistProduct()->willReturn($product);
@@ -90,8 +88,7 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
         OrderItemInterface                  $orderItem,
         VariantImagePathResolverInterface   $variantImagePathResolver,
         VariantPdfModelFactoryInterface     $variantPdfModelFactory
-    ): void
-    {
+    ): void {
         $wishlistProduct->isSelected()->willReturn(true);
         $productVariantRepository->find($productVariant)->willReturn($productVariant);
         $wishlistProduct->getWishlistProduct()->willReturn($product);

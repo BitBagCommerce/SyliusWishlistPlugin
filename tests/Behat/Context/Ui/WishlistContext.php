@@ -56,8 +56,7 @@ final class WishlistContext extends RawMinkContext implements Context
         WishlistCreatorInterface     $wishlistCreator,
         Session                      $session,
         RouterInterface              $router
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
         $this->wishlistPage = $wishlistPage;
@@ -197,23 +196,25 @@ final class WishlistContext extends RawMinkContext implements Context
         $baseUrl = $this->getMinkParameter('base_url');
         $domain = parse_url($baseUrl)['host'];
 
-        $cookieJar = \GuzzleHttp\Cookie\CookieJar::fromArray(array(
+        $cookieJar = \GuzzleHttp\Cookie\CookieJar::fromArray([
             $cookieName => $sessionId,
-        ), $domain);
+        ], $domain);
 
-        $guzzle = new \GuzzleHttp\Client(array(
+        $guzzle = new \GuzzleHttp\Client([
             'timeout' => 10,
             'cookies' => $cookieJar,
-        ));
+        ]);
 
-        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf',[], UrlGeneratorInterface::ABSOLUTE_URL);
-        $response = $guzzle->get('https://127.0.0.1:8080/wishlist/export/pdf');
-
+        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf',[], UrlGeneratorInterface::RELATIVE_PATH);
+        $response = $guzzle->get(sprintf('%s%s', $baseUrl,$url));
         $driver = $this->getSession()->getDriver();
         $contentType = $response->getHeader('Content-Type')[0];
+
         if ($contentType !== "text/html; charset=UTF-8") {
             throw new \Behat\Mink\Exception\ExpectationException('The content type of the downloaded file is not correct.', $driver);
         }
+
+        Assert::eq($this->getSession()->getStatusCode(), '200');
     }
 
     /**

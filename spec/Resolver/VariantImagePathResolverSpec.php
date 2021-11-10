@@ -29,8 +29,7 @@ final class VariantImagePathResolverSpec extends ObjectBehavior
         ProductVariantInterface $variant,
         ProductInterface $product,
         Collection $productImages
-    ):  void
-    {
+    ):  void {
         $variant->getProduct()->willReturn($product);
         $product->getImages()->willReturn($productImages);
         $productImages->first()->willReturn(false);
@@ -43,8 +42,7 @@ final class VariantImagePathResolverSpec extends ObjectBehavior
         ProductInterface $product,
         Collection $productImages,
         ProductImage $productImage
-    ):  void
-    {
+    ):  void {
 
         $variant->getProduct()->willReturn($product);
         $product->getImages()->willReturn($productImages);
