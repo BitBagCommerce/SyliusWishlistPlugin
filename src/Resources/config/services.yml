@@ -232,11 +232,12 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\CreateNewWishlistAction
         arguments:
-            - "@security.token_storage"
-            - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "@form.factory"
             - "@sylius.command_bus"
             - "@twig"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@router"
         tags:
             - { name: controller.service_arguments }
 

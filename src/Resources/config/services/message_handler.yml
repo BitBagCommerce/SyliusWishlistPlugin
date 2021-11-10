@@ -123,10 +123,9 @@ services:
     bitbag_sylius_wishlist_plugin.command_handler.wishlist.create_new_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateNewWishlistHandler
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
-            - "@session.flash_bag"
-            - "@translator"
-            - "@router"
-            - "@twig"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@security.token_storage"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
+
         tags:
             - { name: messenger.message_handler }

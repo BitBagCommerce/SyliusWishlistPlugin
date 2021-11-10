@@ -10,28 +10,13 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
 final class CreateNewWishlist
 {
-    private TokenStorageInterface $tokenStorage;
+    public string $name;
 
-    private WishlistFactoryInterface $wishlistFactory;
-
-    public function __construct(TokenStorageInterface $tokenStorage, WishlistFactoryInterface $wishlistFactory)
+    public function getName(): ?string
     {
-        $this->tokenStorage = $tokenStorage;
-        $this->wishlistFactory = $wishlistFactory;
+        return $this->name;
     }
 
-    public function getTokenStorage(): TokenStorageInterface
-    {
-        return $this->tokenStorage;
-    }
-
-    public function getWishlistFactory(): WishlistFactoryInterface
-    {
-        return $this->wishlistFactory;
-    }
 }
