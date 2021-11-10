@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
+use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToSelectedWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 
@@ -22,14 +22,14 @@ final class AddProductToSelectedWishlistHandler implements MessageHandlerInterfa
 {
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    private EntityManagerInterface $wishlistManager;
+    private WishlistRepositoryInterface $wishlistRepository;
 
     public function __construct(
         WishlistProductFactoryInterface $wishlistProductFactory,
-        EntityManagerInterface $wishlistManager
+        WishlistRepositoryInterface $wishlistRepository
     ) {
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->wishlistManager = $wishlistManager;
+        $this->wishlistRepository = $wishlistRepository;
     }
 
     public function __invoke(AddProductToSelectedWishlist $addProductToSelectedWishlist)
@@ -45,6 +45,6 @@ final class AddProductToSelectedWishlistHandler implements MessageHandlerInterfa
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
         $wishlist->addWishlistProduct($wishlistProduct);
-        $this->wishlistManager->flush();
+        $this->wishlistRepository->add($wishlist);
     }
 }
