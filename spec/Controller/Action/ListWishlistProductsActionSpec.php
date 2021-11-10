@@ -45,8 +45,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         FlashBagInterface        $flashBag,
         TranslatorInterface      $translator,
         Environment              $twigEnvironment
-    ):  void
-    {
+    ):  void {
         $this->beConstructedWith(
             $wishlistContext,
             $cartContext,
@@ -76,8 +75,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         FormErrorIterator        $formErrorIterator,
         FormView                 $formView,
         Environment              $twigEnvironment
-    ):  void
-    {
+    ):  void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
@@ -137,8 +135,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         EntityManagerInterface          $cartManager,
         Environment                     $twigEnvironment,
         AddWishlistProductInterface     $wishlistProductsCommand
-    ): void
-    {
+    ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);

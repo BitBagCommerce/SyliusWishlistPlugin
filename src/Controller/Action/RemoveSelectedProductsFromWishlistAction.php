@@ -113,8 +113,6 @@ final class RemoveSelectedProductsFromWishlistAction
 
     private function handleCartItems(array $wishlistProducts, Request $request): bool
     {
-        $result = false;
-
         /** @var AddWishlistProduct $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
@@ -135,8 +133,12 @@ final class RemoveSelectedProductsFromWishlistAction
             }
         }
 
+        if (!isset($result) || true !== $result) {
+            return false;
+        }
+
         $this->wishlistProductManager->flush();
 
-        return $result;
+        return true;
     }
 }

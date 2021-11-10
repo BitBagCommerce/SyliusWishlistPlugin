@@ -83,7 +83,7 @@ final class ExportWishlistToPdfAction
                 'items' => $commandsArray,
             ],
             [
-            'cart' => $cart,
+                'cart' => $cart,
             ]
         );
 

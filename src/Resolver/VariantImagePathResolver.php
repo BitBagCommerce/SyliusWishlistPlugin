@@ -14,7 +14,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class VariantImagePathResolver implements VariantImagePathResolverInterface
 {
-    public function resolve(ProductVariantInterface $variant, string $baseUrl)
+    public function resolve(ProductVariantInterface $variant, string $baseUrl): string
     {
         if (false === $variant->getProduct()->getImages()->first()) {
             return 'http://placehold.it/150x150';

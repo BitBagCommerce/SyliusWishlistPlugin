@@ -45,7 +45,6 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
 
     public function handleCartItems(ArrayCollection $wishlistProducts, Request $request): bool
     {
-        $result = false;
         $selectedProducts = [];
 
         /** @var AddWishlistProductInterface $wishlistProduct */
@@ -67,11 +66,12 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
             }
         }
 
-        if (true === $result) {
+        if (isset($result) && $result === true) {
             $this->exportToPdf($selectedProducts);
+            return true;
         }
 
-        return $result;
+        return false;
     }
 
     private function exportToPdf(array $selectedProducts): void

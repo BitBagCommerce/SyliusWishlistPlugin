@@ -13,7 +13,6 @@ namespace spec\BitBag\SyliusWishlistPlugin\Model\Factory;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModel;
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariant;
 

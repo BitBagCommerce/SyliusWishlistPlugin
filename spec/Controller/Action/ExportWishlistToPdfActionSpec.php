@@ -44,8 +44,7 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         UrlGeneratorInterface             $urlGenerator,
         Environment                       $twigEnvironment,
         ExporterWishlistToPdfInterface    $exporterWishlistToPdf
-    ): void
-    {
+    ): void {
         $this->beConstructedWith(
             $wishlistContext,
             $cartContext,
@@ -78,8 +77,7 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         UrlGeneratorInterface               $urlGenerator,
         ArrayCollection                     $arrayCollection
 
-    ):  void
-    {
+    ):  void {
         $wishlistProduct = new WishlistProduct();
         $wishlistProductsCollection = new ArrayCollection([$wishlistProduct]);
 
@@ -122,7 +120,6 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
     }
 
-
     function it_renders_template_with_error(
         WishlistContextInterface            $wishlistContext,
         Request                             $request,
@@ -135,8 +132,7 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         FormView                            $formView,
         Environment                         $twigEnvironment
 
-    ):  void
-    {
+    ):  void {
         $wishlistProduct = new WishlistProduct();
         $wishlistProductsCollection = new ArrayCollection([$wishlistProduct]);
 
@@ -182,4 +178,3 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $this->__invoke($request)->shouldHaveType(Response::class);
     }
 }
-
