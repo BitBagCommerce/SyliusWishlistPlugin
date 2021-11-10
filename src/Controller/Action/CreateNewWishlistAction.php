@@ -10,11 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 

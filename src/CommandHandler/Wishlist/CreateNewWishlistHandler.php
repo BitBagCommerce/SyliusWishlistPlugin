@@ -20,7 +20,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 final class CreateNewWishlistHandler implements MessageHandlerInterface
 {
     private WishlistRepositoryInterface $wishlistRepository;
+
     private TokenStorageInterface $tokenStorage;
+
     private WishlistFactoryInterface $wishlistFactory;
 
     public function __construct(
@@ -28,7 +30,6 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory
     ) {
-
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
