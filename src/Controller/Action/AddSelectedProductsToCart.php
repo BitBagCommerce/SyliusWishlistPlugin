@@ -116,8 +116,6 @@ final class AddSelectedProductsToCart
 
     private function handleCartItems(array $wishlistProducts): bool
     {
-        $result = false;
-
         /** @var AddWishlistProduct $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
@@ -128,13 +126,15 @@ final class AddSelectedProductsToCart
                 if (0 === $cartItem->getQuantity()) {
                     $this->itemQuantityModifier->modify($cartItem, 1);
                 }
-
                 $this->orderModifier->addToOrder($cart, $cartItem);
                 $this->cartManager->persist($cart);
             }
         }
-        $this->cartManager->flush();
 
-        return $result;
+        if (isset($result) && $result === true) {
+            $this->cartManager->flush();
+            return true;
+        }
+        return false;
     }
 }
