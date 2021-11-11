@@ -2,9 +2,3 @@ suites:
     main:
         namespace: BitBag\SyliusWishlistPlugin
         psr4_prefix: BitBag\SyliusWishlistPlugin
-extensions:
-  FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
-    format:
-        - clover
-    output:
-        clover: coverage.xml

@@ -71,35 +71,33 @@ final class AddProductVariantToWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        /** @var ProductVariantInterface|null $variant */
-        $variant = $this->productVariantRepository->find($request->get('variantId'));
-
-        if (null === $variant) {
-            throw new NotFoundHttpException();
-        }
-        /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistContext->getWishlist($request);
 
-        /** @var WishlistProductInterface $wishlistProduct */
-        $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
+        foreach ((array) $request->get('variantId') as $variantId) {
+            /** @var ProductVariantInterface|null $variant */
+            $variant = $this->productVariantRepository->find($variantId);
 
-        if ($wishlist->hasProductVariant($variant)) {
-            $message = sprintf('%s variant is already in wishlist.', $wishlistProduct->getProduct()->getName());
-            $this->flashBag->add('error', $this->translator->trans($message));
-        } else {
-            $wishlist->addWishlistProduct($wishlistProduct);
-
-            if (null === $wishlist->getId()) {
-                $this->wishlistManager->persist($wishlist);
+            if (null === $variant) {
+                throw new NotFoundHttpException();
             }
 
-            $this->wishlistManager->flush();
+            /** @var WishlistProductInterface $wishlistProduct */
+            $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
 
-            $this->flashBag->add(
-                'success',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')
-            );
+            if ($wishlist->hasProductVariant($variant)) {
+                $message = sprintf('%s variant is already in wishlist.', $wishlistProduct->getProduct()->getName());
+                $this->flashBag->add('error', $this->translator->trans($message));
+            } else {
+                $wishlist->addWishlistProduct($wishlistProduct);
+                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+            }
         }
+
+        if (null === $wishlist->getId()) {
+            $this->wishlistManager->persist($wishlist);
+        }
+
+        $this->wishlistManager->flush();
 
         $response = new RedirectResponse(
             $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')

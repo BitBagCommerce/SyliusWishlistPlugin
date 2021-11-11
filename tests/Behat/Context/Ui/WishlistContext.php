@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
@@ -40,16 +40,18 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private WishlistCreatorInterface $wishlistCreator;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
-        ProductRepositoryInterface   $productRepository,
-        ProductIndexPageInterface    $productIndexPage,
-        ProductShowPageInterface     $productShowPage,
-        WishlistPageInterface        $wishlistPage,
+        ProductRepositoryInterface $productRepository,
+        ProductIndexPageInterface $productIndexPage,
+        ProductShowPageInterface $productShowPage,
+        WishlistPageInterface $wishlistPage,
         NotificationCheckerInterface $notificationChecker,
-        LoginerInterface             $loginer,
-        WishlistCreatorInterface     $wishlistCreator
-    )
-    {
+        LoginerInterface $loginer,
+        WishlistCreatorInterface $wishlistCreator,
+        EntityManagerInterface $entityManager
+    ) {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
         $this->wishlistPage = $wishlistPage;
@@ -57,6 +59,7 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->loginer = $loginer;
         $this->wishlistCreator = $wishlistCreator;
         $this->productShowPage = $productShowPage;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -152,11 +155,39 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @BeforeScenario @reset_rowid
+     */
+    public function cleanDatabase()
+    {
+        $QUERY = "DELETE FROM sqlite_sequence";
+        $statement = $this->entityManager->getConnection()->prepare($QUERY);
+        $statement->executeQuery();
+    }
+
+    /**
      * @When I add selected products to cart
      */
     public function iAddSelectedProductsToCart(): void
     {
         $this->wishlistPage->addSelectedProductsToCart();
+    }
+
+    /**
+     * @When I export selected products to csv
+     */
+    public function iExportSelectedProductsToCsv(): void
+    {
+        $this->wishlistPage->exportSelectedProductsToCsv();
+    }
+
+    /**
+     * @When I should have downloaded CSV file
+     */
+    public function iShouldHaveDownloadedCsvFile(): void
+    {
+        Assert::eq($this->getSession()->getResponseHeader('content-type'), 'text/csv; charset=UTF-8');
+        Assert::eq($this->getSession()->getResponseHeader('content-disposition'), 'attachment; filename=export.csv');
+        Assert::eq($this->getSession()->getStatusCode(), '200');
     }
 
     /**
@@ -228,10 +259,7 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function iShouldHaveProductInMyCart(string $productName): void
     {
-        Assert::true(
-            $this->wishlistPage->hasProductInCart($productName),
-            sprintf('Product %s was not found in the cart.', $productName)
-        );
+        Assert::true($this->wishlistPage->hasProductInCart($productName), sprintf('Product %s was not found in the cart.', $productName));
     }
 
     /**

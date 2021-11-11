@@ -23,7 +23,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function hasProduct(string $productName): bool
     {
-        $productElements = $this->getDocument()->findAll('css', '[data-test-wishlisst-item-name]');
+        $productElements = $this->getDocument()->findAll('css', '[data-test-wishlist-item-name]');
 
         /** @var NodeElement $productElement */
         foreach ($productElements as $productElement) {
@@ -73,6 +73,11 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
     public function addSelectedProductsToCart(): void
     {
         $this->getElement('add_selected')->press();
+    }
+
+    public function exportSelectedProductsToCsv(): void
+    {
+        $this->getDocument()->find('css', '[data-test-wishlist-export-to-csv]')->press();
     }
 
     public function hasProductInCart(string $productName): bool

@@ -21,9 +21,15 @@ interface WishlistPageInterface extends SymfonyPageInterface
 
     public function removeProduct(string $productName): void;
 
+    public function removeSelectedProductsFromWishlist(): void;
+
     public function selectProductQuantity(string $productName, int $quantity): void;
 
     public function addProductToCart(): void;
+
+    public function addSelectedProductsToCart(): void;
+
+    public function exportSelectedProductsToCsv(): void;
 
     public function hasProductInCart(string $productName): bool;
 

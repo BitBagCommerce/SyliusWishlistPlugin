@@ -82,6 +82,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
 
         $productVariantRepository->find(1)->willReturn($productVariant);
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
+        $wishlist->hasProductVariant($productVariant)->willReturn(false);
         $wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant)->willReturn($wishlistProduct);
         $wishlist->getId()->willReturn(null);
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
@@ -112,6 +113,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         $request->get('variantId')->willReturn(1);
         $productVariantRepository->find(1)->willReturn($productVariant);
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
+        $wishlist->hasProductVariant($productVariant)->willReturn(false);
         $wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant)->willReturn($wishlistProduct);
         $wishlist->getId()->willReturn(null);
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
