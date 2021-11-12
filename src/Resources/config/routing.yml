@@ -94,11 +94,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_edit_wishlist_name:
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists:
     path: /wishlists
-    methods: [GET]
     defaults:
-        _controller: bitbag_sylius_wishlist_plugin.controller.wishlist:indexAction
-        _sylius:
-            template: '@BitBagSyliusWishlistPlugin/WishlistGroup/index.html.twig'
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlists
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist:
     path: /wishlists/{wishlistId}

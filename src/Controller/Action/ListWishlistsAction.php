@@ -10,60 +10,44 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Component\Order\Context\CartContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+
 use Twig\Environment;
 
 final class ListWishlistsAction
 {
-    private WishlistContextInterface $wishlistContext;
-
     private WishlistRepositoryInterface $wishlistRepository;
-
-    private EntityManagerInterface $wishlistManager;
-
-    private FlashBagInterface $flashBag;
-
-    private TranslatorInterface $translator;
-
-    private UrlGeneratorInterface $urlGenerator;
 
     private Environment $twigEnvironment;
 
+    private TokenStorage $tokenStorage;
+
     public function __construct(
-        WishlistContextInterface $wishlistContext,
         WishlistRepositoryInterface $wishlistRepository,
-        EntityManagerInterface $wishlistManager,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator,
-        Environment $twigEnvironment
+        Environment $twigEnvironment,
+        TokenStorage $tokenStorage
     ) {
-        $this->wishlistContext = $wishlistContext;
         $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistManager = $wishlistManager;
-        $this->urlGenerator = $urlGenerator;
-        $this->flashBag = $flashBag;
-        $this->translator = $translator;
         $this->twigEnvironment = $twigEnvironment;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(Request $request): Response
     {
-        /** @var WishlistInterface $wishlists */
-        $wishlists = $this->wishlistRepository->findAll();
+        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $token = $this->tokenStorage->getToken();
 
+        if ($user instanceof ShopUserInterface) {
+            $wishlists = $this->wishlistRepository->findAllByShopUser($user);
+        } else {
+            $wishlists = $this->wishlistRepository->findAllByAnonymous();
+        }
+
+        //dd($wishlists);
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistGroup/index.html.twig', [
                 'wishlist' => $wishlists,

@@ -250,13 +250,9 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.list_wishlists:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistsAction
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
-            - "@session.flash_bag"
-            - "@translator"
-            - "@router"
             - "@twig"
+            - "@security.untracked_token_storage"
         tags:
             - { name: controller.service_arguments }
 
