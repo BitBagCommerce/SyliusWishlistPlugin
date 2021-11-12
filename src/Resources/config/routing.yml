@@ -66,16 +66,9 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_clean:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist:
-    path: /wishlists/new
-    methods: [GET, POST]
+    path: /wishlists/create
     defaults:
-        _controller: bitbag_sylius_wishlist_plugin.controller.wishlist:createAction
-        _sylius:
-            template: '@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig'
-            form:
-                type: BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType
-            redirect:
-                route: bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_wishlist:
     path: /wishlists/{id}/remove
@@ -95,7 +88,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_edit_wishlist_name:
         _sylius:
             template: '@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig'
             form:
-                type: BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType
+                type: BitBag\SyliusWishlistPlugin\Form\Type\EditWishlistNameType
             redirect:
                 route: bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists
 
