@@ -14,8 +14,8 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-
 use Twig\Environment;
 
 final class ListWishlistsAction
@@ -41,10 +41,10 @@ final class ListWishlistsAction
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
         if ($user instanceof ShopUserInterface) {
-            $wishlists = $this->wishlistRepository->findAllByShopUser($user);
+            $wishlists = $this->wishlistRepository->findAllByShopUser($user->getId());
         } else {
             $wishlists = $this->wishlistRepository->findAllByAnonymous();
-        }
+        };
 
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistGroup/index.html.twig', [

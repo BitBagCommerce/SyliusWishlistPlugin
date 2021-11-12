@@ -36,7 +36,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         ;
     }
 
-    public function findAllByShopUser(ShopUserInterface $shopUser): array
+    public function findAllByShopUser(int $shopUser): array
     {
         return $this->createQueryBuilder('o')
             ->where('o.shopUser = :shopUser')
