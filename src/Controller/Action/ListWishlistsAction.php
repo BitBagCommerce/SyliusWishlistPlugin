@@ -39,7 +39,6 @@ final class ListWishlistsAction
     public function __invoke(Request $request): Response
     {
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
-        $token = $this->tokenStorage->getToken();
 
         if ($user instanceof ShopUserInterface) {
             $wishlists = $this->wishlistRepository->findAllByShopUser($user);
@@ -47,7 +46,6 @@ final class ListWishlistsAction
             $wishlists = $this->wishlistRepository->findAllByAnonymous();
         }
 
-        //dd($wishlists);
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistGroup/index.html.twig', [
                 'wishlist' => $wishlists,
@@ -55,5 +53,4 @@ final class ListWishlistsAction
             ])
         );
     }
-
 }
