@@ -46,7 +46,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ;
     }
 
-    public function findAllByAnonymous(): array
+    public function findAllByAnonymous(string $cookie): array
     {
         return $this->createQueryBuilder('o')
             ->where('o.shopUser is NULL')

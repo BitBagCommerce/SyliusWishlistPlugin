@@ -286,5 +286,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Twig\WishlistExtension
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@security.untracked_token_storage"
+            - "@request_stack"
         tags:
             - { name: twig.extension }

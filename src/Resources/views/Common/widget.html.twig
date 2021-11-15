@@ -1,10 +1,23 @@
-{% if getWishlists()|length < 2 %}
-<a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
-    <i class="icon heart"></i>
-    <span class="bitbag-wishlist-items-count"></span>
-</a>
-{% else %}
-    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists') }}" class="ui circular button">
-        <i class="icon list"></i>
+{% if app.user %}
+    {% if findAllByShopUser()|length < 2 %}
+    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
+        <i class="icon heart"></i>
+        <span class="bitbag-wishlist-items-count"></span>
     </a>
+    {% else %}
+        <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists') }}" class="ui circular button">
+            <i class="icon list"></i>
+        </a>
+    {% endif %}
+{% else %}
+    {% if findAllByAnonymous()|length < 2 %}
+        <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
+            <i class="icon heart"></i>
+            <span class="bitbag-wishlist-items-count"></span>
+        </a>
+    {% else %}
+        <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists') }}" class="ui circular button">
+            <i class="icon list"></i>
+        </a>
+    {% endif %}
 {% endif %}

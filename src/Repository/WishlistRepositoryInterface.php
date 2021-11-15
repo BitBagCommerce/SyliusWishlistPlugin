@@ -22,5 +22,5 @@ interface WishlistRepositoryInterface extends RepositoryInterface
 
     public function findAllByShopUser(int $shopUser): ?array;
 
-    public function findAllByAnonymous(): ?array;
+    public function findAllByAnonymous(string $cookie): ?array;
 }
