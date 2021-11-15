@@ -16,6 +16,7 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class WishlistContext implements WishlistContextInterface
 {
@@ -43,27 +44,33 @@ final class WishlistContext implements WishlistContextInterface
     {
         $cookieWishlistToken = $request->cookies->get($this->wishlistCookieToken);
 
+        /** @var ?TokenInterface $token */
         $token = $this->tokenStorage->getToken();
-        $user = $token ? $token->getUser() : null;
+
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $this->wishlistFactory->createNew();
+
+        $user = !is_null($token) ? $token->getUser() : null;
 
         if (null === $cookieWishlistToken && null === $user) {
-            return $this->wishlistFactory->createNew();
+            return $wishlist;
         }
 
+        /** @var ?string $cookieWishlistToken */
         if (null !== $cookieWishlistToken && !$user instanceof ShopUserInterface) {
-            return $this->wishlistRepository->findByToken($cookieWishlistToken) ?
+            return !is_null($this->wishlistRepository->findByToken($cookieWishlistToken)) ?
                 $this->wishlistRepository->findByToken($cookieWishlistToken) :
-                $this->wishlistFactory->createNew()
+                $wishlist
             ;
         }
 
         if ($user instanceof ShopUserInterface) {
-            return $this->wishlistRepository->findOneByShopUser($user) ?
+            return !is_null($this->wishlistRepository->findOneByShopUser($user)) ?
                 $this->wishlistRepository->findOneByShopUser($user) :
                 $this->wishlistFactory->createForUser($user)
             ;
         }
 
-        return $this->wishlistFactory->createNew();
+        return $wishlist;
     }
 }

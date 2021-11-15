@@ -24,7 +24,7 @@ interface WishlistInterface extends ResourceInterface
     public function getProducts(): Collection;
 
     /**
-     * @return Collection|ProductVariantInterface[]
+     * @return Collection<int,ProductVariantInterface|null>
      */
     public function getProductVariants(): Collection;
 

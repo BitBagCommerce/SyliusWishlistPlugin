@@ -18,7 +18,13 @@ use Sylius\Component\Resource\Factory\FactoryInterface;
 
 interface WishlistProductFactoryInterface extends FactoryInterface
 {
-    public function createForWishlistAndProduct(WishlistInterface $wishlist, ProductInterface $product): WishlistProductInterface;
+    public function createForWishlistAndProduct(
+        WishlistInterface $wishlist,
+        ProductInterface $product
+    ): WishlistProductInterface;
 
-    public function createForWishlistAndVariant(WishlistInterface $wishlist, ProductVariantInterface $variant): WishlistProductInterface;
+    public function createForWishlistAndVariant(
+        WishlistInterface $wishlist,
+        ProductVariantInterface $variant
+    ): WishlistProductInterface;
 }

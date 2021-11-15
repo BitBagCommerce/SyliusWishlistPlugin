@@ -104,7 +104,9 @@ class Wishlist implements WishlistInterface
 
     public function addWishlistProduct(WishlistProductInterface $wishlistProduct): void
     {
-        if (!$this->hasProductVariant($wishlistProduct->getVariant())) {
+        /** @var ProductVariantInterface $variant */
+        $variant = $wishlistProduct->getVariant();
+        if (!$this->hasProductVariant($variant)) {
             $wishlistProduct->setWishlist($this);
             $this->wishlistProducts->add($wishlistProduct);
         }

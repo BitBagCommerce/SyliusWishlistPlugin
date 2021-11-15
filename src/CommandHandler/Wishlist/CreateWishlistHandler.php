@@ -18,6 +18,7 @@ use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class CreateWishlistHandler implements MessageHandlerInterface
 {
@@ -43,13 +44,16 @@ final class CreateWishlistHandler implements MessageHandlerInterface
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
     {
+        /** @var ?TokenInterface $token */
         $token = $this->tokenStorage->getToken();
-        $user = $token ? $token->getUser() : null;
+
+        $user = !is_null($token) ? $token->getUser() : null;
+
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $this->wishlistFactory->createNew();
 
         if ($user instanceof ShopUserInterface) {
             $wishlist = $this->shopUserWishlistResolver->resolve($user);
-        } else {
-            $wishlist = $this->wishlistFactory->createNew();
         }
 
         $this->wishlistManager->persist($wishlist);

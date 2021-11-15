@@ -33,23 +33,31 @@ final class WishlistProductFactory implements WishlistProductFactoryInterface
         return $wishlistProduct;
     }
 
-    public function createForWishlistAndProduct(WishlistInterface $wishlist, ProductInterface $product): WishlistProductInterface
-    {
+    public function createForWishlistAndProduct(
+        WishlistInterface $wishlist,
+        ProductInterface $product
+    ): WishlistProductInterface {
         $wishlistProduct = $this->createNew();
 
         $wishlistProduct->setWishlist($wishlist);
         $wishlistProduct->setProduct($product);
-        $wishlistProduct->setVariant($product->getVariants()->first());
+        /** @var ProductVariantInterface $variant */
+        $variant = $product->getVariants()->first();
+        $wishlistProduct->setVariant($variant);
 
         return $wishlistProduct;
     }
 
-    public function createForWishlistAndVariant(WishlistInterface $wishlist, ProductVariantInterface $variant): WishlistProductInterface
-    {
+    public function createForWishlistAndVariant(
+        WishlistInterface $wishlist,
+        ProductVariantInterface $variant
+    ): WishlistProductInterface {
         $wishlistProduct = $this->createNew();
 
         $wishlistProduct->setWishlist($wishlist);
-        $wishlistProduct->setProduct($variant->getProduct());
+        /** @var ProductInterface $product */
+        $product = $variant->getProduct();
+        $wishlistProduct->setProduct($product);
         $wishlistProduct->setVariant($variant);
 
         return $wishlistProduct;

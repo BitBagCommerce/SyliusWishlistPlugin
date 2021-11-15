@@ -19,6 +19,7 @@ class WishlistProduct implements WishlistProductInterface
 
     protected WishlistInterface $wishlist;
 
+    /** @var ProductInterface|null  */
     protected ?ProductInterface $product = null;
 
     protected ?ProductVariantInterface $variant = null;
@@ -47,7 +48,9 @@ class WishlistProduct implements WishlistProductInterface
 
     public function getProduct(): ProductInterface
     {
-        return $this->product;
+        /** @var ProductInterface $product */
+        $product = $this->product;
+        return $product;
     }
 
     public function setProduct(ProductInterface $product): void
