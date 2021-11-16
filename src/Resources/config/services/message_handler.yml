@@ -54,3 +54,24 @@ services:
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
             - { name: messenger.message_handler}
+    bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_selected_products_to_cart:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddSelectedProductsToCartHandler
+        arguments:
+            - "@session.flash_bag"
+            - '@translator'
+            - '@sylius.order_item_quantity_modifier'
+            - "@sylius.order_modifier"
+            - '@sylius.repository.order'
+        tags:
+            - { name: messenger.message_handler }
+
+    bitbag_sylius_wishlist_plugin.command_handler.wishlist.remove_selected_products_from_wishlist:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler
+        arguments:
+            - "@sylius.repository.product_variant"
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@sylius.manager.order"
+            - "@session.flash_bag"
+            - "@translator"
+        tags:
+            - { name: messenger.message_handler }

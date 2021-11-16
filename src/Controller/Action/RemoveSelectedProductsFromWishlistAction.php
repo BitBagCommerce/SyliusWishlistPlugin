@@ -1,14 +1,20 @@
 <?php
+
+/*
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,8 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class RemoveSelectedProductsFromWishlistAction
@@ -30,36 +36,28 @@ final class RemoveSelectedProductsFromWishlistAction
 
     private FlashBagInterface $flashBag;
 
-    private TranslatorInterface $translator;
-
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
     private UrlGeneratorInterface $urlGenerator;
-
-    private EntityManagerInterface $wishlistProductManager;
 
     private Environment $twigEnvironment;
 
+    private MessageBusInterface $commandBus;
+
     public function __construct(
-        WishlistContextInterface          $wishlistContext,
-        CartContextInterface              $cartContext,
-        FormFactoryInterface              $formFactory,
-        FlashBagInterface                 $flashBag,
-        TranslatorInterface               $translator,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        UrlGeneratorInterface             $urlGenerator,
-        EntityManagerInterface            $wishlistProductManager,
-        Environment                       $twigEnvironment
+        WishlistContextInterface $wishlistContext,
+        CartContextInterface $cartContext,
+        FormFactoryInterface $formFactory,
+        FlashBagInterface $flashBag,
+        UrlGeneratorInterface $urlGenerator,
+        Environment $twigEnvironment,
+        MessageBusInterface $commandBus
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
-        $this->translator = $translator;
-        $this->productVariantRepository = $productVariantRepository;
         $this->urlGenerator = $urlGenerator;
-        $this->wishlistProductManager = $wishlistProductManager;
         $this->twigEnvironment = $twigEnvironment;
+        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Request $request): Response
@@ -77,17 +75,13 @@ final class RemoveSelectedProductsFromWishlistAction
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
-
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->handleCartItems($form->getData(), $request)) {
-                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
-            } else {
-                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
-            }
+            $command = new RemoveSelectedProductsFromWishlist($form->get('items')->getData(), $wishlist);
+            $this->commandBus->dispatch($command);
 
             return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
         }
@@ -102,36 +96,5 @@ final class RemoveSelectedProductsFromWishlistAction
                 'form' => $form->createView(),
             ])
         );
-    }
-
-    private function handleCartItems(array $wishlistProductsCommands, Request $request): bool
-    {
-        $result = false;
-
-        foreach ($wishlistProductsCommands as $wishlistProducts) {
-            /** @var AddWishlistProduct $wishlistProduct */
-            foreach ($wishlistProducts as $wishlistProduct) {
-                if ($wishlistProduct->isSelected()) {
-                    $result = true;
-                    $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
-
-                    if (null === $variant) {
-                        throw new NotFoundHttpException();
-                    }
-
-                    $wishlist = $this->wishlistContext->getWishlist($request);
-
-                    foreach ($wishlist->getWishlistProducts() as $wishlistProductEntity) {
-                        if ($variant === $wishlistProductEntity->getVariant()) {
-                            $this->wishlistProductManager->remove($wishlistProductEntity);
-                        }
-                    }
-                }
-            }
-        }
-
-        $this->wishlistProductManager->flush();
-
-        return $result;
     }
 }
