@@ -11,8 +11,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProductsCollection;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -46,13 +44,13 @@ final class ListWishlistProductsAction
 
     public function __construct(
         WishlistContextInterface $wishlistContext,
-        CartContextInterface     $cartContext,
-        FormFactoryInterface     $formFactory,
-        OrderModifierInterface   $orderModifier,
-        EntityManagerInterface   $cartManager,
-        FlashBagInterface        $flashBag,
-        TranslatorInterface      $translator,
-        Environment              $twigEnvironment
+        CartContextInterface $cartContext,
+        FormFactoryInterface $formFactory,
+        OrderModifierInterface $orderModifier,
+        EntityManagerInterface $cartManager,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
+        Environment $twigEnvironment
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
@@ -122,9 +120,7 @@ final class ListWishlistProductsAction
                 } else {
                     $this->orderModifier->addToOrder($cart, $cartItem);
                     $this->cartManager->persist($cart);
-                    if (!$this->flashBag->has('success')) {
-                        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
-                    }
+                    $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
                 }
             }
         }

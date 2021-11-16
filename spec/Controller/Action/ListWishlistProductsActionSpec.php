@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProduct;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,15 +39,14 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
 {
     function let(
         WishlistContextInterface $wishlistContext,
-        CartContextInterface     $cartContext,
-        FormFactoryInterface     $formFactory,
-        OrderModifierInterface   $orderModifier,
-        EntityManagerInterface   $cartManager,
-        FlashBagInterface        $flashBag,
-        TranslatorInterface      $translator,
-        Environment              $twigEnvironment
-    ): void
-    {
+        CartContextInterface $cartContext,
+        FormFactoryInterface $formFactory,
+        OrderModifierInterface $orderModifier,
+        EntityManagerInterface $cartManager,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
+        Environment $twigEnvironment
+    ): void {
         $this->beConstructedWith(
             $wishlistContext,
             $cartContext,
@@ -66,19 +66,18 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
 
     function it_lists_wishlist_items(
         WishlistContextInterface $wishlistContext,
-        Request                  $request,
-        WishlistInterface        $wishlist,
-        CartContextInterface     $cartContext,
-        OrderInterface           $cart,
-        Collection               $wishlistProducts,
-        FormFactoryInterface     $formFactory,
-        FormInterface            $form,
-        FormErrorIterator        $formErrorIterator,
-        FormView                 $formView,
-        Environment              $twigEnvironment,
-        Response                 $response
-    ): void
-    {
+        Request $request,
+        WishlistInterface $wishlist,
+        CartContextInterface $cartContext,
+        OrderInterface $cart,
+        Collection $wishlistProducts,
+        FormFactoryInterface $formFactory,
+        FormInterface $form,
+        FormErrorIterator $formErrorIterator,
+        FormView $formView,
+        Environment $twigEnvironment,
+        Response $response
+    ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
@@ -96,9 +95,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
             ->create(
                 WishlistCollectionType::class,
                 ['items' => $commandsArray],
-                [
-                    'cart' => $cart,
-                ]
+                ['cart' => $cart]
             )
             ->willReturn($form);
 
@@ -121,45 +118,42 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
     }
 
     function it_adds_wishlist_items_to_the_cart(
-        WishlistContextInterface  $wishlistContext,
-        Request                   $request,
-        WishlistInterface         $wishlist,
-        CartContextInterface      $cartContext,
-        OrderInterface            $cart,
-        Collection                $wishlistProducts,
-        FormFactoryInterface      $formFactory,
-        FormInterface             $form,
-        FormErrorIterator         $formErrorIterator,
-        FormView                  $formView,
+        WishlistContextInterface $wishlistContext,
+        Request $request,
+        WishlistInterface $wishlist,
+        CartContextInterface $cartContext,
+        OrderInterface $cart,
+        Collection $wishlistProducts,
+        FormFactoryInterface $formFactory,
+        FormInterface $form,
+        FormErrorIterator $formErrorIterator,
+        FormView $formView,
         AddToCartCommandInterface $addToCartCommand,
-        OrderItemInterface        $cartItem,
-        OrderModifierInterface    $orderModifier,
-        EntityManagerInterface    $cartManager,
-        Environment               $twigEnvironment,
-        Response                  $response,
-        AddWishlistProduct        $wishlistProductsCommand
-    ): void
-    {
+        OrderItemInterface $cartItem,
+        OrderModifierInterface $orderModifier,
+        EntityManagerInterface $cartManager,
+        Environment $twigEnvironment,
+        Response $response,
+        AddWishlistProduct $wishlistProductsCommand
+    ): void {
+        $wishlistProduct = new WishlistProduct();
+        $wishlistProductsCollection = new ArrayCollection([$wishlistProduct]);
+
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
-        $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
         $commandsArray = new ArrayCollection();
-        $wishlistProducts->getIterator()->willReturn($commandsArray);
 
-        foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
-            $wishlistProductCommand = new AddWishlistProduct();
-            $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
-            $commandsArray->add($wishlistProductCommand);
-        }
+        $wishlist->getWishlistProducts()->willReturn($wishlistProductsCollection);
+        $wishlistProductCommand = new AddWishlistProduct();
+        $wishlistProductCommand->setWishlistProduct($wishlistProduct);
+        $commandsArray->add($wishlistProductCommand);
 
         $formFactory
             ->create(
                 WishlistCollectionType::class,
                 ['items' => $commandsArray],
-                [
-                    'cart' => $cart,
-                ]
+                ['cart' => $cart]
             )
             ->willReturn($form);
         $form->handleRequest($request)->shouldBeCalled();
