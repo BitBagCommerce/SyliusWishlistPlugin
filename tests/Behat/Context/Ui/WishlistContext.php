@@ -16,7 +16,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
@@ -40,7 +42,7 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private WishlistCreatorInterface $wishlistCreator;
 
-    private EntityManagerInterface $entityManager;
+    private ProductVariantResolverInterface $defaultVariantResolver;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -50,7 +52,7 @@ final class WishlistContext extends RawMinkContext implements Context
         NotificationCheckerInterface $notificationChecker,
         LoginerInterface $loginer,
         WishlistCreatorInterface $wishlistCreator,
-        EntityManagerInterface $entityManager
+        ProductVariantResolverInterface $defaultVariantResolver
     ) {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
@@ -59,7 +61,7 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->loginer = $loginer;
         $this->wishlistCreator = $wishlistCreator;
         $this->productShowPage = $productShowPage;
-        $this->entityManager = $entityManager;
+        $this->defaultVariantResolver = $defaultVariantResolver;
     }
 
     /**
@@ -155,21 +157,33 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
-     * @BeforeScenario @reset_rowid
-     */
-    public function cleanDatabase()
-    {
-        $QUERY = "DELETE FROM sqlite_sequence";
-        $statement = $this->entityManager->getConnection()->prepare($QUERY);
-        $statement->executeQuery();
-    }
-
-    /**
      * @When I add selected products to cart
      */
     public function iAddSelectedProductsToCart(): void
     {
         $this->wishlistPage->addSelectedProductsToCart();
+    }
+
+    /**
+     * @When /^the (product "([^"]+)") is stored in file$/
+     */
+    public function productIsStoredInFile(ProductInterface $product): void
+    {
+        /** @var ProductVariantInterface $productVariant */
+        $productVariant = $this->defaultVariantResolver->getVariant($product);
+
+        $data = [
+            $productVariant->getId(),
+            $product->getId(),
+            $productVariant->getCode()
+        ];
+
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'file.csv';
+            $fileResource = fopen($fullPath,"w+");
+            fputcsv($fileResource,$data);
+            fclose($fileResource);
+        }
     }
 
     /**
