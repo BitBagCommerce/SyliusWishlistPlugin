@@ -13,7 +13,7 @@
             <i class="heart icon"></i>
             <span class="text">Add to wishlist</span>
             <div class="menu">
-                {% for wishlist in getWishlists()  %}
+                {% for wishlist in findAllByShopUser()  %}
                     <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}" class="item">
                         {{ wishlist.name }}
                     </a>
@@ -36,7 +36,7 @@
             <i class="heart icon"></i>
             <span class="text">Add to wishlist</span>
             <div class="menu">
-                {% for wishlist in getWishlists()  %}
+                {% for wishlist in findAllByAnonymous()  %}
                     <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}" class="item">
                         {{ wishlist.name }}
                     </a>
