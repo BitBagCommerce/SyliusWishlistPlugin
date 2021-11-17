@@ -90,8 +90,7 @@ services:
             - '@form.factory'
             - '@twig'
             - '@session.flash_bag'
-            - '@translator'
-            - "@router"
+            - "@debug.traced.sylius.command_bus"
         tags:
             - { name: controller.service_arguments }
 
@@ -100,10 +99,8 @@ services:
         arguments:
             - "@form.factory"
             - '@twig'
-            - '@bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist'
             - '@session.flash_bag'
-            - "@sylius.repository.product_variant"
-            - '@translator'
+            - "@debug.traced.sylius.command_bus"
         tags:
             - { name: controller.service_arguments }
 
