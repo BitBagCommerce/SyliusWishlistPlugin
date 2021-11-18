@@ -331,4 +331,37 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         Assert::true($this->wishlistPage->hasProductOutOfStockValidationMessage($product));
     }
+
+    /**
+     * @Given I fill :arg1 with :arg2
+     */
+    public function iFillWith($arg1, $arg2)
+    {
+        $this->getSession()->getPage()->fillField($arg1, $arg2);
+    }
+
+    /**
+     * @Given I press  :arg1
+     */
+    public function iPress($arg1)
+    {
+        $this->getSession()->getPage()->pressButton($arg1);
+    }
+
+    /**
+     * @Then I should be on my list of wishlists page
+     */
+    public function iShouldBeOnMyListOfWishlistsPage()
+    {
+        $this->visitPath('/wishlists');
+    }
+
+    /**
+     * @Then I should be notified that the new wishlist has been created
+     */
+    public function iShouldBeNotifiedThatTheNewWishlistHasBeenCreated(): void
+    {
+        $this->notificationChecker->checkNotification('New wishlist has been created.', NotificationType::success());
+    }
+
 }
