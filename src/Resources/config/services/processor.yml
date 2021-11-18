@@ -1,0 +1,4 @@
+services:
+      bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor:
+        class: BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessor
+

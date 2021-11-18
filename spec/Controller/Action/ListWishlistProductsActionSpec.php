@@ -16,6 +16,7 @@ use BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProduct;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
+use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,7 +46,8 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         EntityManagerInterface $cartManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        Environment $twigEnvironment
+        Environment $twigEnvironment,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor
     ): void {
         $this->beConstructedWith(
             $wishlistContext,
@@ -55,7 +57,8 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
             $cartManager,
             $flashBag,
             $translator,
-            $twigEnvironment
+            $twigEnvironment,
+            $wishlistCommandProcessor
         );
     }
 
@@ -76,20 +79,14 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         FormErrorIterator $formErrorIterator,
         FormView $formView,
         Environment $twigEnvironment,
-        Response $response
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        ArrayCollection $commandsArray
     ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
-        $commandsArray = new ArrayCollection();
-        $wishlistProducts->getIterator()->willReturn($commandsArray);
-
-        foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
-            $wishlistProductCommand = new AddWishlistProduct();
-            $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
-            $commandsArray->add($wishlistProductCommand);
-        }
+        $wishlistCommandProcessor->createFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(
@@ -128,26 +125,19 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         FormInterface $form,
         FormErrorIterator $formErrorIterator,
         FormView $formView,
-        AddToCartCommandInterface $addToCartCommand,
         OrderItemInterface $cartItem,
         OrderModifierInterface $orderModifier,
         EntityManagerInterface $cartManager,
         Environment $twigEnvironment,
-        Response $response,
-        AddWishlistProduct $wishlistProductsCommand
+        AddWishlistProduct $wishlistProductsCommand,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        ArrayCollection $commandsArray
     ): void {
-        $wishlistProduct = new WishlistProduct();
-        $wishlistProductsCollection = new ArrayCollection([$wishlistProduct]);
-
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
+        $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
-        $commandsArray = new ArrayCollection();
-
-        $wishlist->getWishlistProducts()->willReturn($wishlistProductsCollection);
-        $wishlistProductCommand = new AddWishlistProduct();
-        $wishlistProductCommand->setWishlistProduct($wishlistProduct);
-        $commandsArray->add($wishlistProductCommand);
+        $wishlistCommandProcessor->createFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(

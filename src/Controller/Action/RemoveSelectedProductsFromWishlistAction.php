@@ -10,18 +10,16 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
-use Doctrine\Common\Collections\ArrayCollection;
+use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
@@ -42,6 +40,8 @@ final class RemoveSelectedProductsFromWishlistAction
 
     private MessageBusInterface $commandBus;
 
+    private WishlistCommandProcessorInterface $wishlistCommandProcessor;
+
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
@@ -49,7 +49,8 @@ final class RemoveSelectedProductsFromWishlistAction
         FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator,
         Environment $twigEnvironment,
-        MessageBusInterface $commandBus
+        MessageBusInterface $commandBus,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
@@ -58,6 +59,7 @@ final class RemoveSelectedProductsFromWishlistAction
         $this->urlGenerator = $urlGenerator;
         $this->twigEnvironment = $twigEnvironment;
         $this->commandBus = $commandBus;
+        $this->wishlistCommandProcessor = $wishlistCommandProcessor;
     }
 
     public function __invoke(Request $request): Response
@@ -65,13 +67,7 @@ final class RemoveSelectedProductsFromWishlistAction
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
 
-        $commandsArray = new ArrayCollection();
-
-        foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
-            $wishlistProductCommand = new AddWishlistProduct();
-            $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
-            $commandsArray->add($wishlistProductCommand);
-        }
+        $commandsArray = $this->wishlistCommandProcessor->createFromWishlistProducts($wishlist->getWishlistProducts());
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,

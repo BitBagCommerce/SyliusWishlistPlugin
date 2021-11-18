@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -48,29 +50,41 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
     public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlist): void
     {
         $itemsAdded = 0;
+        $wishlistItems = $removeSelectedProductsFromWishlist->getWishlist()->getWishlistProducts();
 
+        /** @var AddWishlistProduct $wishlistProduct */
         foreach ($removeSelectedProductsFromWishlist->getWishlistProducts() as $wishlistProduct) {
-            if ($wishlistProduct->isSelected()) {
-                $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
-
-                if (null === $variant) {
-                    throw new NotFoundHttpException();
-                }
-
-                $wishlist = $removeSelectedProductsFromWishlist->getWishlist();
-
-                foreach ($wishlist->getWishlistProducts() as $wishlistProductEntity) {
-                    if ($variant === $wishlistProductEntity->getVariant()) {
-                        $this->wishlistProductManager->remove($wishlistProductEntity);
-                        ++$itemsAdded;
-                    }
-                }
+            if (!$wishlistProduct->isSelected()) {
+                continue;
+            }
+            if ($this->handleItem($wishlistProduct, $wishlistItems)) {
+                ++$itemsAdded;
             }
         }
+
         if (0 < $itemsAdded) {
             $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
         } else {
             $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
         }
+    }
+
+    private function handleItem(AddWishlistProduct $wishlistProduct, Collection $wishlistItems): bool
+    {
+        $productVariant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
+
+        if (null === $productVariant) {
+            throw new NotFoundHttpException();
+        }
+
+        foreach ($wishlistItems as $wishlistProductEntity) {
+            if ($productVariant === $wishlistProductEntity->getVariant()) {
+                $this->wishlistProductManager->remove($wishlistProductEntity);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }
