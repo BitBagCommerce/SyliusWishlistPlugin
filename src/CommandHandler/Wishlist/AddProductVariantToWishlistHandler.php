@@ -41,11 +41,11 @@ final class AddProductVariantToWishlistHandler implements MessageHandlerInterfac
     {
         $variantId = $addProductVariantToWishlist->productVariantId;
 
-        /** @var ProductVariantInterface $variant */
+        /** @var ?ProductVariantInterface $variant */
         $variant = $this->productVariantRepository->find($variantId);
         $wishlist = $addProductVariantToWishlist->getWishlist();
 
-        if (null == $variant) {
+        if (null === $variant) {
             throw new ProductVariantNotFoundException(
                 sprintf('The ProductVariant %s does not exist', $variantId)
             );

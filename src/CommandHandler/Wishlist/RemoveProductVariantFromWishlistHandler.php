@@ -49,20 +49,20 @@ final class RemoveProductVariantFromWishlistHandler implements MessageHandlerInt
         $variantId = $removeProductVariantFromWishlist->getProductVariantIdValue();
         $token = $removeProductVariantFromWishlist->getWishlistTokenValue();
 
-        /** @var ProductVariantInterface $variant */
+        /** @var ?ProductVariantInterface $variant */
         $variant = $this->productVariantRepository->find($variantId);
-        /** @var WishlistProductInterface $wishlistProduct */
+        /** @var ?WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductRepository->findOneBy(['variant' => $variant]);
-        /** @var WishlistInterface $wishlist */
+        /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->findByToken($token);
 
-        if (null == $variant || null == $wishlistProduct) {
+        if (null === $variant || null === $wishlistProduct) {
             throw new ProductVariantNotFoundException(
                 sprintf('The Product %s does not exist', $variantId)
             );
         }
 
-        if (null == $wishlist) {
+        if (null === $wishlist) {
             throw new WishlistNotFoundException(
                 sprintf('The Wishlist %s does not exist', $token)
             );

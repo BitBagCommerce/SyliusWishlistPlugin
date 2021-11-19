@@ -49,20 +49,20 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
         $productId = $removeProductFromWishlist->getProductIdValue();
         $token = $removeProductFromWishlist->getWishlistTokenValue();
 
-        /** @var ProductInterface $product */
+        /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($productId);
-        /** @var WishlistProductInterface $wishlistProduct */
+        /** @var ?WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductRepository->findOneBy(['product' => $product]);
-        /** @var WishlistInterface $wishlist */
+        /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->findByToken($token);
 
-        if (null == $product || null == $wishlistProduct) {
+        if (null === $product || null === $wishlistProduct) {
             throw new ProductNotFoundException(
                 sprintf('The Product %s does not exist', $productId)
             );
         }
 
-        if (null == $wishlist) {
+        if (null === $wishlist) {
             throw new WishlistNotFoundException(
                 sprintf('The Wishlist %s does not exist', $token)
             );
