@@ -29,7 +29,7 @@ final class RenderHeaderTemplateAction
 
     public function __invoke(Request $request): Response
     {
-        $wishlist = $this->wishlistRepository->findAll();;
+        $wishlist = $this->wishlistRepository->findAll();
 
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/Common/widget.html.twig', [

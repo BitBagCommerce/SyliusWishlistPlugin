@@ -89,6 +89,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->persist($wishlist)->shouldBeCalled();
+        $wishlist->setName('Wishlist');
         $wishlistManager->flush()->shouldBeCalled();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
         $wishlist->getToken()->shouldBeCalled();
@@ -119,6 +120,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->persist($wishlist)->shouldBeCalled();
+        $wishlist->setName('Wishlist');
         $wishlistManager->flush()->shouldBeCalled();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
         $wishlist->getToken()->shouldBeCalled();
