@@ -333,6 +333,15 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @Given I am on :arg1
+     */
+    public function iAmOn($arg1)
+    {
+        $this->visitPath($arg1);
+    }
+
+
+    /**
      * @Given I fill :arg1 with :arg2
      */
     public function iFillWith($arg1, $arg2)
