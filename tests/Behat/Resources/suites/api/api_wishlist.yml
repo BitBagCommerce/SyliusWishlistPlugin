@@ -15,4 +15,4 @@ default:
     - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
     - bitbag_wishlist_plugin.behat.context.api.wishlist
    filters:
-    tags: "@api_wishlist && @api"
+    tags: "@api_wishlist&&@api"
