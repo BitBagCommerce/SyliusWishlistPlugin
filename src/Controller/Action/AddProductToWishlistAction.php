@@ -78,6 +78,7 @@ final class AddProductToWishlistAction
             throw new NotFoundHttpException();
         }
 
+        /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistContext->getWishlist($request);
 
         /** @var WishlistProductInterface $wishlistProduct */

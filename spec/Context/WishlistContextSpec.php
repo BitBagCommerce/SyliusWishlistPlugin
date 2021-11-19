@@ -130,6 +130,7 @@ final class WishlistContextSpec extends ObjectBehavior
     ): void {
         $request->cookies = $parameterBag;
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(null);
+        $wishlistFactory->createNew()->willReturn($wishlist);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($shopUser);
         $wishlistRepository->findOneByShopUser($shopUser)->willReturn(null);

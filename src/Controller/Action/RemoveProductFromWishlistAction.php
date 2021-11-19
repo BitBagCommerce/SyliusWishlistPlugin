@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -54,13 +55,14 @@ final class RemoveProductFromWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        /** @var ProductInterface $product */
+        /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($request->get('productId'));
 
         if (null === $product) {
             throw new NotFoundHttpException();
         }
 
+        /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistContext->getWishlist($request);
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProduct) {

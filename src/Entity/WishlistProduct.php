@@ -47,7 +47,10 @@ class WishlistProduct implements WishlistProductInterface
 
     public function getProduct(): ProductInterface
     {
-        return $this->product;
+        /** @var ProductInterface $product */
+        $product = $this->product;
+
+        return $product;
     }
 
     public function setProduct(ProductInterface $product): void

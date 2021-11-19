@@ -11,11 +11,13 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,6 +66,7 @@ final class ListWishlistProductsAction
 
     public function __invoke(Request $request): Response
     {
+        /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
 
@@ -75,7 +78,6 @@ final class ListWishlistProductsAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             if ($this->handleCartItems($form)) {
                 $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
             } else {
@@ -89,7 +91,7 @@ final class ListWishlistProductsAction
                 ])
             );
         }
-
+        /** @var FormError $error */
         foreach ($form->getErrors() as $error) {
             $this->flashBag->add('error', $error->getMessage());
         }

@@ -32,8 +32,11 @@ final class OrderItemController extends BaseController
 
         $this->getQuantityModifier()->modify($orderItem, 1);
 
+        /** @var string $formType */
+        $formType = $configuration->getFormType();
+
         $form = $this->getFormFactory()->create(
-            $configuration->getFormType(),
+            $formType,
             $this->createAddToCartCommand($cart, $orderItem),
             $configuration->getFormOptions()
         );
@@ -51,7 +54,7 @@ final class OrderItemController extends BaseController
             $item = $addToCartCommand->getCartItem();
             $variant = $item->getVariant();
 
-            if ($variant === null) {
+            if (null === $variant) {
                 throw new NotFoundHttpException('Could not find variant');
             }
 

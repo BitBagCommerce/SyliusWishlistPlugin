@@ -12,10 +12,12 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -47,9 +49,11 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
         $productId = $removeProductFromWishlist->getProductIdValue();
         $token = $removeProductFromWishlist->getWishlistTokenValue();
 
+        /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($productId);
+        /** @var ?WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductRepository->findOneBy(['product' => $product]);
-
+        /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->findByToken($token);
 
         if (null === $product || null === $wishlistProduct) {
