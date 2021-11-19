@@ -27,6 +27,7 @@ final class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('bitbag_sylius_wishlist_plugin');
         $rootNode = $treeBuilder->getRootNode();
+        /** @phpstan-ignore-next-line  */
         $rootNode
             ->children()
             ->scalarNode('wishlist_cookie_token')

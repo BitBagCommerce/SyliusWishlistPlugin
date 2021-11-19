@@ -92,7 +92,9 @@ final class WishlistContext extends MinkContext implements Context
 
         $json = json_decode((string) $response->getBody());
 
-        $this->user = $this->userRepository->findOneByEmail($email);
+        /** @var ?ShopUserInterface $user */
+        $user = $this->userRepository->findOneByEmail($email);
+        $this->user = $user;
         $this->token = (string) $json->token;
     }
 
@@ -157,7 +159,8 @@ final class WishlistContext extends MinkContext implements Context
         }
 
         throw new \Exception(
-            sprintf('Product %s was not found in the wishlist',
+            sprintf(
+                'Product %s was not found in the wishlist',
                 $product->getName()
             )
         );
@@ -190,7 +193,8 @@ final class WishlistContext extends MinkContext implements Context
         }
 
         throw new \Exception(
-            sprintf('Product variant %s was not found in the wishlist',
+            sprintf(
+                'Product variant %s was not found in the wishlist',
                 $variant->getName()
             )
         );
@@ -294,7 +298,7 @@ final class WishlistContext extends MinkContext implements Context
 
     private function getOptions(string $method, $body = null): array
     {
-        if ($method === self::PATCH) {
+        if (self::PATCH === $method) {
             $contentType = 'application/merge-patch+json';
         } else {
             $contentType = 'application/ld+json';

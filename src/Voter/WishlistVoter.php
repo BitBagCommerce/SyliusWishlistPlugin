@@ -45,8 +45,11 @@ final class WishlistVoter extends Voter
     }
 
     /** @param string $attribute */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
-    {
+    protected function voteOnAttribute(
+        $attribute,
+        $subject,
+        TokenInterface $token
+    ): bool {
         $user = $token->getUser();
 
         if (!$user instanceof ShopUserInterface) {
@@ -56,7 +59,6 @@ final class WishlistVoter extends Voter
         /** @var WishlistInterface $wishlist */
         $wishlist = $subject;
 
-        /**@var string $attribute */
         switch ($attribute) {
             case self::UPDATE:
                 return $this->canUpdate($wishlist, $user);

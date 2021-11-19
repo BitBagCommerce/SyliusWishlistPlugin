@@ -15,6 +15,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Persistence\ObjectManager;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -40,10 +41,11 @@ final class AddProductToWishlistHandler implements MessageHandlerInterface
     {
         $productId = $addProductToWishlist->productId;
 
+        /** @var ProductInterface $product */
         $product = $this->productRepository->find($productId);
         $wishlist = $addProductToWishlist->getWishlist();
 
-        if (null === $product) {
+        if (null == $product) {
             throw new ProductNotFoundException(
                 sprintf('The Product %s does not exist', $productId)
             );

@@ -42,6 +42,7 @@ final class WishlistContext implements WishlistContextInterface
 
     public function getWishlist(Request $request): WishlistInterface
     {
+        /** @var ?string $cookieWishlistToken */
         $cookieWishlistToken = $request->cookies->get($this->wishlistCookieToken);
 
         /** @var ?TokenInterface $token */
@@ -50,22 +51,21 @@ final class WishlistContext implements WishlistContextInterface
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
 
-        $user = !is_null($token) ? $token->getUser() : null;
+        $user = null !== $token ? $token->getUser() : null;
 
         if (null === $cookieWishlistToken && null === $user) {
             return $wishlist;
         }
 
-        /** @var ?string $cookieWishlistToken */
         if (null !== $cookieWishlistToken && !$user instanceof ShopUserInterface) {
-            return !is_null($this->wishlistRepository->findByToken($cookieWishlistToken)) ?
+            return null !== $this->wishlistRepository->findByToken($cookieWishlistToken) ?
                 $this->wishlistRepository->findByToken($cookieWishlistToken) :
                 $wishlist
             ;
         }
 
         if ($user instanceof ShopUserInterface) {
-            return !is_null($this->wishlistRepository->findOneByShopUser($user)) ?
+            return null !== $this->wishlistRepository->findOneByShopUser($user) ?
                 $this->wishlistRepository->findOneByShopUser($user) :
                 $this->wishlistFactory->createForUser($user)
             ;

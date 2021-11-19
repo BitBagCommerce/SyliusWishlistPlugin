@@ -54,6 +54,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         /** @var NodeElement $addToCartElement */
         foreach ($addToCartElements as $addToCartElement) {
             if ($productName === $addToCartElement->getAttribute('data-product-name')) {
+                /** @phpstan-ignore-next-line  */
                 $addToCartElement->setValue($quantity);
             }
         }

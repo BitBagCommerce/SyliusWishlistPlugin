@@ -10,6 +10,7 @@
     "require-dev": {
         "behat/behat": "^3.7",
         "behat/mink-selenium2-driver": "^1.4",
+        "bitbag/coding-standard": "^1.0.1",
         "dmore/behat-chrome-extension": "^1.3",
         "dmore/chrome-mink-driver": "^2.7",
         "doctrine/orm": "2.9.*",
