@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\ExportWishlistToPdfAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProduct;
 use BitBag\SyliusWishlistPlugin\Exporter\ExporterWishlistToPdfInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
+use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Order\Model\OrderInterface;
@@ -36,14 +36,15 @@ use Twig\Environment;
 final class ExportWishlistToPdfActionSpec extends ObjectBehavior
 {
     function let(
-        WishlistContextInterface          $wishlistContext,
-        CartContextInterface              $cartContext,
-        FormFactoryInterface              $formFactory,
-        FlashBagInterface                 $flashBag,
-        TranslatorInterface               $translator,
-        UrlGeneratorInterface             $urlGenerator,
-        Environment                       $twigEnvironment,
-        ExporterWishlistToPdfInterface    $exporterWishlistToPdf
+        WishlistContextInterface $wishlistContext,
+        CartContextInterface $cartContext,
+        FormFactoryInterface $formFactory,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
+        UrlGeneratorInterface $urlGenerator,
+        Environment $twigEnvironment,
+        ExporterWishlistToPdfInterface $exporterWishlistToPdf,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor
     ): void {
         $this->beConstructedWith(
             $wishlistContext,
@@ -53,7 +54,8 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
             $translator,
             $urlGenerator,
             $twigEnvironment,
-            $exporterWishlistToPdf
+            $exporterWishlistToPdf,
+            $wishlistCommandProcessor
         );
     }
 
@@ -63,39 +65,34 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
     }
 
     function it_renders_header_template(
-        WishlistContextInterface            $wishlistContext,
-        Request                             $request,
-        WishlistInterface                   $wishlist,
-        CartContextInterface                $cartContext,
-        OrderInterface                      $cart,
-        FormFactoryInterface                $formFactory,
-        FormInterface                       $form,
-        FormErrorIterator                   $formErrorIterator,
-        ExporterWishlistToPdfInterface      $exporterWishlistToPdf,
-        FlashBagInterface                   $flashBag,
-        TranslatorInterface                 $translator,
-        UrlGeneratorInterface               $urlGenerator,
-        ArrayCollection                     $arrayCollection
-
-    ):  void {
-        $wishlistProduct = new WishlistProduct();
-        $wishlistProductsCollection = new ArrayCollection([$wishlistProduct]);
-
+        WishlistContextInterface $wishlistContext,
+        Request $request,
+        WishlistInterface $wishlist,
+        CartContextInterface $cartContext,
+        OrderInterface $cart,
+        FormFactoryInterface $formFactory,
+        FormInterface $form,
+        FormErrorIterator $formErrorIterator,
+        ExporterWishlistToPdfInterface $exporterWishlistToPdf,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
+        UrlGeneratorInterface $urlGenerator,
+        ArrayCollection $arrayCollection,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        Collection $wishlistProducts,
+        ArrayCollection $commandsArray
+    ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
+        $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
-        $commandsArray = new ArrayCollection();
-
-        $wishlist->getWishlistProducts()->willReturn($wishlistProductsCollection);
-        $wishlistProductCommand = new AddWishlistProduct();
-        $wishlistProductCommand->setWishlistProduct($wishlistProduct);
-        $commandsArray->add($wishlistProductCommand);
+        $wishlistCommandProcessor->createFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(
                 WishlistCollectionType::class,
                 [
-                    'items' => $commandsArray
+                    'items' => $commandsArray,
                 ],
                 [
                     'cart' => $cart,
@@ -106,13 +103,13 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled();
         $form->isSubmitted()->willReturn(true);
         $form->isValid()->willReturn(true);
-        $form->get("items")->willReturn($form);
+        $form->get('items')->willReturn($form);
         $form->getData()->willReturn($arrayCollection);
         $form->getErrors()->willReturn($formErrorIterator);
 
-        $exporterWishlistToPdf->handleCartItems($arrayCollection,$request)->willReturn(false);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')->willReturn("Select at least one item.");
-        $flashBag->add('error', "Select at least one item.");
+        $exporterWishlistToPdf->handleWishlistItemsToGeneratePdf($arrayCollection, $request)->willReturn(false);
+        $translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')->willReturn('Select at least one item.');
+        $flashBag->add('error', 'Select at least one item.');
         $urlGenerator
             ->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')
             ->willReturn('Content');
@@ -121,36 +118,31 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
     }
 
     function it_renders_template_with_error(
-        WishlistContextInterface            $wishlistContext,
-        Request                             $request,
-        WishlistInterface                   $wishlist,
-        CartContextInterface                $cartContext,
-        OrderInterface                      $cart,
-        FormFactoryInterface                $formFactory,
-        FormInterface                       $form,
-        FormErrorIterator                   $formErrorIterator,
-        FormView                            $formView,
-        Environment                         $twigEnvironment
-
-    ):  void {
-        $wishlistProduct = new WishlistProduct();
-        $wishlistProductsCollection = new ArrayCollection([$wishlistProduct]);
-
+        WishlistContextInterface $wishlistContext,
+        Request $request,
+        WishlistInterface $wishlist,
+        CartContextInterface $cartContext,
+        OrderInterface $cart,
+        FormFactoryInterface $formFactory,
+        FormInterface $form,
+        FormErrorIterator $formErrorIterator,
+        FormView $formView,
+        Environment $twigEnvironment,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        Collection $wishlistProducts,
+        ArrayCollection $commandsArray
+    ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
+        $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
-        $commandsArray = new ArrayCollection();
-
-        $wishlist->getWishlistProducts()->willReturn($wishlistProductsCollection);
-        $wishlistProductCommand = new AddWishlistProduct();
-        $wishlistProductCommand->setWishlistProduct($wishlistProduct);
-        $commandsArray->add($wishlistProductCommand);
+        $wishlistCommandProcessor->createFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(
                 WishlistCollectionType::class,
                 [
-                    'items' => $commandsArray
+                    'items' => $commandsArray,
                 ],
                 [
                     'cart' => $cart,

@@ -59,7 +59,7 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
         $arrayCollection = new ArrayCollection();
 
         $addWishlistProduct->isSelected()->willReturn(false);
-        $this->handleCartItems($arrayCollection, new Request())->shouldReturn(false);
+        $this->handleWishlistItemsToGeneratePdf($arrayCollection, new Request())->shouldReturn(false);
     }
 
     function it_throws_404_when_product_is_not_found(
@@ -75,7 +75,7 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(NotFoundHttpException::class)
-            ->during('handleCartItems',[new ArrayCollection([$wishlistProduct->getWrappedObject()]),$request]);
+            ->during('handleWishlistItemsToGeneratePdf',[new ArrayCollection([$wishlistProduct->getWrappedObject()]),$request]);
     }
 
     function it_call_to_export_to_pdf_function(
@@ -109,7 +109,7 @@ final class ExporterWishlistToPdfSpec extends ObjectBehavior
             'variant-0'
         )->willReturn(new VariantPdfModel);
 
-        $this->handleCartItems(
+        $this->handleWishlistItemsToGeneratePdf(
             new ArrayCollection(
                 [
                     $wishlistProduct->getWrappedObject()

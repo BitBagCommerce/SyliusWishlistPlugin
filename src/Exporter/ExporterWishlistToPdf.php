@@ -43,7 +43,7 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
         $this->twigEnvironment = $twigEnvironment;
     }
 
-    public function handleCartItems(ArrayCollection $wishlistProducts, Request $request): bool
+    public function handleWishlistItemsToGeneratePdf(ArrayCollection $wishlistProducts, Request $request): bool
     {
         $selectedProducts = [];
 

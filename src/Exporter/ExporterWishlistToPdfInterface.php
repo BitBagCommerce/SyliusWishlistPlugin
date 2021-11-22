@@ -15,5 +15,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface ExporterWishlistToPdfInterface
 {
-    public function handleCartItems(ArrayCollection $wishlistProducts, Request $request): bool;
+    public function handleWishlistItemsToGeneratePdf(ArrayCollection $wishlistProducts, Request $request): bool;
 }

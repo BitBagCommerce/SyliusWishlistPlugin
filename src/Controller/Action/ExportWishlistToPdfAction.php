@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Exporter\ExporterWishlistToPdfInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
+use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -43,6 +44,8 @@ final class ExportWishlistToPdfAction
 
     private ExporterWishlistToPdfInterface $exporterWishlistToPdf;
 
+    private WishlistCommandProcessorInterface $wishlistCommandProcessor;
+
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
@@ -51,7 +54,8 @@ final class ExportWishlistToPdfAction
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         Environment $twigEnvironment,
-        ExporterWishlistToPdfInterface $exporterWishlistToPdf
+        ExporterWishlistToPdfInterface $exporterWishlistToPdf,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
@@ -61,6 +65,7 @@ final class ExportWishlistToPdfAction
         $this->urlGenerator = $urlGenerator;
         $this->twigEnvironment = $twigEnvironment;
         $this->exporterWishlistToPdf = $exporterWishlistToPdf;
+        $this->wishlistCommandProcessor = $wishlistCommandProcessor;
     }
 
     public function __invoke(Request $request): Response
@@ -68,14 +73,7 @@ final class ExportWishlistToPdfAction
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
 
-        $commandsArray = new ArrayCollection();
-
-        foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
-            $wishlistProductCommand = new AddWishlistProduct();
-
-            $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
-            $commandsArray->add($wishlistProductCommand);
-        }
+        $commandsArray = $this->wishlistCommandProcessor->createFromWishlistProducts($wishlist->getWishlistProducts());
 
         $form = $this->formFactory->create(
             WishlistCollectionType::class,
@@ -92,7 +90,7 @@ final class ExportWishlistToPdfAction
         if ($form->isSubmitted() && $form->isValid()) {
             $wishlistProducts = $form->get('items')->getData();
 
-            if (!$this->exporterWishlistToPdf->handleCartItems($wishlistProducts, $request)) {
+            if (!$this->exporterWishlistToPdf->handleWishlistItemsToGeneratePdf($wishlistProducts, $request)) {
                 $this->flashBag->add(
                     'error',
                     $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')

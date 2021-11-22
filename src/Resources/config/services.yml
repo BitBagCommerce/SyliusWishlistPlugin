@@ -175,6 +175,7 @@ services:
             - "@router"
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.exporter.exporter.wishlist.to.pdf"
+            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
         tags:
             - { name: controller.service_arguments }
 
