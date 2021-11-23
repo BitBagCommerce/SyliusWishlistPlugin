@@ -340,37 +340,28 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->visitPath($arg1);
     }
 
-
     /**
-     * @Given I fill :arg1 with :arg2
+     * @When I fill the wishlist name with :name
      */
-    public function iFillWith($arg1, $arg2)
+    public function iFillTheWishlistNameWith($name)
     {
-        $this->getSession()->getPage()->fillField($arg1, $arg2);
+        $this->wishlistPage->fillWithName($name);
     }
 
     /**
-     * @Given I press  :arg1
+     * @When I save it
      */
-    public function iPress($arg1)
+    public function iSaveIt()
     {
-        $this->getSession()->getPage()->pressButton($arg1);
+        $this->wishlistPage->add();
     }
 
     /**
-     * @Then I should be on my list of wishlists page
+     * @Then I should be notified that the new wishlist was created
      */
-    public function iShouldBeOnMyListOfWishlistsPage()
+    public function iShouldBeNotifiedThatTheNewWishlistWasCreated()
     {
-        $this->visitPath('/wishlists');
-    }
-
-    /**
-     * @Then I should be notified that the new wishlist has been created
-     */
-    public function iShouldBeNotifiedThatTheNewWishlistHasBeenCreated(): void
-    {
-        $this->notificationChecker->checkNotification('New wishlist has been created.', NotificationType::success());
+        $this->notificationChecker->checkNotification('Wishlist has been successfully created.', NotificationType::success());
     }
 
 }

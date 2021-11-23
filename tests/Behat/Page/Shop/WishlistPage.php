@@ -121,4 +121,15 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
             'export_selected_pdf' => '[data-test-wishlist-export-to-pdf-from-wishlist]',
         ];
     }
+
+    public function fillWithName($name): string
+    {
+        $this->getSession()->getPage()->fillField('create_new_wishlist_name', $name);
+        return $name;
+    }
+
+    public function add(): void
+    {
+        $this->getSession()->getPage()->pressButton('create_new_wishlist_save');
+    }
 }
