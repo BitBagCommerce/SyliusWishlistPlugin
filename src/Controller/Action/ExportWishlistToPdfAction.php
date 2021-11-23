@@ -11,8 +11,11 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdf;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Exporter\ExporterWishlistToPdfInterface;
+use BitBag\SyliusWishlistPlugin\Factory\Command\CommandFactory;
+use BitBag\SyliusWishlistPlugin\Factory\Command\CommandFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,12 +25,16 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Messenger\HandleTrait;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class ExportWishlistToPdfAction
 {
+    use HandleTrait;
+
     private WishlistContextInterface $wishlistContext;
 
     private CartContextInterface $cartContext;
@@ -42,9 +49,9 @@ final class ExportWishlistToPdfAction
 
     private Environment $twigEnvironment;
 
-    private ExporterWishlistToPdfInterface $exporterWishlistToPdf;
-
     private WishlistCommandProcessorInterface $wishlistCommandProcessor;
+
+    private CommandFactoryInterface $commandFactory;
 
     public function __construct(
         WishlistContextInterface $wishlistContext,
@@ -54,8 +61,9 @@ final class ExportWishlistToPdfAction
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         Environment $twigEnvironment,
-        ExporterWishlistToPdfInterface $exporterWishlistToPdf,
-        WishlistCommandProcessorInterface $wishlistCommandProcessor
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        MessageBusInterface $messageBus,
+        CommandFactoryInterface $commandFactory
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
@@ -64,8 +72,9 @@ final class ExportWishlistToPdfAction
         $this->translator = $translator;
         $this->urlGenerator = $urlGenerator;
         $this->twigEnvironment = $twigEnvironment;
-        $this->exporterWishlistToPdf = $exporterWishlistToPdf;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
+        $this->messageBus = $messageBus;
+        $this->commandFactory = $commandFactory;
     }
 
     public function __invoke(Request $request): Response
@@ -86,26 +95,21 @@ final class ExportWishlistToPdfAction
         );
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $wishlistProducts = $form->get('items')->getData();
+            $command = $this->commandFactory->createFrom($wishlistProducts, $request);
 
-            if (!$this->exporterWishlistToPdf->handleWishlistItemsToGeneratePdf($wishlistProducts, $request)) {
+            if (!$this->handle($command)) {
                 $this->flashBag->add(
                     'error',
                     $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')
                 );
             }
-
-            return new RedirectResponse(
-                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')
-            );
         }
 
         foreach ($form->getErrors() as $error) {
             $this->flashBag->add('error', $error->getMessage());
         }
-
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig',
                 [

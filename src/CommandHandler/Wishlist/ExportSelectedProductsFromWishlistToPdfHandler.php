@@ -8,20 +8,20 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exporter;
+namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProductInterface;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdfInterface;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolverInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Twig\Environment;
 
-final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
+final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHandlerInterface
 {
     private ProductVariantRepositoryInterface $productVariantRepository;
 
@@ -43,8 +43,11 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
         $this->twigEnvironment = $twigEnvironment;
     }
 
-    public function handleWishlistItemsToGeneratePdf(ArrayCollection $wishlistProducts, Request $request): bool
+    public function __invoke(ExportSelectedProductsFromWishlistToPdfInterface $exportSelectedProductsFromWishlistToPdf): bool
     {
+        $wishlistProducts = $exportSelectedProductsFromWishlistToPdf->getWishlistProducts();
+        $request = $exportSelectedProductsFromWishlistToPdf->getRequest();
+
         $selectedProducts = [];
 
         /** @var AddWishlistProductInterface $wishlistProduct */

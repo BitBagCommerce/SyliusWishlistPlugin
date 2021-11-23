@@ -8,12 +8,13 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exporter;
+namespace BitBag\SyliusWishlistPlugin\Factory\Command;
 
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdfInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 
-interface ExporterWishlistToPdfInterface
+interface CommandFactoryInterface
 {
-    public function handleWishlistItemsToGeneratePdf(ArrayCollection $wishlistProducts, Request $request): bool;
+    public function createFrom(ArrayCollection $wishlistProducts, Request $request): ExportSelectedProductsFromWishlistToPdfInterface;
 }

@@ -174,8 +174,9 @@ services:
             - "@translator"
             - "@router"
             - "@twig"
-            - "@bitbag_sylius_wishlist_plugin.exporter.exporter.wishlist.to.pdf"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+            - "@sylius.command_bus"
+            - "@bitbag_sylius_wishlist_plugin.factory.command.command_factory"
         tags:
             - { name: controller.service_arguments }
 
@@ -192,3 +193,6 @@ services:
             - "@bitbag_sylius_wishlist_plugin.resolver.variant.image.path.resolver"
             - "@bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory"
             - "@twig"
+
+    bitbag_sylius_wishlist_plugin.factory.command.command_factory:
+        class: BitBag\SyliusWishlistPlugin\Factory\Command\CommandFactory
