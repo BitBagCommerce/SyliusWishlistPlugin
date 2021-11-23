@@ -15,5 +15,5 @@ use Doctrine\Common\Collections\Collection;
 
 interface WishlistCommandProcessorInterface
 {
-    public function createFromWishlistProducts(Collection $wishlistProducts): ArrayCollection;
+    public function createAddCommandCollectionFromWishlistProducts(Collection $wishlistProducts): ArrayCollection;
 }

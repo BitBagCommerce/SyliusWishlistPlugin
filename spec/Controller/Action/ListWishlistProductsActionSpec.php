@@ -14,14 +14,12 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProduct;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
@@ -86,7 +84,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
-        $wishlistCommandProcessor->createFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
+        $wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(
@@ -137,7 +135,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
-        $wishlistCommandProcessor->createFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
+        $wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(

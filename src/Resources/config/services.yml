@@ -65,7 +65,7 @@ services:
             - "@session.flash_bag"
             - "@router"
             - "@twig"
-            - "@debug.traced.sylius.command_bus"
+            - "@sylius.command_bus"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
         tags:
             - { name: controller.service_arguments }
@@ -78,7 +78,7 @@ services:
             - "@form.factory"
             - "@session.flash_bag"
             - "@twig"
-            - "@debug.traced.sylius.command_bus"
+            - "@sylius.command_bus"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
         tags:
             - { name: controller.service_arguments }

@@ -14,6 +14,8 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\Component\Order\Model\OrderInterface;
+use Sylius\Component\Order\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -56,25 +58,38 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 
             /** @var AddToCartCommandInterface $addToCartCommand */
             $addToCartCommand = $wishlistProduct->getCartItem();
+            $cart = $addToCartCommand->getCart();
+            $cartItem = $addToCartCommand->getCartItem();
 
-            $this->handleItem($addToCartCommand);
+            if (!$this->isInStock($cartItem)) {
+                continue;
+            }
+
+            $this->addProductToWishlist($cartItem, $cart);
         }
     }
 
-    private function handleItem(AddToCartCommandInterface $addToCartCommand): void
+    private function isInStock(OrderItemInterface $cartItem): bool
     {
-        $cart = $addToCartCommand->getCart();
-        $cartItem = $addToCartCommand->getCartItem();
-
         if (!$cartItem->getVariant()->isInStock()) {
             $message = sprintf('%s does not have sufficient stock.', $cartItem->getProductName());
             $this->flashBag->add('error', $this->translator->trans($message));
-        } else {
-            $this->itemQuantityModifier->modify($cartItem, 1);
-            $this->orderModifier->addToOrder($cart, $cartItem);
-            $this->orderRepository->add($cart);
 
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+            return false;
         }
+
+        return true;
+    }
+
+    private function addProductToWishlist(OrderItemInterface $cartItem, OrderInterface $cart): void
+    {
+        if (0 === $cartItem->getQuantity()) {
+            $this->itemQuantityModifier->modify($cartItem, 1);
+        }
+
+        $this->orderModifier->addToOrder($cart, $cartItem);
+        $this->orderRepository->add($cart);
+
+        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_selected_wishlist_items_to_cart'));
     }
 }

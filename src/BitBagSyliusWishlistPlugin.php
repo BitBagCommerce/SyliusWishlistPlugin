@@ -12,17 +12,28 @@ namespace BitBag\SyliusWishlistPlugin;
 
 use BitBag\SyliusWishlistPlugin\DependencyInjection\SyliusMessageBusPolyfillPass;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class BitBagSyliusWishlistPlugin extends Bundle
 {
     use SyliusPluginTrait;
 
+    public function getContainerExtension(): ?ExtensionInterface
+    {
+        $this->containerExtension = $this->createContainerExtension() ?? false;
+
+        return $this->containerExtension !== false ? $this->containerExtension : null;
+    }
+
     public function build(ContainerBuilder $container): void
     {
-        parent::build($container);
-
-        $container->addCompilerPass(new SyliusMessageBusPolyfillPass());
+        $container->addCompilerPass(
+            new SyliusMessageBusPolyfillPass(),
+            PassConfig::TYPE_BEFORE_OPTIMIZATION,
+            1
+        );
     }
 }

@@ -12,7 +12,6 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
@@ -25,23 +24,21 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
 {
     private ProductVariantRepositoryInterface $productVariantRepository;
 
-    private WishlistContextInterface $wishlistContext;
-
     private EntityManagerInterface $wishlistProductManager;
 
     private FlashBagInterface $flashBag;
 
     private TranslatorInterface $translator;
 
+    private int $itemsProcessed = 0;
+
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
-        WishlistContextInterface $wishlistContext,
         EntityManagerInterface $wishlistProductManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator
     ) {
         $this->productVariantRepository = $productVariantRepository;
-        $this->wishlistContext = $wishlistContext;
         $this->wishlistProductManager = $wishlistProductManager;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
@@ -49,7 +46,6 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
 
     public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlist): void
     {
-        $itemsAdded = 0;
         $wishlistItems = $removeSelectedProductsFromWishlist->getWishlist()->getWishlistProducts();
 
         /** @var AddWishlistProduct $wishlistProduct */
@@ -57,19 +53,17 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
             if (!$wishlistProduct->isSelected()) {
                 continue;
             }
-            if ($this->handleItem($wishlistProduct, $wishlistItems)) {
-                ++$itemsAdded;
-            }
+            $this->removeProductFromWishlist($wishlistProduct, $wishlistItems);
         }
 
-        if (0 < $itemsAdded) {
+        if (0 < $this->itemsProcessed) {
             $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
         } else {
             $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
         }
     }
 
-    private function handleItem(AddWishlistProduct $wishlistProduct, Collection $wishlistItems): bool
+    private function removeProductFromWishlist(AddWishlistProduct $wishlistProduct, Collection $wishlistItems): void
     {
         $productVariant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 
@@ -80,11 +74,8 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
         foreach ($wishlistItems as $wishlistProductEntity) {
             if ($productVariant === $wishlistProductEntity->getVariant()) {
                 $this->wishlistProductManager->remove($wishlistProductEntity);
-
-                return true;
+                ++$this->itemsProcessed;
             }
         }
-
-        return false;
     }
 }
