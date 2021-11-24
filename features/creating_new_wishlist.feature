@@ -11,5 +11,6 @@ Feature: Creating a new wishlist
     Scenario: Creating a new wishlist
         Given I am on "/wishlists/create"
         And I fill the wishlist name with "Favorite"
-        And I save it
-        Then I should be notified that the new wishlist was created
+        When I save it
+        Then I should be on "/wishlists"
+        And I should be notified that the new wishlist was created

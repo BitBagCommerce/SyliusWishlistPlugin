@@ -333,11 +333,11 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
-     * @Given I am on :arg1
+     * @Given I am on :wishlists_create
      */
-    public function iAmOn($arg1)
+    public function iAmOn($wishlists_create)
     {
-        $this->visitPath($arg1);
+        $this->visitPath($wishlists_create);
     }
 
     /**
@@ -357,11 +357,19 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @Then I should be on :wishlists
+     */
+    public function iShouldBeOn($wishlists)
+    {
+        $this->visitPath($wishlists);
+    }
+
+    /**
      * @Then I should be notified that the new wishlist was created
      */
-    public function iShouldBeNotifiedThatTheNewWishlistWasCreated()
+    public function iShouldBeNotifiedThatTheNewWishlistWasCreated(): void
     {
-        $this->notificationChecker->checkNotification('Wishlist has been successfully created.', NotificationType::success());
+        $this->notificationChecker->checkNotification('New wishlist has been created.', NotificationType::success());
     }
 
 }
