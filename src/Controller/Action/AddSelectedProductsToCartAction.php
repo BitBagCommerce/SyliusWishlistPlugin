@@ -10,17 +10,19 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart as AddSelectedProductsToCartCommand;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Twig\Environment;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class AddSelectedProductsToCartAction
 {
@@ -32,28 +34,28 @@ final class AddSelectedProductsToCartAction
 
     private FlashBagInterface $flashBag;
 
-    private Environment $twigEnvironment;
-
     private MessageBusInterface $commandBus;
 
     private WishlistCommandProcessorInterface $wishlistCommandProcessor;
+
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         FlashBagInterface $flashBag,
-        Environment $twigEnvironment,
         MessageBusInterface $commandBus,
-        WishlistCommandProcessorInterface $wishlistCommandProcessor
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
-        $this->twigEnvironment = $twigEnvironment;
         $this->commandBus = $commandBus;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): Response
@@ -70,26 +72,21 @@ final class AddSelectedProductsToCartAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $command = new AddSelectedProductsToCartCommand($form->get('items')->getData());
-            $this->commandBus->dispatch($command);
+            $this->handleCommand($form);
 
-            return new Response(
-                $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                    'wishlist' => $wishlist,
-                    'form' => $form->createView(),
-                ])
-            );
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
         }
 
         foreach ($form->getErrors() as $error) {
             $this->flashBag->add('error', $error->getMessage());
         }
 
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                'wishlist' => $wishlist,
-                'form' => $form->createView(),
-            ])
-        );
+        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+    }
+
+    private function handleCommand(FormInterface $form): void
+    {
+        $command = new AddSelectedProductsToCart($form->get('items')->getData());
+        $this->commandBus->dispatch($command);
     }
 }

@@ -44,26 +44,24 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
         $this->translator = $translator;
     }
 
-    public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlist): void
+    public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlistCommand): void
     {
-        $wishlistItems = $removeSelectedProductsFromWishlist->getWishlist()->getWishlistProducts();
+        $this->removeSelectedProductsFromWishlist($removeSelectedProductsFromWishlistCommand->getWishlistProducts());
 
+        $this->addFlashMessage();
+    }
+
+    private function removeSelectedProductsFromWishlist(Collection $wishlistProducts): void
+    {
         /** @var AddWishlistProduct $wishlistProduct */
-        foreach ($removeSelectedProductsFromWishlist->getWishlistProducts() as $wishlistProduct) {
-            if (!$wishlistProduct->isSelected()) {
-                continue;
+        foreach ($wishlistProducts as $wishlistProduct) {
+            if ($wishlistProduct->isSelected()) {
+                $this->removeProductFromWishlist($wishlistProduct);
             }
-            $this->removeProductFromWishlist($wishlistProduct, $wishlistItems);
-        }
-
-        if (0 < $this->itemsProcessed) {
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
-        } else {
-            $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
         }
     }
 
-    private function removeProductFromWishlist(AddWishlistProduct $wishlistProduct, Collection $wishlistItems): void
+    private function removeProductFromWishlist(AddWishlistProduct $wishlistProduct): void
     {
         $productVariant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 
@@ -71,11 +69,16 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
             throw new NotFoundHttpException();
         }
 
-        foreach ($wishlistItems as $wishlistProductEntity) {
-            if ($productVariant === $wishlistProductEntity->getVariant()) {
-                $this->wishlistProductManager->remove($wishlistProductEntity);
-                ++$this->itemsProcessed;
-            }
+        $this->wishlistProductManager->remove($wishlistProduct->getWishlistProduct());
+        ++$this->itemsProcessed;
+    }
+
+    private function addFlashMessage(): void
+    {
+        if (0 < $this->itemsProcessed) {
+            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
+        } else {
+            $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
         }
     }
 }

@@ -15,11 +15,11 @@ use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 
 class AddWishlistProduct
 {
-    private WishlistProductInterface $wishlistProduct;
+    private ?WishlistProductInterface $wishlistProduct;
 
-    private AddToCartCommandInterface $cartItem;
+    private ?AddToCartCommandInterface $cartItem;
 
-    private bool $selected;
+    private ?bool $selected;
 
     public function getWishlistProduct(): ?WishlistProductInterface
     {

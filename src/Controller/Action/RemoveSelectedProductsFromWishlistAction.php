@@ -16,13 +16,13 @@ use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 final class RemoveSelectedProductsFromWishlistAction
 {
@@ -36,8 +36,6 @@ final class RemoveSelectedProductsFromWishlistAction
 
     private UrlGeneratorInterface $urlGenerator;
 
-    private Environment $twigEnvironment;
-
     private MessageBusInterface $commandBus;
 
     private WishlistCommandProcessorInterface $wishlistCommandProcessor;
@@ -48,7 +46,6 @@ final class RemoveSelectedProductsFromWishlistAction
         FormFactoryInterface $formFactory,
         FlashBagInterface $flashBag,
         UrlGeneratorInterface $urlGenerator,
-        Environment $twigEnvironment,
         MessageBusInterface $commandBus,
         WishlistCommandProcessorInterface $wishlistCommandProcessor
     ) {
@@ -57,7 +54,6 @@ final class RemoveSelectedProductsFromWishlistAction
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
         $this->urlGenerator = $urlGenerator;
-        $this->twigEnvironment = $twigEnvironment;
         $this->commandBus = $commandBus;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
     }
@@ -76,8 +72,7 @@ final class RemoveSelectedProductsFromWishlistAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $command = new RemoveSelectedProductsFromWishlist($form->get('items')->getData(), $wishlist);
-            $this->commandBus->dispatch($command);
+            $this->handleCommand($form);
 
             return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
         }
@@ -86,11 +81,12 @@ final class RemoveSelectedProductsFromWishlistAction
             $this->flashBag->add('error', $error->getMessage());
         }
 
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                'wishlist' => $wishlist,
-                'form' => $form->createView(),
-            ])
-        );
+        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+    }
+
+    private function handleCommand(FormInterface $form): void
+    {
+        $command = new RemoveSelectedProductsFromWishlist($form->get('items')->getData());
+        $this->commandBus->dispatch($command);
     }
 }

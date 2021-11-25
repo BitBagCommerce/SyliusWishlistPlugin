@@ -10,17 +10,18 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
+use Doctrine\Common\Collections\Collection;
+
 final class AddSelectedProductsToCart
 {
-    /** @var object|AddWishlistProduct[] */
-    private $wishlistProducts;
+    private Collection $wishlistProducts;
 
-    public function __construct(object $wishlistProducts)
+    public function __construct(Collection $wishlistProducts)
     {
         $this->wishlistProducts = $wishlistProducts;
     }
 
-    public function getWishlistProducts(): ?object
+    public function getWishlistProducts(): Collection
     {
         return $this->wishlistProducts;
     }

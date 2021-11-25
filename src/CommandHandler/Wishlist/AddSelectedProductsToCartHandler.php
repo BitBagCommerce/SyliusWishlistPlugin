@@ -12,10 +12,8 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
-use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
-use Sylius\Component\Order\Model\OrderInterface;
-use Sylius\Component\Order\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -48,41 +46,45 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
         $this->orderRepository = $orderRepository;
     }
 
-    public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCart): void
+    public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
+    {
+        $this->addSelectedProductsToCart($addSelectedProductsToCartCommand->getWishlistProducts());
+    }
+
+    private function addSelectedProductsToCart(Collection $wishlistProducts): void
     {
         /** @var AddWishlistProduct $wishlistProduct */
-        foreach ($addSelectedProductsToCart->getWishlistProducts() as $wishlistProduct) {
+        foreach ($wishlistProducts as $wishlistProduct) {
             if (!$wishlistProduct->isSelected()) {
                 continue;
             }
 
-            /** @var AddToCartCommandInterface $addToCartCommand */
-            $addToCartCommand = $wishlistProduct->getCartItem();
-            $cart = $addToCartCommand->getCart();
-            $cartItem = $addToCartCommand->getCartItem();
-
-            if (!$this->isInStock($cartItem)) {
+            if (!$this->isInStock($wishlistProduct)) {
                 continue;
             }
 
-            $this->addProductToWishlist($cartItem, $cart);
+            $this->addProductToWishlist($wishlistProduct);
         }
     }
 
-    private function isInStock(OrderItemInterface $cartItem): bool
+    private function isInStock(AddWishlistProduct $wishlistProduct): bool
     {
-        if (!$cartItem->getVariant()->isInStock()) {
-            $message = sprintf('%s does not have sufficient stock.', $cartItem->getProductName());
-            $this->flashBag->add('error', $this->translator->trans($message));
+        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
 
-            return false;
+        if ($wishlistProduct->getCartItem()->getCartItem()->getVariant()->isInStock()) {
+            return true;
         }
+        $message = sprintf('%s does not have sufficient stock.', $cartItem->getProductName());
+        $this->flashBag->add('error', $this->translator->trans($message));
 
-        return true;
+        return false;
     }
 
-    private function addProductToWishlist(OrderItemInterface $cartItem, OrderInterface $cart): void
+    private function addProductToWishlist(AddWishlistProduct $wishlistProduct): void
     {
+        $cart = $wishlistProduct->getCartItem()->getCart();
+        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
+
         if (0 === $cartItem->getQuantity()) {
             $this->itemQuantityModifier->modify($cartItem, 1);
         }

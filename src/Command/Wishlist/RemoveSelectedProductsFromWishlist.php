@@ -10,28 +10,19 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Doctrine\Common\Collections\Collection;
 
 final class RemoveSelectedProductsFromWishlist
 {
-    /** @var object|AddWishlistProduct[] */
-    private $wishlistProducts;
+    private Collection $wishlistProducts;
 
-    private WishlistInterface $wishlist;
-
-    public function __construct(object $wishlistProducts, WishlistInterface $wishlist)
+    public function __construct(Collection $wishlistProducts)
     {
         $this->wishlistProducts = $wishlistProducts;
-        $this->wishlist = $wishlist;
     }
 
-    public function getWishlistProducts(): ?object
+    public function getWishlistProducts(): Collection
     {
         return $this->wishlistProducts;
-    }
-
-    public function getWishlist(): WishlistInterface
-    {
-        return $this->wishlist;
     }
 }
