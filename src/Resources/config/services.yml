@@ -64,7 +64,6 @@ services:
             - "@form.factory"
             - "@session.flash_bag"
             - "@router"
-            - "@twig"
             - "@sylius.command_bus"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
         tags:
@@ -77,9 +76,9 @@ services:
             - "@sylius.context.cart"
             - "@form.factory"
             - "@session.flash_bag"
-            - "@twig"
             - "@sylius.command_bus"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+            - "@router"
         tags:
             - { name: controller.service_arguments }
 
@@ -89,12 +88,21 @@ services:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@sylius.context.cart"
             - "@form.factory"
-            - "@sylius.order_modifier"
-            - "@sylius.manager.order"
-            - "@session.flash_bag"
-            - "@translator"
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.add_products_to_wishlist:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductsToWishlistAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@sylius.context.cart"
+            - "@form.factory"
+            - "@session.flash_bag"
+            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+            - "@sylius.command_bus"
+            - "@router"
         tags:
             - { name: controller.service_arguments }
 

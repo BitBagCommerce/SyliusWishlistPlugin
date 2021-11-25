@@ -1,4 +1,14 @@
 services:
+    bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_products_to_wishlist_handler:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToWishlistHandler
+        arguments:
+            - "@session.flash_bag"
+            - '@translator'
+            - "@sylius.order_modifier"
+            - '@sylius.repository.order'
+        tags:
+            - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
+
     bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_product_to_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductToWishlistHandler
         arguments:
@@ -6,7 +16,7 @@ services:
             - "@sylius.repository.product"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
         tags:
-            - { name: messenger.message_handler}
+            - { name: messenger.message_handler }
 
     bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_product_variant_to_wishlist_handler:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler
