@@ -88,9 +88,10 @@ services:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - '@sylius.context.cart.new_shop_based.inner'
             - '@form.factory'
-            - '@twig'
             - '@session.flash_bag'
-            - "@debug.traced.sylius.command_bus"
+            - "@sylius.command_bus"
+            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+            - "@router"
         tags:
             - { name: controller.service_arguments }
 
@@ -98,9 +99,9 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ImportWishlistFromCsvAction
         arguments:
             - "@form.factory"
-            - '@twig'
             - '@session.flash_bag'
-            - "@debug.traced.sylius.command_bus"
+            - "@sylius.command_bus"
+            - "@twig"
         tags:
             - { name: controller.service_arguments }
 

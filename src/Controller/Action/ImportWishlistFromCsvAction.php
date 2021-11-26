@@ -7,33 +7,34 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
 use BitBag\SyliusWishlistPlugin\Form\Type\ImportWishlistFromCsvType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Twig\Environment;
 
 final class ImportWishlistFromCsvAction
 {
-    private FormFactoryInterface $formFactory;
+    use HandleTrait;
 
-    private Environment $twigEnvironment;
+    private FormFactoryInterface $formFactory;
 
     private FlashBagInterface $flashBag;
 
-    private MessageBusInterface $commandBus;
+    private Environment $twigEnvironment;
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        Environment $twigEnvironment,
         FlashBagInterface $flashBag,
-        MessageBusInterface $commandBus
+        MessageBusInterface $messageBus,
+        Environment $twigEnvironment
     ) {
         $this->formFactory = $formFactory;
-        $this->twigEnvironment = $twigEnvironment;
         $this->flashBag = $flashBag;
-        $this->commandBus = $commandBus;
+        $this->messageBus = $messageBus;
+        $this->twigEnvironment = $twigEnvironment;
     }
 
     public function __invoke(Request $request): Response
@@ -43,23 +44,24 @@ final class ImportWishlistFromCsvAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('wishlist_file')->getData();
-            $command = new ImportWishlistFromCsv($file, $request);
-
-            $envelope = $this->commandBus->dispatch($command);
-            $responseStamp = $envelope->last(HandledStamp::class);
-
-            return $responseStamp->getResult();
+            return $this->handleCommand($form, $request);
         }
 
         foreach ($form->getErrors() as $error) {
             $this->flashBag->add('error', $error->getMessage());
         }
 
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/importWishlist.html.twig', [
-                        'form' => $form->createView(),
-                ])
+        return new Response($this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/importWishlist.html.twig', [
+            'form' => $form->createView(),
+            ])
         );
+    }
+
+    private function handleCommand(FormInterface $form, Request $request): Response
+    {
+        $file = $form->get('wishlist_file')->getData();
+        $command = new ImportWishlistFromCsv($file->getFileInfo(), $request);
+
+        return $this->handle($command);
     }
 }

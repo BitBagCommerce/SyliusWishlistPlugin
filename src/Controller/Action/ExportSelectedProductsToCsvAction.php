@@ -4,48 +4,53 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
-use Doctrine\Common\Collections\ArrayCollection;
+use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
-use Twig\Environment;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class ExportSelectedProductsToCsvAction
 {
+    use HandleTrait;
+
     private WishlistContextInterface $wishlistContext;
 
     private CartContextInterface $cartContext;
 
     private FormFactoryInterface $formFactory;
 
-    private Environment $twigEnvironment;
-
     private FlashBagInterface $flashBag;
 
-    private MessageBusInterface $commandBus;
+    private WishlistCommandProcessorInterface $wishlistCommandProcessor;
+
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
-        Environment $twigEnvironment,
         FlashBagInterface $flashBag,
-        MessageBusInterface $commandBus
+        MessageBusInterface $messageBus,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
-        $this->twigEnvironment = $twigEnvironment;
         $this->flashBag = $flashBag;
-        $this->commandBus = $commandBus;
+        $this->messageBus = $messageBus;
+        $this->wishlistCommandProcessor = $wishlistCommandProcessor;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): Response
@@ -53,13 +58,7 @@ final class ExportSelectedProductsToCsvAction
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
 
-        $commandsArray = new ArrayCollection();
-
-        foreach ($wishlist->getWishlistProducts() as $wishlistProductItem) {
-            $wishlistProductCommand = new AddWishlistProduct();
-            $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
-            $commandsArray->add($wishlistProductCommand);
-        }
+        $commandsArray = $this->wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlist->getWishlistProducts());
 
         $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
                 'cart' => $cart,
@@ -68,26 +67,21 @@ final class ExportSelectedProductsToCsvAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = fopen('php://temp', 'w');
-            $command = new ExportWishlistToCsv((array) $form->getData());
-
-            $command->setFile($file);
-
-            $envelope = $this->commandBus->dispatch($command);
-            $responseStamp = $envelope->last(HandledStamp::class);
-
-            return $responseStamp->getResult();
+            return $this->handleCommand($form);
         }
 
         foreach ($form->getErrors() as $error) {
             $this->flashBag->add('error', $error->getMessage());
         }
 
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                        'wishlist' => $wishlist,
-                        'form' => $form->createView(),
-                ])
-        );
+        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+    }
+
+    private function handleCommand(FormInterface $form): Response
+    {
+        $file = new \SplFileObject('php://temp', 'w');
+        $command = new ExportWishlistToCsv($form->get('items')->getData(), $file);
+
+        return $this->handle($command);
     }
 }

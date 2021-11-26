@@ -10,22 +10,21 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ImportWishlistFromCsv
 {
-    private File $file;
+    private \SplFileInfo $file;
 
     private Request $request;
 
-    public function __construct(File $file, Request $request)
+    public function __construct(\SplFileInfo $file, Request $request)
     {
         $this->file = $file;
         $this->request = $request;
     }
 
-    public function getFile(): File
+    public function getFileInfo(): \SplFileInfo
     {
         return $this->file;
     }

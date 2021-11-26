@@ -10,32 +10,27 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
+use Doctrine\Common\Collections\Collection;
+
 final class ExportWishlistToCsv
 {
-    private array $wishlistProducts;
+    private Collection $wishlistProducts;
 
-    /** @var resource|false */
-    private $file;
+    private \SplFileObject $file;
 
-    public function __construct(array $wishlistProducts)
+    public function __construct(Collection $wishlistProducts, \SplFileObject $file)
     {
         $this->wishlistProducts = $wishlistProducts;
+        $this->file = $file;
     }
 
-    public function getWishlistProducts(): array
+    public function getWishlistProducts(): Collection
     {
         return $this->wishlistProducts;
     }
 
-    public function getFile()
+    public function getFile(): \SplFileObject
     {
         return $this->file;
-    }
-
-    public function setFile($file): void
-    {
-        if (is_resource($file)) {
-            $this->file = $file;
-        }
     }
 }

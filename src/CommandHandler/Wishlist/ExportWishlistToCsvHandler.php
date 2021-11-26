@@ -12,6 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -26,6 +27,8 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
     private FlashBagInterface $flashBag;
 
     private UrlGeneratorInterface $urlGenerator;
+
+    private int $itemsProcessed = 0;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -42,41 +45,41 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
         $wishlistProducts = $exportWishlistToCsv->getWishlistProducts();
         $file = $exportWishlistToCsv->getFile();
 
-        if ($this->exportToCSV($wishlistProducts, $file)) {
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.selected_wishlist_items_successfully_exported'));
-            rewind($file);
-            $response = new Response(stream_get_contents($file));
-            fclose($file);
+        $this->putDataToCsv($wishlistProducts, $file);
 
-            $response->headers->set('Content-Type', 'text/csv');
-            $response->headers->set('Content-Disposition', 'attachment; filename=export.csv');
-
-            return $response;
+        if (0 < $this->itemsProcessed) {
+            return $this->returnCsvFileAsResponse($file);
         }
         $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
 
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
     }
 
-    private function exportToCSV(array $wishlistProductsCommands, $file): bool
+    private function putDataToCsv(Collection $wishlistProducts, \SplFileObject $file): void
     {
-        $result = false;
-
-        foreach ($wishlistProductsCommands as $wishlistProducts) {
-            /** @var AddWishlistProduct $wishlistProduct */
-            foreach ($wishlistProducts as $wishlistProduct) {
-                if ($wishlistProduct->isSelected()) {
-                    $result = true;
-                    $csvWishlistItem = [
-                        $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),
-                        $wishlistProduct->getWishlistProduct()->getProduct()->getId(),
-                        $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getCode(),
-                    ];
-                    fputcsv($file, $csvWishlistItem);
-                }
+        /** @var AddWishlistProduct $wishlistProduct */
+        foreach ($wishlistProducts as $wishlistProduct) {
+            if (!$wishlistProduct->isSelected()) {
+                continue;
             }
+            $csvWishlistItem = [
+                    $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),
+                    $wishlistProduct->getWishlistProduct()->getProduct()->getId(),
+                    $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getCode(),
+                ];
+            $file->fputcsv($csvWishlistItem);
+            ++$this->itemsProcessed;
         }
+    }
 
-        return $result;
+    private function returnCsvFileAsResponse(\SplFileObject $file): Response
+    {
+        $file->rewind();
+        $response = new Response($file->fread(5000));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename=export.csv');
+
+        return $response;
     }
 }

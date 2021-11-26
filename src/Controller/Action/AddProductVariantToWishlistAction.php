@@ -84,13 +84,7 @@ final class AddProductVariantToWishlistAction
             /** @var WishlistProductInterface $wishlistProduct */
             $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
 
-            if ($wishlist->hasProductVariant($variant)) {
-                $message = sprintf('%s variant is already in wishlist.', $wishlistProduct->getProduct()->getName());
-                $this->flashBag->add('error', $this->translator->trans($message));
-            } else {
-                $wishlist->addWishlistProduct($wishlistProduct);
-                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
-            }
+            $this->addProductToWishlist($wishlist, $variant, $wishlistProduct);
         }
 
         if (null === $wishlist->getId()) {
@@ -110,6 +104,20 @@ final class AddProductVariantToWishlistAction
         }
 
         return $response;
+    }
+
+    private function addProductToWishlist(
+        WishlistInterface $wishlist,
+        ProductVariantInterface $variant,
+        WishlistProductInterface $wishlistProduct
+    ): void {
+        if ($wishlist->hasProductVariant($variant)) {
+            $message = sprintf('%s variant is already in wishlist.', $wishlistProduct->getProduct()->getName());
+            $this->flashBag->add('error', $this->translator->trans($message));
+        } else {
+            $wishlist->addWishlistProduct($wishlistProduct);
+            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+        }
     }
 
     private function addWishlistToResponseCookie(WishlistInterface $wishlist, Response $response): void

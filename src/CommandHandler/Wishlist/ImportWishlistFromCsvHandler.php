@@ -12,90 +12,89 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
 use BitBag\SyliusWishlistPlugin\Controller\Action\AddProductVariantToWishlistAction;
+use Gedmo\Exception\UploadableInvalidMimeTypeException;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 {
+    private const ALLOWED_MIME_TYPES = [
+        'text/csv',
+        'text/plain',
+        'application/csv',
+        'text/comma-separated-values',
+        'application/excel',
+        'application/vnd.ms-excel',
+        'application/vnd.msexcel',
+        'text/anytext',
+        'application/octet-stream',
+        'application/txt',
+    ];
+
     private AddProductVariantToWishlistAction $addProductVariantToWishlistAction;
-
-    private FlashBagInterface $flashBag;
-
-    private TranslatorInterface $translator;
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
-    private UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
         AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        UrlGeneratorInterface $urlGenerator
+        ProductVariantRepositoryInterface $productVariantRepository
     ) {
         $this->addProductVariantToWishlistAction = $addProductVariantToWishlistAction;
-        $this->flashBag = $flashBag;
-        $this->translator = $translator;
         $this->productVariantRepository = $productVariantRepository;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(ImportWishlistFromCsv $importWishlistFromCsv): Response
     {
-        $file = $importWishlistFromCsv->getFile();
+        $fileInfo = $importWishlistFromCsv->getFileInfo();
         $request = $importWishlistFromCsv->getRequest();
 
-        if ($this->handleUploadedFile($file, $request)) {
-            return $this->addProductVariantToWishlistAction->__invoke($request);
-        }
-        $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.upload_valid_csv'));
+        $this->getDataFromFile($fileInfo, $request);
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_import_from_csv'));
+        return $this->addProductVariantToWishlistAction->__invoke($request);
     }
 
-    private function handleUploadedFile(UploadedFile $file, Request $request): bool
+    private function getDataFromFile(\SplFileInfo $fileInfo, Request $request): void
     {
         $requestData = [];
-        if ($this->isValidMimeType($file)) {
-            $resource = fopen($file->getRealPath(), 'r');
 
-            while ($data = fgetcsv($resource, 1000, ',')) {
-                if ($this->checkCsvProduct($data)) {
-                    $requestData[] = $data[0];
-                }
-            }
-            $request->attributes->set('variantId', $requestData);
-            fclose($resource);
-        } else {
-            return false;
+        if (!$this->fileIsValidMimeType($fileInfo)) {
+            throw new UploadableInvalidMimeTypeException();
         }
 
-        return true;
+        $resource = fopen($fileInfo->getRealPath(), 'r');
+
+        while ($data = fgetcsv($resource, 1000, ',')) {
+            if ($this->csvContainValidProduct($data)) {
+                $requestData[] = $data[0];
+                $request->attributes->set('variantId', $requestData);
+            }
+        }
+        fclose($resource);
     }
 
-    private function isValidMimeType(UploadedFile $file): bool
+    private function fileIsValidMimeType(\SplFileInfo $fileInfo): bool
     {
-        return 'text/csv' === $file->getClientMimeType() || 'application/octet-stream' === $file->getClientMimeType();
+        $finfo = new \finfo(\FILEINFO_MIME_TYPE);
+
+        return in_array($finfo->file($fileInfo->getRealPath()), self::ALLOWED_MIME_TYPES);
     }
 
-    private function checkCsvProduct(array $data): bool
+    private function csvContainValidProduct(array $data): bool
     {
-        $variant = $this->productVariantRepository->find($data[0]);
+        $variantId = $data[0];
+        $productId = $data[1];
+        $variantCode = $data[2];
+
+        $variant = $this->productVariantRepository->find($variantId);
 
         if (null === $variant) {
             throw new NotFoundHttpException();
         }
 
-        if ($data[1] == $variant->getProduct()->getId() && $data[2] == $variant->getCode()) {
+        if ((string) $variant->getProduct()->getId() === $productId && $variant->getCode() === $variantCode) {
             return true;
         }
 

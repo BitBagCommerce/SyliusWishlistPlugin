@@ -165,9 +165,9 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
-     * @When /^the (product "([^"]+)") is stored in file$/
+     * @When /^the (product "([^"]+)") is stored in "(?P<filename>(?:[^"]|\\")*)"$/
      */
-    public function productIsStoredInFile(ProductInterface $product): void
+    public function productIsStoredInFile(ProductInterface $product, string $filename): void
     {
         /** @var ProductVariantInterface $productVariant */
         $productVariant = $this->defaultVariantResolver->getVariant($product);
@@ -179,7 +179,7 @@ final class WishlistContext extends RawMinkContext implements Context
         ];
 
         if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'file.csv';
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$filename;
             $fileResource = fopen($fullPath,"w+");
             fputcsv($fileResource,$data);
             fclose($fileResource);
