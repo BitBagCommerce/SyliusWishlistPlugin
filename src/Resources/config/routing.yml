@@ -31,7 +31,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_variant:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_selected_products:
-    path: /wishlist/add/products/selected
+    path: /wishlist/products/add
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart
 
