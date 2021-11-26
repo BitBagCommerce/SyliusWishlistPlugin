@@ -32,6 +32,8 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 
     private OrderRepositoryInterface $orderRepository;
 
+    private int $itemsProcessed = 0;
+
     public function __construct(
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
@@ -49,6 +51,8 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
     public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
     {
         $this->addSelectedProductsToCart($addSelectedProductsToCartCommand->getWishlistProducts());
+
+        $this->addFlashMessage();
     }
 
     private function addSelectedProductsToCart(Collection $wishlistProducts): void
@@ -74,7 +78,7 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
         if ($wishlistProduct->getCartItem()->getCartItem()->getVariant()->isInStock()) {
             return true;
         }
-        $message = sprintf('%s does not have sufficient stock.', $cartItem->getProductName());
+        $message = sprintf(' "%s" does not have sufficient stock.', $cartItem->getProductName());
         $this->flashBag->add('error', $this->translator->trans($message));
 
         return false;
@@ -91,7 +95,17 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 
         $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderRepository->add($cart);
+        ++$this->itemsProcessed;
+    }
 
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_selected_wishlist_items_to_cart'));
+    private function addFlashMessage(): void
+    {
+        if (0 < $this->itemsProcessed) {
+            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_selected_wishlist_items_to_cart'));
+
+            return;
+        }
+
+        $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
     }
 }

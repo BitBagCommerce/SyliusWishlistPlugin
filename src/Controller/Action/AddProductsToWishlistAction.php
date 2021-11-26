@@ -12,34 +12,16 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToWishlist;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
-use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class AddProductsToWishlistAction
+final class AddProductsToWishlistAction extends BaseWishlistProductsAction
 {
-    private WishlistContextInterface $wishlistContext;
-
-    private CartContextInterface $cartContext;
-
-    private FormFactoryInterface $formFactory;
-
-    private FlashBagInterface $flashBag;
-
-    private WishlistCommandProcessorInterface $wishlistCommandProcessor;
-
-    private MessageBusInterface $messageBus;
-
-    private UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
@@ -49,42 +31,18 @@ final class AddProductsToWishlistAction
         MessageBusInterface $messageBus,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->wishlistContext = $wishlistContext;
-        $this->cartContext = $cartContext;
-        $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
-        $this->wishlistCommandProcessor = $wishlistCommandProcessor;
-        $this->messageBus = $messageBus;
-        $this->urlGenerator = $urlGenerator;
+        parent::__construct(
+            $wishlistContext,
+            $cartContext,
+            $formFactory,
+            $flashBag,
+            $wishlistCommandProcessor,
+            $messageBus,
+            $urlGenerator
+        );
     }
 
-    public function __invoke(Request $request): Response
-    {
-        $wishlist = $this->wishlistContext->getWishlist($request);
-        $cart = $this->cartContext->getCart();
-
-        $commandsArray = $this->wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlist->getWishlistProducts());
-
-        $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
-            'cart' => $cart,
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->handleCommand($form);
-
-            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
-        }
-
-        foreach ($form->getErrors() as $error) {
-            $this->flashBag->add('error', $error->getMessage());
-        }
-
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
-    }
-
-    private function handleCommand(FormInterface $form): void
+    protected function handleCommand(FormInterface $form): void
     {
         $command = new AddProductsToWishlist($form->get('items')->getData());
         $this->messageBus->dispatch($command);

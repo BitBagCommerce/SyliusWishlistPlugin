@@ -2,6 +2,18 @@ imports:
     - { resource: "services/**/*.yml" }
 
 services:
+    bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action:
+        abstract: true
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\BaseWishlistProductsAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - "@sylius.context.cart"
+            - "@form.factory"
+            - "@session.flash_bag"
+            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+            - "@sylius.command_bus"
+            - "@router"
+
     bitbag_sylius_wishlist_plugin.controller.action.add_product_to_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToWishlistAction
         arguments:
@@ -58,27 +70,15 @@ services:
 
     bitbag_sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\RemoveSelectedProductsFromWishlistAction
-        arguments:
-            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
-            - "@sylius.context.cart"
-            - "@form.factory"
-            - "@session.flash_bag"
-            - "@router"
-            - "@sylius.command_bus"
-            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+        parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action"
+        public: true
         tags:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddSelectedProductsToCartAction
-        arguments:
-            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
-            - "@sylius.context.cart"
-            - "@form.factory"
-            - "@session.flash_bag"
-            - "@sylius.command_bus"
-            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
-            - "@router"
+        parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action"
+        public: true
         tags:
             - { name: controller.service_arguments }
 
@@ -95,14 +95,8 @@ services:
 
     bitbag_sylius_wishlist_plugin.controller.action.add_products_to_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductsToWishlistAction
-        arguments:
-            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
-            - "@sylius.context.cart"
-            - "@form.factory"
-            - "@session.flash_bag"
-            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
-            - "@sylius.command_bus"
-            - "@router"
+        parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action"
+        public: true
         tags:
             - { name: controller.service_arguments }
 

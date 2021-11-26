@@ -5,7 +5,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_list_products:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_products:
-    path: /wishlist/add/products/all
+    path: /wishlist/products
+    methods: [POST]
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_products_to_wishlist
 

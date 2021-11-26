@@ -77,8 +77,10 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
     {
         if (0 < $this->itemsProcessed) {
             $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
-        } else {
-            $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
+
+            return;
         }
+
+        $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
     }
 }

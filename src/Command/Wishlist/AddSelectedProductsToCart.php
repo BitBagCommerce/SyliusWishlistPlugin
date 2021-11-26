@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 
 final class AddSelectedProductsToCart
 {
+    /** @var Collection<AddWishlistProduct> */
     private Collection $wishlistProducts;
 
     public function __construct(Collection $wishlistProducts)
