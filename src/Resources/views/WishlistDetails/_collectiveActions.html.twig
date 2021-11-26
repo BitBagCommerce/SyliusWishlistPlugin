@@ -1,0 +1,24 @@
+<div class="ui dropdown button">
+    <i class="angle down icon"></i>
+    <span class="text">with selected</span>
+    <div class="menu">
+        <div class="item">
+            <button type="submit" class="ui blue button" {{ sylius_test_html_attribute('wishlist-add-selected-to-cart') }} formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_selected_products') }}">
+                <i class="cart icon"></i>
+                {{ 'bitbag_sylius_wishlist_plugin.ui.add'|trans }}
+            </button>
+        </div>
+        <div class="item">
+            <button type="submit" class="ui red button" {{ sylius_test_html_attribute('wishlist-remove-selected-from-wishlist') }} formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_remove_selected_products') }}">
+                <i class="times icon"></i>
+                {{ 'bitbag_sylius_wishlist_plugin.ui.remove'|trans }}
+            </button>
+        </div>
+        <div class="item">
+            <button type="submit" class="ui green button" {{ sylius_test_html_attribute('wishlist-copy-to-wishlist') }} >
+                <i class="copy icon"></i>
+                {{ 'bitbag_sylius_wishlist_plugin.ui.copy_to_wishlist'|trans }}
+            </button>
+        </div>
+    </div>
+</div>

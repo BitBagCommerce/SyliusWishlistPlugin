@@ -11,19 +11,12 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType;
-use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
+use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
-use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class ListWishlistProductsAction
@@ -34,67 +27,34 @@ final class ListWishlistProductsAction
 
     private FormFactoryInterface $formFactory;
 
-    private OrderModifierInterface $orderModifier;
-
-    private EntityManagerInterface $cartManager;
-
-    private FlashBagInterface $flashBag;
-
-    private TranslatorInterface $translator;
-
     private Environment $twigEnvironment;
+
+    private WishlistCommandProcessorInterface $wishlistCommandProcessor;
 
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
-        OrderModifierInterface $orderModifier,
-        EntityManagerInterface $cartManager,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
-        Environment $twigEnvironment
+        Environment $twigEnvironment,
+        WishlistCommandProcessorInterface $wishlistCommandProcessor
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
-        $this->orderModifier = $orderModifier;
-        $this->flashBag = $flashBag;
         $this->twigEnvironment = $twigEnvironment;
-        $this->cartManager = $cartManager;
-        $this->translator = $translator;
+        $this->wishlistCommandProcessor = $wishlistCommandProcessor;
     }
 
     public function __invoke(Request $request): Response
     {
-        /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistContext->getWishlist($request);
         $cart = $this->cartContext->getCart();
 
-        $form = $this->formFactory->create(AddProductsToCartType::class, null, [
+        $commandsArray = $this->wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlist->getWishlistProducts());
+
+        $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
-            'wishlist_products' => $wishlist->getWishlistProducts(),
         ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($this->handleCartItems($form)) {
-                $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
-            } else {
-                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
-            }
-
-            return new Response(
-                $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                    'wishlist' => $wishlist,
-                    'form' => $form->createView(),
-                ])
-            );
-        }
-        /** @var FormError $error */
-        foreach ($form->getErrors() as $error) {
-            $this->flashBag->add('error', $error->getMessage());
-        }
 
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
@@ -102,23 +62,5 @@ final class ListWishlistProductsAction
                 'form' => $form->createView(),
             ])
         );
-    }
-
-    private function handleCartItems(FormInterface $form): bool
-    {
-        $result = false;
-
-        /** @var AddToCartCommandInterface $command */
-        foreach ($form->getData() as $command) {
-            if (0 < $command->getCartItem()->getQuantity()) {
-                $result = true;
-                $this->orderModifier->addToOrder($command->getCart(), $command->getCartItem());
-                $this->cartManager->persist($command->getCart());
-            }
-        }
-
-        $this->cartManager->flush();
-
-        return $result;
     }
 }

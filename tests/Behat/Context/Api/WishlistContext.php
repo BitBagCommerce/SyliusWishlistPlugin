@@ -12,6 +12,7 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Api;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\MinkExtension\Context\RawMinkContext;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use GuzzleHttp\ClientInterface;
@@ -25,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
-final class WishlistContext extends MinkContext implements Context
+final class WishlistContext extends RawMinkContext implements Context
 {
     protected static string $domain;
 

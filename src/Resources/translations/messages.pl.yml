@@ -11,3 +11,10 @@ bitbag_sylius_wishlist_plugin:
         save_wishlist: Zapisz listę życzeń
         variant_not_unique: Ten wariant jest już na Twojej liście życzeń
         increase_quantity: Zwiększ ilość przynajmniej jednego z produktów.
+        select_products: Wybierz przynajmniej jeden produkt.
+        added_selected_wishlist_items_to_cart: Wybrane produkty zostały dodane do koszyka.
+        removed_selected_wishlist_items: Wybrane produkty zostały usunięte z listy życzeń.
+        toggle_checkboxes: Przełącz
+        remove: Usuń
+        add: Dodaj
+        copy_to_wishlist: Kopiuj do listy życzeń

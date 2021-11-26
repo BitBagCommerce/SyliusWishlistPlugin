@@ -15,3 +15,12 @@ Feature: Removing a product from wishlist
         And I remove this product
         Then I should be notified that the product has been removed from my wishlist
         And I should have 0 products in my wishlist
+
+    @ui
+    Scenario: Removing selected products from wishlist
+        Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
+        And I have this product in my wishlist
+        When I go to the wishlist page
+        Then I check "Jack Daniels Gentleman"
+        And I remove selected products from wishlist
+        And I should have 0 products in my wishlist

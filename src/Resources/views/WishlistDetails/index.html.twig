@@ -13,11 +13,15 @@
     <div class="ui hidden divider"></div>
 
     {% if wishlist.wishlistProducts.count > 0 %}
-        {{ form_start(form, { attr: { class: 'bb-wishlist ui form' } }) }}
+        {{ form_start(form, { attr: { class: 'bb-wishlist ui form', id: "wishlist_form" } }) }}
 
         <div class="ui segment" id="wishlist">
 
             <div class="bb-wishlist-item">
+                <div class="bb-wishlist-item-select">
+                    <b>{{ 'bitbag_sylius_wishlist_plugin.ui.toggle_checkboxes'|trans }}</b>
+                    <input type="checkbox" id="toggle-checkboxes">
+                </div>
                 <div class="bb-wishlist-item-image">
                     {{ 'sylius.ui.product'|trans }}
                 </div>
@@ -32,11 +36,12 @@
                 </div>
             </div>
 
-            {% for childForm in form.children if childForm.vars.name != '_token' %}
+            {% for itemForm in form.items %}
                 {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_item.html.twig" %}
             {% endfor %}
 
             <div class="bb-wishlist-actions">
+                {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_collectiveActions.html.twig" %}
                 {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_globalActions.html.twig" %}
             </div>
 

@@ -1,4 +1,9 @@
-<button type="submit" class="ui primary button" {{ sylius_test_html_attribute('wishlist-add-all-to-cart') }}>
+<button
+        type="submit"
+        class="ui primary button"
+        {{ sylius_test_html_attribute('wishlist-add-all-to-cart') }}
+        formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_products') }}"
+>
     <i class="cart icon"></i>
     {{ 'bitbag_sylius_wishlist_plugin.ui.add_items_to_cart'|trans }}
 </button>

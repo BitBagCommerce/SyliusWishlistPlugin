@@ -1,7 +1,14 @@
 bitbag_sylius_wishlist_plugin_shop_wishlist_list_products:
     path: /wishlist
+    methods: [GET]
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_add_products:
+    path: /wishlist/products
+    methods: [POST]
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.add_products_to_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_product:
     path: /wishlist/add/{productId}
@@ -13,10 +20,20 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product:
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist
 
+bitbag_sylius_wishlist_plugin_shop_wishlist_remove_selected_products:
+    path: /wishlist/products/delete
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist
+
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_variant:
     path: /wishlist/add/variant/{variantId}
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_add_selected_products:
+    path: /wishlist/products/add
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product_variant:
     path: /wishlist/remove/variant/{variantId}
