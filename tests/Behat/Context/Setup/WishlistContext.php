@@ -14,6 +14,7 @@ use Behat\Behat\Context\Context;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\Setter\CookieSetterInterface;
 use Sylius\Component\Core\Model\ProductInterface;
@@ -120,7 +121,9 @@ final class WishlistContext implements Context
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createNew();
         $wishlistProduct->setProduct($product);
-        $wishlistProduct->setVariant($product->getVariants()->first());
+        /** @var ?Collection $productVariants */
+        $productVariants = $product->getVariants();
+        $wishlistProduct->setVariant($productVariants->first());
 
         $wishlist->addWishlistProduct($wishlistProduct);
 

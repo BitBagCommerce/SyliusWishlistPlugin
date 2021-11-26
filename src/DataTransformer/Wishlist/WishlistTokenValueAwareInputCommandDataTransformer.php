@@ -20,8 +20,11 @@ final class WishlistTokenValueAwareInputCommandDataTransformer implements Comman
     /**
      * @param WishlistTokenValueAwareInterface|mixed $object
      */
-    public function transform($object, string $to, array $context = []): WishlistTokenValueAwareInterface
-    {
+    public function transform(
+        $object,
+        string $to,
+        array $context = []
+    ): WishlistTokenValueAwareInterface {
         /** @var WishlistInterface $wishlist */
         $wishlist = $context[AbstractItemNormalizer::OBJECT_TO_POPULATE];
 
@@ -30,6 +33,9 @@ final class WishlistTokenValueAwareInputCommandDataTransformer implements Comman
         return $object;
     }
 
+    /**
+     * @param WishlistTokenValueAwareInterface|mixed $object
+     */
     public function supportsTransformation($object): bool
     {
         return $object instanceof WishlistTokenValueAwareInterface;

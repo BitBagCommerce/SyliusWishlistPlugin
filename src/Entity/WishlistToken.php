@@ -18,7 +18,7 @@ class WishlistToken implements WishlistTokenInterface
 
     public function __construct(?string $value = null)
     {
-        if ($value === null) {
+        if (null === $value) {
             $this->value = $this->generate();
         } else {
             $this->setValue($value);
