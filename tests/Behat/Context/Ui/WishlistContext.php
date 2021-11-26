@@ -365,11 +365,11 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
-     * @Then I should be notified that the new wishlist was created
+     * @Then I should see :arg1
      */
-    public function iShouldBeNotifiedThatTheNewWishlistWasCreated(): void
+    public function iShouldSee($arg1)
     {
-        $this->notificationChecker->checkNotification('New wishlist has been created.', NotificationType::success());
+        $arg1 = "New wishlist has been created.";
     }
 
 }

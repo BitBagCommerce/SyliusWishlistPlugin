@@ -13,4 +13,4 @@ Feature: Creating a new wishlist
         And I fill the wishlist name with "Favorite"
         When I save it
         Then I should be on "/wishlists"
-        And I should be notified that the new wishlist was created
+        And I should see "New wishlist has been created."
