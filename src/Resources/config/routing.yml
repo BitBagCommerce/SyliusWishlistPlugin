@@ -21,7 +21,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_selected_products:
-    path: /wishlist/remove/products/selected
+    path: /wishlist/products/delete
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist
 
