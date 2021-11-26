@@ -76,9 +76,7 @@ abstract class BaseWishlistProductsAction
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
     }
 
-    protected function handleCommand(FormInterface $form): void
-    {
-    }
+    abstract protected function handleCommand(FormInterface $form): void;
 
     private function createForm(Request $request): FormInterface
     {

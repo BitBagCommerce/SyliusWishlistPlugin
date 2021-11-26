@@ -11,37 +11,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToWishlist;
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
-use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use Sylius\Component\Order\Context\CartContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class AddProductsToWishlistAction extends BaseWishlistProductsAction
 {
-    public function __construct(
-        WishlistContextInterface $wishlistContext,
-        CartContextInterface $cartContext,
-        FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
-        WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        MessageBusInterface $messageBus,
-        UrlGeneratorInterface $urlGenerator
-    ) {
-        parent::__construct(
-            $wishlistContext,
-            $cartContext,
-            $formFactory,
-            $flashBag,
-            $wishlistCommandProcessor,
-            $messageBus,
-            $urlGenerator
-        );
-    }
-
     protected function handleCommand(FormInterface $form): void
     {
         $command = new AddProductsToWishlist($form->get('items')->getData());
