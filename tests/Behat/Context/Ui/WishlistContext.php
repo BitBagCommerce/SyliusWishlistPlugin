@@ -273,7 +273,10 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function iShouldHaveProductInMyCart(string $productName): void
     {
-        Assert::true($this->wishlistPage->hasProductInCart($productName), sprintf('Product %s was not found in the cart.', $productName));
+        Assert::true(
+            $this->wishlistPage->hasProductInCart($productName),
+            sprintf('Product %s was not found in the cart.', $productName)
+        );
     }
 
     /**
