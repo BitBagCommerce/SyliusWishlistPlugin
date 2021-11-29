@@ -96,7 +96,7 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
-        $wishlistCommandProcessor->createFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
+        $wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(
@@ -148,7 +148,7 @@ final class ExportWishlistToPdfActionSpec extends ObjectBehavior
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
-        $wishlistCommandProcessor->createFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
+        $wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(
