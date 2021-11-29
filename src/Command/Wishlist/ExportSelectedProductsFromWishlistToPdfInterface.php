@@ -10,6 +10,4 @@ use Symfony\Component\HttpFoundation\Request;
 interface ExportSelectedProductsFromWishlistToPdfInterface
 {
     public function getWishlistProducts(): ?ArrayCollection;
-
-    public function getRequest(): Request;
 }

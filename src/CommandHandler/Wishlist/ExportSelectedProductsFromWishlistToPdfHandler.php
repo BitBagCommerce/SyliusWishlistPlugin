@@ -14,11 +14,18 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdfInterface;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use phpDocumentor\Reflection\Types\This;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHandlerInterface
@@ -31,29 +38,48 @@ final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHan
 
     private Environment $twigEnvironment;
 
+    private int $itemsProcessed = 0;
+
+    private FlashBagInterface $flashBag;
+
+    private TranslatorInterface $translator;
+
+    private RequestStack $request;
+
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
         VariantImagePathResolverInterface $variantImagePathResolver,
         VariantPdfModelFactoryInterface $variantPdfModelFactory,
-        Environment $twigEnvironment
+        Environment $twigEnvironment,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator,
+        RequestStack $request
     ) {
         $this->productVariantRepository = $productVariantRepository;
         $this->variantImagePathResolver = $variantImagePathResolver;
         $this->variantPdfModelFactory = $variantPdfModelFactory;
         $this->twigEnvironment = $twigEnvironment;
+        $this->flashBag = $flashBag;
+        $this->translator = $translator;
+        $this->request = $request;
     }
 
-    public function __invoke(ExportSelectedProductsFromWishlistToPdfInterface $exportSelectedProductsFromWishlistToPdf): bool
+    public function __invoke(ExportSelectedProductsFromWishlistToPdfInterface $exportSelectedProductsFromWishlistToPdf): void
     {
         $wishlistProducts = $exportSelectedProductsFromWishlistToPdf->getWishlistProducts();
-        $request = $exportSelectedProductsFromWishlistToPdf->getRequest();
+        $selectedProductsModel = $this->createModelToPdf($wishlistProducts,$this->request->getCurrentRequest());
+        $this->exportToPdf($selectedProductsModel);
+    }
 
+    private function createModelToPdf(Collection $wishlistProducts, Request $request): array
+    {
         $selectedProducts = [];
 
         /** @var AddWishlistProductInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
-                $result = true;
+                $this->itemsProcessed += 1;
+
                 $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 
                 if (null === $variant) {
@@ -68,17 +94,19 @@ final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHan
                 $selectedProducts[] = $this->variantPdfModelFactory->createWithVariantAndImagePath($variant, $urlToImage, $quantity, $actualVariant);
             }
         }
-
-        if (isset($result) && $result === true) {
-            $this->exportToPdf($selectedProducts);
-            return true;
-        }
-
-        return false;
+        return $selectedProducts;
     }
 
     private function exportToPdf(array $selectedProducts): void
     {
+        if ( $this->itemsProcessed === 0) {
+            $this->flashBag->add(
+                'error',
+                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')
+            );
+            return ;
+        }
+
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
         $pdfOptions->set('defaultFont', 'Arial');

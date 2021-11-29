@@ -93,5 +93,8 @@ services:
             - "@bitbag_sylius_wishlist_plugin.resolver.variant.image.path.resolver"
             - "@bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory"
             - "@twig"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@request_stack"
         tags:
-            - { name: messenger.message_handler }
+            - { name: messenger.message_handler, bus: sylius.command_bus }

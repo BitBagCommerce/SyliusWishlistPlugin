@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class CommandFactory implements CommandFactoryInterface
 {
-    public function createFrom(ArrayCollection $wishlistProducts, Request $request): ExportSelectedProductsFromWishlistToPdfInterface
+    public function createFrom(ArrayCollection $wishlistProducts): ExportSelectedProductsFromWishlistToPdfInterface
     {
-        return new ExportSelectedProductsFromWishlistToPdf($wishlistProducts,$request);
+        return new ExportSelectedProductsFromWishlistToPdf($wishlistProducts);
     }
 }

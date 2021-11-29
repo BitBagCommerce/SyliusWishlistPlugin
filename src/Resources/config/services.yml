@@ -166,17 +166,8 @@ services:
 
     bitbag_sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ExportWishlistToPdfAction
-        arguments:
-            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
-            - "@sylius.context.cart"
-            - "@form.factory"
-            - "@session.flash_bag"
-            - "@translator"
-            - "@router"
-            - "@twig"
-            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
-            - "@sylius.command_bus"
-            - "@bitbag_sylius_wishlist_plugin.factory.command.command_factory"
+        parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action"
+        public: true
         tags:
             - { name: controller.service_arguments }
 
@@ -185,14 +176,6 @@ services:
 
     bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory:
         class: BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory
-
-    bitbag_sylius_wishlist_plugin.exporter.exporter.wishlist.to.pdf:
-        class: BitBag\SyliusWishlistPlugin\Exporter\ExporterWishlistToPdf
-        arguments:
-            - "@sylius.repository.product_variant"
-            - "@bitbag_sylius_wishlist_plugin.resolver.variant.image.path.resolver"
-            - "@bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory"
-            - "@twig"
 
     bitbag_sylius_wishlist_plugin.factory.command.command_factory:
         class: BitBag\SyliusWishlistPlugin\Factory\Command\CommandFactory

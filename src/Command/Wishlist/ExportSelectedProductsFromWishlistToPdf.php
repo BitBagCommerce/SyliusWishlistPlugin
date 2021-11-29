@@ -15,22 +15,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class ExportSelectedProductsFromWishlistToPdf implements ExportSelectedProductsFromWishlistToPdfInterface
 {
-    private Request $request;
     private ArrayCollection $wishlistProducts;
 
-    public function __construct(ArrayCollection $wishlistProducts, Request $request)
+    public function __construct(ArrayCollection $wishlistProducts)
     {
         $this->wishlistProducts = $wishlistProducts;
-        $this->request = $request;
     }
 
     public function getWishlistProducts(): ?ArrayCollection
     {
         return $this->wishlistProducts;
-    }
-
-    public function getRequest(): Request
-    {
-        return $this->request;
     }
 }
