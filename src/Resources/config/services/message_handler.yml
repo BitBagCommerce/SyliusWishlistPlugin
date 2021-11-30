@@ -91,6 +91,7 @@ services:
         arguments:
             - '@bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist'
             - "@sylius.repository.product_variant"
+            - "%bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types%"
         tags:
             - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
 
@@ -99,7 +100,6 @@ services:
         arguments:
             - '@translator'
             - '@session.flash_bag'
-            - "@router"
         tags:
             - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
 

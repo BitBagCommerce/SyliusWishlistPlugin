@@ -12,7 +12,7 @@ services:
             - "@sylius.factory.product_taxon"
             - "@sylius.manager.product_taxon"
             - "@sylius.behat.cookie_setter"
-            - "%wishlist_cookie_token%"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
 
     bitbag_sylius_cms_plugin.behat.context.ui.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui\WishlistContext

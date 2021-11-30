@@ -27,7 +27,8 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $this->registerResources('bitbag_sylius_wishlist_plugin', 'doctrine/orm', $config['resources'], $container);
         $loader->load('services.yml');
-        $container->setParameter('wishlist_cookie_token', $config['wishlist_cookie_token']);
+        $container->setParameter('bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token', $config['wishlist_cookie_token']);
+        $container->setParameter('bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types', $config['allowed_mime_types']);
     }
 
     public function prepend(ContainerBuilder $container): void
