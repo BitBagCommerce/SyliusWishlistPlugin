@@ -38,7 +38,7 @@ final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHan
 
     private Environment $twigEnvironment;
 
-    private int $itemsProcessed = 0;
+    private bool $isSelected = false;
 
     private FlashBagInterface $flashBag;
 
@@ -78,7 +78,7 @@ final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHan
         /** @var AddWishlistProductInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
-                $this->itemsProcessed += 1;
+                $this->isSelected = true;
 
                 $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 
@@ -99,7 +99,7 @@ final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHan
 
     private function exportToPdf(array $selectedProducts): void
     {
-        if ( $this->itemsProcessed === 0) {
+        if ( $this->isSelected === false) {
             $this->flashBag->add(
                 'error',
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')
