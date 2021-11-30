@@ -12,7 +12,7 @@ Feature: Importing wishlist
     Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
     And there is 5 units of product "Jack Daniels Gentleman" available in the inventory
     And the product "Jack Daniels Gentleman" is stored in "file.csv"
-    And I am on "/wishlist/import/csv"
+    And I am on "/wishlist/csv/import"
     When I attach the file "file.csv" to "import_wishlist_from_csv_wishlist_file"
     And I press "import_wishlist_from_csv_submit"
     Then I should be on my wishlist page
@@ -24,7 +24,7 @@ Feature: Importing wishlist
     Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
     And I have this product in my wishlist
     And the product "Jack Daniels Gentleman" is stored in "file.csv"
-    And I am on "/wishlist/import/csv"
+    And I am on "/wishlist/csv/import"
     When I attach the file "file.csv" to "import_wishlist_from_csv_wishlist_file"
     And I press "import_wishlist_from_csv_submit"
     Then I should be on my wishlist page

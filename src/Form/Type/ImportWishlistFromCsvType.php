@@ -14,6 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
 final class ImportWishlistFromCsvType extends AbstractType
@@ -27,11 +28,8 @@ final class ImportWishlistFromCsvType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new File([
-                        'maxSize' => '512k',
-                        'mimeTypes' => [
-                            'text/plain',
-                            'text/csv',
-                        ],
+                        'maxSize' => $options['maxFileSize'],
+                        'mimeTypes' => $options['allowedMimeTypes'],
                         'mimeTypesMessage' => 'Please upload a valid CSV file',
                     ]),
                 ],
@@ -39,5 +37,19 @@ final class ImportWishlistFromCsvType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
             ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'maxFileSize' => '512k',
+            'allowedMimeTypes' => [
+                'text/plain',
+                'text/csv',
+            ],
+        ]);
+
+        $resolver->setAllowedTypes('maxFileSize', 'string');
+        $resolver->setAllowedTypes('allowedMimeTypes', 'array');
     }
 }

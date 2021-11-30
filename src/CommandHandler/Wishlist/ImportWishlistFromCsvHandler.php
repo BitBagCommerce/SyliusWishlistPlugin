@@ -21,29 +21,20 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 {
-    private const ALLOWED_MIME_TYPES = [
-        'text/csv',
-        'text/plain',
-        'application/csv',
-        'text/comma-separated-values',
-        'application/excel',
-        'application/vnd.ms-excel',
-        'application/vnd.msexcel',
-        'text/anytext',
-        'application/octet-stream',
-        'application/txt',
-    ];
-
     private AddProductVariantToWishlistAction $addProductVariantToWishlistAction;
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
+    private array $allowedMimeTypes;
+
     public function __construct(
         AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
-        ProductVariantRepositoryInterface $productVariantRepository
+        ProductVariantRepositoryInterface $productVariantRepository,
+        array $allowedMimeTypes
     ) {
         $this->addProductVariantToWishlistAction = $addProductVariantToWishlistAction;
         $this->productVariantRepository = $productVariantRepository;
+        $this->allowedMimeTypes = $allowedMimeTypes;
     }
 
     public function __invoke(ImportWishlistFromCsv $importWishlistFromCsv): Response
@@ -79,23 +70,25 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
     {
         $finfo = new \finfo(\FILEINFO_MIME_TYPE);
 
-        return in_array($finfo->file($fileInfo->getRealPath()), self::ALLOWED_MIME_TYPES);
+        return in_array($finfo->file($fileInfo->getRealPath()), $this->allowedMimeTypes);
     }
 
     private function csvContainValidProduct(array $data): bool
     {
-        $variantId = $data[0];
-        $productId = $data[1];
-        $variantCode = $data[2];
+        if (!array_diff(['0', '1', '2'], array_keys($data))) {
+            $variantId = $data[0];
+            $productId = $data[1];
+            $variantCode = $data[2];
 
-        $variant = $this->productVariantRepository->find($variantId);
+            $variant = $this->productVariantRepository->find($variantId);
 
-        if (null === $variant) {
-            throw new NotFoundHttpException();
-        }
+            if (null === $variant) {
+                throw new NotFoundHttpException();
+            }
 
-        if ((string) $variant->getProduct()->getId() === $productId && $variant->getCode() === $variantCode) {
-            return true;
+            if ((string) $variant->getProduct()->getId() === $productId && $variant->getCode() === $variantCode) {
+                return true;
+            }
         }
 
         return false;

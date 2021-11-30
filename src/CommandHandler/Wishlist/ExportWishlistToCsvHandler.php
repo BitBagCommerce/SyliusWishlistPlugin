@@ -13,11 +13,8 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ExportWishlistToCsvHandler implements MessageHandlerInterface
@@ -26,33 +23,30 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 
     private FlashBagInterface $flashBag;
 
-    private UrlGeneratorInterface $urlGenerator;
-
     private int $itemsProcessed = 0;
 
     public function __construct(
         TranslatorInterface $translator,
-        FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
+        FlashBagInterface $flashBag
     ) {
         $this->translator = $translator;
         $this->flashBag = $flashBag;
-        $this->urlGenerator = $urlGenerator;
     }
 
-    public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): Response
+    public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): ?\SplFileObject
     {
         $wishlistProducts = $exportWishlistToCsv->getWishlistProducts();
         $file = $exportWishlistToCsv->getFile();
 
         $this->putDataToCsv($wishlistProducts, $file);
 
-        if (0 < $this->itemsProcessed) {
-            return $this->returnCsvFileAsResponse($file);
-        }
-        $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
+        if (0 === $this->itemsProcessed) {
+            $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+            return null;
+        }
+
+        return $file;
     }
 
     private function putDataToCsv(Collection $wishlistProducts, \SplFileObject $file): void
@@ -70,16 +64,5 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
             $file->fputcsv($csvWishlistItem);
             ++$this->itemsProcessed;
         }
-    }
-
-    private function returnCsvFileAsResponse(\SplFileObject $file): Response
-    {
-        $file->rewind();
-        $response = new Response($file->fread(5000));
-
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment; filename=export.csv');
-
-        return $response;
     }
 }

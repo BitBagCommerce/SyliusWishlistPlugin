@@ -39,7 +39,7 @@ final class ImportWishlistFromCsvAction
 
     public function __invoke(Request $request): Response
     {
-        $form = $this->formFactory->create(ImportWishlistFromCsvType::class);
+        $form = $this->createForm();
 
         $form->handleRequest($request);
 
@@ -51,10 +51,16 @@ final class ImportWishlistFromCsvAction
             $this->flashBag->add('error', $error->getMessage());
         }
 
-        return new Response($this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/importWishlist.html.twig', [
+        return new Response(
+            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/importWishlist.html.twig', [
             'form' => $form->createView(),
             ])
         );
+    }
+
+    private function createForm(): FormInterface
+    {
+        return $this->formFactory->create(ImportWishlistFromCsvType::class);
     }
 
     private function handleCommand(FormInterface $form, Request $request): Response

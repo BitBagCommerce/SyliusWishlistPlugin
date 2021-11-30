@@ -8,6 +8,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
+use SplFileObject;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -55,19 +56,19 @@ final class ExportSelectedProductsToCsvAction
 
     public function __invoke(Request $request): Response
     {
-        $wishlist = $this->wishlistContext->getWishlist($request);
-        $cart = $this->cartContext->getCart();
-
-        $commandsArray = $this->wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlist->getWishlistProducts());
-
-        $form = $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
-                'cart' => $cart,
-        ]);
+        $form = $this->createForm($request);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->handleCommand($form);
+            /** @var SplFileObject $file */
+            $file = $this->handleCommand($form);
+
+            if (null === $file) {
+                return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+            }
+
+            return $this->returnCsvFile($file);
         }
 
         foreach ($form->getErrors() as $error) {
@@ -77,11 +78,35 @@ final class ExportSelectedProductsToCsvAction
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
     }
 
-    private function handleCommand(FormInterface $form): Response
+    private function createForm(Request $request): FormInterface
+    {
+        $wishlist = $this->wishlistContext->getWishlist($request);
+        $cart = $this->cartContext->getCart();
+
+        $commandsArray = $this->wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlist->getWishlistProducts());
+
+        return $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
+            'cart' => $cart,
+        ]);
+    }
+
+    private function handleCommand(FormInterface $form): ?\SplFileObject
     {
         $file = new \SplFileObject('php://temp', 'w');
         $command = new ExportWishlistToCsv($form->get('items')->getData(), $file);
 
         return $this->handle($command);
+    }
+
+    private function returnCsvFile(\SplFileObject $file): Response
+    {
+        $file->rewind();
+
+        $response = new Response($file->fread(5000));
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename=export.csv');
+
+        return $response;
     }
 }
