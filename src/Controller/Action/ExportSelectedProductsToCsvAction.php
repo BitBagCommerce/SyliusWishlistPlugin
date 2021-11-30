@@ -6,6 +6,7 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
+use BitBag\SyliusWishlistPlugin\Exception\SelectAtLeastOneProductException;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use SplFileObject;
@@ -61,11 +62,11 @@ final class ExportSelectedProductsToCsvAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var SplFileObject $file */
-            $file = $this->handleCommand($form);
-
-            if (null === $file) {
-                return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+            try {
+                /** @var SplFileObject $file */
+                $file = $this->getCsvFileFromWishlistProducts($form);
+            } catch (SelectAtLeastOneProductException $e) {
+                $this->flashBag->add('error', $e->getMessage());
             }
 
             return $this->returnCsvFile($file);
@@ -90,7 +91,7 @@ final class ExportSelectedProductsToCsvAction
         ]);
     }
 
-    private function handleCommand(FormInterface $form): ?\SplFileObject
+    private function getCsvFileFromWishlistProducts(FormInterface $form): ?\SplFileObject
     {
         $file = new \SplFileObject('php://temp', 'w');
         $command = new ExportWishlistToCsv($form->get('items')->getData(), $file);

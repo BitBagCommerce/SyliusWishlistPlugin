@@ -12,26 +12,13 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
+use BitBag\SyliusWishlistPlugin\Exception\SelectAtLeastOneProductException;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 {
-    private TranslatorInterface $translator;
-
-    private FlashBagInterface $flashBag;
-
     private int $itemsProcessed = 0;
-
-    public function __construct(
-        TranslatorInterface $translator,
-        FlashBagInterface $flashBag
-    ) {
-        $this->translator = $translator;
-        $this->flashBag = $flashBag;
-    }
 
     public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): ?\SplFileObject
     {
@@ -41,9 +28,7 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
         $this->putDataToCsv($wishlistProducts, $file);
 
         if (0 === $this->itemsProcessed) {
-            $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
-
-            return null;
+            throw new SelectAtLeastOneProductException();
         }
 
         return $file;

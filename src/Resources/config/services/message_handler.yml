@@ -97,9 +97,6 @@ services:
 
     bitbag_sylius_wishlist_plugin.command_handler.wishlist.export_to_csv:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\ExportWishlistToCsvHandler
-        arguments:
-            - '@translator'
-            - '@session.flash_bag'
         tags:
             - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
 

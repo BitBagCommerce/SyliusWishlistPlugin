@@ -12,7 +12,6 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
@@ -175,15 +174,16 @@ final class WishlistContext extends RawMinkContext implements Context
         $data = [
             $productVariant->getId(),
             $product->getId(),
-            $productVariant->getCode()
+            $productVariant->getCode(),
         ];
 
-        if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$filename;
-            $fileResource = fopen($fullPath,"w+");
-            fputcsv($fileResource,$data);
-            fclose($fileResource);
+        if (!$this->getMinkParameter('files_path')) {
+            return;
         }
+        $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR . $filename;
+        $fileResource = fopen($fullPath, 'w+');
+        fputcsv($fileResource, $data);
+        fclose($fileResource);
     }
 
     /**
