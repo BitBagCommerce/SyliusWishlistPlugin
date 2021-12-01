@@ -12,7 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Exception;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-final class SelectAtLeastOneProductException extends Exception
+final class NoProductSelectedException extends Exception
 {
     protected $message = 'Select at least one product.';
 }

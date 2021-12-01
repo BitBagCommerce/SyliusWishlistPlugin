@@ -6,15 +6,17 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
-use BitBag\SyliusWishlistPlugin\Exception\SelectAtLeastOneProductException;
+use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -64,8 +66,9 @@ final class ExportSelectedProductsToCsvAction
             try {
                 /** @var \SplFileObject $file */
                 $file = $this->getCsvFileFromWishlistProducts($form);
-            } catch (SelectAtLeastOneProductException $e) {
+            } catch (NoProductSelectedException $e) {
                 $this->flashBag->add('error', $e->getMessage());
+                return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
             }
 
             return $this->returnCsvFile($file);
@@ -92,7 +95,7 @@ final class ExportSelectedProductsToCsvAction
 
     private function getCsvFileFromWishlistProducts(FormInterface $form): \SplFileObject
     {
-        $file = new \SplFileObject('php://temp', 'w');
+        $file = new \SplFileObject('export.csv', 'w+');
         $command = new ExportWishlistToCsv($form->get('items')->getData(), $file);
 
         return $this->handle($command);
@@ -102,10 +105,11 @@ final class ExportSelectedProductsToCsvAction
     {
         $file->rewind();
 
-        $response = new Response($file->fread(5000));
+        $response = new BinaryFileResponse($file);
 
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $file->getFilename());
         $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment; filename=export.csv');
+        $response->deleteFileAfterSend(true);
 
         return $response;
     }

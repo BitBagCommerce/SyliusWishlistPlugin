@@ -12,9 +12,12 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
-use BitBag\SyliusWishlistPlugin\Exception\SelectAtLeastOneProductException;
+use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
+use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProduct;
+use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,11 +25,14 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 {
     private NormalizerInterface $normalizer;
 
+    private CsvWishlistProductFactoryInterface $factory;
+
     private int $itemsProcessed = 0;
 
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(NormalizerInterface $normalizer, CsvWishlistProductFactoryInterface $factory)
     {
         $this->normalizer = $normalizer;
+        $this->factory = $factory;
     }
 
     public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject
@@ -37,7 +43,7 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
         $fileObject = $this->putDataToCsv($wishlistProducts, $file);
 
         if (0 === $this->itemsProcessed) {
-            throw new SelectAtLeastOneProductException();
+            throw new NoProductSelectedException();
         }
 
         return $fileObject;
@@ -58,15 +64,21 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
             if (!$wishlistProduct->isSelected()) {
                 continue;
             }
-            $csvWishlistProduct = new CsvWishlistProduct();
-            $csvWishlistProduct->setVariantId($wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId());
-            $csvWishlistProduct->setProductId($wishlistProduct->getWishlistProduct()->getProduct()->getId());
-            $csvWishlistProduct->setVariantCode($wishlistProduct->getCartItem()->getCartItem()->getVariant()->getCode());
+            $csvWishlistProduct = $this->createCsvWishlistProduct($wishlistProduct);
             $file->fputcsv($this->normalizer->normalize($csvWishlistProduct, 'csv'));
 
             ++$this->itemsProcessed;
         }
 
         return $file;
+    }
+
+    private function createCsvWishlistProduct(AddWishlistProduct $wishlistProduct): CsvWishlistProductInterface
+    {
+        return $this->factory->createWithProperties(
+            $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),
+            $wishlistProduct->getWishlistProduct()->getProduct()->getId(),
+            $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getCode(),
+        );
     }
 }
