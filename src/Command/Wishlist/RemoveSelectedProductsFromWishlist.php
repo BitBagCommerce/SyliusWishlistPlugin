@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\Collection;
 
 final class RemoveSelectedProductsFromWishlist
 {
-    /** @var Collection<AddWishlistProduct> */
+    /** @var Collection<WishlistItem> */
     private Collection $wishlistProducts;
 
     public function __construct(Collection $wishlistProducts)

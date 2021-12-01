@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
@@ -57,7 +57,7 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 
     private function addSelectedProductsToCart(Collection $wishlistProducts): void
     {
-        /** @var AddWishlistProduct $wishlistProduct */
+        /** @var WishlistItem $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if (!$wishlistProduct->isSelected()) {
                 continue;
@@ -71,7 +71,7 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
         }
     }
 
-    private function isInStock(AddWishlistProduct $wishlistProduct): bool
+    private function isInStock(WishlistItem $wishlistProduct): bool
     {
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();
 
@@ -84,7 +84,7 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
         return false;
     }
 
-    private function addProductToWishlist(AddWishlistProduct $wishlistProduct): void
+    private function addProductToWishlist(WishlistItem $wishlistProduct): void
     {
         $cart = $wishlistProduct->getCartItem()->getCart();
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Processor;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -21,7 +21,7 @@ final class WishlistCommandProcessor implements WishlistCommandProcessorInterfac
         $commandsArray = new ArrayCollection();
 
         foreach ($wishlistProducts as $wishlistProductItem) {
-            $wishlistProductCommand = new AddWishlistProduct();
+            $wishlistProductCommand = new WishlistItem();
             $wishlistProductCommand->setWishlistProduct($wishlistProductItem);
             $commandsArray->add($wishlistProductCommand);
         }

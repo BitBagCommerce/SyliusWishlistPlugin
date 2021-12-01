@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class ExportSelectedProductsFromWishlistToPdf implements ExportSelectedProductsFromWishlistToPdfInterface
 {
-    /** @var Collection<AddWishlistProduct> */
+    /** @var Collection<WishlistItem> */
     private Collection $wishlistProducts;
 
     public function __construct(Collection $wishlistProducts)
