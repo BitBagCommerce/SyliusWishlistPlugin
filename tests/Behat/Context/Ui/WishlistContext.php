@@ -172,9 +172,9 @@ final class WishlistContext extends RawMinkContext implements Context
         $productVariant = $this->defaultVariantResolver->getVariant($product);
 
         $data = [
-            $productVariant->getId(),
-            $product->getId(),
-            $productVariant->getCode(),
+            'variantId' => $productVariant->getId(),
+            'productId' => $product->getId(),
+            'variantCode' => $productVariant->getCode(),
         ];
 
         if (!$this->getMinkParameter('files_path')) {
@@ -182,6 +182,7 @@ final class WishlistContext extends RawMinkContext implements Context
         }
         $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR . $filename;
         $fileResource = fopen($fullPath, 'w+');
+        fputcsv($fileResource, array_keys($data));
         fputcsv($fileResource, $data);
         fclose($fileResource);
     }

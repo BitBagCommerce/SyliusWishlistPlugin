@@ -91,12 +91,16 @@ services:
         arguments:
             - '@bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist'
             - "@sylius.repository.product_variant"
+            - "@bitbag_sylius_wishlist_plugin.serializer.csv_encoder"
             - "%bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types%"
+            - "@bitbag_sylius_wishlist_plugin.serializer.get_set_method_normalizer"
         tags:
             - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
 
     bitbag_sylius_wishlist_plugin.command_handler.wishlist.export_to_csv:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\ExportWishlistToCsvHandler
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.serializer.get_set_method_normalizer"
         tags:
             - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
 

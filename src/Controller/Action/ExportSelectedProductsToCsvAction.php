@@ -9,7 +9,6 @@ use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Exception\SelectAtLeastOneProductException;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use SplFileObject;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -63,7 +62,7 @@ final class ExportSelectedProductsToCsvAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                /** @var SplFileObject $file */
+                /** @var \SplFileObject $file */
                 $file = $this->getCsvFileFromWishlistProducts($form);
             } catch (SelectAtLeastOneProductException $e) {
                 $this->flashBag->add('error', $e->getMessage());
@@ -91,7 +90,7 @@ final class ExportSelectedProductsToCsvAction
         ]);
     }
 
-    private function getCsvFileFromWishlistProducts(FormInterface $form): ?\SplFileObject
+    private function getCsvFileFromWishlistProducts(FormInterface $form): \SplFileObject
     {
         $file = new \SplFileObject('php://temp', 'w');
         $command = new ExportWishlistToCsv($form->get('items')->getData(), $file);
