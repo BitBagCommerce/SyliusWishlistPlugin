@@ -89,12 +89,7 @@ services:
     bitbag_sylius_wishlist_plugin.command_handler.wishlist.export_selected_products_from_wishlist_to_pdf:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\ExportSelectedProductsFromWishlistToPdfHandler
         arguments:
-            - "@sylius.repository.product_variant"
-            - "@bitbag_sylius_wishlist_plugin.resolver.variant.image.path.resolver"
-            - "@bitbag_sylius_wishlist_plugin.model.resolver.variant.pdf.model.factory"
-            - "@twig"
-            - "@session.flash_bag"
-            - "@translator"
             - "@request_stack"
+            - "@bitbag_sylius_wishlist_plugin.services.exporter"
         tags:
             - { name: messenger.message_handler, bus: sylius.command_bus }

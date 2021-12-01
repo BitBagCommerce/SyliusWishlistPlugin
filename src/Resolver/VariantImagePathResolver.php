@@ -10,17 +10,33 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class VariantImagePathResolver implements VariantImagePathResolverInterface
 {
+    private CacheManager $cacheManager;
+
+    private string $rootPath;
+
+    public function __construct(CacheManager $cacheManager, string $rootPath)
+    {
+        $this->cacheManager = $cacheManager;
+        $this->rootPath = $rootPath;
+    }
+
     public function resolve(ProductVariantInterface $variant, string $baseUrl): string
     {
         if (false === $variant->getProduct()->getImages()->first()) {
-            return 'http://placehold.it/150x150';
+            return '';
         }
-        $imagePath = $variant->getProduct()->getImages()->first()->getPath();
 
-        return $baseUrl . '/media/image/' . $imagePath;
+        $image = $variant->getProduct()->getImages()->first()->getPath();
+        $filePath = sprintf('%s%s%s',$this->rootPath, self::IMAGE_PATH_IN_PROJECT, $image);
+        $type = pathinfo($image, PATHINFO_EXTENSION);
+        $data = file_get_contents($filePath);
+        $dataUri = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+        return $dataUri;
     }
 }

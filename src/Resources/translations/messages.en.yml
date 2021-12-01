@@ -15,7 +15,6 @@ bitbag_sylius_wishlist_plugin:
         select_products: Select at least one item.
         added_selected_wishlist_items_to_cart: Selected wishlist items have been added to your cart.
         removed_selected_wishlist_items: Selected products have been removed from your wishlist.
-        export.data.to.pdf: Selected products have ben exported to PDF
         toggle_checkboxes: Toggle
         remove: Remove
         add: Add

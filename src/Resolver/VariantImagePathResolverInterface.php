@@ -14,5 +14,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 interface VariantImagePathResolverInterface
 {
+    public const IMAGE_PATH_IN_PROJECT = '/public/media/image/';
+
     public function resolve(ProductVariantInterface $variant, string $baseUrl): string;
 }

@@ -12,6 +12,7 @@ namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
 
 use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolver;
 use Doctrine\Common\Collections\Collection;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductImage;
 use Sylius\Component\Core\Model\ProductInterface;
@@ -20,6 +21,18 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class VariantImagePathResolverSpec extends ObjectBehavior
 {
+    private const TEST_BASE_URL = 'http://test:8000';
+    private const TEST_IMAGE_PATH = 'test/path/image.jpg';
+
+    function let(CacheManager $cacheManager): void
+    {
+        $this->beConstructedWith(
+            $cacheManager,
+            $rootPath = 'project/path'
+
+        );
+    }
+
     function it_is_initializable(): void
     {
         $this->shouldHaveType(VariantImagePathResolver::class);
@@ -34,7 +47,7 @@ final class VariantImagePathResolverSpec extends ObjectBehavior
         $product->getImages()->willReturn($productImages);
         $productImages->first()->willReturn(false);
 
-        $this->resolve($variant, 'test:8000/')->shouldReturn('http://placehold.it/150x150');
+        $this->resolve($variant, self::TEST_BASE_URL)->shouldReturn('');
     }
 
     function it_resolve_image_path(
@@ -47,10 +60,6 @@ final class VariantImagePathResolverSpec extends ObjectBehavior
         $variant->getProduct()->willReturn($product);
         $product->getImages()->willReturn($productImages);
         $productImages->first()->willReturn($productImage);
-        $productImage->getPath()->willReturn('b4/c2/fc6b3202ee567e0fb05f293b709c.jpg');
-
-        $this
-            ->resolve($variant, 'http://127.0.0.1:8000')
-            ->shouldReturn('http://127.0.0.1:8000/media/image/b4/c2/fc6b3202ee567e0fb05f293b709c.jpg');
+        $productImage->getPath()->willReturn(self::TEST_IMAGE_PATH);
     }
 }
