@@ -10,7 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Services\Exporter;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProductInterface;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolverInterface;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,6 @@ use Dompdf\Options;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -60,15 +60,17 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
     {
         $selectedProducts = [];
 
-        /** @var AddWishlistProductInterface $wishlistProduct */
+        /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
                 $this->isSelected = true;
 
                 $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 
-                if (null === $variant) {
-                    throw new NotFoundHttpException();
+                if (null === $variant || null === $wishlistProduct) {
+                    throw new ProductVariantNotFoundException(
+                        sprintf('The Product does not exist')
+                    );
                 }
 
                 $cartItem = $wishlistProduct->getCartItem()->getCartItem();
