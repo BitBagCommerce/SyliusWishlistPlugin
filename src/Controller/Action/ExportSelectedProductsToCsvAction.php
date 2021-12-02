@@ -63,15 +63,7 @@ final class ExportSelectedProductsToCsvAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                /** @var \SplFileObject $file */
-                $file = $this->getCsvFileFromWishlistProducts($form);
-            } catch (NoProductSelectedException $e) {
-                $this->flashBag->add('error', $e->getMessage());
-                return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
-            }
-
-            return $this->returnCsvFile($file);
+            return $this->exportSelectedWishlistProductsToCsv($form);
         }
 
         foreach ($form->getErrors() as $error) {
@@ -91,6 +83,20 @@ final class ExportSelectedProductsToCsvAction
         return $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
         ]);
+    }
+
+    private function exportSelectedWishlistProductsToCsv(FormInterface $form): Response
+    {
+        try {
+            /** @var \SplFileObject $file */
+            $file = $this->getCsvFileFromWishlistProducts($form);
+        } catch (NoProductSelectedException $e) {
+            $this->flashBag->add('error', $e->getMessage());
+
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+        }
+
+        return $this->returnCsvFile($file);
     }
 
     private function getCsvFileFromWishlistProducts(FormInterface $form): \SplFileObject

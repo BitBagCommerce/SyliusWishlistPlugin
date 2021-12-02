@@ -14,5 +14,4 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 final class NoProductSelectedException extends Exception
 {
-    protected $message = 'Select at least one product.';
 }
