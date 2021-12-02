@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ExportSelectedProductsToCsvAction
 {
@@ -38,6 +39,8 @@ final class ExportSelectedProductsToCsvAction
 
     private UrlGeneratorInterface $urlGenerator;
 
+    private TranslatorInterface $translator;
+
     public function __construct(
         WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
@@ -45,7 +48,8 @@ final class ExportSelectedProductsToCsvAction
         FlashBagInterface $flashBag,
         MessageBusInterface $messageBus,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        TranslatorInterface $translator
     ) {
         $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
@@ -54,6 +58,7 @@ final class ExportSelectedProductsToCsvAction
         $this->messageBus = $messageBus;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
+        $this->translator = $translator;
     }
 
     public function __invoke(Request $request): Response
@@ -91,7 +96,7 @@ final class ExportSelectedProductsToCsvAction
             /** @var \SplFileObject $file */
             $file = $this->getCsvFileFromWishlistProducts($form);
         } catch (NoProductSelectedException $e) {
-            $this->flashBag->add('error', $e->getMessage());
+            $this->flashBag->add('error', $this->translator->trans($e->getMessage()));
 
             return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
         }

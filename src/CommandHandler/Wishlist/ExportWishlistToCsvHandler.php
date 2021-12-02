@@ -28,16 +28,12 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 
     private int $itemsProcessed = 0;
 
-    private TranslatorInterface $translator;
-
     public function __construct(
         NormalizerInterface $normalizer,
-        CsvWishlistProductFactoryInterface $factory,
-        TranslatorInterface $translator
+        CsvWishlistProductFactoryInterface $factory
     ) {
         $this->normalizer = $normalizer;
         $this->factory = $factory;
-        $this->translator = $translator;
     }
 
     public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject
@@ -48,7 +44,7 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
         $fileObject = $this->putDataToCsv($wishlistProducts, $file);
 
         if (0 === $this->itemsProcessed) {
-            throw new NoProductSelectedException($this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
+            throw new NoProductSelectedException('bitbag_sylius_wishlist_plugin.ui.select_products');
         }
 
         return $fileObject;

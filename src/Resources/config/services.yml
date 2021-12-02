@@ -92,6 +92,7 @@ services:
             - "@sylius.command_bus"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@router"
+            - "@translator"
         tags:
             - { name: controller.service_arguments }
 
