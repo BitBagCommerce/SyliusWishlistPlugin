@@ -1,8 +1,8 @@
 services:
-      bitbag_sylius_wishlist_plugin.serializer.csv_encoder:
-        class: Symfony\Component\Serializer\Encoder\CsvEncoder
-        tags: [ serializer.encoder ]
-
-      bitbag_sylius_wishlist_plugin.serializer.get_set_method_normalizer:
-        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-        tags: [ serializer.normalizer ]
+    bitbag_sylius_wishlist_plugin.serializer.csv_encoder:
+        class: Symfony\Component\Serializer\Serializer
+        arguments:
+          0:
+            - "@serializer.normalizer.object"
+          1:
+            - "@serializer.encoder.csv"
