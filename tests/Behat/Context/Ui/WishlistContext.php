@@ -176,10 +176,6 @@ final class WishlistContext extends RawMinkContext implements Context
             'productId' => $product->getId(),
             'variantCode' => $productVariant->getCode(),
         ];
-        dump($product);
-        dump($productVariant);
-        dump(array_keys($data));
-        dump($data);
 
         if (!$this->getMinkParameter('files_path')) {
             return;

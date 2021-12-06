@@ -20,8 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Serializer\Encoder\DecoderInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 {
@@ -29,24 +28,20 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
-    private DecoderInterface $decoder;
-
-    private DenormalizerInterface $denormalizer;
+    private NormalizerInterface $normalizer;
 
     private array $allowedMimeTypes;
 
     public function __construct(
         AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
         ProductVariantRepositoryInterface $productVariantRepository,
-        DecoderInterface $serializer,
-        array $allowedMimeTypes,
-        DenormalizerInterface $denormalizer
+        NormalizerInterface $normalizer,
+        array $allowedMimeTypes
     ) {
         $this->addProductVariantToWishlistAction = $addProductVariantToWishlistAction;
         $this->productVariantRepository = $productVariantRepository;
+        $this->normalizer = $normalizer;
         $this->allowedMimeTypes = $allowedMimeTypes;
-        $this->decoder = $serializer;
-        $this->denormalizer = $denormalizer;
     }
 
     public function __invoke(ImportWishlistFromCsv $importWishlistFromCsv): Response
@@ -64,12 +59,12 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
         if (!$this->fileIsValidMimeType($fileInfo)) {
             throw new UploadableInvalidMimeTypeException();
         }
-
-        $wishlistProductsArray = $this->decoder->decode(file_get_contents((string) $fileInfo), 'csv');
+        dump(file_get_contents((string) $fileInfo));
+        $wishlistProductsArray = $this->normalizer->decode(file_get_contents((string) $fileInfo), 'csv');
 
         foreach ($wishlistProductsArray as $wishlistProductArray) {
             /** @var CsvWishlistProduct $csvWishlistProduct */
-            $csvWishlistProduct = $this->denormalizer->denormalize($wishlistProductArray, CsvWishlistProduct::class, 'csv');
+            $csvWishlistProduct = $this->normalizer->denormalize($wishlistProductArray, CsvWishlistProduct::class, 'csv');
 
             if (!$this->csvWishlistProductIsValid($csvWishlistProduct)) {
                 return;
@@ -88,7 +83,7 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
     }
 
     private function csvWishlistProductIsValid(CsvWishlistProductInterface $csvWishlistProduct): bool
-    {
+        {
         $wishlistProduct = $this->productVariantRepository->findOneBy([
             'id' => $csvWishlistProduct->getVariantId(),
             'product' => $csvWishlistProduct->getProductId(),
