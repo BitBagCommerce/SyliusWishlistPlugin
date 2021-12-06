@@ -183,7 +183,11 @@ services:
             - "@liip_imagine.service.filter"
             - "sylius_shop_product_thumbnail"
 
-
+    bitbag_sylius_wishlist_plugin.services.generator.model_creator:
+        class: BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreator
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.resolver.variant_image_path_resolver"
+            - "@bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory"
 
     bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory:
         class: BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory
@@ -192,8 +196,5 @@ services:
         class: BitBag\SyliusWishlistPlugin\Services\Exporter\WishlistToPdfExporter
         arguments:
             - "@sylius.repository.product_variant"
-            - "@bitbag_sylius_wishlist_plugin.resolver.variant_image_path_resolver"
-            - "@bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory"
             - "@twig"
-            - "@session.flash_bag"
-            - "@translator"
+            - "@bitbag_sylius_wishlist_plugin.services.generator.model_creator"

@@ -13,47 +13,30 @@ namespace BitBag\SyliusWishlistPlugin\Services\Exporter;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
-use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
+use BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreator;
 use Doctrine\Common\Collections\Collection;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
 {
-    private bool $isSelected = false;
-
     private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private VariantImageToDataUriResolverInterface $variantImageToDataUriResolver;
-
-    private VariantPdfModelFactoryInterface $variantPdfModelFactory;
 
     private Environment $twigEnvironment;
 
-    private FlashBagInterface $flashBag;
-
-    private TranslatorInterface $translator;
+    private ModelCreator $modelCreator;
 
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
-        VariantImageToDataUriResolverInterface $variantImageToDataUriResolver,
-        VariantPdfModelFactoryInterface $variantPdfModelFactory,
         Environment $twigEnvironment,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator
+        ModelCreator $modelCreator
     ) {
         $this->productVariantRepository = $productVariantRepository;
-        $this->variantImageToDataUriResolver = $variantImageToDataUriResolver;
-        $this->variantPdfModelFactory = $variantPdfModelFactory;
         $this->twigEnvironment = $twigEnvironment;
-        $this->flashBag = $flashBag;
-        $this->translator = $translator;
+        $this->modelCreator = $modelCreator;
     }
 
     public function createModelToPdfAndExportToPdf(Collection $wishlistProducts, Request $request): void
@@ -73,8 +56,6 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
         /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
-                $this->isSelected = true;
-
                 $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 
                 if (null === $variant || null === $wishlistProduct) {
@@ -83,17 +64,8 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
                     );
                 }
 
-                $cartItem = $wishlistProduct->getCartItem()->getCartItem();
-                $quantity = $cartItem->getQuantity();
-                $baseUrl = $request->getSchemeAndHttpHost();
-                $urlToImage = $this->variantImageToDataUriResolver->resolve($variant, $baseUrl);
-                $actualVariant = $cartItem->getVariant()->getCode();
-                $selectedProducts[] = $this->variantPdfModelFactory->createWithVariantAndImagePath(
-                    $variant,
-                    $urlToImage,
-                    $quantity,
-                    $actualVariant
-                );
+                $itemWishlistModel = $this->modelCreator->createWishlistItemToPdf(@$wishlistProduct, $request, $variant);
+                $selectedProducts[] = $itemWishlistModel;
             }
         }
 
