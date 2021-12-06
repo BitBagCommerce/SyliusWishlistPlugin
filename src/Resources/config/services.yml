@@ -172,16 +172,24 @@ services:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.resolver.variant_image_path_resolver:
-        class: BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolver
+        class: BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolver
         arguments:
-            - "@liip_imagine.cache.manager"
-            - "%kernel.project_dir%"
+            - "@bitbag_sylius_wishlist_plugin.resolver.generate_data_uri_for_image_resolver"
+
+    bitbag_sylius_wishlist_plugin.resolver.generate_data_uri_for_image_resolver:
+        class: BitBag\SyliusWishlistPlugin\Resolver\GenerateDataUriForImageResolver
+        arguments:
+            - "@assets._package_shop"
+            - "@liip_imagine.service.filter"
+            - "sylius_shop_product_thumbnail"
+
+
 
     bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory:
         class: BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory
 
     bitbag_sylius_wishlist_plugin.services.exporter:
-        class: BitBag\SyliusWishlistPlugin\Services\Exporter\ExporterWishlistToPdf
+        class: BitBag\SyliusWishlistPlugin\Services\Exporter\WishlistToPdfExporter
         arguments:
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.resolver.variant_image_path_resolver"

@@ -7,7 +7,7 @@ namespace BitBag\SyliusWishlistPlugin\Services\Exporter;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Request;
 
-interface ExporterWishlistToPdfInterface
+interface WishlistToPdfExporterInterface
 {
     public function createModelToPdfAndExportToPdf(Collection $wishlistProducts, Request $request): void;
 }

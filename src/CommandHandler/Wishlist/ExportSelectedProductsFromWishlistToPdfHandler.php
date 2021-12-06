@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdfInterface;
-use BitBag\SyliusWishlistPlugin\Services\Exporter\ExporterWishlistToPdfInterface;
+use BitBag\SyliusWishlistPlugin\Services\Exporter\WishlistToPdfExporterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -19,11 +19,11 @@ final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHan
 {
     private RequestStack $request;
 
-    private ExporterWishlistToPdfInterface $exporterWishlistToPdf;
+    private WishlistToPdfExporterInterface $exporterWishlistToPdf;
 
     public function __construct(
         RequestStack $request,
-        ExporterWishlistToPdfInterface $exporterWishlistToPdf
+        WishlistToPdfExporterInterface $exporterWishlistToPdf
     ) {
         $this->request = $request;
         $this->exporterWishlistToPdf = $exporterWishlistToPdf;
@@ -33,6 +33,6 @@ final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHan
     {
         $wishlistProducts = $exportSelectedProductsFromWishlistToPdf->getWishlistProducts();
         $this->exporterWishlistToPdf
-            ->createModelToPdfAndExportToPdf($wishlistProducts,$this->request->getCurrentRequest());
+            ->createModelToPdfAndExportToPdf($wishlistProducts, $this->request->getCurrentRequest());
     }
 }

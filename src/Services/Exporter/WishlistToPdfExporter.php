@@ -11,9 +11,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Services\Exporter;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolverInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
 use Doctrine\Common\Collections\Collection;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -23,13 +24,13 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
+final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
 {
     private bool $isSelected = false;
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
-    private VariantImagePathResolverInterface $variantImagePathResolver;
+    private VariantImageToDataUriResolverInterface $variantImageToDataUriResolver;
 
     private VariantPdfModelFactoryInterface $variantPdfModelFactory;
 
@@ -39,17 +40,16 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
 
     private TranslatorInterface $translator;
 
-
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
-        VariantImagePathResolverInterface $variantImagePathResolver,
+        VariantImageToDataUriResolverInterface $variantImageToDataUriResolver,
         VariantPdfModelFactoryInterface $variantPdfModelFactory,
         Environment $twigEnvironment,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator
     ) {
         $this->productVariantRepository = $productVariantRepository;
-        $this->variantImagePathResolver = $variantImagePathResolver;
+        $this->variantImageToDataUriResolver = $variantImageToDataUriResolver;
         $this->variantPdfModelFactory = $variantPdfModelFactory;
         $this->twigEnvironment = $twigEnvironment;
         $this->flashBag = $flashBag;
@@ -57,6 +57,16 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
     }
 
     public function createModelToPdfAndExportToPdf(Collection $wishlistProducts, Request $request): void
+    {
+        $productsToExport = $this->createVariantModelToPdf($wishlistProducts, $request);
+
+        if (empty($productsToExport)) {
+            throw new NoProductSelectedException();
+        }
+        $this->exportToPdf($productsToExport);
+    }
+
+    private function createVariantModelToPdf(Collection $wishlistProducts, Request $request): array
     {
         $selectedProducts = [];
 
@@ -76,7 +86,7 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
                 $cartItem = $wishlistProduct->getCartItem()->getCartItem();
                 $quantity = $cartItem->getQuantity();
                 $baseUrl = $request->getSchemeAndHttpHost();
-                $urlToImage = $this->variantImagePathResolver->resolve($variant, $baseUrl);
+                $urlToImage = $this->variantImageToDataUriResolver->resolve($variant, $baseUrl);
                 $actualVariant = $cartItem->getVariant()->getCode();
                 $selectedProducts[] = $this->variantPdfModelFactory->createWithVariantAndImagePath(
                     $variant,
@@ -86,19 +96,12 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
                 );
             }
         }
-        $this->exportToPdf($selectedProducts);
+
+        return $selectedProducts;
     }
 
     private function exportToPdf(array $selectedProducts): void
     {
-        if ( $this->isSelected === false) {
-            $this->flashBag->add(
-                'error',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')
-            );
-            return ;
-        }
-
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
         $pdfOptions->set('defaultFont', 'Arial');
@@ -113,5 +116,4 @@ final class ExporterWishlistToPdf implements ExporterWishlistToPdfInterface
         $dompdf->render();
         $dompdf->stream('wishlist.pdf', ['Attachment' => true]);
     }
-
 }

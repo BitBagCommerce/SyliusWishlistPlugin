@@ -10,39 +10,35 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Resolver\VariantImagePathResolver;
+use BitBag\SyliusWishlistPlugin\Resolver\GenerateDataUriForImageResolverInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolver;
 use Doctrine\Common\Collections\Collection;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductImage;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-
-final class VariantImagePathResolverSpec extends ObjectBehavior
+final class VariantImageToDataUriResolverSpec extends ObjectBehavior
 {
     private const TEST_BASE_URL = 'http://test:8000';
-    private const TEST_IMAGE_PATH = 'test/path/image.jpg';
 
-    function let(CacheManager $cacheManager): void
+    public function let(GenerateDataUriForImageResolverInterface $dataUriForImageResolver): void
     {
         $this->beConstructedWith(
-            $cacheManager,
-            $rootPath = 'project/path'
-
+            $dataUriForImageResolver
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
-        $this->shouldHaveType(VariantImagePathResolver::class);
+        $this->shouldHaveType(VariantImageToDataUriResolver::class);
     }
 
-    function it_resolve_empty_image_path(
+    public function it_resolve_empty_image_path(
         ProductVariantInterface $variant,
         ProductInterface $product,
         Collection $productImages
-    ):  void {
+    ): void {
         $variant->getProduct()->willReturn($product);
         $product->getImages()->willReturn($productImages);
         $productImages->first()->willReturn(false);
@@ -50,16 +46,17 @@ final class VariantImagePathResolverSpec extends ObjectBehavior
         $this->resolve($variant, self::TEST_BASE_URL)->shouldReturn('');
     }
 
-    function it_resolve_image_path(
+    public function it_resolve_image_path(
         ProductVariantInterface $variant,
         ProductInterface $product,
         Collection $productImages,
-        ProductImage $productImage
-    ):  void {
-
+        ProductImage $productImage,
+        GenerateDataUriForImageResolverInterface $dataUriForImageResolver
+    ): void {
         $variant->getProduct()->willReturn($product);
         $product->getImages()->willReturn($productImages);
         $productImages->first()->willReturn($productImage);
-        $productImage->getPath()->willReturn(self::TEST_IMAGE_PATH);
+        $dataUriForImageResolver->resolve($productImage)->willReturn(self::TEST_BASE_URL);
+        $this->resolve($variant, self::TEST_BASE_URL)->shouldReturn(self::TEST_BASE_URL);
     }
 }

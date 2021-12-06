@@ -12,12 +12,20 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdf;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 final class ExportWishlistToPdfAction extends BaseWishlistProductsAction
 {
     protected function handleCommand(FormInterface $form): void
     {
-        $command = new ExportSelectedProductsFromWishlistToPdf($form->get('items')->getData());
-        $this->messageBus->dispatch($command);
+        try {
+            $command = new ExportSelectedProductsFromWishlistToPdf($form->get('items')->getData());
+            $this->messageBus->dispatch($command);
+        } catch (HandlerFailedException $ex) {
+            $this->flashBag->add(
+                'error',
+                'Select at least one product'
+            );
+        }
     }
 }

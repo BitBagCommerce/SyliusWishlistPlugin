@@ -8,13 +8,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Resolver;
+namespace BitBag\SyliusWishlistPlugin\Exception;
 
-use Sylius\Component\Core\Model\ProductVariantInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-interface VariantImagePathResolverInterface
+class NoProductSelectedException extends NotFoundHttpException
 {
-    public const IMAGE_PATH_IN_PROJECT = '/public/media/image/';
-
-    public function resolve(ProductVariantInterface $variant, string $baseUrl): string;
 }
