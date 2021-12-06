@@ -176,6 +176,10 @@ final class WishlistContext extends RawMinkContext implements Context
             'productId' => $product->getId(),
             'variantCode' => $productVariant->getCode(),
         ];
+        dump($product);
+        dump($productVariant);
+        dump(array_keys($data));
+        dump($data);
 
         if (!$this->getMinkParameter('files_path')) {
             return;
@@ -184,6 +188,7 @@ final class WishlistContext extends RawMinkContext implements Context
         $fileResource = fopen($fullPath, 'w+');
         fputcsv($fileResource, array_keys($data));
         fputcsv($fileResource, $data);
+        dump(file_get_contents($fullPath));
         fclose($fileResource);
     }
 

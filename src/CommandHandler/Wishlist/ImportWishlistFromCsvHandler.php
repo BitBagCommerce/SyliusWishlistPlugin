@@ -95,8 +95,16 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
             'code' => $csvWishlistProduct->getVariantCode(),
         ]);
 
+        dump($csvWishlistProduct);
+
         if (null === $wishlistProduct) {
-            throw new NotFoundHttpException();
+            $message = sprintf(
+                "ProductId: %s, variantId: %s, variantCode: %s",
+                $csvWishlistProduct->getProductId(),
+                $csvWishlistProduct->getVariantId(),
+                $csvWishlistProduct->getVariantCode()
+            );
+            throw new NotFoundHttpException($message);
         }
 
         return true;
