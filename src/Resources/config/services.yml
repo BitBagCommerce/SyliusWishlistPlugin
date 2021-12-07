@@ -158,6 +158,9 @@ services:
     bitbag_sylius_wishlist_plugin.custom_factory.csv_wishlist_product:
         class: BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactory
 
+    bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer:
+        class: BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactory
+
     bitbag_sylius_wishlist_plugin.event_listener.merge_user_wishlist_items:
         class: BitBag\SyliusWishlistPlugin\EventListener\MergeUserWishlistItemsListener
         arguments:

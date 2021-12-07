@@ -184,7 +184,6 @@ final class WishlistContext extends RawMinkContext implements Context
         $fileResource = fopen($fullPath, 'w+');
         fputcsv($fileResource, array_keys($data));
         fputcsv($fileResource, $data);
-        dump(file_get_contents($fullPath));
         fclose($fileResource);
     }
 

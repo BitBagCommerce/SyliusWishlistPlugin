@@ -12,6 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
 use BitBag\SyliusWishlistPlugin\Controller\Action\AddProductVariantToWishlistAction;
+use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Gedmo\Exception\UploadableInvalidMimeTypeException;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 
 final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 {
@@ -28,20 +29,20 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
-    private NormalizerInterface $normalizer;
-
     private array $allowedMimeTypes;
+
+    private CsvSerializerFactoryInterface $csvSerializerFactory;
 
     public function __construct(
         AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
         ProductVariantRepositoryInterface $productVariantRepository,
-        NormalizerInterface $normalizer,
-        array $allowedMimeTypes
+        array $allowedMimeTypes,
+        CsvSerializerFactoryInterface $csvSerializerFactory
     ) {
         $this->addProductVariantToWishlistAction = $addProductVariantToWishlistAction;
         $this->productVariantRepository = $productVariantRepository;
-        $this->normalizer = $normalizer;
         $this->allowedMimeTypes = $allowedMimeTypes;
+        $this->csvSerializerFactory = $csvSerializerFactory;
     }
 
     public function __invoke(ImportWishlistFromCsv $importWishlistFromCsv): Response
@@ -59,19 +60,21 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
         if (!$this->fileIsValidMimeType($fileInfo)) {
             throw new UploadableInvalidMimeTypeException();
         }
-        dump(file_get_contents((string) $fileInfo));
-        $wishlistProductsArray = $this->normalizer->decode(file_get_contents((string) $fileInfo), 'csv');
 
-        foreach ($wishlistProductsArray as $wishlistProductArray) {
-            /** @var CsvWishlistProduct $csvWishlistProduct */
-            $csvWishlistProduct = $this->normalizer->denormalize($wishlistProductArray, CsvWishlistProduct::class, 'csv');
+        $csvData = file_get_contents((string) $fileInfo);
 
+        $csvWishlistProducts = $this->csvSerializerFactory->createNew()->deserialize($csvData, sprintf('%s[]', CsvWishlistProduct::class), 'csv', [
+            'disable_type_enforcement' => true,
+            CsvEncoder::AS_COLLECTION_KEY => true,
+        ]);
+
+        /** @var CsvWishlistProduct $csvWishlistProduct */
+        foreach ($csvWishlistProducts as $csvWishlistProduct) {
             if (!$this->csvWishlistProductIsValid($csvWishlistProduct)) {
                 return;
             }
             $variantIdRequestAttributes[] = $csvWishlistProduct->getVariantId();
         }
-
         $request->attributes->set('variantId', $variantIdRequestAttributes);
     }
 
@@ -83,23 +86,15 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
     }
 
     private function csvWishlistProductIsValid(CsvWishlistProductInterface $csvWishlistProduct): bool
-        {
+    {
         $wishlistProduct = $this->productVariantRepository->findOneBy([
             'id' => $csvWishlistProduct->getVariantId(),
             'product' => $csvWishlistProduct->getProductId(),
             'code' => $csvWishlistProduct->getVariantCode(),
         ]);
 
-        dump($csvWishlistProduct);
-
         if (null === $wishlistProduct) {
-            $message = sprintf(
-                "ProductId: %s, variantId: %s, variantCode: %s",
-                $csvWishlistProduct->getProductId(),
-                $csvWishlistProduct->getVariantId(),
-                $csvWishlistProduct->getVariantCode()
-            );
-            throw new NotFoundHttpException($message);
+            throw new NotFoundHttpException();
         }
 
         return true;

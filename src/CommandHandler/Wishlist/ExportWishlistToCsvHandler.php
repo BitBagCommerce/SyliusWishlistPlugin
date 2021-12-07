@@ -13,27 +13,26 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
 use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
+use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 {
-    private NormalizerInterface $normalizer;
-
     private CsvWishlistProductFactoryInterface $factory;
+
+    private CsvSerializerFactoryInterface $csvSerializerFactory;
 
     private int $itemsProcessed = 0;
 
     public function __construct(
-        NormalizerInterface $normalizer,
-        CsvWishlistProductFactoryInterface $factory
+        CsvWishlistProductFactoryInterface $factory,
+        CsvSerializerFactoryInterface $csvSerializerFactory
     ) {
-        $this->normalizer = $normalizer;
         $this->factory = $factory;
+        $this->csvSerializerFactory = $csvSerializerFactory;
     }
 
     public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject
@@ -66,8 +65,7 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
                 continue;
             }
             $csvWishlistProduct = $this->createCsvWishlistProduct($wishlistProduct);
-            $file->fputcsv($this->normalizer->normalize($csvWishlistProduct, 'csv'));
-
+            $file->fputcsv($this->csvSerializerFactory->createNew()->normalize($csvWishlistProduct, 'csv'));
             ++$this->itemsProcessed;
         }
 
