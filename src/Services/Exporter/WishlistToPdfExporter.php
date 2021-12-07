@@ -13,10 +13,12 @@ namespace BitBag\SyliusWishlistPlugin\Services\Exporter;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
+use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreator;
 use Doctrine\Common\Collections\Collection;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Sylius\Component\Core\Model\ProductVariant;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
@@ -51,25 +53,42 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
 
     private function createVariantModelToPdf(Collection $wishlistProducts, Request $request): array
     {
-        $selectedProducts = [];
-
         /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
-            if ($wishlistProduct->isSelected()) {
-                $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
-
-                if (null === $variant || null === $wishlistProduct) {
-                    throw new ProductVariantNotFoundException(
-                        sprintf('The Product does not exist')
-                    );
-                }
-
-                $itemWishlistModel = $this->modelCreator->createWishlistItemToPdf(@$wishlistProduct, $request, $variant);
-                $selectedProducts[] = $itemWishlistModel;
-            }
+            $selectedProducts[] = $this->createCollectionOfWishlistItems($wishlistProduct, $request);
         }
 
         return $selectedProducts;
+    }
+
+    private function createCollectionOfWishlistItems(
+        WishlistItemInterface $wishlistProduct,
+        Request $request
+    ): VariantPdfModelInterface {
+        $itemWishlistModel = null;
+
+        if ($wishlistProduct->isSelected()) {
+            $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
+            $this->wishlistThrowException($wishlistProduct, $variant);
+            $itemWishlistModel = $this->modelCreator->createWishlistItemToPdf($wishlistProduct, $request, $variant);
+        }
+
+        if (null === $itemWishlistModel) {
+            throw new ProductVariantNotFoundException(
+                sprintf('The Product does not selected')
+            );
+        }
+
+        return $itemWishlistModel;
+    }
+
+    private function wishlistThrowException(WishlistItemInterface $wishlistProduct, ProductVariant $variant)
+    {
+        if (null === $variant || null === $wishlistProduct) {
+            throw new ProductVariantNotFoundException(
+                sprintf('The Product does not exist')
+            );
+        }
     }
 
     private function exportToPdf(array $selectedProducts): void
