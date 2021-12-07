@@ -52,6 +52,11 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         $this->getElement('remove_selected')->press();
     }
 
+    public function exportToPdfSelectedProductsFromWishlist(): void
+    {
+        $this->getElement('export_selected_pdf')->press();
+    }
+
     public function selectProductQuantity(string $productName, int $quantity): void
     {
         $addToCartElements = $this->getDocument()->findAll('css', '[data-test-wishlist-item-quantity] input');
@@ -106,7 +111,8 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
             'add' => '[data-test-wishlist-add-all-to-cart]',
             'add_selected' => '[data-test-wishlist-add-selected-to-cart]',
             'remove_selected' => '[data-test-wishlist-remove-selected-from-wishlist]',
-            'items_count' => '[data-test-wishlist-primary-items-count]'
+            'items_count' => '[data-test-wishlist-primary-items-count]',
+            'export_selected_pdf' => '[data-test-wishlist-export-to-pdf-from-wishlist]'
         ];
     }
 }

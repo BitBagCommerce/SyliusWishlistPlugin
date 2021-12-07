@@ -20,5 +20,11 @@
                 {{ 'bitbag_sylius_wishlist_plugin.ui.copy_to_wishlist'|trans }}
             </button>
         </div>
+        <div class="item">
+            <button type="submit" class="ui yellow button" {{ sylius_test_html_attribute('wishlist-export-to-pdf-from-wishlist') }}  formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf') }}">
+                <i class="arrow alternate circle down icon"></i>
+                {{ 'bitbag_sylius_wishlist_plugin.ui.export_wishlist_to_pdf'|trans }}
+            </button>
+        </div>
     </div>
 </div>

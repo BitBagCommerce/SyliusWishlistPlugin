@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\Request;
 
-final class AddProductsToWishlist
+final class ExportSelectedProductsFromWishlistToPdf implements ExportSelectedProductsFromWishlistToPdfInterface
 {
     /** @var Collection<WishlistItem> */
     private Collection $wishlistProducts;
@@ -22,7 +24,7 @@ final class AddProductsToWishlist
         $this->wishlistProducts = $wishlistProducts;
     }
 
-    public function getWishlistProducts(): Collection
+    public function getWishlistProducts(): ?Collection
     {
         return $this->wishlistProducts;
     }

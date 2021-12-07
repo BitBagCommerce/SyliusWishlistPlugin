@@ -1,0 +1,44 @@
+{% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<div style="width: 100%;">
+    <div>
+        <h4>{{ title }}</h4>
+    </div>
+    <div>
+        <h4>{{ date }}</h4>
+    </div>
+</div>
+<br><br>
+
+<table>
+    <thead style="border: 1px solid #000;">
+    <tr>
+        <th style="border: 1px solid #000;">Image</th>
+        <th style="border: 1px solid #000;">Name</th>
+        <th style="border: 1px solid #000;">Number</th>
+        <th style="border: 1px solid #000;">Variant</th>
+        <th style="border: 1px solid #000;">Quantity</th>
+        <th style="border: 1px solid #000;">Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in products %}
+        <tr style="border: 1px solid #000;">
+            <td style="border: 1px solid #000;"><img style="margin: 3px;" src="{{ product.imagePath }}" alt="Product Image" width="100" height="100"></td>
+            <td style="border: 1px solid #000;"><small style="margin: 3px;">{{ product.variant.product.name }}</small></td>
+            <td style="border: 1px solid #000;"><small style="margin: 3px;">{{ product.variant.product.code }}</small></td>
+            <td style="border: 1px solid #000;"><small style="margin: 3px;">{{ product.actualVariant }}</small></td>
+            <td style="border: 1px solid #000;"><small style="margin: 3px;">{{ product.quantity }}</small></td>
+            <td style="border: 1px solid #000;"><small style="margin: 3px;">{{ money.calculatePrice(product.variant.product|sylius_resolve_variant) }}</small></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
