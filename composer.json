@@ -33,7 +33,8 @@
         "symfony/web-profiler-bundle": "^4.4 || ^5.2",
         "symfony/web-server-bundle": "^4.4|^5.2",
         "symfony/webpack-encore-bundle": "^1.12",
-        "symfony/dependency-injection": "<4.4.19 || >=5.0.0 <5.2.2"
+        "symfony/dependency-injection": "<4.4.19 || >=5.0.0 <5.2.2",
+        "polishsymfonycommunity/symfony-mocker-container": "^1.0"
     },
     "conflict": {
         "doctrine/dbal": "^3.0",
