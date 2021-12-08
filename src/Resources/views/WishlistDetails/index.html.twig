@@ -53,6 +53,12 @@
             <div class="column">
                 {{ messages.info('bitbag_sylius_wishlist_plugin.ui.your_wishlist_is_empty'|trans) }}
             </div>
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_import_from_csv') }}">
+                <button type="button" class="ui secondary button" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
+                    <i class="cart icon"></i>
+                    {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}
+                </button>
+            </a>
         </div>
     {% endif %}
 {% endblock %}

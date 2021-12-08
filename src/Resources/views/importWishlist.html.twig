@@ -1,0 +1,20 @@
+{% extends '@SyliusShop/layout.html.twig' %}
+
+{% block content %}
+
+    <h1 class="ui header">
+        <i class="circular file icon"></i>
+        <div class="content">
+            {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}
+        </div>
+    </h1>
+
+    {{ form_start(form, { attr: { class: 'import-wishlist ui form', id: "wishlist_import_form" } }) }}
+
+        {{ form_widget(form.wishlist_file, { attr: { class: "ui input",  } } ) }}
+
+        {{ form_widget(form.submit, { attr: { class: "ui primary button",  } } ) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}

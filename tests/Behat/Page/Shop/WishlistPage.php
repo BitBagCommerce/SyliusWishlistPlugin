@@ -23,7 +23,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function hasProduct(string $productName): bool
     {
-        $productElements = $this->getDocument()->findAll('css', '[data-test-wishlisst-item-name]');
+        $productElements = $this->getDocument()->findAll('css', '[data-test-wishlist-item-name]');
 
         /** @var NodeElement $productElement */
         foreach ($productElements as $productElement) {
@@ -80,6 +80,11 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         $this->getElement('add_selected')->press();
     }
 
+    public function exportSelectedProductsToCsv(): void
+    {
+        $this->getElement('export_selected_csv')->press();
+    }
+
     public function hasProductInCart(string $productName): bool
     {
         $productNameOnPage = $this->getDocument()->find('css', '.ui.cart.popup > .list > .item > strong')->getText();
@@ -87,7 +92,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         return $productName === $productNameOnPage;
     }
 
-    public function hasProductOutOfStockValidationMessage(ProductInterface $product)
+    public function hasProductOutOfStockValidationMessage(ProductInterface $product): bool
     {
         $outOfStockValidationErrorElement = $this->getDocument()->find('css', '.sylius-flash-message p');
 
@@ -112,7 +117,8 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
             'add_selected' => '[data-test-wishlist-add-selected-to-cart]',
             'remove_selected' => '[data-test-wishlist-remove-selected-from-wishlist]',
             'items_count' => '[data-test-wishlist-primary-items-count]',
-            'export_selected_pdf' => '[data-test-wishlist-export-to-pdf-from-wishlist]'
+            'export_selected_csv' => '[data-test-wishlist-export-to-csv]',
+            'export_selected_pdf' => '[data-test-wishlist-export-to-pdf-from-wishlist]',
         ];
     }
 }

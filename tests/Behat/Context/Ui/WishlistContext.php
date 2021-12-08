@@ -15,7 +15,9 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -42,20 +44,23 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private WishlistCreatorInterface $wishlistCreator;
 
+    private ProductVariantResolverInterface $defaultVariantResolver;
+
     private Session $session;
 
     private RouterInterface $router;
 
     public function __construct(
-        ProductRepositoryInterface   $productRepository,
-        ProductIndexPageInterface    $productIndexPage,
-        ProductShowPageInterface     $productShowPage,
-        WishlistPageInterface        $wishlistPage,
+        ProductRepositoryInterface $productRepository,
+        ProductIndexPageInterface $productIndexPage,
+        ProductShowPageInterface $productShowPage,
+        WishlistPageInterface $wishlistPage,
         NotificationCheckerInterface $notificationChecker,
-        LoginerInterface             $loginer,
-        WishlistCreatorInterface     $wishlistCreator,
-        Session                      $session,
-        RouterInterface              $router
+        LoginerInterface $loginer,
+        WishlistCreatorInterface $wishlistCreator,
+        ProductVariantResolverInterface $defaultVariantResolver,
+        Session $session,
+        RouterInterface $router
     ) {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
@@ -64,6 +69,7 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->loginer = $loginer;
         $this->wishlistCreator = $wishlistCreator;
         $this->productShowPage = $productShowPage;
+        $this->defaultVariantResolver = $defaultVariantResolver;
         $this->session = $session;
         $this->router = $router;
     }
@@ -169,6 +175,48 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @When /^the (product "([^"]+)") is stored in "(?P<filename>(?:[^"]|\\")*)"$/
+     */
+    public function productIsStoredInFile(ProductInterface $product, string $filename): void
+    {
+        /** @var ProductVariantInterface $productVariant */
+        $productVariant = $this->defaultVariantResolver->getVariant($product);
+
+        $data = [
+            'variantId' => $productVariant->getId(),
+            'productId' => $product->getId(),
+            'variantCode' => $productVariant->getCode(),
+        ];
+
+        if (!$this->getMinkParameter('files_path')) {
+            return;
+        }
+        $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR . $filename;
+        $fileResource = fopen($fullPath, 'w+');
+        fputcsv($fileResource, array_keys($data));
+        fputcsv($fileResource, $data);
+        fclose($fileResource);
+    }
+
+    /**
+     * @When I export selected products to csv
+     */
+    public function iExportSelectedProductsToCsv(): void
+    {
+        $this->wishlistPage->exportSelectedProductsToCsv();
+    }
+
+    /**
+     * @When I should have downloaded CSV file
+     */
+    public function iShouldHaveDownloadedCsvFile(): void
+    {
+        Assert::eq($this->getSession()->getResponseHeader('content-type'), 'text/csv');
+        Assert::eq($this->getSession()->getResponseHeader('content-disposition'), 'attachment; filename=export.csv');
+        Assert::eq($this->getSession()->getStatusCode(), '200');
+    }
+
+    /**
      * @When I remove this product
      */
     public function iRemoveThisProduct(): void
@@ -205,12 +253,12 @@ final class WishlistContext extends RawMinkContext implements Context
             'cookies' => $cookieJar,
         ]);
 
-        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf',[], UrlGeneratorInterface::RELATIVE_PATH);
-        $response = $guzzle->get(sprintf('%s%s', $baseUrl,$url));
+        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf', [], UrlGeneratorInterface::RELATIVE_PATH);
+        $response = $guzzle->get(sprintf('%s%s', $baseUrl, $url));
         $driver = $this->getSession()->getDriver();
         $contentType = $response->getHeader('Content-Type')[0];
 
-        if ($contentType !== "text/html; charset=UTF-8") {
+        if ('text/html; charset=UTF-8' !== $contentType) {
             throw new \Behat\Mink\Exception\ExpectationException('The content type of the downloaded file is not correct.', $driver);
         }
 

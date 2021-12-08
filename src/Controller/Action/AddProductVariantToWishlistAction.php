@@ -71,19 +71,21 @@ final class AddProductVariantToWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        /** @var ProductVariantInterface|null $variant */
-        $variant = $this->productVariantRepository->find($request->get('variantId'));
-
-        if (null === $variant) {
-            throw new NotFoundHttpException();
-        }
-        /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistContext->getWishlist($request);
 
-        /** @var WishlistProductInterface $wishlistProduct */
-        $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
+        foreach ((array) $request->get('variantId') as $variantId) {
+            /** @var ProductVariantInterface|null $variant */
+            $variant = $this->productVariantRepository->find($variantId);
 
-        $wishlist->addWishlistProduct($wishlistProduct);
+            if (null === $variant) {
+                throw new NotFoundHttpException();
+            }
+
+            /** @var WishlistProductInterface $wishlistProduct */
+            $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
+
+            $this->addProductToWishlist($wishlist, $variant, $wishlistProduct);
+        }
 
         if (null === $wishlist->getId()) {
             $this->wishlistManager->persist($wishlist);
@@ -91,9 +93,9 @@ final class AddProductVariantToWishlistAction
 
         $this->wishlistManager->flush();
 
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
-
-        $response = new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+        $response = new RedirectResponse(
+            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')
+        );
 
         $token = $this->tokenStorage->getToken();
 
@@ -102,6 +104,22 @@ final class AddProductVariantToWishlistAction
         }
 
         return $response;
+    }
+
+    private function addProductToWishlist(
+        WishlistInterface $wishlist,
+        ProductVariantInterface $variant,
+        WishlistProductInterface $wishlistProduct
+    ): void {
+        if ($wishlist->hasProductVariant($variant)) {
+            $message = sprintf('%s variant is already in wishlist.', $wishlistProduct->getProduct()->getName());
+            $this->flashBag->add('error', $this->translator->trans($message));
+            return;
+        }
+
+        $wishlist->addWishlistProduct($wishlistProduct);
+        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+
     }
 
     private function addWishlistToResponseCookie(WishlistInterface $wishlist, Response $response): void

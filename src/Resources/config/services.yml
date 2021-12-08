@@ -25,7 +25,7 @@ services:
             - "@session.flash_bag"
             - "@translator"
             - "@router"
-            - "%wishlist_cookie_token%"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
         tags:
             - { name: controller.service_arguments }
 
@@ -52,7 +52,7 @@ services:
             - "@session.flash_bag"
             - "@translator"
             - "@router"
-            - "%wishlist_cookie_token%"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
         tags:
             - { name: controller.service_arguments }
 
@@ -79,6 +79,30 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddSelectedProductsToCartAction
         parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action"
         public: true
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.export_selected_products_to_csv:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ExportSelectedProductsToCsvAction
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.context.wishlist"
+            - '@sylius.context.cart.new_shop_based.inner'
+            - '@form.factory'
+            - '@session.flash_bag'
+            - "@sylius.command_bus"
+            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+            - "@router"
+            - "@translator"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.import_from_csv:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\ImportWishlistFromCsvAction
+        arguments:
+            - "@form.factory"
+            - '@session.flash_bag'
+            - "@sylius.command_bus"
+            - "@twig"
         tags:
             - { name: controller.service_arguments }
 
@@ -115,7 +139,7 @@ services:
             - "@security.token_storage"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
-            - "%wishlist_cookie_token%"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
 
     bitbag_sylius_wishlist_plugin.custom_factory.wishlist:
         class: BitBag\SyliusWishlistPlugin\Factory\WishlistFactory
@@ -131,13 +155,19 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist_product.inner"
 
+    bitbag_sylius_wishlist_plugin.custom_factory.csv_wishlist_product:
+        class: BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactory
+
+    bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer:
+        class: BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactory
+
     bitbag_sylius_wishlist_plugin.event_listener.merge_user_wishlist_items:
         class: BitBag\SyliusWishlistPlugin\EventListener\MergeUserWishlistItemsListener
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
-            - "%wishlist_cookie_token%"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
 
@@ -145,7 +175,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\EventListener\ClearCookieWishlistItemsListener
         arguments:
             - "@sylius.storage.cookie"
-            - "%wishlist_cookie_token%"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
 
