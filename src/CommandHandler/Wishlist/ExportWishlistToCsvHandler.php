@@ -21,6 +21,12 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 {
+    private const CSV_HEADERS = [
+        'variantId',
+        'productId',
+        'variantCode',
+    ];
+
     private CsvWishlistProductFactoryInterface $factory;
 
     private CsvSerializerFactoryInterface $csvSerializerFactory;
@@ -51,13 +57,7 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 
     private function putDataToCsv(Collection $wishlistProducts, \SplFileObject $file): \SplFileObject
     {
-        $csvHeaders = [
-          'variantId',
-          'productId',
-          'variantCode',
-        ];
-
-        $file->fputcsv($csvHeaders);
+        $file->fputcsv(self::CSV_HEADERS);
 
         /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {

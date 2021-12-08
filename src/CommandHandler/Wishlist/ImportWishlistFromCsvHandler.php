@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 {
@@ -64,7 +65,7 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
         $csvData = file_get_contents((string) $fileInfo);
 
         $csvWishlistProducts = $this->csvSerializerFactory->createNew()->deserialize($csvData, sprintf('%s[]', CsvWishlistProduct::class), 'csv', [
-            'disable_type_enforcement' => true,
+            AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
             CsvEncoder::AS_COLLECTION_KEY => true,
         ]);
 
