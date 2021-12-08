@@ -104,4 +104,10 @@ services:
         tags:
             - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
 
-
+    bitbag_sylius_wishlist_plugin.command_handler.wishlist.export_selected_products_from_wishlist_to_pdf:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\ExportSelectedProductsFromWishlistToPdfHandler
+        arguments:
+            - "@request_stack"
+            - "@bitbag_sylius_wishlist_plugin.services.exporter"
+        tags:
+            - { name: messenger.message_handler, bus: sylius.command_bus }

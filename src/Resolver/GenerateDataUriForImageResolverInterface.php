@@ -8,10 +8,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exception;
+namespace BitBag\SyliusWishlistPlugin\Resolver;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sylius\Component\Core\Model\ProductImageInterface;
 
-class NoProductSelectedException extends NotFoundHttpException
+interface GenerateDataUriForImageResolverInterface
 {
+    public function resolve(ProductImageInterface $image): string;
 }

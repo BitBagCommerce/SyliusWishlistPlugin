@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Form\Type;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
 use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactoryInterface;
@@ -86,7 +86,7 @@ final class AddProductsToCartType extends AbstractType
     {
         $resolver
             ->setRequired('cart')
-            ->setDefault('data_class', AddWishlistProduct::class)
+            ->setDefault('data_class', WishlistItem::class)
             ->setDefault('validation_groups', $this->validationGroups);
     }
 }

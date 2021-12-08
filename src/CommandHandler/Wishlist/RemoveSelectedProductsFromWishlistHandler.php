@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,7 +53,7 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
 
     private function removeSelectedProductsFromWishlist(Collection $wishlistProducts): void
     {
-        /** @var AddWishlistProduct $wishlistProduct */
+        /** @var WishlistItem $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
                 $this->removeProductFromWishlist($wishlistProduct);
@@ -61,7 +61,7 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
         }
     }
 
-    private function removeProductFromWishlist(AddWishlistProduct $wishlistProduct): void
+    private function removeProductFromWishlist(WishlistItem $wishlistProduct): void
     {
         $productVariant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 

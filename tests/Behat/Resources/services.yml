@@ -25,6 +25,8 @@ services:
             - "@bitbag_sylius_cms_plugin.behat.loginer"
             - "@bitbag_sylius_cms_plugin.behat.wishlist_creator"
             - "@sylius.product_variant_resolver.default"
+            - "@session"
+            - "@router"
 
     bitbag_sylius_cms_plugin.behat.page.shop.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage

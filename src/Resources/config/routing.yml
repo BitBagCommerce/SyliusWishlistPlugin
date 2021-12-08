@@ -54,3 +54,8 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_render_header_template:
     path: /wishlist/header-template
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.render_header_template
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf:
+    path: /wishlist/export/pdf
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action

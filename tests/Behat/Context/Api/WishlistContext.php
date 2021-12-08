@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Api;
 
 use Behat\Behat\Context\Context;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\MinkExtension\Context\RawMinkContext;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
