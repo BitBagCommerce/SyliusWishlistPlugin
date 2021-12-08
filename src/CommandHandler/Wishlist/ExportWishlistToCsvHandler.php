@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
 use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
@@ -59,7 +59,7 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 
         $file->fputcsv($csvHeaders);
 
-        /** @var AddWishlistProduct $wishlistProduct */
+        /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if (!$wishlistProduct->isSelected()) {
                 continue;
@@ -72,7 +72,7 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
         return $file;
     }
 
-    private function createCsvWishlistProduct(AddWishlistProduct $wishlistProduct): CsvWishlistProductInterface
+    private function createCsvWishlistProduct(WishlistItemInterface $wishlistProduct): CsvWishlistProductInterface
     {
         return $this->factory->createWithProperties(
             $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),

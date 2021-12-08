@@ -45,7 +45,7 @@ final class WishlistContext extends RawMinkContext implements Context
     private WishlistCreatorInterface $wishlistCreator;
 
     private ProductVariantResolverInterface $defaultVariantResolver;
-  
+
     private Session $session;
 
     private RouterInterface $router;
@@ -58,9 +58,7 @@ final class WishlistContext extends RawMinkContext implements Context
         NotificationCheckerInterface $notificationChecker,
         LoginerInterface $loginer,
         WishlistCreatorInterface $wishlistCreator,
-        ProductVariantResolverInterface $defaultVariantResolver
-        LoginerInterface $loginer,
-        WishlistCreatorInterface $wishlistCreator,
+        ProductVariantResolverInterface $defaultVariantResolver,
         Session $session,
         RouterInterface $router
     ) {
@@ -255,12 +253,12 @@ final class WishlistContext extends RawMinkContext implements Context
             'cookies' => $cookieJar,
         ]);
 
-        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf',[], UrlGeneratorInterface::RELATIVE_PATH);
-        $response = $guzzle->get(sprintf('%s%s', $baseUrl,$url));
+        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf', [], UrlGeneratorInterface::RELATIVE_PATH);
+        $response = $guzzle->get(sprintf('%s%s', $baseUrl, $url));
         $driver = $this->getSession()->getDriver();
         $contentType = $response->getHeader('Content-Type')[0];
 
-        if ($contentType !== "text/html; charset=UTF-8") {
+        if ('text/html; charset=UTF-8' !== $contentType) {
             throw new \Behat\Mink\Exception\ExpectationException('The content type of the downloaded file is not correct.', $driver);
         }
 

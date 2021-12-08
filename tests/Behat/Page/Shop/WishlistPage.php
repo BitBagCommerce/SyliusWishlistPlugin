@@ -117,8 +117,8 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
             'add_selected' => '[data-test-wishlist-add-selected-to-cart]',
             'remove_selected' => '[data-test-wishlist-remove-selected-from-wishlist]',
             'items_count' => '[data-test-wishlist-primary-items-count]',
-            'export_selected_csv' => '[data-test-wishlist-export-to-csv]'
-            'export_selected_pdf' => '[data-test-wishlist-export-to-pdf-from-wishlist]'
+            'export_selected_csv' => '[data-test-wishlist-export-to-csv]',
+            'export_selected_pdf' => '[data-test-wishlist-export-to-pdf-from-wishlist]',
         ];
     }
 }
