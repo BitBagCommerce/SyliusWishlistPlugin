@@ -55,7 +55,9 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
     {
         /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
-            $selectedProducts[] = $this->createCollectionOfWishlistItems($wishlistProduct, $request);
+            if ($wishlistProduct->isSelected()) {
+                $selectedProducts[] = $this->createCollectionOfWishlistItems($wishlistProduct, $request);
+            }
         }
 
         return $selectedProducts;
@@ -65,19 +67,9 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
         WishlistItemInterface $wishlistProduct,
         Request $request
     ): VariantPdfModelInterface {
-        $itemWishlistModel = null;
-
-        if ($wishlistProduct->isSelected()) {
-            $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
-            $this->wishlistThrowException($wishlistProduct, $variant);
-            $itemWishlistModel = $this->modelCreator->createWishlistItemToPdf($wishlistProduct, $request, $variant);
-        }
-
-        if (null === $itemWishlistModel) {
-            throw new ProductVariantNotFoundException(
-                sprintf('The Product does not selected')
-            );
-        }
+        $variant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
+        $this->wishlistThrowException($wishlistProduct, $variant);
+        $itemWishlistModel = $this->modelCreator->createWishlistItemToPdf($wishlistProduct, $request, $variant);
 
         return $itemWishlistModel;
     }
