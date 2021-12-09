@@ -20,6 +20,7 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -33,6 +34,15 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('wishlist_cookie_token')
                     ->defaultValue('wishlist_cookie_token')
                     ->cannotBeEmpty()
+                    ->validate()
+                        ->always(function ($value) {
+                            if (!is_string($value)) {
+                                throw new InvalidConfigurationException('wishlist_cookie_token must be string');
+                            }
+
+                            return $value;
+                        })
+                    ->end()
                 ->end()
                 ->arrayNode('allowed_mime_types')
                     ->defaultValue([
