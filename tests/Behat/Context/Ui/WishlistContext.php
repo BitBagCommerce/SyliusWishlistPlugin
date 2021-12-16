@@ -314,7 +314,7 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
-     * @Then I should have ":productName" product in my cart
+     * @Then I should have :productName product in my cart
      */
     public function iShouldHaveProductInMyCart(string $productName): void
     {
@@ -327,49 +327,16 @@ final class WishlistContext extends RawMinkContext implements Context
     /**
      * @Then I should be notified that :product does not have sufficient stock
      */
-    public function iShouldBeNotifiedThatThisProductDoesNotHaveSufficientStock(ProductInterface $product)
+    public function iShouldBeNotifiedThatThisProductDoesNotHaveSufficientStock(ProductInterface $product): void
     {
         Assert::true($this->wishlistPage->hasProductOutOfStockValidationMessage($product));
     }
 
     /**
-     * @Given I am on :wishlists_create
+     * @Then I should be notified that wishlist has been cleared
      */
-    public function iAmOn($wishlists_create)
+    public function iShouldBeNotifiedThatWishlistHasBeenCleared(): void
     {
-        $this->visitPath($wishlists_create);
+        Assert::true($this->wishlistPage->hasWishlistClearedValidationMessage());
     }
-
-    /**
-     * @When I fill the wishlist name with :name
-     */
-    public function iFillTheWishlistNameWith($name)
-    {
-        $this->wishlistPage->fillWithName($name);
-    }
-
-    /**
-     * @When I save it
-     */
-    public function iSaveIt()
-    {
-        $this->wishlistPage->add();
-    }
-
-    /**
-     * @Then I should be on :wishlists
-     */
-    public function iShouldBeOn($wishlists)
-    {
-        $this->visitPath($wishlists);
-    }
-
-    /**
-     * @Then I should see :arg1
-     */
-    public function iShouldSee($arg1)
-    {
-        $arg1 = "New wishlist has been created.";
-    }
-
 }

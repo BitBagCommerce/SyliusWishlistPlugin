@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
@@ -53,16 +53,20 @@ final class RemoveProductVariantFromWishlistAction
         $this->translator = $translator;
     }
 
-    public function __invoke(int $wishlistId, Request $request): Response
+    public function __invoke(
+        int $wishlistId,
+        int $variantId,
+        Request $request
+    ): Response
     {
         /** @var ProductVariantInterface|null $variant */
-        $variant = $this->productVariantRepository->find($request->get('variantId'));
+        $variant = $this->productVariantRepository->find($variantId);
+
         if (null === $variant) {
             throw new NotFoundHttpException();
         }
 
         /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistContext->getWishlist($request);
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProduct) {
@@ -70,13 +74,14 @@ final class RemoveProductVariantFromWishlistAction
                 $this->wishlistProductManager->remove($wishlistProduct);
             }
         }
-
         $this->wishlistProductManager->flush();
+
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_wishlist_item'));
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
-            'wishlistId' => $wishlistId,
-        ])
+        return new RedirectResponse(
+            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+                'wishlistId' => $wishlistId,
+            ])
         );
     }
 }
