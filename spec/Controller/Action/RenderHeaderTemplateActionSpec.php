@@ -39,7 +39,7 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
     ): void {
         $wishlistContext->getWishlist($request)->willReturn($wishlist);
 
-        $twigEnvironment->render('@BitBagSyliusWishlistPlugin/_wishlistHeader.html.twig', [
+        $twigEnvironment->render('@BitBagSyliusWishlistPlugin/Common/widget.html.twig', [
             'wishlist' => $wishlist,
         ])->willReturn('TEMPLATE');
         $this->__invoke($request)->shouldImplement(Response::class);

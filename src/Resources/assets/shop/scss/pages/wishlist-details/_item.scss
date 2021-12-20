@@ -1,0 +1,67 @@
+.bb-wishlist {
+    &-item {
+        display: grid;
+        align-items: center;
+        padding: $spacer * 0.5;
+        border-bottom: 1px solid $gray-200;
+
+        @media screen and (max-width: $breakpoint-md) {
+            grid-template-areas:
+                "image name name"
+                "image price price"
+                "variant variant variant"
+                "quantity quantity actions";
+            grid-template-columns: 1fr 1.5fr 1fr;
+            grid-column-gap: $spacer * 0.5;
+            grid-row-gap: $spacer * 0.75;
+
+            &:first-of-type {
+                display: none;
+            }
+        }
+
+        @media screen and (min-width: $breakpoint-md) {
+            grid-template-areas:
+                "image name price quantity actions"
+                "image variant price quantity actions";
+            grid-template-columns: 100px 5fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr auto;
+            grid-column-gap: $spacer;
+        }
+
+        &-image {
+            grid-area: image;
+        }
+
+        &-name {
+            grid-area: name;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        &-variant {
+            grid-area: variant;
+        }
+
+        &-price {
+            grid-area: price;
+            padding-right: $spacer;
+
+            @media screen and (min-width: $breakpoint-md) {
+                text-align: right;
+            }
+        }
+
+        &-quantity {
+            grid-area: quantity;
+            align-items: center;
+        }
+
+        &-actions {
+            grid-area: actions;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

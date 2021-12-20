@@ -1,12 +1,1 @@
-{% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
-
-<div class="bitbag-wishlist-variants-pricing" data-unavailable-text="{{ 'sylius.ui.unavailable'|trans }}">
-    {% for price in pricing %}
-        <div {% for option, value in price %}
-                {% if option == 'value' or option == 'original-price' %}
-                    data-value="{{ money.convertAndFormat(value) }}"
-                {% else %}
-                    data-variant="{{ value|replace({'\"': '\''}) }}"
-                {% endif %} {{ sylius_test_html_attribute('variant-price') }}{% endfor %}></div>
-             {% endfor %}
-</div>
+{% deprecated "This template is not needed anymore" %}
