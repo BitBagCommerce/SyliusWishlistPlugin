@@ -1,23 +1,43 @@
+{% if (findAllByShopUser()|length < 2) or (findAllByAnonymous()|length < 2) %}
+    {% set wishlistProductsCount = 0 %}
+    {% set wishlistId = 0 %}
+
+    {% for data in wishlist %}
+        {% set wishlistProductsCount = data.wishlistProducts.count %}
+        {% set wishlistId = data.id %}
+    {% endfor %}
+{% endif %}
+
 {% if app.user %}
     {% if findAllByShopUser()|length < 2 %}
-    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
+    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', { wishlistId: wishlistId }) }}" class="ui circular button">
         <i class="icon heart"></i>
-        <span class="bitbag-wishlist-items-count"></span>
+        <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
+        {{- wishlistProductsCount -}}
+    </span>
     </a>
     {% else %}
         <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists') }}" class="ui circular button">
             <i class="icon list"></i>
+            <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlists-count') }}>
+        {{- wishlist|length -}}
+    </span>
         </a>
     {% endif %}
 {% else %}
     {% if findAllByAnonymous()|length < 2 %}
-        <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
+        <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', { wishlistId: wishlistId }) }}" class="ui circular button">
             <i class="icon heart"></i>
-            <span class="bitbag-wishlist-items-count"></span>
+            <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
+        {{- wishlistProductsCount -}}
+    </span>
         </a>
     {% else %}
         <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists') }}" class="ui circular button">
             <i class="icon list"></i>
+            <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlists-count') }}>
+        {{- wishlist|length -}}
+    </span>
         </a>
     {% endif %}
 {% endif %}
