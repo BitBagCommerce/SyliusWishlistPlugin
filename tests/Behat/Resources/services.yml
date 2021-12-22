@@ -27,6 +27,10 @@ services:
             - "@sylius.product_variant_resolver.default"
             - "@session"
             - "@router"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
+            - "@sylius.behat.shared_storage"
+            - "@sylius.behat.cookie_setter"
 
     bitbag_sylius_cms_plugin.behat.page.shop.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage
