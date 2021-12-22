@@ -13,6 +13,14 @@
     <div class="ui hidden divider"></div>
 
     {% if wishlist.wishlistProducts.count > 0 %}
+        <div class="middle aligned column">
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
+                <i class="icon remove"></i>Clear wishlist
+            </a>
+        </div>
+
+        <div class="ui hidden divider"></div>
+
         {{ form_start(form, { attr: { class: 'bb-wishlist ui form', id: "wishlist_form" } }) }}
 
         <div class="ui segment" id="wishlist">

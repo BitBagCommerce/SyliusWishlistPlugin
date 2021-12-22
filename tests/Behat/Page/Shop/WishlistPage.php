@@ -105,6 +105,19 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         return $outOfStockValidationErrorElement->getText() === $message;
     }
 
+    public function hasWishlistClearedValidationMessage(): bool
+    {
+        $hasWishlistClearedValidationMessage = $this->getDocument()->find('css', '.sylius-flash-message p');
+
+        if (null === $hasWishlistClearedValidationMessage) {
+            return false;
+        }
+
+        $message = 'Wishlist has been cleared.';
+
+        return $hasWishlistClearedValidationMessage->getText() === $message;
+    }
+
     public function getRouteName(): string
     {
         return 'bitbag_sylius_wishlist_plugin_shop_wishlist_list_products';
@@ -120,16 +133,5 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
             'export_selected_csv' => '[data-test-wishlist-export-to-csv]',
             'export_selected_pdf' => '[data-test-wishlist-export-to-pdf-from-wishlist]',
         ];
-    }
-
-    public function fillWithName($name): string
-    {
-        $this->getSession()->getPage()->fillField('create_new_wishlist_name', $name);
-        return $name;
-    }
-
-    public function add(): void
-    {
-        $this->getSession()->getPage()->pressButton('create_new_wishlist_save');
     }
 }

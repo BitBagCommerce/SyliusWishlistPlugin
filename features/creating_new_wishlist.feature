@@ -10,7 +10,7 @@ Feature: Creating a new wishlist
     @ui
     Scenario: Creating a new wishlist
         Given I am on "/wishlists/create"
-        And I fill the wishlist name with "Favorite"
-        When I save it
+        And I fill in "create_new_wishlist_name" with "WishlistName"
+        When I press "create_new_wishlist_save"
         Then I should be on "/wishlists"
         And I should see "New wishlist has been created."

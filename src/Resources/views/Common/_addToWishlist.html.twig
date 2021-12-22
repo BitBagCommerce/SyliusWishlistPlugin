@@ -4,6 +4,7 @@
             href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
             class="bitbag-add-to-wishlist ui icon labeled button blue"
             data-product-name="{{ product.name }}"
+            {{ sylius_test_html_attribute('wishlist-add-product') }}
         >
             <i class="icon heart"></i>
             {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
@@ -27,6 +28,7 @@
                 href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
                 class="bitbag-add-to-wishlist ui icon labeled button blue"
                 data-product-name="{{ product.name }}"
+                {{ sylius_test_html_attribute('wishlist-add-product') }}
         >
             <i class="icon heart"></i>
             {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}

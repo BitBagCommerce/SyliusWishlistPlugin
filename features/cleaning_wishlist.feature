@@ -15,6 +15,8 @@ Feature: Cleaning all wishlist
       And I add "Jimmy Beammy" product to my wishlist
       And I add "Ice ball" product to my wishlist
       When I go to the wishlist page
-      And I clean wishlist
-      Then I should be notified that the wishlist has been cleaned
+      Then I should have 2 products in my wishlist
+      When I follow "Clear wishlist"
+      Then I should be notified that wishlist has been cleared
+      And I should have 0 products in my wishlist
 

@@ -33,9 +33,7 @@ interface WishlistPageInterface extends SymfonyPageInterface
 
     public function hasProductInCart(string $productName): bool;
 
-    public function hasProductOutOfStockValidationMessage(ProductInterface $product);
+    public function hasProductOutOfStockValidationMessage(ProductInterface $product): bool;
 
-    public function fillWithName(string $name): string;
-
-    public function add(): void;
+    public function hasWishlistClearedValidationMessage(): bool;
 }
