@@ -11,7 +11,7 @@
         </id>
         <field name="name" type="string" column="name" nullable="true" />
 
-        <field name="token" type="string" column="token" unique="true" />
+        <field name="token" type="string" column="token" />
 
         <one-to-many field="wishlistProducts" target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface" mapped-by="wishlist" orphan-removal="true">
             <cascade>

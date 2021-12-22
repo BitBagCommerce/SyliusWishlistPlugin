@@ -5,3 +5,9 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.custom_factory.wishlist"
 
+    bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver:
+        class: BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolver
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
+            - "@security.token_storage"
