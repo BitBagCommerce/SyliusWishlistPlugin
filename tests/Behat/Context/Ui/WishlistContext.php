@@ -12,8 +12,13 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
+use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
+use Sylius\Behat\Service\Setter\CookieSetterInterface;
+use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -50,6 +55,14 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private RouterInterface $router;
 
+    private WishlistRepositoryInterface $wishlistRepository;
+
+    private string $wishlistCookieToken;
+
+    private SharedStorageInterface $sharedStorage;
+
+    private CookieSetterInterface $cookieSetter;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductIndexPageInterface $productIndexPage,
@@ -60,7 +73,11 @@ final class WishlistContext extends RawMinkContext implements Context
         WishlistCreatorInterface $wishlistCreator,
         ProductVariantResolverInterface $defaultVariantResolver,
         Session $session,
-        RouterInterface $router
+        RouterInterface $router,
+        WishlistRepositoryInterface $wishlistRepository,
+        string $wishlistCookieToken,
+        SharedStorageInterface $sharedStorage,
+        CookieSetterInterface $cookieSetter
     ) {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
@@ -72,6 +89,10 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->defaultVariantResolver = $defaultVariantResolver;
         $this->session = $session;
         $this->router = $router;
+        $this->wishlistRepository = $wishlistRepository;
+        $this->wishlistCookieToken = $wishlistCookieToken;
+        $this->sharedStorage = $sharedStorage;
+        $this->cookieSetter = $cookieSetter;
     }
 
     /**
@@ -85,6 +106,56 @@ final class WishlistContext extends RawMinkContext implements Context
         $product = $this->productRepository->findOneBy([]);
 
         $this->productIndexPage->addProductToWishlist($product->getName());
+    }
+
+    /**
+     * @When I add :productName to selected wishlist :wishlistName
+     */
+    public function iAddThisProductToSelectedWishlist(string $productName, string $wishlistName): void
+    {
+        $this->productIndexPage->open(['slug' => 'main']);
+
+        $this->wishlistPage->addProductToSelectedWishlist($productName, $wishlistName);
+    }
+
+    /**
+     * @Then I should have :productName in selected wishlists :wishlistName
+     */
+    public function iShouldHaveProductInWishlist(string $productName, string $wishlistName): void
+    {
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $this->sharedStorage->get($wishlistName);
+
+        $this->visitPath('/wishlists/' . $wishlist->getId());
+
+        Assert::true($this->wishlistPage->hasProduct($productName));
+    }
+
+    /**
+     * @Given the store has a wishlist named :name
+     */
+    public function theStoreHasAWishlist(string $name): void
+    {
+        $cookie = $this->getSession()->getCookie($this->wishlistCookieToken);
+        $wishlist = new Wishlist();
+
+        $wishlist->setName($name);
+
+        if ($cookie) {
+            $wishlist->setToken($cookie);
+        }
+
+        $this->wishlistRepository->add($wishlist);
+        $this->sharedStorage->set($wishlist->getName(), $wishlist);
+        $this->cookieSetter->setCookie($this->wishlistCookieToken, $wishlist->getToken());
+    }
+
+    /**
+     * @Then I follow (edit|remove) for :wishlistName
+     */
+    public function iFollowActionForSelectedWishlist(string $action, string $wishlistName): void
+    {
+        $this->wishlistPage->selectedWishlistAction($action, $wishlistName);
     }
 
     /**
@@ -225,6 +296,14 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @Then I open :wishlistName
+     */
+    public function iOpenChosenWishlist(string $wishlistName): void
+    {
+        $this->wishlistPage->showChosenWishlist($wishlistName);
+    }
+
+    /**
      * @When I remove selected products from wishlist
      */
     public function iRemoveSelectedProductsFromWishlist(): void
@@ -295,6 +374,14 @@ final class WishlistContext extends RawMinkContext implements Context
     public function iShouldHaveOnItemInMyWishlist(): void
     {
         Assert::eq(1, $this->wishlistPage->getItemsCount());
+    }
+
+    /**
+     * @Then I should have :count wishlists
+     */
+    public function iShouldHaveWishlists(int $count): void
+    {
+        Assert::eq($count, $this->wishlistPage->getWishlistsCount());
     }
 
     /**

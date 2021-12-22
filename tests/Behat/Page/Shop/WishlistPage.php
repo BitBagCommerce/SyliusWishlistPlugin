@@ -21,6 +21,36 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         return (int) $this->getElement('items_count')->getText();
     }
 
+    public function addProductToSelectedWishlist(string $productName, string $wishlistName): void
+    {
+        $productElements = $this->getDocument()->findAll('named', ['link', $wishlistName]);
+
+        /** @var NodeElement $productElement */
+        foreach ($productElements as $productElement) {
+            if ($productName === $productElement->getAttribute('data-product-name')) {
+                $productElement->click();
+            }
+        }
+    }
+
+    public function selectedWishlistAction(string $action, string $wishlistName): void
+    {
+        $wishlists = $this->getDocument()->findAll('css', sprintf('[data-test-wishlist-wishlist-%s]', $action));
+
+        foreach ($wishlists as $wishlist) {
+            if ($wishlistName === $wishlist->getAttribute('data-wishlist-name')) {
+                $wishlist->click();
+            }
+        }
+    }
+
+    public function getWishlistsCount(): int
+    {
+        $wishlists = $this->getDocument()->findAll('css', '[data-test-wishlist-wishlist]');
+
+        return count($wishlists);
+    }
+
     public function hasProduct(string $productName): bool
     {
         $productElements = $this->getDocument()->findAll('css', '[data-test-wishlist-item-name]');
@@ -33,6 +63,18 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         }
 
         return false;
+    }
+
+    public function showChosenWishlist(string $wishlistName): void
+    {
+        $wishlistElements = $this->getDocument()->findAll('css', '[data-test-wishlist-wishlist]');
+
+        /** @var NodeElement $wishlistElement */
+        foreach ($wishlistElements as $wishlistElement) {
+            if ($wishlistName === $wishlistElement->getAttribute('data-wishlist-name')) {
+                $wishlistElement->click();
+            }
+        }
     }
 
     public function removeProduct(string $productName): void

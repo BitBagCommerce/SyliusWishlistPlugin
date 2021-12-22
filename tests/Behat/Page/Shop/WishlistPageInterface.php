@@ -17,7 +17,15 @@ interface WishlistPageInterface extends SymfonyPageInterface
 {
     public function getItemsCount(): int;
 
+    public function addProductToSelectedWishlist(string $productName, string $wishlistName): void;
+
+    public function selectedWishlistAction(string $action, string $wishlistName): void;
+
+    public function getWishlistsCount(): int;
+
     public function hasProduct(string $productName): bool;
+
+    public function showChosenWishlist(string $wishlistName): void;
 
     public function removeProduct(string $productName): void;
 

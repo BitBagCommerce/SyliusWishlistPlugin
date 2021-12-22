@@ -15,7 +15,12 @@
             <span class="text">Add to wishlist</span>
             <div class="menu">
                 {% for wishlist in findAllByShopUser()  %}
-                    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}" class="item">
+                    <a
+                        href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
+                        class="item"
+                        data-product-name="{{ product.name }}"
+                        {{ sylius_test_html_attribute('wishlist-add-product') }}
+                    >
                         {{ wishlist.name }}
                     </a>
                 {% endfor %}
@@ -39,7 +44,12 @@
             <span class="text">Add to wishlist</span>
             <div class="menu">
                 {% for wishlist in findAllByAnonymous()  %}
-                    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}" class="item">
+                    <a
+                        href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
+                        class="item"
+                        data-product-name="{{ product.name }}"
+                        {{ sylius_test_html_attribute('wishlist-add-product') }}
+                    >
                         {{ wishlist.name }}
                     </a>
                 {% endfor %}
