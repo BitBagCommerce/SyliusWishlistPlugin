@@ -10,10 +10,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,27 +19,25 @@ use Twig\Environment;
 
 final class RenderHeaderTemplateActionSpec extends ObjectBehavior
 {
-    function let(WishlistRepositoryInterface $wishlistRepository, Environment $twigEnvironment): void
+    public function let(Environment $twigEnvironment, WishlistsResolverInterface $wishlistsResolver): void
     {
-        $this->beConstructedWith($wishlistRepository, $twigEnvironment);
+        $this->beConstructedWith($twigEnvironment, $wishlistsResolver);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RenderHeaderTemplateAction::class);
     }
 
-    function it_renders_header_template(
+    public function it_renders_header_template(
         Request $request,
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistInterface $wishlist,
-        Environment $twigEnvironment,
-        Response $response
+        WishlistsResolverInterface $wishlistsResolver,
+        Environment $twigEnvironment
     ): void {
-        $wishlistRepository->findAll()->willReturn($wishlist);
-
+        $wishlists = [];
+        $wishlistsResolver->resolve($request)->willReturn($wishlists);
         $twigEnvironment->render('@BitBagSyliusWishlistPlugin/Common/widget.html.twig', [
-            'wishlist' => $wishlist,
+            'wishlists' => $wishlists,
         ])->willReturn('TEMPLATE');
         $this->__invoke($request)->shouldImplement(Response::class);
     }

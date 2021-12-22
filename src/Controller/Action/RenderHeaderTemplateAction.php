@@ -10,31 +10,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
-
-final class RenderHeaderTemplateAction
+final class RenderHeaderTemplateAction extends BaseWishlistsListingAction
 {
-    private WishlistRepositoryInterface $wishlistRepository;
+    private const FILE_TO_RENDER = '@BitBagSyliusWishlistPlugin/Common/widget.html.twig';
 
-    private Environment $twigEnvironment;
-
-    public function __construct(WishlistRepositoryInterface $wishlistRepository, Environment $twigEnvironment)
+    public function setFileToRender(): void
     {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->twigEnvironment = $twigEnvironment;
-    }
-
-    public function __invoke(Request $request): Response
-    {
-        $wishlist = $this->wishlistRepository->findAll();
-
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/Common/widget.html.twig', [
-                'wishlist' => $wishlist,
-            ])
-        );
+        $this->fileToRender = self::FILE_TO_RENDER;
     }
 }
