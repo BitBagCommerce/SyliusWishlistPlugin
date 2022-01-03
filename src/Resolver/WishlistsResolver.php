@@ -12,28 +12,32 @@ namespace BitBag\SyliusWishlistPlugin\Resolver;
 
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class WishlistsResolver implements WishlistsResolverInterface
 {
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private string $wishlistCookieToken;
-
     private TokenStorageInterface $tokenStorage;
+
+    private RequestStack $requestStack;
+
+    private string $wishlistCookieToken;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
-        string $wishlistCookieToken,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        RequestStack $requestStack,
+        string $wishlistCookieToken
     ) {
         $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistCookieToken = $wishlistCookieToken;
         $this->tokenStorage = $tokenStorage;
+        $this->requestStack = $requestStack;
+        $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
-    public function resolve(Request $request): ?array
+    public function resolve(): ?array
     {
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
@@ -41,6 +45,8 @@ final class WishlistsResolver implements WishlistsResolverInterface
             return $this->wishlistRepository->findAllByShopUser($user->getId());
         }
 
-        return $this->wishlistRepository->findAllByAnonymous($request->cookies->get($this->wishlistCookieToken));
+        $wishlistCookieToken = $this->requestStack->getMainRequest()->cookies->get($this->wishlistCookieToken);
+
+        return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
     }
 }

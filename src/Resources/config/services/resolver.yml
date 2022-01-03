@@ -9,5 +9,6 @@ services:
         class: BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolver
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
             - "@security.token_storage"
+            - "@request_stack"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"

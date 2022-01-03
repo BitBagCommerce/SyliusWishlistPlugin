@@ -33,7 +33,7 @@ abstract class BaseWishlistsListingAction
 
     public function __invoke(Request $request): Response
     {
-        $wishlists = $this->wishlistsResolver->resolve($request);
+        $wishlists = $this->wishlistsResolver->resolve();
 
         $this->setFileToRender();
 

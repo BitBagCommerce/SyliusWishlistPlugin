@@ -19,9 +19,14 @@ use Twig\Environment;
 
 final class RenderHeaderTemplateActionSpec extends ObjectBehavior
 {
-    public function let(Environment $twigEnvironment, WishlistsResolverInterface $wishlistsResolver): void
-    {
-        $this->beConstructedWith($twigEnvironment, $wishlistsResolver);
+    public function let(
+        Environment $twigEnvironment,
+        WishlistsResolverInterface $wishlistsResolver
+    ): void {
+        $this->beConstructedWith(
+            $twigEnvironment,
+            $wishlistsResolver
+        );
     }
 
     public function it_is_initializable(): void
@@ -35,7 +40,7 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
         Environment $twigEnvironment
     ): void {
         $wishlists = [];
-        $wishlistsResolver->resolve($request)->willReturn($wishlists);
+        $wishlistsResolver->resolve()->willReturn($wishlists);
         $twigEnvironment->render('@BitBagSyliusWishlistPlugin/Common/widget.html.twig', [
             'wishlists' => $wishlists,
         ])->willReturn('TEMPLATE');

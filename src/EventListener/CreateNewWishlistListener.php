@@ -53,7 +53,7 @@ final class CreateNewWishlistListener
             return;
         }
 
-        $wishlists = $this->wishlistsResolver->resolve($request);
+        $wishlists = $this->wishlistsResolver->resolve();
 
         if (empty($wishlists)) {
             $response = $event->getResponse();

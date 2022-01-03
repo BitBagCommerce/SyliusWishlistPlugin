@@ -71,7 +71,7 @@ class WishlistExtension extends AbstractExtension
 
     public function findAllByAnonymous()
     {
-        $request = $this->requestStack->getCurrentRequest();
+        $request = $this->requestStack->getMainRequest();
         $cookie = $request->cookies->get($this->wishlistCookieToken);
 
         return $this->wishlistRepository->findAllByAnonymous($cookie);
