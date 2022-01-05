@@ -36,7 +36,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         ;
     }
 
-    public function findAllByShopUser(int $shopUser)
+    public function findAllByShopUser(int $shopUser): ?array
     {
         return $this->createQueryBuilder('o')
             ->where('o.shopUser = :shopUser')
@@ -46,7 +46,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ;
     }
 
-    public function findAllByAnonymous(?string $token)
+    public function findAllByAnonymous(?string $token): ?array
     {
         return $this->createQueryBuilder('o')
             ->where('o.token = :token')

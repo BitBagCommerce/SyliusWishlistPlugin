@@ -13,8 +13,8 @@ namespace BitBag\SyliusWishlistPlugin\Twig;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -23,25 +23,21 @@ class WishlistExtension extends AbstractExtension
 {
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private TokenStorage $tokenStorage;
-
     private RequestStack $requestStack;
 
     private string $wishlistCookieToken;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
-        TokenStorage $tokenStorage,
         RequestStack $requestStack,
         string $wishlistCookieToken
     ) {
         $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
         $this->requestStack = $requestStack;
         $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('getWishlists', [$this, 'getWishlists']),
@@ -50,18 +46,16 @@ class WishlistExtension extends AbstractExtension
         ];
     }
 
-    public function getWishlists()
+    public function getWishlists(): ?array
     {
-        /** @var WishlistInterface $wishlists */
+        /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistRepository->findAll();
 
         return $wishlists;
     }
 
-    public function findAllByShopUser()
+    public function findAllByShopUser(UserInterface $user = null): ?array
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
-
         if (!$user instanceof ShopUserInterface) {
             throw new UserNotFoundException();
         }
@@ -69,7 +63,7 @@ class WishlistExtension extends AbstractExtension
         return $this->wishlistRepository->findAllByShopUser($user->getId());
     }
 
-    public function findAllByAnonymous()
+    public function findAllByAnonymous(): ?array
     {
         $request = $this->requestStack->getMainRequest();
         $cookie = $request->cookies->get($this->wishlistCookieToken);
