@@ -12,9 +12,9 @@ namespace BitBag\SyliusWishlistPlugin\Twig;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Model\UserInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -23,18 +23,14 @@ class WishlistExtension extends AbstractExtension
 {
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private RequestStack $requestStack;
-
-    private string $wishlistCookieToken;
+    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
-        RequestStack $requestStack,
-        string $wishlistCookieToken
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
         $this->wishlistRepository = $wishlistRepository;
-        $this->requestStack = $requestStack;
-        $this->wishlistCookieToken = $wishlistCookieToken;
+        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
     public function getFunctions(): array
@@ -65,9 +61,8 @@ class WishlistExtension extends AbstractExtension
 
     public function findAllByAnonymous(): ?array
     {
-        $request = $this->requestStack->getMainRequest();
-        $cookie = $request->cookies->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
-        return $this->wishlistRepository->findAllByAnonymous($cookie);
+        return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
     }
 }

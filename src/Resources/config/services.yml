@@ -308,7 +308,6 @@ services:
         class: BitBag\SyliusWishlistPlugin\Twig\WishlistExtension
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@request_stack"
-            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
+            - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
         tags:
             - { name: twig.extension }
