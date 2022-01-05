@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-abstract class BaseWishlistsListingAction
+class BaseWishlistsListingAction
 {
     public Environment $twigEnvironment;
 
@@ -35,14 +35,15 @@ abstract class BaseWishlistsListingAction
     {
         $wishlists = $this->wishlistsResolver->resolve();
 
-        $this->setFileToRender();
-
         return new Response(
-            $this->twigEnvironment->render($this->fileToRender, [
+            $this->twigEnvironment->render($this->getTemplateToRender(), [
                 'wishlists' => $wishlists,
             ])
         );
     }
 
-    abstract public function setFileToRender(): void;
+    protected function getTemplateToRender(): string
+    {
+        return '';
+    }
 }

@@ -1,5 +1,5 @@
 {% if app.user %}
-    {% if findAllByShopUser()|length < 2 %}
+    {% if findAllByShopUser(app.user)|length < 2 %}
         <a
             href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
             class="bitbag-add-to-wishlist ui icon labeled button blue"
@@ -14,7 +14,7 @@
             <i class="heart icon"></i>
             <span class="text">Add to wishlist</span>
             <div class="menu">
-                {% for wishlist in findAllByShopUser()  %}
+                {% for wishlist in findAllByShopUser(app.user)  %}
                     <a
                         href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
                         class="item"

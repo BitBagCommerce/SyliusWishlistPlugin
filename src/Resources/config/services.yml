@@ -24,14 +24,12 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.list_wishlists:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistsAction
         parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlists_listing_action"
-        public: true
         tags:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.render_header_template:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction
         parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlists_listing_action"
-        public: true
         tags:
             - { name: controller.service_arguments }
 
@@ -310,7 +308,6 @@ services:
         class: BitBag\SyliusWishlistPlugin\Twig\WishlistExtension
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@security.untracked_token_storage"
             - "@request_stack"
             - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
         tags:

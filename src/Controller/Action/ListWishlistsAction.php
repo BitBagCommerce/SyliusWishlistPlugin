@@ -14,8 +14,8 @@ final class ListWishlistsAction extends BaseWishlistsListingAction
 {
     private const FILE_TO_RENDER = '@BitBagSyliusWishlistPlugin/WishlistGroup/index.html.twig';
 
-    public function setFileToRender(): void
+    protected function getTemplateToRender(): string
     {
-        $this->fileToRender = self::FILE_TO_RENDER;
+        return self::FILE_TO_RENDER;
     }
 }

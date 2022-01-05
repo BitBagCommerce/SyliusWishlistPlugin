@@ -14,8 +14,8 @@ final class RenderHeaderTemplateAction extends BaseWishlistsListingAction
 {
     private const FILE_TO_RENDER = '@BitBagSyliusWishlistPlugin/Common/widget.html.twig';
 
-    public function setFileToRender(): void
+    protected function getTemplateToRender(): string
     {
-        $this->fileToRender = self::FILE_TO_RENDER;
+        return self::FILE_TO_RENDER;
     }
 }
