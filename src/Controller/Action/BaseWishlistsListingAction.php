@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class BaseWishlistsListingAction
+abstract class BaseWishlistsListingAction
 {
     public Environment $twigEnvironment;
 
@@ -42,8 +42,5 @@ class BaseWishlistsListingAction
         );
     }
 
-    protected function getTemplateToRender(): string
-    {
-        return '';
-    }
+    abstract protected function getTemplateToRender(): string;
 }
