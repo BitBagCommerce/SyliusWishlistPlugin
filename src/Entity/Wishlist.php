@@ -164,4 +164,9 @@ class Wishlist implements WishlistInterface
 
         return $this;
     }
+
+    public function clear(): void
+    {
+        $this->wishlistProducts = new ArrayCollection();
+    }
 }

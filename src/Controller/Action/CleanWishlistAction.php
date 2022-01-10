@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,8 +22,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CleanWishlistAction
 {
-    private WishlistContextInterface $wishlistContext;
-
     private WishlistRepositoryInterface $wishlistRepository;
 
     private EntityManagerInterface $wishlistManager;
@@ -36,14 +33,12 @@ final class CleanWishlistAction
     private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
-        WishlistContextInterface $wishlistContext,
         WishlistRepositoryInterface $wishlistRepository,
         EntityManagerInterface $wishlistManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->wishlistContext = $wishlistContext;
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistManager = $wishlistManager;
         $this->urlGenerator = $urlGenerator;
@@ -56,21 +51,15 @@ final class CleanWishlistAction
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
-        $wishlistProducts = $wishlist->getWishlistProducts();
-
-        foreach ($wishlistProducts as $products) {
-            $wishlist->removeProduct($products);
-
-        }
-
+        $wishlist->clear();
         $this->wishlistManager->flush();
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.clear_wishlist'));
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
-            'wishlistId' => $wishlistId,
-        ])
+        return new RedirectResponse(
+            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+                'wishlistId' => $wishlistId,
+            ])
         );
     }
-
 }

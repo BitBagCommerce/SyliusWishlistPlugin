@@ -12,9 +12,10 @@ namespace BitBag\SyliusWishlistPlugin\Twig;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\User\Model\UserInterface;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -22,50 +23,46 @@ class WishlistExtension extends AbstractExtension
 {
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private TokenStorage $tokenStorage;
-
-    private RequestStack $requestStack;
+    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
     public function __construct(
-
         WishlistRepositoryInterface $wishlistRepository,
-        TokenStorage $tokenStorage,
-        RequestStack $requestStack
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
         $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->requestStack = $requestStack;
+        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('getWishlists', [$this, 'getWishlists']),
             new TwigFunction('findAllByShopUser', [$this, 'findAllByShopUser']),
-            new TwigFunction('findAllByAnonymous', [$this, 'findAllByAnonymous'])
+            new TwigFunction('findAllByAnonymous', [$this, 'findAllByAnonymous']),
         ];
     }
 
-    public function getWishlists()
+    public function getWishlists(): ?array
     {
-        /** @var WishlistInterface $wishlists */
+        /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistRepository->findAll();
 
         return $wishlists;
     }
 
-    public function findAllByShopUser()
+    public function findAllByShopUser(UserInterface $user = null): ?array
     {
-        $user = $this->tokenStorage->getToken()->getUser();
-        if ($user instanceof ShopUserInterface) {
-            return $this->wishlistRepository->findAllByShopUser($user->getId());
+        if (!$user instanceof ShopUserInterface) {
+            throw new UserNotFoundException();
         }
+
+        return $this->wishlistRepository->findAllByShopUser($user->getId());
     }
 
-    public function findAllByAnonymous()
+    public function findAllByAnonymous(): ?array
     {
-        $request = $this->requestStack->getCurrentRequest();
-        $cookie = $request->cookies->get('PHPSESSID');
-        return $this->wishlistRepository->findAllByAnonymous($cookie);
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+
+        return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
     }
 }
