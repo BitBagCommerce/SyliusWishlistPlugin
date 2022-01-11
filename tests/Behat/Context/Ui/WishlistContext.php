@@ -151,7 +151,7 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
-     * @Then I follow (edit|remove) for :wishlistName
+     * @Then /^I follow (edit|remove) for "([^"]+)"$/
      */
     public function iFollowActionForSelectedWishlist(string $action, string $wishlistName): void
     {

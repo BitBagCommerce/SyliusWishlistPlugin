@@ -12,9 +12,9 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 final class CreateNewWishlist
 {
-    public string $name;
+    public string $name = "Wishlist";
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
