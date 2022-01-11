@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
 use BitBag\SyliusWishlistPlugin\Controller\Action\ListWishlistProductsAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -29,31 +29,32 @@ use Twig\Environment;
 
 final class ListWishlistProductsActionSpec extends ObjectBehavior
 {
-    function let(
-        WishlistContextInterface $wishlistContext,
+    public function let(
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
-        WishlistCommandProcessorInterface $wishlistCommandProcessor
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        WishlistsResolverInterface $wishlistsResolver
     ): void {
         $this->beConstructedWith(
-            $wishlistContext,
             $cartContext,
             $formFactory,
             $twigEnvironment,
-            $wishlistCommandProcessor
+            $wishlistCommandProcessor,
+            $wishlistsResolver
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ListWishlistProductsAction::class);
     }
 
-    function it_lists_wishlist_items(
-        WishlistContextInterface $wishlistContext,
-        Request $request,
+    public function it_lists_wishlist_items(
+        WishlistsResolverInterface $wishlistsResolver,
         WishlistInterface $wishlist,
+        WishlistInterface $wishlist2,
+        Request $request,
         CartContextInterface $cartContext,
         OrderInterface $cart,
         Collection $wishlistProducts,
@@ -64,7 +65,11 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         ArrayCollection $commandsArray
     ): void {
-        $wishlistContext->getWishlist($request)->willReturn($wishlist);
+        $wishlistsResolver->resolve()
+            ->willReturn([
+                $wishlist,
+                $wishlist2,
+            ]);
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 

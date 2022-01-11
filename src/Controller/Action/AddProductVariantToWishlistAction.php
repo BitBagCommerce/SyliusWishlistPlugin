@@ -14,7 +14,6 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,8 +30,6 @@ final class AddProductVariantToWishlistAction
 
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    private ObjectManager $wishlistManager;
-
     private FlashBagInterface $flashBag;
 
     private TranslatorInterface $translator;
@@ -44,7 +41,6 @@ final class AddProductVariantToWishlistAction
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        ObjectManager $wishlistManager,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
@@ -52,7 +48,6 @@ final class AddProductVariantToWishlistAction
     ) {
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->wishlistManager = $wishlistManager;
         $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
@@ -76,12 +71,6 @@ final class AddProductVariantToWishlistAction
 
             $this->addProductToWishlist($wishlist, $variant, $wishlistProduct);
         }
-
-        if (null === $wishlist->getId()) {
-            $this->wishlistManager->persist($wishlist);
-        }
-
-        $this->wishlistManager->flush();
 
         return new RedirectResponse(
             $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
