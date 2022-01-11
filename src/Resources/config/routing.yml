@@ -5,7 +5,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_list_products:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_products:
-    path: /wishlist/products
+    path: /wishlist/{wishlistId}/products
     methods: [POST]
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_products_to_wishlist
@@ -21,22 +21,22 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_selected_products:
-    path: /wishlist/products/delete
+    path: /wishlist/{wishlistId}/products/delete
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_variant:
-    path: /wishlist/add/variant/{variantId}
+    path: /wishlist/{wishlistId}/add/variant/{variantId}
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_selected_products:
-    path: /wishlist/products/add
+    path: /wishlist/{wishlistId}/products/add
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart
 
 bitbag_sylius_wishlist_plugin_shop_wishlsit_export_selected_products_to_csv:
-    path: /wishlist/csv/export
+    path: /wishlist/{wishlistId}/csv/export
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.export_selected_products_to_csv
 
@@ -56,7 +56,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_render_header_template:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.render_header_template
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf:
-    path: /wishlist/export/pdf
+    path: /wishlist/{wishlistId}/export/pdf
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action
 
