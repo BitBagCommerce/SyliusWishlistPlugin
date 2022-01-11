@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Form\Type;
 
+use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -34,9 +36,15 @@ final class ImportWishlistFromCsvType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('wishlists', EntityType::class, [
+                'class' => Wishlist::class,
+                'choices' => $options['wishlists'],
+                'choice_label' => 'name',
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -47,9 +55,11 @@ final class ImportWishlistFromCsvType extends AbstractType
                 'text/plain',
                 'text/csv',
             ],
+            'wishlists' => [],
         ]);
 
         $resolver->setAllowedTypes('maxFileSize', 'string');
         $resolver->setAllowedTypes('allowedMimeTypes', 'array');
+        $resolver->setAllowedTypes('wishlists', 'array');
     }
 }
