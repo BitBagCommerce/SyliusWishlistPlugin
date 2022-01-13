@@ -8,6 +8,12 @@ Feature: Creating a new wishlist
         Given the store operates on a single channel in "United States"
 
     @ui
+    Scenario: Creating a default wishlist by subscriber
+        Given I am on "/"
+        When I go to "/wishlists"
+        Then I should have 1 wishlists
+
+    @ui
     Scenario: Creating a new wishlist
         Given I am on "/wishlists/create"
         And I fill in "create_new_wishlist_name" with "WishlistName"

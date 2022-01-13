@@ -13,7 +13,7 @@ Feature: Listing wishlists
         And the store has a wishlist named "Wishlist1"
         And the store has a wishlist named "Wishlist2"
         When I go to "/wishlists"
-        Then I should have 2 wishlists
+        Then I should have 3 wishlists
 
 
 
