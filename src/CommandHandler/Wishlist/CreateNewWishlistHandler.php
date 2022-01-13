@@ -55,7 +55,7 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
             $wishlist = $this->wishlistFactory->createNew();
         }
 
-        $mainRequest = $this->requestStack->getMainRequest();
+        $mainRequest = $this->requestStack->getMasterRequest();
 
         if ($mainRequest->cookies->get($this->wishlistCookieToken)) {
             $wishlist->setToken($mainRequest->cookies->get($this->wishlistCookieToken));

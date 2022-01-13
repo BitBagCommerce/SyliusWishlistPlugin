@@ -29,7 +29,8 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
 
     public function resolve(): string
     {
-        $wishlistCookieToken = $this->requestStack->getMainRequest()->cookies->get($this->wishlistCookieToken);;
+        $wishlistCookieToken = $this->requestStack->getMasterRequest()->cookies->get($this->wishlistCookieToken);
+
         if (!$wishlistCookieToken) {
             return '';
         }
