@@ -46,10 +46,23 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ;
     }
 
+    public function findAllByShopUserAndToken(int $shopUser, string $token): ?array
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.shopUser = :shopUser')
+            ->orWhere('o.token = :token')
+            ->setParameter('token', $token)
+            ->setParameter('shopUser', $shopUser)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findAllByAnonymous(?string $token): ?array
     {
         return $this->createQueryBuilder('o')
             ->where('o.token = :token')
+            ->andWhere('o.shopUser IS NULL')
             ->setParameter('token', $token)
             ->getQuery()
             ->getResult()
