@@ -182,8 +182,15 @@ final class WishlistContext extends RawMinkContext implements Context
     public function iLogInToMyAccountWhichAlreadyHasProductInTheWishlist(ProductInterface $product): void
     {
         $user = $this->loginer->createUser();
+        $wishlistCookieToken = $this->getSession()->getCookie($this->wishlistCookieToken);
 
-        $this->wishlistCreator->createWishlistWithProductAndUser($user, $product);
+        if (!$wishlistCookieToken) {
+            throw new \Exception('Wishlist token not found');
+        }
+
+        $wishlist = $this->wishlistRepository->findByToken($wishlistCookieToken);
+
+        $this->wishlistCreator->createWishlistWithProductAndUser($user, $product, $wishlist);
         $this->loginer->logIn();
     }
 
@@ -331,8 +338,9 @@ final class WishlistContext extends RawMinkContext implements Context
             'timeout' => 10,
             'cookies' => $cookieJar,
         ]);
+        $wishlist = $this->wishlistRepository->findOneBy([]);
 
-        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf', [], UrlGeneratorInterface::RELATIVE_PATH);
+        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf', ['wishlistId' => $wishlist->getId()], UrlGeneratorInterface::RELATIVE_PATH);
         $response = $guzzle->get(sprintf('%s%s', $baseUrl, $url));
         $driver = $this->getSession()->getDriver();
         $contentType = $response->getHeader('Content-Type')[0];
