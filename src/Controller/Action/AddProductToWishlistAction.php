@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,13 +39,16 @@ final class AddProductToWishlistAction
 
     private WishlistsResolverInterface $wishlistsResolver;
 
+    private ObjectManager $wishlistManager;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
-        WishlistsResolverInterface $wishlistsResolver
+        WishlistsResolverInterface $wishlistsResolver,
+        ObjectManager $wishlistManager
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
@@ -52,6 +56,7 @@ final class AddProductToWishlistAction
         $this->flashBag = $flashBag;
         $this->translator = $translator;
         $this->wishlistsResolver = $wishlistsResolver;
+        $this->wishlistManager = $wishlistManager;
     }
 
     public function __invoke(Request $request): Response
@@ -72,6 +77,8 @@ final class AddProductToWishlistAction
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
         $wishlist->addWishlistProduct($wishlistProduct);
+
+        $this->wishlistManager->flush();
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 

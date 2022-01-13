@@ -15,6 +15,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -33,7 +34,8 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
-        WishlistsResolverInterface $wishlistsResolver
+        WishlistsResolverInterface $wishlistsResolver,
+        ObjectManager $wishlistManager
     ): void {
         $this->beConstructedWith(
             $productRepository,
@@ -41,7 +43,8 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
             $flashBag,
             $translator,
             $urlGenerator,
-            $wishlistsResolver
+            $wishlistsResolver,
+            $wishlistManager
         );
     }
 
@@ -69,7 +72,8 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         WishlistInterface $wishlist2,
         TranslatorInterface $translator,
         FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        ObjectManager $wishlistManager
     ): void {
         $request->get('productId')->willReturn(1);
 
@@ -86,6 +90,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
 
         $wishlist1->addWishlistProduct($wishlistProduct)->shouldBeCalled();
+        $wishlistManager->flush()->shouldBeCalledOnce();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
@@ -102,7 +107,8 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         WishlistProductInterface $wishlistProduct,
         TranslatorInterface $translator,
         FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        ObjectManager $wishlistManager
     ): void {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn($product);
@@ -118,6 +124,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
 
         $wishlist1->addWishlistProduct($wishlistProduct)->shouldBeCalled();
+        $wishlistManager->flush()->shouldBeCalledOnce();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
