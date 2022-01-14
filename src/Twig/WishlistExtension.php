@@ -15,7 +15,7 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Model\UserInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -39,6 +39,7 @@ class WishlistExtension extends AbstractExtension
             new TwigFunction('getWishlists', [$this, 'getWishlists']),
             new TwigFunction('findAllByShopUser', [$this, 'findAllByShopUser']),
             new TwigFunction('findAllByAnonymous', [$this, 'findAllByAnonymous']),
+            new TwigFunction('findAllByShopUserAndToken', [$this, 'findAllByShopUserAndToken']),
         ];
     }
 
@@ -53,10 +54,21 @@ class WishlistExtension extends AbstractExtension
     public function findAllByShopUser(UserInterface $user = null): ?array
     {
         if (!$user instanceof ShopUserInterface) {
-            throw new UserNotFoundException();
+            throw new UnsupportedUserException();
         }
 
         return $this->wishlistRepository->findAllByShopUser($user->getId());
+    }
+
+    public function findAllByShopUserAndToken(UserInterface $user = null): ?array
+    {
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+
+        if (!$user instanceof ShopUserInterface) {
+            throw new UnsupportedUserException();
+        }
+
+        return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
     }
 
     public function findAllByAnonymous(): ?array

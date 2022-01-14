@@ -36,11 +36,11 @@ final class WishlistsResolver implements WishlistsResolverInterface
     {
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
-        if ($user instanceof ShopUserInterface) {
-            return $this->wishlistRepository->findAllByShopUser($user->getId());
-        }
-
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+
+        if ($user instanceof ShopUserInterface) {
+            return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
+        }
 
         return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
     }

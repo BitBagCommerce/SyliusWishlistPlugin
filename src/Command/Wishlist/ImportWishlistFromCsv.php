@@ -18,10 +18,16 @@ final class ImportWishlistFromCsv
 
     private Request $request;
 
-    public function __construct(\SplFileInfo $file, Request $request)
-    {
+    private int $wishlistId;
+
+    public function __construct(
+        \SplFileInfo $file,
+        Request $request,
+        int $wishlistId
+    ) {
         $this->file = $file;
         $this->request = $request;
+        $this->wishlistId = $wishlistId;
     }
 
     public function getFileInfo(): \SplFileInfo
@@ -32,5 +38,10 @@ final class ImportWishlistFromCsv
     public function getRequest(): Request
     {
         return $this->request;
+    }
+
+    public function getWishlistId(): int
+    {
+        return $this->wishlistId;
     }
 }

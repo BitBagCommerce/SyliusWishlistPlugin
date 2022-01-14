@@ -146,7 +146,9 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         if (isset($this->user)) {
             /** @var WishlistInterface $wishlist */
-            $wishlist = $this->wishlistRepository->findOneByShopUser($this->user);
+            $wishlist = $this->wishlistRepository->findOneBy([
+                'shopUser' => $this->user->getId(),
+            ]);
         } else {
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
@@ -278,7 +280,9 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         if (isset($this->user)) {
             /** @var WishlistInterface $wishlist */
-            $wishlist = $this->wishlistRepository->findOneByShopUser($this->user);
+            $wishlist = $this->wishlistRepository->findOneBy([
+                'shopUser' => $this->user->getId(),
+            ]);
         } else {
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->wishlistRepository->find($this->wishlist->getId());

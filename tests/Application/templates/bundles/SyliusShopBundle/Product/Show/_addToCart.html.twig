@@ -39,17 +39,7 @@
         {{ 'sylius.ui.add_to_cart'|trans }}
     </button>
 
-    {# Add variant to wishlist button #}
-    <button
-        id="{{ form.addToWishlist.vars.id }}"
-        name="{{ form.addToWishlist.vars.full_name }}"
-        class="{{ form.addToWishlist.vars.attr.class }}"
-        data-bb-toggle="wishlist-variant"
-        {{ sylius_test_html_attribute('wishlist-add-variant') }}
-    >
-        <i class="heart icon"></i>
-        {{ form.addToWishlist.vars.label|trans }}
-    </button>
+    {% include("@BitBagSyliusWishlistPlugin/Common/_addToWishlist.html.twig") %}
 
     {{ form_row(form._token) }}
     {{ form_end(form, {'render_rest': false}) }}

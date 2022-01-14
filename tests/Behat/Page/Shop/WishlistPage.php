@@ -40,6 +40,8 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         foreach ($wishlists as $wishlist) {
             if ($wishlistName === $wishlist->getAttribute('data-wishlist-name')) {
                 $wishlist->click();
+
+                return;
             }
         }
     }
