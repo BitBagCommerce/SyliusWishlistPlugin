@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
@@ -40,6 +41,8 @@ final class ExportSelectedProductsToCsvAction
     private TranslatorInterface $translator;
 
     private WishlistRepositoryInterface $wishlistRepository;
+
+    private string $wishlistName = '';
 
     public function __construct(
         CartContextInterface $cartContext,
@@ -84,8 +87,11 @@ final class ExportSelectedProductsToCsvAction
 
     private function createForm(int $wishlistId): FormInterface
     {
+        /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find($wishlistId);
         $cart = $this->cartContext->getCart();
+
+        $this->wishlistName = $wishlist->getName();
 
         $commandsArray = $this->wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlist->getWishlistProducts());
 
@@ -110,7 +116,7 @@ final class ExportSelectedProductsToCsvAction
 
     private function getCsvFileFromWishlistProducts(FormInterface $form): \SplFileObject
     {
-        $file = new \SplFileObject('export.csv', 'w+');
+        $file = new \SplFileObject($this->wishlistName, 'w+');
         $command = new ExportWishlistToCsv($form->get('items')->getData(), $file);
 
         return $this->handle($command);
