@@ -117,7 +117,7 @@ final class ExportSelectedProductsToCsvAction
     private function getCsvFileFromWishlistProducts(FormInterface $form): \SplFileObject
     {
         $file = new \SplFileObject(sprintf('%s.csv', $this->wishlistName), 'w+');
-        $command = new ExportWishlistToCsv($form->get('items')->getData(), $file);
+        $command = new ExportWishlistToCsv($form->getData(), $file);
 
         return $this->handle($command);
     }

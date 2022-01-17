@@ -1,6 +1,6 @@
 services:
     bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_products_to_wishlist_handler:
-        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToWishlistHandler
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler
         arguments:
             - "@session.flash_bag"
             - '@translator'

@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Services\Exporter;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreator;
@@ -47,9 +46,6 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
     {
         $productsToExport = $this->createVariantModelToPdf($wishlistProducts, $request);
 
-        if (empty($productsToExport)) {
-            throw new NoProductSelectedException();
-        }
         $this->exportToPdf($productsToExport);
     }
 
@@ -57,12 +53,10 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
     {
         /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $key => $wishlistProduct) {
-            if ($wishlistProduct->isSelected()) {
-                if (0 === $key) {
-                    $this->wishlistName = $wishlistProduct->getWishlistProduct()->getWishlist()->getName();
-                }
-                $selectedProducts[] = $this->createCollectionOfWishlistItems($wishlistProduct, $request);
+            if (0 === $key) {
+                $this->wishlistName = $wishlistProduct->getWishlistProduct()->getWishlist()->getName();
             }
+            $selectedProducts[] = $this->createCollectionOfWishlistItems($wishlistProduct, $request);
         }
 
         return $selectedProducts;

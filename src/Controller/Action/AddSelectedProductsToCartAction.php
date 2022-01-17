@@ -17,7 +17,7 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
 {
     protected function handleCommand(FormInterface $form): void
     {
-        $command = new AddSelectedProductsToCart($form->get('items')->getData());
+        $command = new AddSelectedProductsToCart($form->getData());
         $this->messageBus->dispatch($command);
     }
 }

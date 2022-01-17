@@ -145,7 +145,7 @@ services:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.add_products_to_wishlist:
-        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductsToWishlistAction
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductsToCartAction
         parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action"
         public: true
         tags:
@@ -257,6 +257,13 @@ services:
     bitbag_sylius_wishlist_plugin.form.type.create_new_wishlist:
         class: BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType
         arguments:
+        tags:
+            - { name: form.type }
+
+    bitbag_sylius_wishlist_plugin.form.type.wishlist_collection_type:
+        class: BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType
+        arguments:
+            - "@translator"
         tags:
             - { name: form.type }
 

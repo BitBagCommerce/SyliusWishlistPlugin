@@ -17,7 +17,7 @@ final class RemoveSelectedProductsFromWishlistAction extends BaseWishlistProduct
 {
     protected function handleCommand(FormInterface $form): void
     {
-        $command = new RemoveSelectedProductsFromWishlist($form->get('items')->getData());
+        $command = new RemoveSelectedProductsFromWishlist($form->getData());
         $this->messageBus->dispatch($command);
     }
 }

@@ -55,7 +55,8 @@
 
         </div>
 
-        {{ form_end(form) }}
+        {{ form_row(form._token) }}
+        {{ form_end(form, {'render_rest': false} ) }}
     {% else %}
         <div class="ui one column stackable grid">
             <div class="column">
