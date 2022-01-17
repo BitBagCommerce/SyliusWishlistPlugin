@@ -12,7 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-final class AddProductsToWishlist
+final class AddProductsToCart
 {
     /** @var Collection<WishlistItem> */
     private Collection $wishlistProducts;

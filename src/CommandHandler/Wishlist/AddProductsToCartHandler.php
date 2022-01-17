@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class AddProductsToWishlistHandler implements MessageHandlerInterface
+final class AddProductsToCartHandler implements MessageHandlerInterface
 {
     private FlashBagInterface $flashBag;
 
@@ -42,7 +42,7 @@ final class AddProductsToWishlistHandler implements MessageHandlerInterface
         $this->orderRepository = $orderRepository;
     }
 
-    public function __invoke(AddProductsToWishlist $addProductsToWishlistCommand): void
+    public function __invoke(AddProductsToCart $addProductsToWishlistCommand): void
     {
         $this->addProductsToWishlist($addProductsToWishlistCommand->getWishlistProducts());
     }
