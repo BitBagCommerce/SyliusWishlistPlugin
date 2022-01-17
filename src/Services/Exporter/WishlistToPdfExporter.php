@@ -31,6 +31,8 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
 
     private ModelCreator $modelCreator;
 
+    private string $wishlistName;
+
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
         Environment $twigEnvironment,
@@ -54,8 +56,11 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
     private function createVariantModelToPdf(Collection $wishlistProducts, Request $request): array
     {
         /** @var WishlistItemInterface $wishlistProduct */
-        foreach ($wishlistProducts as $wishlistProduct) {
+        foreach ($wishlistProducts as $key => $wishlistProduct) {
             if ($wishlistProduct->isSelected()) {
+                if (0 === $key) {
+                    $this->wishlistName = $wishlistProduct->getWishlistProduct()->getWishlist()->getName();
+                }
                 $selectedProducts[] = $this->createCollectionOfWishlistItems($wishlistProduct, $request);
             }
         }
@@ -97,6 +102,6 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $dompdf->stream('wishlist.pdf', ['Attachment' => true]);
+        $dompdf->stream(sprintf('%s.csv', $this->wishlistName), ['Attachment' => true]);
     }
 }

@@ -290,7 +290,7 @@ final class WishlistContext extends RawMinkContext implements Context
     public function iShouldHaveDownloadedCsvFile(): void
     {
         Assert::eq($this->getSession()->getResponseHeader('content-type'), 'text/csv');
-        Assert::eq($this->getSession()->getResponseHeader('content-disposition'), 'attachment; filename=export.csv');
+        Assert::eq($this->getSession()->getResponseHeader('content-disposition'), 'attachment; filename=wishlist.csv');
         Assert::eq($this->getSession()->getStatusCode(), '200');
     }
 
