@@ -20,7 +20,8 @@ class Wishlist implements WishlistInterface
 {
     protected ?int $id = null;
 
-    protected string $name;
+    /** @var string|null */
+    protected $name;
 
     /** @var Collection|WishlistProductInterface[] */
     protected $wishlistProducts;
