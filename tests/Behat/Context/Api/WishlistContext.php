@@ -125,6 +125,7 @@ final class WishlistContext extends RawMinkContext implements Context
 
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int) $jsonBody->id);
+        $wishlist->setName('wishlist');
         $this->wishlist = $wishlist;
     }
 
