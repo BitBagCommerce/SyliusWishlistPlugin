@@ -6,15 +6,11 @@ Feature: Listing wishlists
 
     Background:
         Given the store operates on a single channel in "United States"
+        Given I am on "/"
 
     @ui
     Scenario: Listing wishlist
-        Given I am on "/"
         And the store has a wishlist named "Wishlist1"
         And the store has a wishlist named "Wishlist2"
         When I go to "/wishlists"
         Then I should have 3 wishlists
-
-
-
-

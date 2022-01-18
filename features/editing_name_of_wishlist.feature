@@ -6,11 +6,11 @@ Feature: Editing wishlists name
 
     Background:
         Given the store operates on a single channel in "United States"
+        Given I am on "/"
 
     @ui
     Scenario: Editing wishlists name
-        Given I am on "/"
-        Given the store has a wishlist named "Wishlist1"
+        And the store has a wishlist named "Wishlist1"
         When I go to "/wishlists"
         Then I should see "Wishlist1"
         And I follow edit for "Wishlist1"

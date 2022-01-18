@@ -6,10 +6,10 @@ Feature: Showing chosen wishlist
 
     Background:
         Given the store operates on a single channel in "United States"
+        Given I am on "/"
 
     @ui
     Scenario: Showing chosen wishlist
-        Given I am on "/"
         And the store has a wishlist named "Wishlist1"
         And the store has a wishlist named "Wishlist2"
         And the store has a product "Jack Daniels Gentleman" priced at "$10.00"
@@ -20,9 +20,3 @@ Feature: Showing chosen wishlist
         When I open "Wishlist2"
         Then I should see "Wishlist2"
         And I should have "Jack Daniels Gentleman" in selected wishlists "Wishlist2"
-
-
-
-
-
-
