@@ -59,7 +59,11 @@ final class CreateNewWishlistAction
         if ($form->isSubmitted() && $form->isValid()) {
             $createNewWishlist = $form->getData();
             $this->commandBus->dispatch($createNewWishlist);
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist'));
+
+            $this->flashBag->add(
+                'success',
+                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist')
+            );
 
             return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
         }

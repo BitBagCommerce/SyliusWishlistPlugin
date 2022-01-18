@@ -12,6 +12,8 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToSelectedWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
+use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -57,13 +59,26 @@ final class AddProductToSelectedWishlistAction
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
+        if (null === $wishlist) {
+            throw new WishlistNotFoundException(
+                'Wishlist not found.'
+            );
+        }
+
         /** @var ProductInterface $product */
         $product = $this->productRepository->find($productId);
+
+        if (null === $product) {
+            throw new ProductNotFoundException(
+                sprintf('The Product %s does not exist', $productId)
+            );
+        }
 
         $addProductToSelectedWishlist = new AddProductToSelectedWishlist($wishlist, $product);
         $this->commandBus->dispatch($addProductToSelectedWishlist);
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+
         return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
             'wishlistId' => $wishlistId,
         ])
