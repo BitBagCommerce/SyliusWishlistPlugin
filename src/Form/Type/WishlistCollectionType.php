@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Form\Type;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -27,9 +25,14 @@ final class WishlistCollectionType extends AbstractType
 {
     private TranslatorInterface $translator;
 
-    public function __construct(TranslatorInterface $translator)
-    {
+    private SelectedWishlistProductsProcessorInterface $selectedWishlistProductsProcessor;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        SelectedWishlistProductsProcessorInterface $selectedWishlistProductsProcessor
+    ) {
         $this->translator = $translator;
+        $this->selectedWishlistProductsProcessor = $selectedWishlistProductsProcessor;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -60,7 +63,11 @@ final class WishlistCollectionType extends AbstractType
             return;
         }
 
-        $selectedProducts = $this->createSelectedWishlistProductsCollection($event);
+        $selectedProducts = $this->
+        selectedWishlistProductsProcessor->
+        createSelectedWishlistProductsCollection(
+            $event->getForm()->get('items')->getData()
+        );
 
         if ($selectedProducts->isEmpty()) {
             $event->getForm()->addError(new FormError($this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')));
@@ -74,21 +81,5 @@ final class WishlistCollectionType extends AbstractType
         $resolver
             ->setRequired('cart')
             ->setDefault('data_class', null);
-    }
-
-    private function createSelectedWishlistProductsCollection(FormEvent $event): Collection
-    {
-        $selectedProducts = new ArrayCollection();
-
-        foreach ($event->getData() as $wishlistProducts) {
-            /** @var WishlistItem $wishlistProduct */
-            foreach ($wishlistProducts as $wishlistProduct) {
-                if (true === $wishlistProduct->isSelected()) {
-                    $selectedProducts->add($wishlistProduct);
-                }
-            }
-        }
-
-        return $selectedProducts;
     }
 }

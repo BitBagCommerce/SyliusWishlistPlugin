@@ -264,6 +264,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType
         arguments:
             - "@translator"
+            - "@bitbag_sylius_wishlist_plugin.processor.selected_wishlist_products_processor"
         tags:
             - { name: form.type }
 
