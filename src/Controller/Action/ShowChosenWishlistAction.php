@@ -66,7 +66,7 @@ final class ShowChosenWishlistAction
     {
         $cart = $this->cartContext->getCart();
 
-        $commandsArray = $this->wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlist->getWishlistProducts());
+        $commandsArray = $this->wishlistCommandProcessor->createWishlistItemsCollection($wishlist->getWishlistProducts());
 
         return $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,

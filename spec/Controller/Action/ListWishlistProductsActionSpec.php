@@ -73,7 +73,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $cartContext->getCart()->willReturn($cart);
         $wishlist->getWishlistProducts()->willReturn($wishlistProducts);
 
-        $wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlistProducts)->willReturn($commandsArray);
+        $wishlistCommandProcessor->createWishlistItemsCollection($wishlistProducts)->willReturn($commandsArray);
 
         $formFactory
             ->create(
