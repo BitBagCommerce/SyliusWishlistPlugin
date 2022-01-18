@@ -183,10 +183,11 @@ services:
     bitbag_sylius_wishlist_plugin.event_listener.create_new_wishlist:
         class: BitBag\SyliusWishlistPlugin\EventSubscriber\CreateNewWishlistSubscriber
         arguments:
-            - "@request_stack"
             - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
-            - "@sylius.command_bus"
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@security.token_storage"
         tags:
             - { name: kernel.event_subscriber }
 

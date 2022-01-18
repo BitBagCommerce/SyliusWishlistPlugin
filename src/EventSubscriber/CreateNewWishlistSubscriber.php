@@ -10,39 +10,43 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\EventSubscriber;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
+use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Messenger\HandleTrait;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
-    use HandleTrait;
-
-    private RequestStack $requestStack;
-
     private string $wishlistCookieToken;
 
     private WishlistsResolverInterface $wishlistsResolver;
 
+    private WishlistFactoryInterface $wishlistFactory;
+
+    private WishlistRepositoryInterface $wishlistRepository;
+
+    private TokenStorageInterface $tokenStorage;
+
     public function __construct(
-        RequestStack $requestStack,
         string $wishlistCookieToken,
         WishlistsResolverInterface $wishlistsResolver,
-        MessageBusInterface $messageBus
+        WishlistFactoryInterface $wishlistFactory,
+        WishlistRepositoryInterface $wishlistRepository,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->requestStack = $requestStack;
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
-        $this->messageBus = $messageBus;
+        $this->wishlistFactory = $wishlistFactory;
+        $this->wishlistRepository = $wishlistRepository;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public static function getSubscribedEvents(): array
@@ -62,12 +66,14 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistsResolver->resolve();
 
-        if ($event->getRequest()->cookies->has($this->wishlistCookieToken) && !empty($wishlists)) {
+        $wishlistCookieToken = $event->getRequest()->cookies->get($this->wishlistCookieToken);
+
+        if ($wishlistCookieToken && !empty($wishlists)) {
             return;
         }
 
         /** @var WishlistInterface $wishlist */
-        $wishlist = $this->createNewWishlist();
+        $wishlist = $this->createNewWishlist($wishlistCookieToken);
 
         $event->getRequest()->attributes->set($this->wishlistCookieToken, $wishlist->getToken());
     }
@@ -93,11 +99,24 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $event->getRequest()->attributes->remove($this->wishlistCookieToken);
     }
 
-    private function createNewWishlist(): WishlistInterface
+    private function createNewWishlist(?string $wishlistCookieToken): WishlistInterface
     {
-        $createNewWishlist = new CreateNewWishlist();
+        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
-        return $this->handle($createNewWishlist);
+        $wishlist = $this->wishlistFactory->createNew();
+
+        if ($user instanceof ShopUserInterface) {
+            $wishlist = $this->wishlistFactory->createForUser($user);
+        }
+
+        if ($wishlistCookieToken) {
+            $wishlist->setToken($wishlistCookieToken);
+        }
+
+        $wishlist->setName('Wishlist');
+        $this->wishlistRepository->add($wishlist);
+
+        return $wishlist;
     }
 
     private function setWishlistCookieToken(Response $response, string $wishlistCookieToken): void

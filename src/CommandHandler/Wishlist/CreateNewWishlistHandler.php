@@ -11,11 +11,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -27,25 +26,21 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
 
     private WishlistFactoryInterface $wishlistFactory;
 
-    private RequestStack $requestStack;
-
-    private string $wishlistCookieToken;
+    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
-        RequestStack $requestStack,
-        string $wishlistCookieToken
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
-        $this->requestStack = $requestStack;
-        $this->wishlistCookieToken = $wishlistCookieToken;
+        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
-    public function __invoke(CreateNewWishlist $createNewWishlist): WishlistInterface
+    public function __invoke(CreateNewWishlist $createNewWishlist): void
     {
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
@@ -55,15 +50,13 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
             $wishlist = $this->wishlistFactory->createNew();
         }
 
-        $mainRequest = $this->requestStack->getMasterRequest();
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
-        if ($mainRequest->cookies->get($this->wishlistCookieToken)) {
-            $wishlist->setToken($mainRequest->cookies->get($this->wishlistCookieToken));
+        if ($wishlistCookieToken) {
+            $wishlist->setToken($wishlistCookieToken);
         }
 
         $wishlist->setName($createNewWishlist->getName());
         $this->wishlistRepository->add($wishlist);
-
-        return $wishlist;
     }
 }
