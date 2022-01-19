@@ -14,8 +14,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
-use Sylius\Component\Core\Model\ProductVariant;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ModelCreator implements ModelCreatorInterface
 {
@@ -23,31 +22,32 @@ final class ModelCreator implements ModelCreatorInterface
 
     private VariantPdfModelFactoryInterface $variantPdfModelFactory;
 
+    private RequestStack $requestStack;
+
     public function __construct(
         VariantImageToDataUriResolverInterface $variantImageToDataUriResolver,
-        VariantPdfModelFactoryInterface $variantPdfModelFactory
+        VariantPdfModelFactoryInterface $variantPdfModelFactory,
+        RequestStack $requestStack
     ) {
         $this->variantImageToDataUriResolver = $variantImageToDataUriResolver;
         $this->variantPdfModelFactory = $variantPdfModelFactory;
+        $this->requestStack = $requestStack;
     }
 
-    public function createWishlistItemToPdf(
-        WishlistItemInterface $wishlistProduct,
-        Request $request,
-        ProductVariant $variant
-    ): VariantPdfModelInterface
+    public function createWishlistItemToPdf(WishlistItemInterface $wishlistProduct): VariantPdfModelInterface
     {
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();
+        $variant = $cartItem->getVariant();
         $quantity = $cartItem->getQuantity();
-        $baseUrl = $request->getSchemeAndHttpHost();
+        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
         $urlToImage = $this->variantImageToDataUriResolver->resolve($variant, $baseUrl);
-        $actualVariant = $cartItem->getVariant()->getCode();
+        $variantCode = $variant->getCode();
 
         return $this->variantPdfModelFactory->createWithVariantAndImagePath(
             $variant,
             $urlToImage,
             $quantity,
-            $actualVariant
+            $variantCode
         );
     }
 }
