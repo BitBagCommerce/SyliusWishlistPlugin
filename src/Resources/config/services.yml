@@ -180,6 +180,9 @@ services:
     bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer:
         class: BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactory
 
+    bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf:
+        class: BitBag\SyliusWishlistPlugin\Factory\DomPdfFactory
+
     bitbag_sylius_wishlist_plugin.event_listener.create_new_wishlist:
         class: BitBag\SyliusWishlistPlugin\EventSubscriber\CreateNewWishlistSubscriber
         arguments:
@@ -232,6 +235,7 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.resolver.variant_image_path_resolver"
             - "@bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory"
+            - "@request_stack"
 
     bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory:
         class: BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory
@@ -239,9 +243,14 @@ services:
     bitbag_sylius_wishlist_plugin.services.exporter:
         class: BitBag\SyliusWishlistPlugin\Services\Exporter\WishlistToPdfExporter
         arguments:
-            - "@sylius.repository.product_variant"
+            - "@bitbag_sylius_wishlist_plugin.processor.variant_pdf_model_processor"
+            - "@bitbag_sylius_wishlist_plugin.services.exporter.dom_pdf_wishlist_exporter"
+
+    bitbag_sylius_wishlist_plugin.services.exporter.dom_pdf_wishlist_exporter:
+        class: BitBag\SyliusWishlistPlugin\Services\Exporter\DomPdfWishlistExporter
+        arguments:
             - "@twig"
-            - "@bitbag_sylius_wishlist_plugin.services.generator.model_creator"
+            - "@bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf"
 
     bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\CreateNewWishlistAction
