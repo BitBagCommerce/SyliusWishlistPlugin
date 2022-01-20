@@ -55,6 +55,7 @@
 
         </div>
 
+        {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_copyToWishlistModal.html.twig" %}
         {{ form_row(form._token) }}
         {{ form_end(form, {'render_rest': false} ) }}
     {% else %}
@@ -70,5 +71,5 @@
             </a>
         </div>
     {% endif %}
-    {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_copyToWishlistModal.html.twig" %}
+
 {% endblock %}
