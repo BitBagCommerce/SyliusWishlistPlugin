@@ -16,9 +16,20 @@ use Sylius\Component\Core\Model\ProductInterface;
 
 class WishlistPage extends SymfonyPage implements WishlistPageInterface
 {
+    /**
+     * Works only with 1 wishlist
+     * For case with many wishlists @see getProductElements
+     */
     public function getItemsCount(): int
     {
         return (int) $this->getElement('items_count')->getText();
+    }
+
+    public function getProductElements(): int
+    {
+        $productElements = $this->getDocument()->findAll('css', '[data-test-wishlist-item-name]');
+
+        return count($productElements);
     }
 
     public function addProductToSelectedWishlist(string $productName, string $wishlistName): void
@@ -122,6 +133,20 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
     public function addSelectedProductsToCart(): void
     {
         $this->getElement('add_selected')->press();
+    }
+
+    public function copySelectedProducts(string $wishlistName): void
+    {
+        $copyElements = $this->getDocument()->findAll('css', '[wishlist-copy-to-wishlist]');
+
+        /** @var NodeElement $copyElement */
+        foreach ($copyElements as $copyElement) {
+            if ($wishlistName === $copyElement->getAttribute('data-wishlist-name')) {
+                $copyElement->click();
+
+                return;
+            }
+        }
     }
 
     public function exportSelectedProductsToCsv(): void

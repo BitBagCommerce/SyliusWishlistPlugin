@@ -132,6 +132,18 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @Then I should have :count products in selected wishlist :wishlistName
+     */
+    public function iShouldHaveProductsInSelectedWishlist(int $count, string $wishlistName): void
+    {
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $this->sharedStorage->get($wishlistName);
+
+        $this->visitPath('/wishlists/' . $wishlist->getId());
+        Assert::eq($count, $this->wishlistPage->getProductElements());
+    }
+
+    /**
      * @Given the store has a wishlist named :name
      */
     public function theStoreHasAWishlist(string $name): void
@@ -250,6 +262,14 @@ final class WishlistContext extends RawMinkContext implements Context
     public function iAddSelectedProductsToCart(): void
     {
         $this->wishlistPage->addSelectedProductsToCart();
+    }
+
+    /**
+     * @When I copy selected products to :wishlistName
+     */
+    public function iCopySelectedProducts(string $wishlistName): void
+    {
+        $this->wishlistPage->copySelectedProducts($wishlistName);
     }
 
     /**

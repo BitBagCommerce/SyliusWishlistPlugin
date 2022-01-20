@@ -21,5 +21,6 @@ bitbag_sylius_wishlist_plugin:
         export_to_csv: Eksportuj do CSV
         import_from_csv: Importuj z CSV
         upload_valid_csv: Dodany plik posiada niewłaściwy format
-        variant_already_in_wishlist: Wariant znajduje się już w liście życzeń
+        variant_already_in_wishlist: Wariant znajduje się już w liście życzeń.
         selected_wishlist_items_successfully_exported: Wybrane produkty zostały pomyślnie wyeksportowane.
+        copied_selected_wishlist_items: Wybrane produkty zostały pomyślnie skopiowane.

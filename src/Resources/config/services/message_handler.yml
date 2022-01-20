@@ -128,3 +128,11 @@ services:
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
         tags:
             - { name: messenger.message_handler }
+
+    bitbag_sylius_wishlist_plugin.command_handler.wishlist.copy_selected_products_to_other_wishlist:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CopySelectedProductsToOtherWishlistHandler
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist"
+            - "@request_stack"
+        tags:
+            - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }

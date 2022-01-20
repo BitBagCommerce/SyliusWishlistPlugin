@@ -29,3 +29,4 @@ bitbag_sylius_wishlist_plugin:
         edit_wishlist_name: Wishlist name has been edited.
         clear_wishlist: Wishlist has been cleared.
         create_new_wishlist_label: Choose name
+        copied_selected_wishlist_items: Selected products successfully copied.
