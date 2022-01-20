@@ -47,7 +47,7 @@ final class SelectedWishlistProductsProcessorSpec extends ObjectBehavior
         $formData = new ArrayCollection();
 
         $this->createSelectedWishlistProductsCollection($formData)
-            ->first()
-            ->shouldBeLike([]);
+            ->count()
+            ->shouldBe(0);
     }
 }

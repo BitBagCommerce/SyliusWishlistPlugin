@@ -60,7 +60,7 @@ final class VariantPdfModelProcessorSpec extends ObjectBehavior
         $formData = new ArrayCollection();
 
         $this->createVariantPdfModelCollection($formData)
-            ->first()
-            ->shouldBeLike([]);
+            ->count()
+            ->shouldBe(0);
     }
 }

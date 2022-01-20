@@ -12,10 +12,16 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Factory;
 
 use Dompdf\Dompdf;
-use Dompdf\Options;
 
 class DomPdfFactory implements DomPdfFactoryInterface
 {
+    private DomPdfOptionsFactoryInterface $domPdfOptionsFactory;
+
+    public function __construct(DomPdfOptionsFactoryInterface $domPdfOptionsFactory)
+    {
+        $this->domPdfOptionsFactory = $domPdfOptionsFactory;
+    }
+
     public function createNew(): Dompdf
     {
         return new Dompdf();
@@ -23,11 +29,14 @@ class DomPdfFactory implements DomPdfFactoryInterface
 
     public function createNewWithDefaultOptions(): Dompdf
     {
-        $pdfOptions = new Options();
+        $pdfOptions = $this->domPdfOptionsFactory->createNew();
 
         $pdfOptions->set('isRemoteEnabled', true);
         $pdfOptions->set('defaultFont', 'Arial');
 
-        return new Dompdf($pdfOptions);
+        $domPdf = $this->createNew();
+        $domPdf->setOptions($pdfOptions);
+
+        return $domPdf;
     }
 }

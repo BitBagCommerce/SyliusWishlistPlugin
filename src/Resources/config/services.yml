@@ -182,6 +182,11 @@ services:
 
     bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf:
         class: BitBag\SyliusWishlistPlugin\Factory\DomPdfFactory
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf_options"
+
+    bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf_options:
+        class: BitBag\SyliusWishlistPlugin\Factory\DomPdfOptionsFactory
 
     bitbag_sylius_wishlist_plugin.event_listener.create_new_wishlist:
         class: BitBag\SyliusWishlistPlugin\EventSubscriber\CreateNewWishlistSubscriber
