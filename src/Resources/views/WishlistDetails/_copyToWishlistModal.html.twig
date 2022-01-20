@@ -1,0 +1,22 @@
+<div class="bitbag copy-modal-initialization" data-bb-copy-to-wl-popup="wishlist-copy-popup">
+    <article class="copy-confirmation-modal">
+            <header class="copy-confirmation-modal__header">
+                <h2 class="copy-confirmation-modal__header--title">Choose a wishlist to which selected items should be copied</h2>
+            </header>
+            <section class="copy-confirmation-modal__body">
+                    {% for wishlistTarget in findAllByAnonymous()  %}
+                        {% if wishlist.id != wishlistTarget.id %}               
+                            <div class="copy-confirmation-modal__body--item">
+                                <button type="submit" class="ui button">
+                                    <i class="copy icon"></i>
+                                    {{ wishlistTarget.name }}
+                                </button>
+                            </div>                
+                        {% endif %}
+                    {% endfor %}
+            </section>
+            <section class="copy-confirmation-modal__confirm">
+                <button type="button" data-bb-action="cancel" class="copy-confirmation-modal__confirm--cancel">cancel</button>
+            </section>
+    </article>
+</div>

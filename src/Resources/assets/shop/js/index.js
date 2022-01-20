@@ -1,3 +1,4 @@
+import './handleWishlistListModal';
 import { WishlistVariantButton } from './WishlistVariantButton';
 import { WishlistVariantPrice } from './WishlistVariantPrice';
 
