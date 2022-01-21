@@ -7,13 +7,13 @@ Feature: Copying selected products to other wishlists
   Background:
     Given the store operates on a single channel in "United States"
     Given I am on "/"
-
-  @ui
-  Scenario: Adding a product to selected wishlist
     And the store has a wishlist named "Wishlist1"
     And the store has a wishlist named "Wishlist2"
     And the store has a product "Jack Daniels Gentleman" priced at "$10.00"
     And all store products appear under a main taxonomy
+
+  @ui
+  Scenario: Copy selected products to other wishlist
     And I should have 0 products in selected wishlist "Wishlist1"
     And I add "Jack Daniels Gentleman" to selected wishlist "Wishlist2"
     Then I should have "Jack Daniels Gentleman" in selected wishlists "Wishlist2"

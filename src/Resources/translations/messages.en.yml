@@ -23,10 +23,10 @@ bitbag_sylius_wishlist_plugin:
         import_from_csv: Import from CSV
         upload_valid_csv: Uploaded file has wrong type
         variant_already_in_wishlist: Variant already in wishlist
-        selected_wishlist_items_successfully_exported: Selected products successfully exported.
+        selected_wishlist_items_successfully_exported: Selected products have been successfully exported.
         create_new_wishlist: New wishlist has been created.
         remove_wishlist: Wishlist has been removed.
         edit_wishlist_name: Wishlist name has been edited.
         clear_wishlist: Wishlist has been cleared.
         create_new_wishlist_label: Choose name
-        copied_selected_wishlist_items: Selected products successfully copied.
+        copied_selected_wishlist_items: Selected products have been successfully copied.

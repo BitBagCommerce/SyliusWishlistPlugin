@@ -63,8 +63,7 @@ final class CopySelectedProductsToOtherWishlistAction
         int $wishlistId,
         int $destinedWishlistId,
         Request $request
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm($wishlistId);
 
         $form->handleRequest($request);
