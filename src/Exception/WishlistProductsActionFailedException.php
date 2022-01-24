@@ -18,6 +18,7 @@ final class WishlistProductsActionFailedException extends ExistingResourceExcept
 {
     private Collection $failedProductsName;
 
+    /** @var string */
     protected $message;
 
     public function __construct(Collection $failedProducts, string $message)
