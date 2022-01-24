@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlist;
+use BitBag\SyliusWishlistPlugin\Exception\WishlistProductsActionFailedException;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
@@ -22,8 +23,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CopySelectedProductsToOtherWishlistAction
 {
@@ -41,6 +44,8 @@ final class CopySelectedProductsToOtherWishlistAction
 
     private WishlistRepositoryInterface $wishlistRepository;
 
+    private TranslatorInterface $translator;
+
     public function __construct(
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
@@ -48,7 +53,8 @@ final class CopySelectedProductsToOtherWishlistAction
         MessageBusInterface $messageBus,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
+        TranslatorInterface $translator
     ) {
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
@@ -57,6 +63,7 @@ final class CopySelectedProductsToOtherWishlistAction
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
         $this->wishlistRepository = $wishlistRepository;
+        $this->translator = $translator;
     }
 
     public function __invoke(
@@ -104,6 +111,22 @@ final class CopySelectedProductsToOtherWishlistAction
     private function copySelectedProductsToOtherWishlist(FormInterface $form, int $destinedWishlistId): void
     {
         $command = new CopySelectedProductsToOtherWishlist($form->getData(), $destinedWishlistId);
-        $this->messageBus->dispatch($command);
+
+        try {
+            $this->messageBus->dispatch($command);
+        } catch (HandlerFailedException $exception) {
+            /** @var WishlistProductsActionFailedException $wishlistProductsActionFailedException */
+            $wishlistProductsActionFailedException = $exception->getPrevious();
+            $failedProductsName = $wishlistProductsActionFailedException->getFailedProductsName();
+
+            foreach ($failedProductsName as $failedProductName) {
+                $message = sprintf('%s %s', $failedProductName, $wishlistProductsActionFailedException->getMessage());
+                $this->flashBag->add('error', $this->translator->trans($message));
+            }
+        }
+
+        if (count($failedProductsName) != count($form->getData())) {
+            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.copied_selected_wishlist_items'));
+        }
     }
 }

@@ -1,0 +1,5 @@
+services:
+    bitbag_sylius_wishlist_plugin.creator.wishlist_product_variant_creator:
+        class: BitBag\SyliusWishlistPlugin\Creator\WishlistProductVariantCreator
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
