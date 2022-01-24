@@ -9,12 +9,15 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Creator;
+namespace BitBag\SyliusWishlistPlugin\Facade;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-interface WishlistProductVariantCreatorInterface
+interface WishlistProductFactoryFacadeInterface
 {
-    public function create(WishlistInterface $wishlist, ProductVariantInterface $productVariant): void;
+    public function createWithProduct(WishlistInterface $wishlist, ProductInterface $product): void;
+
+    public function createWithProductVariant(WishlistInterface $wishlist, ProductVariantInterface $productVariant): void;
 }

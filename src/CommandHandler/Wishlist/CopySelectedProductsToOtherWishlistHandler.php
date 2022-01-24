@@ -11,13 +11,13 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Checker\ProductVariantInWishlistCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\Creator\WishlistProductVariantCreatorInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantAlreadyInWishlistException;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistProductsActionFailedException;
+use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
+use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,16 +26,16 @@ final class CopySelectedProductsToOtherWishlistHandler
 {
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private ProductVariantInWishlistCheckerInterface $productVariantInWishlistChecker;
+    private ProductVariantInWishlistGuardInterface $productVariantInWishlistChecker;
 
-    private WishlistProductVariantCreatorInterface $wishlistProductVariantCreator;
+    private WishlistProductFactoryFacadeInterface $wishlistProductVariantCreator;
 
     private ArrayCollection $unprocessedProductsName;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
-        ProductVariantInWishlistCheckerInterface $productVariantInWishlistChecker,
-        WishlistProductVariantCreatorInterface $wishlistProductVariantCreator
+        ProductVariantInWishlistGuardInterface $productVariantInWishlistChecker,
+        WishlistProductFactoryFacadeInterface $wishlistProductVariantCreator
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->productVariantInWishlistChecker = $productVariantInWishlistChecker;
@@ -70,9 +70,10 @@ final class CopySelectedProductsToOtherWishlistHandler
                 $this->productVariantInWishlistChecker->check($destinedWishlist, $variant);
             } catch (ProductVariantAlreadyInWishlistException $exception) {
                 $this->unprocessedProductsName->add($wishlistProduct->getWishlistProduct()->getProduct()->getName());
+
                 continue;
             }
-            $this->wishlistProductVariantCreator->create($destinedWishlist, $variant);
+            $this->wishlistProductVariantCreator->createWithProductVariant($destinedWishlist, $variant);
         }
         $this->wishlistRepository->add($destinedWishlist);
     }

@@ -9,17 +9,18 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Creator;
+namespace spec\BitBag\SyliusWishlistPlugin\Facade;
 
-use BitBag\SyliusWishlistPlugin\Creator\WishlistProductVariantCreator;
-use BitBag\SyliusWishlistPlugin\Creator\WishlistProductVariantCreatorInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
+use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacade;
+use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-final class WishlistProductVariantCreatorSpec extends ObjectBehavior
+final class WishlistProductFactoryFacadeSpec extends ObjectBehavior
 {
     public function let(
         WishlistProductFactoryInterface $wishlistProductFactory
@@ -31,8 +32,8 @@ final class WishlistProductVariantCreatorSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(WishlistProductVariantCreator::class);
-        $this->shouldImplement(WishlistProductVariantCreatorInterface::class);
+        $this->shouldHaveType(WishlistProductFactoryFacade::class);
+        $this->shouldImplement(WishlistProductFactoryFacadeInterface::class);
     }
 
     public function it_should_create_wishlist_product_variant_and_add_it_to_wishlist(
@@ -47,7 +48,23 @@ final class WishlistProductVariantCreatorSpec extends ObjectBehavior
         $wishlist->addWishlistProduct($wishlistProduct)
             ->shouldBeCalled();
 
-        $this->create($wishlist, $productVariant)
+        $this->createWithProductVariant($wishlist, $productVariant)
+            ->shouldReturn(null);
+    }
+
+    public function it_should_create_wishlist_product_and_add_it_to_wishlist(
+        WishlistInterface $wishlist,
+        ProductInterface $product,
+        WishlistProductFactoryInterface $wishlistProductFactory,
+        WishlistProductInterface $wishlistProduct
+    ): void {
+        $wishlistProductFactory->createForWishlistAndProduct($wishlist, $product)
+            ->willReturn($wishlistProduct);
+
+        $wishlist->addWishlistProduct($wishlistProduct)
+            ->shouldBeCalled();
+
+        $this->createWithProduct($wishlist, $product)
             ->shouldReturn(null);
     }
 }
