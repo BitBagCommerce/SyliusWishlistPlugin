@@ -34,7 +34,8 @@ final class DomPdfFactorySpec extends ObjectBehavior
 
     public function it_creates_new_dom_pdf(): void
     {
-        $this->beConstructedThrough('createNew');
+        $domPdf = $this->createNew();
+        $domPdf->shouldBeAnInstanceOf(Dompdf::class);
     }
 
     public function it_creates_new_dom_pdf_with_default_options(

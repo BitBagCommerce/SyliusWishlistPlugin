@@ -13,6 +13,7 @@ namespace spec\BitBag\SyliusWishlistPlugin\Factory;
 
 use BitBag\SyliusWishlistPlugin\Factory\DomPdfOptionsFactory;
 use BitBag\SyliusWishlistPlugin\Factory\DomPdfOptionsFactoryInterface;
+use Dompdf\Options;
 use PhpSpec\ObjectBehavior;
 
 final class DomPdfOptionsFactorySpec extends ObjectBehavior
@@ -25,6 +26,7 @@ final class DomPdfOptionsFactorySpec extends ObjectBehavior
 
     public function it_creates_new_dom_pdf_options(): void
     {
-        $this->beConstructedThrough('createNew');
+        $domPdfOptions = $this->createNew();
+        $domPdfOptions->shouldBeAnInstanceOf(Options::class);
     }
 }
