@@ -9,21 +9,21 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Checker;
+namespace spec\BitBag\SyliusWishlistPlugin\Guard;
 
-use BitBag\SyliusWishlistPlugin\Checker\ProductVariantInWishlistChecker;
-use BitBag\SyliusWishlistPlugin\Checker\ProductVariantInWishlistCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantAlreadyInWishlistException;
+use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuard;
+use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-final class ProductVariantInWishlistCheckerSpec extends ObjectBehavior
+final class ProductVariantInWishlistGuardSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(ProductVariantInWishlistChecker::class);
-        $this->shouldImplement(ProductVariantInWishlistCheckerInterface::class);
+        $this->shouldHaveType(ProductVariantInWishlistGuard::class);
+        $this->shouldImplement(ProductVariantInWishlistGuardInterface::class);
     }
 
     public function it_should_throw_exception_if_product_variant_is_already_in_wishlist(

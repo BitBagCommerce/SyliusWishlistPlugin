@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Checker;
+namespace BitBag\SyliusWishlistPlugin\Guard;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-interface ProductVariantInWishlistCheckerInterface
+interface ProductVariantInWishlistGuardInterface
 {
     public function check(WishlistInterface $wishlist, ProductVariantInterface $productVariant): void;
 }
