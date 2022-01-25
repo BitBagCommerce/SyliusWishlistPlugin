@@ -110,6 +110,7 @@ final class CopySelectedProductsToOtherWishlistAction
 
     private function copySelectedProductsToOtherWishlist(FormInterface $form, int $destinedWishlistId): void
     {
+        $failedProductsName = [];
         $command = new CopySelectedProductsToOtherWishlist($form->getData(), $destinedWishlistId);
 
         try {
