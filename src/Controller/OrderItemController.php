@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller;
 
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseController;
 use Sylius\Component\Core\Model\OrderItemInterface;
@@ -54,11 +55,15 @@ final class OrderItemController extends BaseController
             $item = $addToCartCommand->getCartItem();
             $variant = $item->getVariant();
 
+            /** @var WishlistInterface $wishlist */
+            $wishlist = $form->get('wishlists')->getData();
+
             if (null === $variant) {
                 throw new NotFoundHttpException('Could not find variant');
             }
 
             return new Response($this->generateUrl('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_variant', [
+                'wishlistId' => $wishlist->getId(),
                 'variantId' => $variant->getId(),
             ]));
         }

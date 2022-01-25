@@ -92,6 +92,7 @@ final class AddProductVariantToWishlistAction
         }
 
         $wishlist->addWishlistProduct($wishlistProduct);
+        $this->wishlistRepository->add($wishlist);
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
     }
 }

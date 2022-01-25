@@ -82,6 +82,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', ['wishlistId' => 1])->willReturn('/wishlist/1');
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
+        $wishlistRepository->add($wishlist)->shouldBeCalled();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
 
         $this->__invoke(1, $request)->shouldHaveType(RedirectResponse::class);
@@ -110,6 +111,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', ['wishlistId' => 1])->willReturn('/wishlist/1');
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
+        $wishlistRepository->add($wishlist)->shouldBeCalled();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
 
         $this->__invoke(1, $request)->shouldHaveType(RedirectResponse::class);
