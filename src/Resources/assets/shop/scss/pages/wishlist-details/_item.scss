@@ -4,10 +4,11 @@
         align-items: center;
         padding: $spacer * 0.5;
         border-bottom: 1px solid $gray-200;
+        font-weight: 900;
 
         @media screen and (max-width: $breakpoint-md) {
             grid-template-areas:
-                "image name name"
+                "image name select"
                 "image price price"
                 "variant variant variant"
                 "quantity quantity actions";
@@ -22,15 +23,23 @@
 
         @media screen and (min-width: $breakpoint-md) {
             grid-template-areas:
-                "image name price quantity actions"
-                "image variant price quantity actions";
-            grid-template-columns: 100px 5fr 1fr 1fr 1fr;
+                "select image name price quantity actions"
+                "select image variant price quantity actions";
+            grid-template-columns: 50px 100px 5fr 1fr 1fr 1fr;
             grid-template-rows: 1fr auto;
             grid-column-gap: $spacer;
+        }
+        &-select {
+            grid-area: select;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         &-image {
             grid-area: image;
+            width: 75%;
+            height: 75%;
         }
 
         &-name {

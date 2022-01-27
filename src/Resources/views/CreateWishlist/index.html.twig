@@ -5,16 +5,15 @@
 
 {% block content %}
     {{ form_start(form) }}
-
-    <div class="row">
-        <br>
-        <div class="col">
-            {{ form_row(form.name) }}
-        </div>
-        <br>
-        <div class="col" id="some-custom-id">
+        <h2>
+            
+        </h2>
+        <section class="bb-wishlist-create">
+            <div class="bb-wishlist-create-name">
+                {{ form_row(form.name) }}
+            </div>
+            
             {{ form_row(form.save) }}
-        </div>
-    </div>
+        </section>
     {{ form_end(form) }}
 {% endblock %}

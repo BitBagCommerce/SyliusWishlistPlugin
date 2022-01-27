@@ -3,11 +3,11 @@ $dark_color: #050428;
 $transparent_color: rgba(0, 0, 0, 0.25);
 
 .bitbag {
-    &.copy-modal-initialization {
+    &.add-wishlist-modal-initialization {
         display: none;
     }
 
-    &.copy-modal-initialized {
+    &.add-wishlist-modal-initialized {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -20,7 +20,7 @@ $transparent_color: rgba(0, 0, 0, 0.25);
         background-color: $transparent_color;
     }
 
-    .copy-confirmation-modal {
+    .add-wishlist-confirmation-modal {
         background-color: $bright_color;
         border-radius: 8px;
         padding: 24px;
@@ -40,13 +40,29 @@ $transparent_color: rgba(0, 0, 0, 0.25);
 
         &__body {
             font-size: 16px;
-            .form-body {
-                display: flex;
-                &--item {
-                    
-                    padding-top: 1rem;
-                }
+
+            &--input {
+                padding-top: 1rem;
+                line-height: 1.4285em;
+                color: rgba(0,0,0,.87);
+                font-weight: 400;
+                -webkit-text-size-adjust: 100%;
+                border-color: #85b7d9;
+                text-align: left;
+                padding: .67857143em 1em;
+                border: 1px solid rgba(34,36,38,.15);
+                border-radius: .28571429rem;
+                -webkit-tap-highlight-color: rgba(255,255,255,0);
             }
+
+            &--input::placeholder {
+                max-height: auto;
+            }
+
+            .form-body {
+                display: flex;   
+            }
+            
         }
 
         &__confirm {
@@ -96,8 +112,7 @@ $transparent_color: rgba(0, 0, 0, 0.25);
     }
 }
 
-.copy-confirmation-modal__body--item {
+.add-wishlist-confirmation-modal__body--item {
     padding-bottom: 1rem;
     font-size: 16px;
 }
-

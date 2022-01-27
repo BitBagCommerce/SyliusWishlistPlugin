@@ -10,13 +10,17 @@
     </h1>
 
     {{ form_start(form, { attr: { class: 'import-wishlist ui form', id: "wishlist_import_form" } }) }}
+        <div class="wishlist-import">
+            <section class="wishlist-import-inputs">
+                {{ form_widget(form.wishlist_file, { attr: { class: "ui input",  } } ) }}
 
-        {{ form_widget(form.wishlist_file, { attr: { class: "ui input",  } } ) }}
+                {{ form_widget(form.wishlists, { attr: { class: "ui input",  } } ) }}
+            </section>
 
-        {{ form_widget(form.wishlists, { attr: { class: "ui input",  } } ) }}
-
-        {{ form_widget(form.submit, { attr: { class: "ui primary button",  } } ) }}
-
+            <section class="wishlist-import-button-wrapper">
+                {{ form_widget(form.submit, { attr: { class: "ui primary button",  } } ) }}
+            </section>
+        </div>
     {{ form_end(form) }}
 
 {% endblock %}

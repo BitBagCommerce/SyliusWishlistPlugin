@@ -1,0 +1,28 @@
+.wishlist-import{
+    margin: auto;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    width: 60%;
+    border-radius: 0.28571429rem;
+    border: 1px solid rgba(34, 36, 38, 0.15);
+
+    &-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    &-button-wrapper {
+        padding-top: 1rem;
+
+        button {
+            background: #e0e1e2 none !important;
+            color: rgba(0,0,0,.6) !important;
+        }
+
+        button:hover {
+            background-color: #CACBCD !important;
+            color: rgba(0, 0, 0, 0.8) !important;
+        }
+    }
+}

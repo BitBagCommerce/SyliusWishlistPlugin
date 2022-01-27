@@ -1,0 +1,19 @@
+.bb-wishlist-list {
+    margin: auto;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 0.28571429rem;
+    border: 1px solid rgba(34, 36, 38, 0.15);
+
+    &-wraper {
+
+        
+
+        &-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+    }
+}
+
