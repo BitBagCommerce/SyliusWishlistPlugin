@@ -28,10 +28,10 @@ export class CreateCopyToWishlistsListModal {
         this.wishlistTargets = [...document.querySelectorAll(this.finalConfig.datasetWishlistTargets)]
         this.wishlistTargetsId = [...document.querySelectorAll(this.finalConfig.datasetWishlistTargetsId)]
         this.wishlistcurrent = document.querySelector(this.finalConfig.datasetWishlistCurrentId).dataset.bbCurrentWishlistId
+        this.copyTarget
     }
 
     init() {
-
         if (this.config && typeof this.config !== 'object') {
             throw new Error('BitBag - CreateCopyToWishlistsListModal - given config is not valid - expected object');
         }
@@ -95,18 +95,11 @@ export class CreateCopyToWishlistsListModal {
     }
 
     _matchWishlists(targetWishlists) {
-
-        console.log('current',this.wishlistcurrent)
-        console.log('target',targetWishlists.value)
-
-        console.log(this.wishlistTargetsId)
-
         this.wishlistTargetsId.forEach(wishlist => {
             if (wishlist.dataset.bbWishlists == targetWishlists.value) {
-                console.log(wishlist.dataset.bbWishlistsId)
+                this.copyTarget = wishlist.dataset.bbWishlistsId
             }
         });
-
     }
 
     _modalActions(template) {
@@ -122,7 +115,7 @@ export class CreateCopyToWishlistsListModal {
         confirmBtn.addEventListener('click', (e) => {
             e.preventDefault();
             this._matchWishlists(document.querySelector('[data-bb-target] select'));
-            this.actions.performAction();
+            this.actions.performAction(this.wishlistcurrent, this.copyTarget);
             this._closeModal();
         });
     }

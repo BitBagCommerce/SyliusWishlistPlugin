@@ -9,22 +9,41 @@ const setAddWishlistModal = () => {
             {},
             {
                 cancelAction: () => {},
-                performAction: async () => {
-                    const form = e.target.closest('form')
+                performAction: async (current, target) => {
+                    const form = e.target.closest('form');
                     const formData = new FormData(form);
-                    const url = '/wishlist/{wishlistId}/copy/{destinedWishlistId}'
-                    const config = {method: 'POST', body: formData.json}
+                    const wishlistsBtn = document.querySelector('[href="/wishlists"]');
+                    const url = '/wishlist/' + current + '/copy/' + target;
                     
+                    const csrfToken = document.querySelector("[data-bb-csrf]").dataset.bbCsrf
+                    
+                    const headers = new Headers({
+                        'X-CSRF-TOKEN': csrfToken
+                    });
+
+                    const requestConfig = {
+                        method: 'POST',
+                        headers: headers, 
+                        body: formData
+                    };
+
                     try {
-                        const response = await fetch(url, config);
+                        const response = await fetch(url, requestConfig);
                         const data = await response.json();
-                        console.log(data)
+
+                        wishlistsBtn.classList.add('bb-copy-to-wishlist-sukces')
+                        setTimeout(() => {
+                            wishlistsBtn.classList.remove('bb-copy-to-wishlist-sukces')
+                        }, 900);
                     } catch (error) {
+                        wishlistsBtn.classList.add('bb-copy-to-wishlist-faliure')
+                        setTimeout(() => {
+                            wishlistsBtn.classList.remove('bb-copy-to-wishlist-faliure')
+                        }, 900);
                         console.error(error);
                     } finally {
                         
                     }
-
                 },
             }
         ).init();

@@ -51,7 +51,7 @@
                 {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_collectiveActions.html.twig" %}
                 {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_globalActions.html.twig" %}
             </div>
-
+            <input type="hidden" data-bb-csrf="{{ csrf_token('some-name') }}"/>
         </div>
 
         {{ form_row(form._token) }}
@@ -62,7 +62,7 @@
                 {{ messages.info('bitbag_sylius_wishlist_plugin.ui.your_wishlist_is_empty'|trans) }}
             </div>
             <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_import_from_csv') }}">
-                <button type="button" class="ui secondary button" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
+                <button type="button" class="ui secondary button bb-wishlist-actions-import-button" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
                     <i class="cart icon"></i>
                     {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}
                 </button>

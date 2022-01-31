@@ -6,13 +6,26 @@
     border: 1px solid rgba(34, 36, 38, 0.15);
 
     &-wraper {
-
+        display: flex;
+        align-items: center;
         
+        &-icon {
+            aspect-ratio: 1/1;
+            font-size: 1.5em;
+            vertical-align: middle;
+            margin-right: 2rem;            
+        }
 
         &-content {
+            width: 100%;
             display: flex;
-            flex-direction: column;
-            justify-content: space-around;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            &-name {
+                padding-left: 1rem;
+            }
         }
     }
 }

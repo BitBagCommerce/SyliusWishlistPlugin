@@ -15,12 +15,23 @@ const setAddWishlistModal = () => {
 
                     const url = '/wishlists/create'
                     const formData = new FormData(form);
-                    const config = {method: 'POST', body: formData}
+                    const csrfToken = document.querySelector("[data-bb-csrf]").dataset.bbCsrf
 
+                    const headers = new Headers({
+                        'X-CSRF-TOKEN': csrfToken
+                    });
+
+                    const requestConfig = {
+                        method: 'POST',
+                        headers: headers, 
+                        body: formData
+                    }
+                    
+                    console.log(csrfToken);
                     try {
-                        const response = await fetch(url, config);
-                        // const data = await response.json();
-                        console.log(response);
+                        const response = await fetch(url, requestConfig);
+                        const data = await response.json();
+                        
                     } catch (error) {
                         console.error(error);
                     } finally {
