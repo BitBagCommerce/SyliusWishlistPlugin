@@ -27,7 +27,6 @@ const setAddWishlistModal = () => {
                         body: formData
                     }
                     
-                    console.log(csrfToken);
                     try {
                         const response = await fetch(url, requestConfig);
                         const data = await response.json();
@@ -35,8 +34,8 @@ const setAddWishlistModal = () => {
                     } catch (error) {
                         console.error(error);
                     } finally {
-                        
-                    }
+                        location.reload()
+                    }    
                 },
             }
         ).init();

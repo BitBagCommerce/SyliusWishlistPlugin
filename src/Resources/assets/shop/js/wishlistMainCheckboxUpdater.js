@@ -54,7 +54,7 @@ export class WishlistMainCheckboxUpdater {
         }
     }
 
-    _handleMainCheckbox(){
+    _handleMainCheckboxToggle(){
         if (this.mainCheckbox.checked != true) {
             this._toggleCheckboxesOFF()
             this._disableBulkActionsBtn()
@@ -85,7 +85,7 @@ export class WishlistMainCheckboxUpdater {
         });
 
         this.mainCheckbox.addEventListener('change', (e) => {
-            this._handleMainCheckbox();
+            this._handleMainCheckboxToggle();
         });        
     };
 }
