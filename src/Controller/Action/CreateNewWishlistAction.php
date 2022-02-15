@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Form\Type\CreateNewWishlistType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,25 +55,15 @@ final class CreateNewWishlistAction
 
     public function __invoke(Request $request): Response
     {
-        $form = $this->formFactory->create(CreateNewWishlistType::class);
-        $form->handleRequest($request);
+        $wishlistName = $request->request->get('create_new_wishlist')['name'];
+        $createNewWishlist = new CreateNewWishlist($wishlistName);
+        $this->commandBus->dispatch($createNewWishlist);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $createNewWishlist = $form->getData();
-            $this->commandBus->dispatch($createNewWishlist);
-
-            $this->flashBag->add(
-                'success',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist')
-            );
-
-            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
-        }
-
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig', [
-                'form' => $form->createView(),
-            ])
+        $this->flashBag->add(
+            'success',
+            $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist')
         );
+
+        return new JsonResponse();
     }
 }
