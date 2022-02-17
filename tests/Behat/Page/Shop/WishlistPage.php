@@ -203,4 +203,9 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
             'export_selected_pdf' => '[data-test-wishlist-export-to-pdf-from-wishlist]',
         ];
     }
+
+    public function waitForOneSecond()
+    {
+        $this->getDriver()->wait(1000, "false == true");
+    }
 }

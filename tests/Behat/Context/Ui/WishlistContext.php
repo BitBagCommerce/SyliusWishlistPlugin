@@ -454,4 +454,12 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         Assert::true($this->wishlistPage->hasWishlistClearedValidationMessage());
     }
+
+    /**
+     * @Then I should wait for one second
+     */
+    public function iShouldWaitForOneSecond()
+    {
+        $this->wishlistPage->waitForOneSecond();
+    }
 }
