@@ -6,17 +6,20 @@ Feature: Creating a new wishlist
 
     Background:
         Given the store operates on a single channel in "United States"
+        Given I am on "/"
 
     @ui
     Scenario: Creating a default wishlist by subscriber
-        Given I am on "/"
         When I go to "/wishlists"
         Then I should have 1 wishlists
 
-    @ui
+    @ui @javascript
     Scenario: Creating a new wishlist
-        Given I am on "/wishlists/create"
+        When I go to "/wishlists"
+        Then I should have 1 wishlists
+        When I press "create_new_wishlist_button"
         And I fill in "create_new_wishlist_name" with "WishlistName"
-        When I press "create_new_wishlist_save"
+        Then I press "create_new_wishlist_save"
+        Then I should wait for one second
         Then I should be on "/wishlists"
-        And I should see "New wishlist has been created."
+        And I should have 2 wishlists

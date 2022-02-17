@@ -48,4 +48,6 @@ interface WishlistPageInterface extends SymfonyPageInterface
     public function hasProductOutOfStockValidationMessage(ProductInterface $product): bool;
 
     public function hasWishlistClearedValidationMessage(): bool;
+
+    public function waitForOneSecond();
 }
