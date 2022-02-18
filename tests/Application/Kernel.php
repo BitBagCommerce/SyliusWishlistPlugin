@@ -74,7 +74,7 @@ final class Kernel extends BaseKernel
 
     protected function getContainerBaseClass(): string
     {
-        if ($this->isTestEnvironment()) {
+        if ($this->isTestEnvironment() && class_exists(MockerContainer::class)) {
             return MockerContainer::class;
         }
 
