@@ -9,7 +9,16 @@
             {{ wishlist.name }}
         </div>
     </h1>
-
+    {% set wishlists = findAllByAnonymous() %}
+    {% if wishlists|length > 1 %}
+    {% else %}
+    <div class="middle aligned column">
+        <button id="create_new_wishlist_button" class="ui right floated primary  button" data-bb-wishlist-add="add-another-wishlist">
+            {{ 'bitbag_sylius_wishlist_plugin.ui.add_another_wishlist'|trans }}
+        </button>
+        <input type="hidden" data-bb-csrf="{{ csrf_token('some-name') }}"/>
+    </div>
+    {% endif %}
     <div class="ui hidden divider"></div>
 
     {% if wishlist.wishlistProducts.count > 0 %}
