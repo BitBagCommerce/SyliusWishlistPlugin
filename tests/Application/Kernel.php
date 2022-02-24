@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusWishlistPlugin\Application;
 
 use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
+use Sylius\Bundle\CoreBundle\Application\Kernel as SyliusKernel;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -19,6 +20,7 @@ use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -42,11 +44,12 @@ final class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
-        $contents = require $this->getProjectDir() . '/config/bundles.php';
-        foreach ($contents as $class => $envs) {
-            if (isset($envs['all']) || isset($envs[$this->environment])) {
-                yield new $class();
+        foreach ($this->getConfigurationDirectories() as $confDir) {
+            $bundlesFile = $confDir . '/bundles.php';
+            if (false === is_file($bundlesFile)) {
+                continue;
             }
+            yield from $this->registerBundlesFromFile($bundlesFile);
         }
     }
 
@@ -74,7 +77,7 @@ final class Kernel extends BaseKernel
 
     protected function getContainerBaseClass(): string
     {
-        if ($this->isTestEnvironment()) {
+        if ($this->isTestEnvironment() && class_exists(MockerContainer::class)) {
             return MockerContainer::class;
         }
 
@@ -102,5 +105,34 @@ final class Kernel extends BaseKernel
     private function isTestEnvironment(): bool
     {
         return 0 === strpos($this->getEnvironment(), 'test');
+    }
+
+    /**
+     * @return BundleInterface[]
+     */
+    private function registerBundlesFromFile(string $bundlesFile): iterable
+    {
+        $contents = require $bundlesFile;
+        foreach ($contents as $class => $envs) {
+            if (isset($envs['all']) || isset($envs[$this->environment])) {
+                yield new $class();
+            }
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getConfigurationDirectories(): iterable
+    {
+        yield $this->getProjectDir() . '/config';
+        $syliusConfigDir = $this->getProjectDir() . '/config/sylius/' . SyliusKernel::MAJOR_VERSION . '.' . SyliusKernel::MINOR_VERSION;
+        if (is_dir($syliusConfigDir)) {
+            yield $syliusConfigDir;
+        }
+        $symfonyConfigDir = $this->getProjectDir() . '/config/symfony/' . BaseKernel::MAJOR_VERSION . '.' . BaseKernel::MINOR_VERSION;
+        if (is_dir($symfonyConfigDir)) {
+            yield $symfonyConfigDir;
+        }
     }
 }

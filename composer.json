@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4 || ^8.0",
-        "sylius/sylius": "~1.10.0"
+        "sylius/sylius": "~1.10.0 || ~1.11.0"
     },
     "require-dev": {
         "behat/behat": "^3.7",
@@ -33,10 +33,9 @@
         "symfony/web-profiler-bundle": "^4.4 || ^5.2",
         "symfony/web-server-bundle": "^4.4|^5.2",
         "polishsymfonycommunity/symfony-mocker-container": "^1.0",
-        "symfony/dependency-injection": "<4.4.19 || >=5.0.0 <5.2.2",
+        "symfony/dependency-injection": "^4.4 || ^5.2",
         "dompdf/dompdf": "1.0.2",
-        "symfony/webpack-encore-bundle": "^1.12",
-        "polishsymfonycommunity/symfony-mocker-container": "^1.0"
+        "symfony/webpack-encore-bundle": "^1.12"
     },
     "conflict": {
         "doctrine/dbal": "^3.0",
