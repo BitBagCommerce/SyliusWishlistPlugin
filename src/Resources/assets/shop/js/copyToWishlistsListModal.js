@@ -76,7 +76,7 @@ export class CreateCopyToWishlistsListModal {
 
     _wishlistTemplate(wishlist) {
         return `    
-            <option value="${wishlist.dataset.bbWishlists}" data-bb-wishlist-id="${wishlist.dataset.bbWishlistsId}">
+            <option value="${wishlist.dataset.bbWishlistsId}" data-bb-wishlist-id="${wishlist.dataset.bbWishlistsId}">
                 ${wishlist.dataset.bbWishlists}
             </option>
         `;
