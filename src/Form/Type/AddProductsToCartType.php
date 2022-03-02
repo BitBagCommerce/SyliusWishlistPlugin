@@ -87,6 +87,7 @@ final class AddProductsToCartType extends AbstractType
         $resolver
             ->setRequired('cart')
             ->setDefault('data_class', WishlistItem::class)
+            ->setDefault('allow_extra_fields', true)
             ->setDefault('validation_groups', $this->validationGroups);
     }
 }

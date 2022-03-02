@@ -54,6 +54,7 @@
 
             {% for itemForm in form.items %}
                 {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_item.html.twig" %}
+                <input type="hidden" name="wishlist_collection[items][{{ loop.index - 1 }}][variant]" value="{{ itemForm.vars.data.wishlistProduct.variant.id }}"/>
             {% endfor %}
 
             <div class="bb-wishlist-actions">

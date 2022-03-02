@@ -21,6 +21,8 @@ use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 
 final class CopySelectedProductsToOtherWishlistHandler
 {
@@ -32,15 +34,19 @@ final class CopySelectedProductsToOtherWishlistHandler
 
     private ArrayCollection $unprocessedProductsName;
 
+    private ProductVariantRepositoryInterface $productVariantRepository;
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         ProductVariantInWishlistGuardInterface $productVariantInWishlistChecker,
-        WishlistProductFactoryFacadeInterface $wishlistProductVariantCreator
+        WishlistProductFactoryFacadeInterface $wishlistProductVariantCreator,
+        ProductVariantRepositoryInterface $productVariantRepository
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->productVariantInWishlistChecker = $productVariantInWishlistChecker;
         $this->wishlistProductVariantCreator = $wishlistProductVariantCreator;
         $this->unprocessedProductsName = new ArrayCollection();
+        $this->productVariantRepository = $productVariantRepository;
     }
 
     public function __invoke(CopySelectedProductsToOtherWishlist $copySelectedProductsToOtherWishlistCommand): void
@@ -64,13 +70,12 @@ final class CopySelectedProductsToOtherWishlistHandler
     {
         /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
-            $variant = $wishlistProduct->getCartItem()->getCartItem()->getVariant();
+            $variant = $this->productVariantRepository->find($wishlistProduct['variant']);
 
             try {
                 $this->productVariantInWishlistChecker->check($destinedWishlist, $variant);
             } catch (ProductVariantAlreadyInWishlistException $exception) {
                 $this->unprocessedProductsName->add($wishlistProduct->getWishlistProduct()->getProduct()->getName());
-
                 continue;
             }
             $this->wishlistProductVariantCreator->createWithProductVariant($destinedWishlist, $variant);
