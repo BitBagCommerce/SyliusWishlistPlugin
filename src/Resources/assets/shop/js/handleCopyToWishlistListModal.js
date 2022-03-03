@@ -42,7 +42,7 @@ const setAddWishlistModal = () => {
                         }, 900);
                         console.error(error);
                     } finally {
-
+                        location.reload();
                     }
                 },
             }
@@ -59,4 +59,3 @@ const turnOnListener = () => {
 };
 
 turnOnListener();
-
