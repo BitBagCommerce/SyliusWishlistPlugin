@@ -309,13 +309,8 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.copy_selected_products_to_other_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\CopySelectedProductsToOtherWishlistAction
         arguments:
-            - "@sylius.context.cart"
-            - "@form.factory"
-            - "@session.flash_bag"
             - "@sylius.command_bus"
-            - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
-            - "@router"
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@session.flash_bag"
             - "@translator"
         tags:
             - { name: controller.service_arguments }
