@@ -1,7 +1,6 @@
 import { CreateCopyToWishlistsListModal } from './copyToWishlistsListModal'
 
 const copyToWishlistBtn = document.querySelector('[data-bb-wl-list-modal-target="choose-wishlist-button"]')
-console.log(copyToWishlistBtn);
 const setAddWishlistModal = () => {
     copyToWishlistBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -30,7 +29,6 @@ const setAddWishlistModal = () => {
                     try {
                         const response = await fetch(url, requestConfig);
                         const data = await response.json();
-                        console.log(data);
                         wishlistsBtn.classList.add('bb-copy-to-wishlist-sukces')
                         setTimeout(() => {
                             wishlistsBtn.classList.remove('bb-copy-to-wishlist-sukces')

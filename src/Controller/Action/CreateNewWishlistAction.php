@@ -23,32 +23,20 @@ use Twig\Environment;
 
 final class CreateNewWishlistAction
 {
-    private FormFactoryInterface $formFactory;
-
     private MessageBusInterface $commandBus;
-
-    private Environment $twigEnvironment;
 
     private FlashBagInterface $flashBag;
 
     private TranslatorInterface $translator;
 
-    private UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
-        FormFactoryInterface $formFactory,
         MessageBusInterface $commandBus,
-        Environment $twigEnvironment,
         FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator
+        TranslatorInterface $translator
     ) {
-        $this->formFactory = $formFactory;
         $this->commandBus = $commandBus;
-        $this->twigEnvironment = $twigEnvironment;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): Response
