@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-final class CopySelectedProductsToOtherWishlist
+final class CopySelectedProductsToOtherWishlist implements CopySelectedProductsToOtherWishlistInterface
 {
     /** @var Collection<WishlistItem> */
     private Collection $wishlistProducts;
