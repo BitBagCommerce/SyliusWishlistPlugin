@@ -9,19 +9,19 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Services\Copyist;
+namespace spec\BitBag\SyliusWishlistPlugin\Duplicator;
 
+use BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicator;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
 use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Services\Copyist\WishlistProductsToOtherWishlistCopyist;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 
-final class WishlistProductsToOtherWishlistCopyistSpec extends ObjectBehavior
+final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
 {
     public function let(
         ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
@@ -39,7 +39,7 @@ final class WishlistProductsToOtherWishlistCopyistSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(WishlistProductsToOtherWishlistCopyist::class);
+        $this->shouldHaveType(WishlistProductsToOtherWishlistDuplicator::class);
     }
 
     public function it_copy_wishlist_products(

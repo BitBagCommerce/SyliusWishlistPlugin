@@ -12,22 +12,22 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlistInterface;
+use BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicatorInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Services\Copyist\WishlistProductsToOtherWishlistCopyistInterface;
 
 final class CopySelectedProductsToOtherWishlistHandler
 {
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private WishlistProductsToOtherWishlistCopyistInterface $copyistProductsToWishlist;
+    private WishlistProductsToOtherWishlistDuplicatorInterface $duplicatorProductsToWishlist;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistProductsToOtherWishlistCopyistInterface $copyistProductsToWishlist
+        WishlistProductsToOtherWishlistDuplicatorInterface $duplicatorProductsToWishlist
     ) {
         $this->wishlistRepository = $wishlistRepository;
-        $this->copyistProductsToWishlist = $copyistProductsToWishlist;
+        $this->duplicatorProductsToWishlist = $duplicatorProductsToWishlist;
     }
 
     public function __invoke(CopySelectedProductsToOtherWishlistInterface $copySelectedProductsToOtherWishlist): void
@@ -38,6 +38,6 @@ final class CopySelectedProductsToOtherWishlistHandler
         /** @var WishlistInterface $destinedWishlist */
         $destinedWishlist = $this->wishlistRepository->find($destinedWishlistId);
 
-        $this->copyistProductsToWishlist->copyWishlistProductsToOtherWishlist($wishlistProducts, $destinedWishlist);
+        $this->duplicatorProductsToWishlist->copyWishlistProductsToOtherWishlist($wishlistProducts, $destinedWishlist);
     }
 }

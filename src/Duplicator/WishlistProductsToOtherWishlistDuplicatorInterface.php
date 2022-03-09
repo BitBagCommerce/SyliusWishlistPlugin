@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Services\Copyist;
+namespace BitBag\SyliusWishlistPlugin\Duplicator;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface WishlistProductsToOtherWishlistCopyistInterface
+interface WishlistProductsToOtherWishlistDuplicatorInterface
 {
     public function copyWishlistProductsToOtherWishlist(Collection $wishlistProducts, WishlistInterface $destinedWishlist): void;
 }

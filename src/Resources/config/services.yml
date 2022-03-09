@@ -321,8 +321,8 @@ services:
         tags:
             - { name: twig.extension }
 
-    bitbag_sylius_wishlist_plugin.services.copyist:
-        class: BitBag\SyliusWishlistPlugin\Services\Copyist\WishlistProductsToOtherWishlistCopyist
+    bitbag_sylius_wishlist_plugin.services.duplicator:
+        class: BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicator
         arguments:
             - "@bitbag_sylius_wishlist_plugin.guard.product_variant_already_in_wishlist"
             - "@bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade"

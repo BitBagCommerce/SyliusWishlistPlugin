@@ -13,9 +13,9 @@ namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlistInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CopySelectedProductsToOtherWishlistHandler;
+use BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicatorInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Services\Copyist\WishlistProductsToOtherWishlistCopyistInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 
@@ -23,7 +23,7 @@ final class CopySelectedProductsToOtherWishlistHandlerSpec extends ObjectBehavio
 {
     public function let(
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistProductsToOtherWishlistCopyistInterface $copyistProductsToWishlist
+        WishlistProductsToOtherWishlistDuplicatorInterface $copyistProductsToWishlist
     ): void {
         $this->beConstructedWith(
             $wishlistRepository,
@@ -41,7 +41,7 @@ final class CopySelectedProductsToOtherWishlistHandlerSpec extends ObjectBehavio
         Collection $wishlistProducts,
         WishlistRepositoryInterface $wishlistRepository,
         CopySelectedProductsToOtherWishlistInterface $copySelectedProductsToOtherWishlist,
-        WishlistProductsToOtherWishlistCopyistInterface $copyistProductsToWishlist
+        WishlistProductsToOtherWishlistDuplicatorInterface $copyistProductsToWishlist
     ): void {
         $copySelectedProductsToOtherWishlist->getWishlistProducts()->willReturn($wishlistProducts);
         $copySelectedProductsToOtherWishlist->getDestinedWishlistId()->willReturn(2);

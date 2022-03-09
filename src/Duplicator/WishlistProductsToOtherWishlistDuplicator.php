@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Services\Copyist;
+namespace BitBag\SyliusWishlistPlugin\Duplicator;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
@@ -19,24 +19,24 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 
-final class WishlistProductsToOtherWishlistCopyist implements WishlistProductsToOtherWishlistCopyistInterface
+final class WishlistProductsToOtherWishlistDuplicator implements WishlistProductsToOtherWishlistDuplicatorInterface
 {
-    private ProductVariantInWishlistGuardInterface $productVariantInWishlistChecker;
+    private ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard;
 
-    private WishlistProductFactoryFacadeInterface $wishlistProductVariantCreator;
+    private WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory;
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
     private WishlistRepositoryInterface $wishlistRepository;
 
     public function __construct(
-        ProductVariantInWishlistGuardInterface $productVariantInWishlistChecker,
-        WishlistProductFactoryFacadeInterface $wishlistProductVariantCreator,
+        ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
+        WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistRepositoryInterface $wishlistRepository
     ) {
-        $this->productVariantInWishlistChecker = $productVariantInWishlistChecker;
-        $this->wishlistProductVariantCreator = $wishlistProductVariantCreator;
+        $this->productVariantInWishlistGuard = $productVariantInWishlistGuard;
+        $this->wishlistProductVariantFactory = $wishlistProductVariantFactory;
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistRepository = $wishlistRepository;
     }
@@ -47,8 +47,8 @@ final class WishlistProductsToOtherWishlistCopyist implements WishlistProductsTo
         foreach ($wishlistProducts as $wishlistProduct) {
             $variant = $this->productVariantRepository->find($wishlistProduct['variant']);
 
-            $this->productVariantInWishlistChecker->check($destinedWishlist, $variant);
-            $this->wishlistProductVariantCreator->createWithProductVariant($destinedWishlist, $variant);
+            $this->productVariantInWishlistGuard->check($destinedWishlist, $variant);
+            $this->wishlistProductVariantFactory->createWithProductVariant($destinedWishlist, $variant);
         }
         $this->wishlistRepository->add($destinedWishlist);
     }
