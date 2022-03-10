@@ -16,12 +16,12 @@ Feature: Adding a product to wishlist
         And I should be notified that the product has been successfully added to my wishlist
         And I should have one item in my wishlist
 
-    @ui @javascript
+    @ui
     Scenario: Adding a product variant to wishlist
         Given the store has a product "Some other whiskey" priced at "$25.00"
         And all store products appear under a main taxonomy
         When I view product "Some other whiskey"
-        And I add this product variant to wishlist
+        And I add this product to wishlist
         Then I should be on my wishlist page
         And I should be notified that the product has been successfully added to my wishlist
         And I should have one item in my wishlist
