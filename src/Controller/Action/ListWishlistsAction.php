@@ -10,14 +10,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToWishlist;
-use Symfony\Component\Form\FormInterface;
-
-final class AddProductsToWishlistAction extends BaseWishlistProductsAction
+final class ListWishlistsAction extends BaseWishlistsListingAction
 {
-    protected function handleCommand(FormInterface $form): void
+    private const FILE_TO_RENDER = '@BitBagSyliusWishlistPlugin/WishlistGroup/index.html.twig';
+
+    protected function getTemplateToRender(): string
     {
-        $command = new AddProductsToWishlist($form->get('items')->getData());
-        $this->messageBus->dispatch($command);
+        return self::FILE_TO_RENDER;
     }
 }

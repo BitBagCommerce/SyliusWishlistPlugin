@@ -1,0 +1,5 @@
+services:
+    bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade:
+        class: BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacade
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"

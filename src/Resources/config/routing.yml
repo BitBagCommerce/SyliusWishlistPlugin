@@ -5,7 +5,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_list_products:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_products:
-    path: /wishlist/products
+    path: /wishlist/{wishlistId}/products
     methods: [POST]
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_products_to_wishlist
@@ -21,22 +21,22 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_selected_products:
-    path: /wishlist/products/delete
+    path: /wishlist/{wishlistId}/products/delete
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_variant:
-    path: /wishlist/add/variant/{variantId}
+    path: /wishlist/{wishlistId}/add/variant/{variantId}
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_add_selected_products:
-    path: /wishlist/products/add
+    path: /wishlist/{wishlistId}/products/add
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart
 
 bitbag_sylius_wishlist_plugin_shop_wishlsit_export_selected_products_to_csv:
-    path: /wishlist/csv/export
+    path: /wishlist/{wishlistId}/csv/export
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.export_selected_products_to_csv
 
@@ -46,7 +46,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_import_from_csv:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.import_from_csv
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product_variant:
-    path: /wishlist/remove/variant/{variantId}
+    path: /wishlist/{wishlistId}/remove/variant/{variantId}
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.remove_product_variant_from_wishlist
 
@@ -56,6 +56,59 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_render_header_template:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.render_header_template
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf:
-    path: /wishlist/export/pdf
+    path: /wishlist/{wishlistId}/export/pdf
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_clean:
+    path: /wishlist/clear/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist:
+    path: /wishlists/create
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_remove_wishlist:
+    path: /wishlists/{id}/remove
+    methods: [GET, POST, DELETE]
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.wishlist:deleteAction
+        _sylius:
+            csrf_protection: false
+            redirect:
+                route: bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_edit_wishlist_name:
+    path: /wishlists/{id}/edit
+    methods: [GET, PUT, POST]
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.wishlist:updateAction
+        _sylius:
+            template: '@BitBagSyliusWishlistPlugin/CreateWishlist/index.html.twig'
+            form:
+                type: BitBag\SyliusWishlistPlugin\Form\Type\EditWishlistNameType
+            redirect:
+                route: bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists:
+    path: /wishlists
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlists
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist:
+    path: /wishlists/{wishlistId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist:
+    path: /wishlist/{wishlistId}/add/{productId}
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.add_product_to_selected_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_copy_selected_products_to_other_wishlist:
+    path: /wishlists/{wishlistId}/copy/{destinedWishlistId}
+    methods: [ POST ]
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.copy_selected_products_to_other_wishlist

@@ -10,10 +10,11 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Service;
 
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 interface WishlistCreatorInterface
 {
-    public function createWishlistWithProductAndUser(ShopUserInterface $shopUser, ProductInterface $product): void;
+    public function createWishlistWithProductAndUser(ShopUserInterface $shopUser, ProductInterface $product, WishlistInterface $wishlist): void;
 }

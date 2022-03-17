@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
+use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -27,8 +28,6 @@ final class ExportSelectedProductsToCsvAction
 {
     use HandleTrait;
 
-    private WishlistContextInterface $wishlistContext;
-
     private CartContextInterface $cartContext;
 
     private FormFactoryInterface $formFactory;
@@ -41,17 +40,20 @@ final class ExportSelectedProductsToCsvAction
 
     private TranslatorInterface $translator;
 
+    private WishlistRepositoryInterface $wishlistRepository;
+
+    private string $wishlistName;
+
     public function __construct(
-        WishlistContextInterface $wishlistContext,
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         FlashBagInterface $flashBag,
         MessageBusInterface $messageBus,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         UrlGeneratorInterface $urlGenerator,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        WishlistRepositoryInterface $wishlistRepository
     ) {
-        $this->wishlistContext = $wishlistContext;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
         $this->flashBag = $flashBag;
@@ -59,11 +61,12 @@ final class ExportSelectedProductsToCsvAction
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
         $this->translator = $translator;
+        $this->wishlistRepository = $wishlistRepository;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(int $wishlistId, Request $request): Response
     {
-        $form = $this->createForm($request);
+        $form = $this->createForm($wishlistId);
 
         $form->handleRequest($request);
 
@@ -75,15 +78,22 @@ final class ExportSelectedProductsToCsvAction
             $this->flashBag->add('error', $error->getMessage());
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+        return new RedirectResponse(
+            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+                'wishlistId' => $wishlistId,
+            ])
+        );
     }
 
-    private function createForm(Request $request): FormInterface
+    private function createForm(int $wishlistId): FormInterface
     {
-        $wishlist = $this->wishlistContext->getWishlist($request);
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->find($wishlistId);
         $cart = $this->cartContext->getCart();
 
-        $commandsArray = $this->wishlistCommandProcessor->createAddCommandCollectionFromWishlistProducts($wishlist->getWishlistProducts());
+        $this->wishlistName = $wishlist->getName();
+
+        $commandsArray = $this->wishlistCommandProcessor->createWishlistItemsCollection($wishlist->getWishlistProducts());
 
         return $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
@@ -106,8 +116,8 @@ final class ExportSelectedProductsToCsvAction
 
     private function getCsvFileFromWishlistProducts(FormInterface $form): \SplFileObject
     {
-        $file = new \SplFileObject('export.csv', 'w+');
-        $command = new ExportWishlistToCsv($form->get('items')->getData(), $file);
+        $file = new \SplFileObject(sprintf('%s.csv', $this->wishlistName), 'w+');
+        $command = new ExportWishlistToCsv($form->getData(), $file);
 
         return $this->handle($command);
     }

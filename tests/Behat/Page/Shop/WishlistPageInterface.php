@@ -17,7 +17,17 @@ interface WishlistPageInterface extends SymfonyPageInterface
 {
     public function getItemsCount(): int;
 
+    public function getProductElements(): int;
+
+    public function addProductToSelectedWishlist(string $productName, string $wishlistName): void;
+
+    public function selectedWishlistAction(string $action, string $wishlistName): void;
+
+    public function getWishlistsCount(): int;
+
     public function hasProduct(string $productName): bool;
+
+    public function showChosenWishlist(string $wishlistName): void;
 
     public function removeProduct(string $productName): void;
 
@@ -29,9 +39,15 @@ interface WishlistPageInterface extends SymfonyPageInterface
 
     public function addSelectedProductsToCart(): void;
 
+    public function copySelectedProducts(string $wishlistName): void;
+
     public function exportSelectedProductsToCsv(): void;
 
     public function hasProductInCart(string $productName): bool;
 
-    public function hasProductOutOfStockValidationMessage(ProductInterface $product);
+    public function hasProductOutOfStockValidationMessage(ProductInterface $product): bool;
+
+    public function hasWishlistClearedValidationMessage(): bool;
+
+    public function waitForOneSecond();
 }

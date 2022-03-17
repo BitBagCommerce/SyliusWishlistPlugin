@@ -3,4 +3,15 @@
     align-items: center;
     justify-content: space-between;
     margin: $spacer * 1.5 0 $spacer * .75;
+    
+}
+
+.bb-wishlist-actions-import-button {
+    background-color: #E0E1E2 !important;
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.bb-wishlist-actions-import-button:hover {
+    background-color: #CACBCD !important;
+    color: rgba(0, 0, 0, 0.8) !important;
 }

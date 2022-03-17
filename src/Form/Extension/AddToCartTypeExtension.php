@@ -10,7 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Form\Extension;
 
+use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,6 +21,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddToCartTypeExtension extends AbstractTypeExtension
 {
+    private WishlistsResolverInterface $wishlistsResolver;
+
+    public function __construct(WishlistsResolverInterface $wishlistsResolver)
+    {
+        $this->wishlistsResolver = $wishlistsResolver;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!$options['is_wishlist']) {
@@ -27,6 +37,12 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
                     'attr' => [
                         'class' => 'bitbag-add-variant-to-wishlist ui icon labeled button',
                     ],
+                ])
+                ->add('wishlists', EntityType::class, [
+                    'class' => Wishlist::class,
+                    'choices' => $this->wishlistsResolver->resolve(),
+                    'choice_label' => 'name',
+                    'mapped' => false,
                 ])
             ;
         }

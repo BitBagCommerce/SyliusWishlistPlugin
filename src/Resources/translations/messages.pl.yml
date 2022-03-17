@@ -4,6 +4,8 @@ bitbag_sylius_wishlist_plugin:
         add_to_wishlist: Dodaj do listy życzeń
         remove_from_wishlist: Usuń z listy życzeń
         your_wishlist_is_empty: Twoja lista życzeń jest pusta
+        your_wishlists: Twoje listy życzeń
+        add_another_wishlist: Dodaj kolejną listę życzeń
         added_wishlist_item: Produkt został dodany do listy życzeń.
         removed_wishlist_item: Produkt został usunięty z listy życzeń.
         add_items_to_cart: Dodaj produkty z listy życzeń do koszyka
@@ -15,11 +17,13 @@ bitbag_sylius_wishlist_plugin:
         added_selected_wishlist_items_to_cart: Wybrane produkty zostały dodane do koszyka.
         removed_selected_wishlist_items: Wybrane produkty zostały usunięte z listy życzeń.
         toggle_checkboxes: Przełącz
-        remove: Usuń
+        remove: Usuń z listy życzeń
         add: Dodaj
+        add_to_cart: Dodaj do koszyka
         copy_to_wishlist: Kopiuj do listy życzeń
         export_to_csv: Eksportuj do CSV
         import_from_csv: Importuj z CSV
         upload_valid_csv: Dodany plik posiada niewłaściwy format
-        variant_already_in_wishlist: Wariant znajduje się już w liście życzeń
+        variant_already_in_wishlist: Wariant znajduje się już w liście życzeń.
         selected_wishlist_items_successfully_exported: Wybrane produkty zostały pomyślnie wyeksportowane.
+        copied_selected_wishlist_items: Wybrane produkty zostały pomyślnie skopiowane.

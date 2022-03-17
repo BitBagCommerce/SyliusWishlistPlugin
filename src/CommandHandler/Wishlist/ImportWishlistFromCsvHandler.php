@@ -50,10 +50,11 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
     {
         $fileInfo = $importWishlistFromCsv->getFileInfo();
         $request = $importWishlistFromCsv->getRequest();
+        $wishlistId = $importWishlistFromCsv->getWishlistId();
 
         $this->getDataFromFile($fileInfo, $request);
 
-        return $this->addProductVariantToWishlistAction->__invoke($request);
+        return $this->addProductVariantToWishlistAction->__invoke($wishlistId, $request);
     }
 
     private function getDataFromFile(\SplFileInfo $fileInfo, Request $request): void

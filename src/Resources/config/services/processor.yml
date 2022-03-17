@@ -1,4 +1,14 @@
 services:
-      bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor:
+    bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor:
         class: BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessor
+
+    bitbag_sylius_wishlist_plugin.processor.selected_wishlist_products_processor:
+        class: BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessor
+
+    bitbag_sylius_wishlist_plugin.processor.variant_pdf_model_processor:
+        class: BitBag\SyliusWishlistPlugin\Processor\VariantPdfModelProcessor
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.services.generator.model_creator"
+
+
 

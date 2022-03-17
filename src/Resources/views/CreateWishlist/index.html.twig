@@ -1,0 +1,19 @@
+{% extends '@SyliusShop/layout.html.twig' %}
+
+{% import '@SyliusUi/Macro/messages.html.twig' as messages %}
+{% form_theme form '@SyliusShop/Form/theme.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+        <h2>
+            
+        </h2>
+        <section class="bb-wishlist-create">
+            <div class="bb-wishlist-create-name">
+                {{ form_row(form.name) }}
+            </div>
+            
+            {{ form_row(form.save) }}
+        </section>
+    {{ form_end(form) }}
+{% endblock %}

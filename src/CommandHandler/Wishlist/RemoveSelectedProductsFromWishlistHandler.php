@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
@@ -30,8 +30,6 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
 
     private TranslatorInterface $translator;
 
-    private int $itemsProcessed = 0;
-
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
         EntityManagerInterface $wishlistProductManager,
@@ -48,16 +46,14 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
     {
         $this->removeSelectedProductsFromWishlist($removeSelectedProductsFromWishlistCommand->getWishlistProducts());
 
-        $this->addFlashMessage();
+        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
     }
 
     private function removeSelectedProductsFromWishlist(Collection $wishlistProducts): void
     {
         /** @var WishlistItem $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
-            if ($wishlistProduct->isSelected()) {
-                $this->removeProductFromWishlist($wishlistProduct);
-            }
+            $this->removeProductFromWishlist($wishlistProduct);
         }
     }
 
@@ -70,17 +66,5 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
         }
 
         $this->wishlistProductManager->remove($wishlistProduct->getWishlistProduct());
-        ++$this->itemsProcessed;
-    }
-
-    private function addFlashMessage(): void
-    {
-        if (0 < $this->itemsProcessed) {
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
-
-            return;
-        }
-
-        $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products'));
     }
 }

@@ -1,5 +1,5 @@
 <a
-    href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product_variant', { variantId: variant.id }) }}"
+    href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_remove_product_variant', { wishlistId: wishlist.id, variantId: variant.id }) }}"
     class="ui circular icon button"
     data-product-name="{{ product.name }}"
     data-tooltip="{{ 'bitbag_sylius_wishlist_plugin.ui.remove_from_wishlist'|trans }}"

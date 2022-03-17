@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Service;
 
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -18,25 +18,24 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class WishlistCreator implements WishlistCreatorInterface
 {
-    private WishlistFactoryInterface $wishlistFactory;
-
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
     private RepositoryInterface $wishlistRepository;
 
     public function __construct(
-        WishlistFactoryInterface $wishlistFactory,
         WishlistProductFactoryInterface $wishlistProductFactory,
         RepositoryInterface $wishlistRepository
     ) {
-        $this->wishlistFactory = $wishlistFactory;
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->wishlistRepository = $wishlistRepository;
     }
 
-    public function createWishlistWithProductAndUser(ShopUserInterface $shopUser, ProductInterface $product): void
+    public function createWishlistWithProductAndUser(
+        ShopUserInterface $shopUser,
+        ProductInterface $product,
+        WishlistInterface $wishlist
+    ): void
     {
-        $wishlist = $this->wishlistFactory->createForUser($shopUser);
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
         $wishlist->addWishlistProduct($wishlistProduct);

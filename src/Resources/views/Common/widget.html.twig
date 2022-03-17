@@ -1,6 +1,25 @@
-<a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
-    <i class="icon heart"></i>
-    <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
-        {{- wishlist.wishlistProducts.count -}}
-    </span>
-</a>
+{% if wishlists|length < 2 %}
+
+    {% set wishlistId = 0 %}
+    {% set wishlistProductsCount = 0 %}
+
+    {% for data in wishlists %}
+        {% set wishlistId = data.id %}
+        {% set wishlistProductsCount = data.wishlistProducts.count %}
+    {% endfor %}
+
+    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products') }}" class="ui circular button">
+        <i class="icon heart"></i>
+        <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
+            {{- wishlistProductsCount -}}
+        </span>
+    </a>
+{% else %}
+    <a data-bb-wishlist-enter href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists') }}" class="ui circular button">
+
+        <i class="icon list"></i>
+        <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlists-count') }}>
+            {{- wishlists|length -}}
+        </span>
+    </a>
+{% endif %}

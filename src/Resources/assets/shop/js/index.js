@@ -1,3 +1,6 @@
+import './handleWishlistMainCheckbox.js'
+import './handleCopyToWishlistListModal.js'
+import './handleAddAnotherWishlistModal.js'
 import { WishlistVariantButton } from './WishlistVariantButton';
 import { WishlistVariantPrice } from './WishlistVariantPrice';
 

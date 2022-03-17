@@ -126,6 +126,7 @@ final class WishlistContext implements Context
         $wishlistProduct->setVariant($productVariants->first());
 
         $wishlist->addWishlistProduct($wishlistProduct);
+        $wishlist->setName('wishlist');
 
         $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
