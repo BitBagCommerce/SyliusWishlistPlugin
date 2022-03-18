@@ -231,7 +231,7 @@ services:
     bitbag_sylius_wishlist_plugin.resolver.generate_data_uri_for_image_resolver:
         class: BitBag\SyliusWishlistPlugin\Resolver\GenerateDataUriForImageResolver
         arguments:
-            - "@assets._package_shop"
+            - "@assets.empty_package"
             - "@liip_imagine.service.filter"
             - "sylius_shop_product_thumbnail"
 
