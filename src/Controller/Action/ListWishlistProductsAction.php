@@ -15,6 +15,7 @@ use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
+use Sylius\Component\Order\Context\CartNotFoundException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +54,11 @@ final class ListWishlistProductsAction
         /** @var WishlistInterface $wishlist */
         $wishlist = array_shift($wishlists);
 
-        $cart = $this->cartContext->getCart();
+        try {
+            $cart = $this->cartContext->getCart();
+        } catch (CartNotFoundException $exception) {
+            $cart = null;
+        }
 
         $commandsArray = $this->wishlistCommandProcessor->createWishlistItemsCollection($wishlist->getWishlistProducts());
 

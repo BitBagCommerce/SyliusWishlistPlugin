@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitBag\SyliusWishlistPlugin\Factory;
 
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
