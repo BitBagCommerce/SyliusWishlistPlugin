@@ -59,7 +59,6 @@ final class RemoveProductVariantFromWishlistAction
         int $variantId,
         Request $request
     ): Response {
-
         /** @var ProductVariantInterface|null $variant */
         $variant = $this->productVariantRepository->find($variantId);
 
