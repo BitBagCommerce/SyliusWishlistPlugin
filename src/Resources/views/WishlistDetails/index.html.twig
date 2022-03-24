@@ -9,7 +9,11 @@
             {{ wishlist.name }}
         </div>
     </h1>
-    {% set wishlists = findAllByAnonymous() %}
+    {% if sylius.channel is not null %}
+        {% set wishlists = findAllByAnonymousAndChannel(sylius.channel) %}
+    {% else %}
+        {% set wishlists = findAllByAnonymous() %}
+    {% endif %}
     {% if wishlists|length > 1 %}
     {% else %}
     <div class="middle aligned column">
