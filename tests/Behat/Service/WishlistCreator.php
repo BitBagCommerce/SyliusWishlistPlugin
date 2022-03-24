@@ -34,8 +34,7 @@ final class WishlistCreator implements WishlistCreatorInterface
         ShopUserInterface $shopUser,
         ProductInterface $product,
         WishlistInterface $wishlist
-    ): void
-    {
+    ): void {
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
 
         $wishlist->addWishlistProduct($wishlistProduct);

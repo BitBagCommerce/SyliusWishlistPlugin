@@ -206,6 +206,6 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function waitForOneSecond()
     {
-        $this->getDriver()->wait(1000, "false == true");
+        $this->getDriver()->wait(1000, 'false == true');
     }
 }
