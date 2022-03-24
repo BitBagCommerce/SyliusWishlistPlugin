@@ -14,9 +14,9 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Persistence\ObjectManager;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,6 +43,8 @@ final class AddProductToWishlistAction
 
     private ObjectManager $wishlistManager;
 
+    private ChannelContextInterface $channelContext;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
@@ -50,7 +52,8 @@ final class AddProductToWishlistAction
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         WishlistsResolverInterface $wishlistsResolver,
-        ObjectManager $wishlistManager
+        ObjectManager $wishlistManager,
+        ChannelContextInterface $channelContext
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
@@ -59,6 +62,7 @@ final class AddProductToWishlistAction
         $this->translator = $translator;
         $this->wishlistsResolver = $wishlistsResolver;
         $this->wishlistManager = $wishlistManager;
+        $this->channelContext = $channelContext;
     }
 
     public function __invoke(Request $request): Response
@@ -78,6 +82,12 @@ final class AddProductToWishlistAction
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
                 'Wishlist not found.'
+            );
+        }
+
+        if ($wishlist->getChannel()->getId() !== $this->channelContext->getChannel()->getId()) {
+            throw new WishlistNotFoundException(
+                'Wishlist for this channel not found.'
             );
         }
 
