@@ -16,5 +16,9 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 
 interface WishlistCreatorInterface
 {
-    public function createWishlistWithProductAndUser(ShopUserInterface $shopUser, ProductInterface $product, WishlistInterface $wishlist): void;
+    public function createWishlistWithProductAndUser(
+        ShopUserInterface $shopUser,
+        ProductInterface $product,
+        WishlistInterface $wishlist
+    ): void;
 }

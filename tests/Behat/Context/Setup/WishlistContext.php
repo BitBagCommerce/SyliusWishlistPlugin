@@ -17,6 +17,7 @@ use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\Setter\CookieSetterInterface;
+use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
@@ -44,6 +45,8 @@ final class WishlistContext implements Context
 
     private string $wishlistCookieToken;
 
+    private ChannelRepositoryInterface $channelRepository;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistContextInterface $wishlistContext,
@@ -53,7 +56,8 @@ final class WishlistContext implements Context
         FactoryInterface $productTaxonFactory,
         EntityManagerInterface $productTaxonManager,
         CookieSetterInterface $cookieSetter,
-        string $wishlistCookieToken
+        string $wishlistCookieToken,
+        ChannelRepositoryInterface $channelRepository
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistContext = $wishlistContext;
@@ -64,6 +68,7 @@ final class WishlistContext implements Context
         $this->productTaxonManager = $productTaxonManager;
         $this->cookieSetter = $cookieSetter;
         $this->wishlistCookieToken = $wishlistCookieToken;
+        $this->channelRepository = $channelRepository;
     }
 
     /**
@@ -120,13 +125,16 @@ final class WishlistContext implements Context
         $wishlist = $this->wishlistContext->getWishlist(new Request());
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createNew();
-        $wishlistProduct->setProduct($product);
         /** @var ?Collection $productVariants */
         $productVariants = $product->getVariants();
+        $channel = $this->channelRepository->findOneByCode('WEB-US');
+
+        $wishlistProduct->setProduct($product);
         $wishlistProduct->setVariant($productVariants->first());
 
         $wishlist->addWishlistProduct($wishlistProduct);
         $wishlist->setName('wishlist');
+        $wishlist->setChannel($channel);
 
         $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
