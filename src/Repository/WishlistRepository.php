@@ -12,6 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Repository;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 class WishlistRepository extends EntityRepository implements WishlistRepositoryInterface
@@ -64,6 +65,35 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ->where('o.token = :token')
             ->andWhere('o.shopUser IS NULL')
             ->setParameter('token', $token)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findOneByShopUserAndChannel(
+        ShopUserInterface $shopUser,
+        ChannelInterface $channel
+    ): ?WishlistInterface {
+        return $this->createQueryBuilder('o')
+            ->where('o.shopUser = :shopUser')
+            ->andWhere('o.channel = :channel')
+            ->setParameter('shopUser', $shopUser)
+            ->setParameter('channel', $channel)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): ?array
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.token = :token')
+            ->andWhere('o.channel = :channel')
+            ->andWhere('o.shopUser IS NULL')
+            ->setParameter('token', $token)
+            ->setParameter('channel', $channel)
             ->getQuery()
             ->getResult()
             ;

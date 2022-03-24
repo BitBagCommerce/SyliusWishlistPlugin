@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -28,16 +29,20 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
+    private ChannelRepositoryInterface $channelRepository;
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        ChannelRepositoryInterface $channelRepository
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
+        $this->channelRepository = $channelRepository;
     }
 
     public function __invoke(CreateNewWishlist $createNewWishlist): void
@@ -56,6 +61,10 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
             $wishlist->setToken($wishlistCookieToken);
         }
 
+        if (null !== $createNewWishlist->getChannelCode()) {
+            $channel = $this->channelRepository->findOneByCode($createNewWishlist->getChannelCode());
+            $wishlist->setChannel($channel);
+        }
         $wishlist->setName($createNewWishlist->getName());
         $this->wishlistRepository->add($wishlist);
     }
