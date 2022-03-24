@@ -43,6 +43,7 @@ services:
             - "@router"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "@sylius.context.channel"
         tags:
             - { name: controller.service_arguments }
 
@@ -159,6 +160,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
+            - "@sylius.context.channel"
 
     bitbag_sylius_wishlist_plugin.custom_factory.wishlist:
         class: BitBag\SyliusWishlistPlugin\Factory\WishlistFactory
@@ -196,6 +198,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@security.token_storage"
+            - "@sylius.context.channel"
         tags:
             - { name: kernel.event_subscriber }
 
@@ -263,6 +266,7 @@ services:
             - "@sylius.command_bus"
             - "@session.flash_bag"
             - "@translator"
+            - "@sylius.context.channel"
         tags:
             - { name: controller.service_arguments }
 
