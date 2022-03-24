@@ -13,6 +13,8 @@ namespace BitBag\SyliusWishlistPlugin\Twig;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -40,6 +42,8 @@ class WishlistExtension extends AbstractExtension
             new TwigFunction('findAllByShopUser', [$this, 'findAllByShopUser']),
             new TwigFunction('findAllByAnonymous', [$this, 'findAllByAnonymous']),
             new TwigFunction('findAllByShopUserAndToken', [$this, 'findAllByShopUserAndToken']),
+            new TwigFunction('findAllByShopUserAndChannel', [$this, 'findAllByShopUserAndChannel']),
+            new TwigFunction('findAllByAnonymousAndChannel', [$this, 'findAllByAnonymousAndChannel']),
         ];
     }
 
@@ -76,5 +80,24 @@ class WishlistExtension extends AbstractExtension
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+    }
+
+    public function findAllByShopUserAndChannel(UserInterface $user = null, ChannelInterface $channel = null): ?array
+    {
+        if (!$user instanceof ShopUserInterface) {
+            throw new UnsupportedUserException();
+        }
+        if (!$channel instanceof ChannelInterface) {
+            throw new ChannelNotFoundException();
+        }
+
+        return $this->wishlistRepository->findAllByShopUser($user->getId());
+    }
+
+    public function findAllByAnonymousAndChannel(ChannelInterface $channel): ?array
+    {
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+
+        return $this->wishlistRepository->findAllByAnonymousAndChannel($wishlistCookieToken, $channel);
     }
 }
