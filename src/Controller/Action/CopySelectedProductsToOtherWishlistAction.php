@@ -12,13 +12,11 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlist;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistProductsActionFailedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -43,7 +41,7 @@ final class CopySelectedProductsToOtherWishlistAction
     public function __invoke(Request $request): Response
     {
         $destinedWishlist = $request->attributes->getInt('destinedWishlistId');
-        $wishlistProducts = new ArrayCollection((array)$request->request->get("wishlist_collection")['items']);
+        $wishlistProducts = new ArrayCollection((array) $request->request->get('wishlist_collection')['items']);
         $selectedProducts = new ArrayCollection();
 
         foreach ($wishlistProducts as $wishlistProduct) {

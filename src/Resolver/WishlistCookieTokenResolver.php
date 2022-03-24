@@ -34,6 +34,7 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
         if (!$wishlistCookieToken) {
             return '';
         }
+
         return $wishlistCookieToken;
     }
 }
