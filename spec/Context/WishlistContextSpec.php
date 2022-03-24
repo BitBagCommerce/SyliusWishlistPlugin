@@ -16,6 +16,8 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,13 +29,15 @@ final class WishlistContextSpec extends ObjectBehavior
     function let(
         TokenStorageInterface $tokenStorage,
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistFactoryInterface $wishlistFactory
+        WishlistFactoryInterface $wishlistFactory,
+        ChannelContextInterface $channelContext
     ) {
         $this->beConstructedWith(
             $tokenStorage,
             $wishlistRepository,
             $wishlistFactory,
-            'bitbag_sylius_wishlist'
+            'bitbag_sylius_wishlist',
+            $channelContext,
         );
     }
 
@@ -107,13 +111,17 @@ final class WishlistContextSpec extends ObjectBehavior
         TokenInterface $token,
         ShopUserInterface $shopUser,
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistInterface $wishlist
+        WishlistInterface $wishlist,
+        ChannelContextInterface $channelContext,
+        ChannelInterface $channel
     ): void {
         $request->cookies = $parameterBag;
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(null);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($shopUser);
-        $wishlistRepository->findOneByShopUser($shopUser)->willReturn($wishlist);
+        $channelContext->getChannel()->willReturn($channel);
+        $wishlistRepository->findOneByShopUserAndChannel($shopUser,$channel)->willReturn($wishlist);
+
 
         $this->getWishlist($request)->shouldReturn($wishlist);
     }
@@ -126,15 +134,19 @@ final class WishlistContextSpec extends ObjectBehavior
         ShopUserInterface $shopUser,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
-        WishlistInterface $wishlist
+        WishlistInterface $wishlist,
+        ChannelContextInterface $channelContext,
+        ChannelInterface $channel
     ): void {
         $request->cookies = $parameterBag;
         $parameterBag->get('bitbag_sylius_wishlist')->willReturn(null);
         $wishlistFactory->createNew()->willReturn($wishlist);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($shopUser);
-        $wishlistRepository->findOneByShopUser($shopUser)->willReturn(null);
-        $wishlistFactory->createForUser($shopUser)->willReturn($wishlist);
+        $channelContext->getChannel()->willReturn($channel);
+        $wishlistRepository->findOneByShopUserAndChannel($shopUser,$channel)->willReturn(null);
+        $wishlistFactory->createForUserAndChannel($shopUser,$channel)->willReturn($wishlist);
+
 
         $this->getWishlist($request)->shouldReturn($wishlist);
     }

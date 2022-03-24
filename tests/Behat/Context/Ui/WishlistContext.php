@@ -19,6 +19,7 @@ use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Setter\CookieSetterInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
@@ -63,6 +64,8 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private CookieSetterInterface $cookieSetter;
 
+    private ChannelRepositoryInterface $channelRepository;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductIndexPageInterface $productIndexPage,
@@ -77,7 +80,8 @@ final class WishlistContext extends RawMinkContext implements Context
         WishlistRepositoryInterface $wishlistRepository,
         string $wishlistCookieToken,
         SharedStorageInterface $sharedStorage,
-        CookieSetterInterface $cookieSetter
+        CookieSetterInterface $cookieSetter,
+        ChannelRepositoryInterface $channelRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productIndexPage = $productIndexPage;
@@ -93,6 +97,7 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->sharedStorage = $sharedStorage;
         $this->cookieSetter = $cookieSetter;
+        $this->channelRepository = $channelRepository;
     }
 
     /**
@@ -150,8 +155,10 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         $cookie = $this->getSession()->getCookie($this->wishlistCookieToken);
         $wishlist = new Wishlist();
+        $channel = $this->channelRepository->findOneByCode('WEB-US');
 
         $wishlist->setName($name);
+        $wishlist->setChannel($channel);
 
         if ($cookie) {
             $wishlist->setToken($cookie);
