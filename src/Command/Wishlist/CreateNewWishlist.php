@@ -12,15 +12,23 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 final class CreateNewWishlist
 {
-    public string $name = "Wishlist";
+    public string $name = 'Wishlist';
 
-    public function __construct(string $name)
+    public ?string $channelCode = null;
+
+    public function __construct(string $name, string $channelCode)
     {
         $this->name = $name;
+        $this->channelCode = $channelCode;
     }
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getChannelCode(): ?string
+    {
+        return $this->channelCode;
     }
 }
