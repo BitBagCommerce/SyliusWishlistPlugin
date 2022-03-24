@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -58,4 +59,8 @@ interface WishlistInterface extends ResourceInterface
     public function getName(): ?string;
 
     public function setName(?string $name): void;
+
+    public function getChannel(): ?ChannelInterface;
+
+    public function setChannel(?ChannelInterface $channel): void;
 }
