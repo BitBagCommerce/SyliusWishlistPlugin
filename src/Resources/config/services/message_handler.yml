@@ -126,6 +126,7 @@ services:
             - "@security.token_storage"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
+            - "@sylius.repository.channel"
         tags:
             - { name: messenger.message_handler }
 
