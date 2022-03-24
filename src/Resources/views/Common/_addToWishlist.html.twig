@@ -28,7 +28,7 @@
         </div>
     {% endif %}
 {% else %}
-    {% if findAllByAnonymous()|length < 2 %}
+    {% if findAllByAnonymousAndChannel(sylius.channel)|length < 2 %}
         <a
                 href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
                 class="bitbag-add-to-wishlist ui icon labeled button blue"
@@ -43,7 +43,7 @@
             <i class="heart icon"></i>
             <span class="text">Add to wishlist</span>
             <div class="menu" data-bb-wishlist-hrefs="hrefs-adding-variant">
-                {% for wishlist in findAllByAnonymous()  %}
+                {% for wishlist in findAllByAnonymousAndChannel(sylius.channel)  %}
                     <a
                         href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
                         class="item"
