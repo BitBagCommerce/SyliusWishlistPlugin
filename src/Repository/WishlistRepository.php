@@ -22,6 +22,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         return $this->createQueryBuilder('o')
             ->where('o.shopUser = :shopUser')
             ->setParameter('shopUser', $shopUser)
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -32,6 +33,8 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         return $this->createQueryBuilder('o')
             ->where('o.token = :token')
             ->setParameter('token', $token)
+            ->getQuery()
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
