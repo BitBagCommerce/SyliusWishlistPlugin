@@ -72,6 +72,7 @@ services:
             - "@sylius.repository.shop_user"
             - "@bitbag_wishlist_plugin.http_client"
             - "@router"
+            - '@doctrine.orm.entity_manager'
 
     bitbag_wishlist_plugin.http_client:
         class: GuzzleHttp\Client

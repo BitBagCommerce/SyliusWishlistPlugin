@@ -14,9 +14,11 @@ use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Doctrine\ORM\EntityManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -41,6 +43,8 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private ?ShopUserInterface $user;
 
+    private EntityManager $entityManager;
+
     private ?string $token;
 
     private const PATCH = 'PATCH';
@@ -53,12 +57,14 @@ final class WishlistContext extends RawMinkContext implements Context
         WishlistRepositoryInterface $wishlistRepository,
         UserRepositoryInterface $userRepository,
         ClientInterface $client,
-        RouterInterface $router
+        RouterInterface $router,
+        EntityManager $entityManager
     ) {
         $this->client = $client;
         $this->wishlistRepository = $wishlistRepository;
         $this->userRepository = $userRepository;
         $this->router = $router;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -152,6 +158,45 @@ final class WishlistContext extends RawMinkContext implements Context
         } else {
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
+        }
+
+        foreach ($wishlist->getProducts() as $wishlistProduct) {
+            if ($product->getId() === $wishlistProduct->getId()) {
+                return true;
+            }
+        }
+
+        throw new \Exception(
+            sprintf(
+                'Product %s was not found in the wishlist',
+                $product->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then user should have product :product in the wishlist on :channel
+     *
+     * @throws \Exception
+     */
+    public function userShouldHaveProductInTheWishlistOnChannel(ProductInterface $product, ChannelInterface $channel): bool
+    {
+        if (isset($this->user)) {
+            if (null !== $channel) {
+                /** @var WishlistInterface $wishlist */
+                $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel([
+                    $this->user,
+                    $channel,
+                ]);
+            } else {
+                /** @var WishlistInterface $wishlist */
+                $wishlist = $this->wishlistRepository->findOneBy([
+                    'shopUser' => $this->user->getId(),
+                ]);
+            }
+        } else {
+            /** @var WishlistInterface $wishlist */
+            $wishlist = $this->wishlistRepository->findAllByAnonymousAndChannel(null, $channel)[0];
         }
 
         foreach ($wishlist->getProducts() as $wishlistProduct) {
@@ -287,6 +332,7 @@ final class WishlistContext extends RawMinkContext implements Context
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
         }
+        $this->entityManager->refresh($wishlist);
 
         Assert::eq(count($wishlist->getProducts()), 0);
     }
@@ -298,6 +344,27 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         $domain = (string) $this->getMinkParameter('base_url');
         self::$domain = trim($domain, '/');
+    }
+
+    /**
+     * @Given user has a wishlist in :channel
+     *
+     * @throws GuzzleException
+     */
+    public function userHasAWishlistInChannel(ChannelInterface $channel): void
+    {
+        $uri = $this->router->generate('api_wishlists_shop_create_wishlist_collection');
+        $response = $this->client->request(
+            self::POST,
+            sprintf('%s%s', self::$domain, $uri),
+            $this->getOptions(self::POST, ['channelCode' => $channel->getCode()])
+        );
+
+        $jsonBody = json_decode((string) $response->getBody());
+
+        /** @var WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->find((int) $jsonBody->id);
+        $this->wishlist = $wishlist;
     }
 
     private function getOptions(string $method, $body = null): array
