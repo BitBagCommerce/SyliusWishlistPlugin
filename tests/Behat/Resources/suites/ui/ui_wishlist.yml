@@ -7,6 +7,7 @@ default:
     - sylius.behat.context.setup.product
     - sylius.behat.context.transform.lexical
     - sylius.behat.context.transform.product
+    - sylius.behat.context.transform.channel
     - sylius.behat.context.ui.shop.product
     - sylius.behat.context.ui.shop.cart
     - Behat\MinkExtension\Context\MinkContext

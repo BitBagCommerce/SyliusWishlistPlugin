@@ -89,14 +89,18 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): ?array
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.token = :token')
+        $qb = $this->createQueryBuilder('o')
             ->andWhere('o.channel = :channel')
             ->andWhere('o.shopUser IS NULL')
-            ->setParameter('token', $token)
             ->setParameter('channel', $channel)
-            ->getQuery()
-            ->getResult()
             ;
+
+        if (null !== $token) {
+            $qb
+                ->andWhere('o.token = :token')
+                ->setParameter('token', $token);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
