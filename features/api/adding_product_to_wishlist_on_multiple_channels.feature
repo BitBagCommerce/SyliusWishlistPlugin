@@ -13,11 +13,11 @@ Feature: Adding a product to wishlist
 
   @api
   Scenario: Adding product to wishlist in the first channel checking wishlist on the second channel.
-    Given I change my current channel to "Web-EU"
+    Given I am browsing channel "Web-EU"
     And user has a wishlist
     When user adds product "Leprechaun's Silver" to the wishlist
     Then user should have product "Leprechaun's Silver" in the wishlist
-    Then I change my current channel to "Web-US"
+    Then I am browsing channel "Web-US"
     And user has a wishlist in "Web-US"
     Then user should have an empty wishlist in "Web-US"
 
