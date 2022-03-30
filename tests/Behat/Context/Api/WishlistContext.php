@@ -410,6 +410,9 @@ final class WishlistContext extends RawMinkContext implements Context
                 'Accept' => 'application/ld+json',
                 'Content-Type' => $contentType,
             ],
+            'query' => [
+                '_channel_code' => 'Web-EU'
+            ]
         ];
 
         if (isset($body)) {
