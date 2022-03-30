@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -138,6 +139,22 @@ final class WishlistContext extends RawMinkContext implements Context
      * @When user adds product :product to the wishlist
      */
     public function userAddsProductToTheWishlist(ProductInterface $product): void
+    {
+       try{
+           $response = $this->addProductToTheWishlist($this->wishlist, $product);
+       } catch (ChannelNotFoundException $exception)
+       {
+           dd($exception->getMessage(),$exception->getTrace());
+       }
+
+               Assert::eq($response->getStatusCode(), 200);
+
+    }
+
+    /**
+     * @When user adds product :product to the wishlist in :channel
+     */
+    public function userAddsProductToTheWishlistInChannel(ProductInterface $product, ChannelInterface $channel): void
     {
         $response = $this->addProductToTheWishlist($this->wishlist, $product);
         Assert::eq($response->getStatusCode(), 200);
