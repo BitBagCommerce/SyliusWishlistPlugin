@@ -444,7 +444,7 @@ final class WishlistContext extends RawMinkContext implements Context
 
         return $this->client->request(
             self::PATCH,
-            sprintf('%s%s%s', self::$domain, $uri,'/?_channel_code=Web-EU'),
+            sprintf('%s%s%s', self::$domain, $uri,'/?_channel_code=web_eu'),
             $this->getOptions(self::PATCH, $body)
         );
     }
