@@ -19,7 +19,7 @@ Feature: Adding a product to wishlist
     Then user should have product "Leprechaun's Silver" in the wishlist
     Then I change my current channel to "Web-US"
     And user has a wishlist in "Web-US"
-    Then user should have an empty wishlist
+    Then user should have an empty wishlist in "Web-US"
 
 
   @api

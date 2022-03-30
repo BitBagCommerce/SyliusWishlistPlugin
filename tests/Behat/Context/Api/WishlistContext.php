@@ -338,6 +338,26 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @Then user should have an empty wishlist in :channel
+     */
+    public function userShouldHaveAnEmptyWishlistInChannel(ChannelInterface $channel): void
+    {
+        if (isset($this->user)) {
+            /** @var WishlistInterface $wishlist */
+            $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel(
+                $this->user,
+                $channel
+            );
+        } else {
+            /** @var WishlistInterface $wishlist */
+            $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
+        }
+        $this->entityManager->refresh($wishlist);
+
+        Assert::eq(count($wishlist->getProducts()), 0);
+    }
+
+    /**
      * @BeforeScenario
      */
     public function setupDomain(): void

@@ -23,6 +23,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ->where('o.shopUser = :shopUser')
             ->setParameter('shopUser', $shopUser)
             ->getQuery()
+            ->setMaxResults(1)
             ->getOneOrNullResult()
         ;
     }

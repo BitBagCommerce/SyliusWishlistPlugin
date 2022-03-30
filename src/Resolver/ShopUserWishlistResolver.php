@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
@@ -37,7 +38,13 @@ final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterfac
 
     public function resolve(ShopUserInterface $user): WishlistInterface
     {
-        $channel = $this->channelContext->getChannel();
+
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $exception)
+        {
+            $channel = null;
+        }
 
         if ($channel instanceof ChannelInterface) {
             return $this->wishlistRepository->findOneByShopUserAndChannel($user, $channel) ?? $this->wishlistFactory->createForUserAndChannel($user, $channel);
