@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -66,12 +67,19 @@ final class WishlistContext implements WishlistContextInterface
             return $this->wishlistRepository->findByToken($cookieWishlistToken) ?? $wishlist;
         }
 
-        $channel = $this->channelContext->getChannel();
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $exception)
+        {
+            $channel = null;
+        }
 
-        if ($user instanceof ShopUserInterface) {
-            $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel($user, $channel);
+        if (null !== $channel){
+            if ($user instanceof ShopUserInterface) {
+                $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel($user, $channel);
 
-            return $wishlist ?? $this->wishlistFactory->createForUserAndChannel($user, $channel);
+                return $wishlist ?? $this->wishlistFactory->createForUserAndChannel($user, $channel);
+            }
         }
 
         return $wishlist;

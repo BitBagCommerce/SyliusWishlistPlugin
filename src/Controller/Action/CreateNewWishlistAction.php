@@ -12,6 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,10 +45,20 @@ final class CreateNewWishlistAction
     public function __invoke(Request $request): Response
     {
         $wishlistName = $request->request->get('create_new_wishlist')['name'];
-        $channel = $this->channelContext->getChannel();
 
-        $createNewWishlist = new CreateNewWishlist($wishlistName, $channel->getCode());
-        $this->commandBus->dispatch($createNewWishlist);
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $exception) {
+            $channel = null;
+        }
+
+        if (null !== $channel){
+            $createNewWishlist = new CreateNewWishlist($wishlistName, $channel->getCode());
+            $this->commandBus->dispatch($createNewWishlist);
+        } else {
+            $createNewWishlist = new CreateNewWishlist($wishlistName,null);
+            $this->commandBus->dispatch($createNewWishlist);
+        }
 
         $this->flashBag->add(
             'success',

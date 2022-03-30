@@ -63,7 +63,6 @@ final class AddProductToWishlistHandler implements MessageHandlerInterface
         $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
 
-
         return $wishlist;
     }
 }

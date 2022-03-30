@@ -17,6 +17,7 @@ use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -85,7 +86,13 @@ final class AddProductToWishlistAction
             );
         }
 
-        if ($wishlist->getChannel()->getId() !== $this->channelContext->getChannel()->getId()) {
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $exception) {
+            $channel = null;
+        }
+
+        if (null !== $channel && $wishlist->getChannel()->getId() !== $channel->getId()) {
             throw new WishlistNotFoundException(
                 'Wishlist for this channel not found.'
             );
