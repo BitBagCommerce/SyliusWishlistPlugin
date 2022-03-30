@@ -410,9 +410,6 @@ final class WishlistContext extends RawMinkContext implements Context
                 'Accept' => 'application/ld+json',
                 'Content-Type' => $contentType,
             ],
-            'query' => [
-                '_channel_code' => 'Web-EU'
-            ]
         ];
 
         if (isset($body)) {
@@ -447,7 +444,7 @@ final class WishlistContext extends RawMinkContext implements Context
 
         return $this->client->request(
             self::PATCH,
-            sprintf('%s%s', self::$domain, $uri),
+            sprintf('%s%s%s', self::$domain, $uri,'/?_channel_code=Web-EU'),
             $this->getOptions(self::PATCH, $body)
         );
     }
