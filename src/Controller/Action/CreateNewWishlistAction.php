@@ -52,11 +52,11 @@ final class CreateNewWishlistAction
             $channel = null;
         }
 
-        if (null !== $channel){
+        if (null !== $channel) {
             $createNewWishlist = new CreateNewWishlist($wishlistName, $channel->getCode());
             $this->commandBus->dispatch($createNewWishlist);
         } else {
-            $createNewWishlist = new CreateNewWishlist($wishlistName,null);
+            $createNewWishlist = new CreateNewWishlist($wishlistName, null);
             $this->commandBus->dispatch($createNewWishlist);
         }
 
