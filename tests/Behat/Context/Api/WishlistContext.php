@@ -149,7 +149,8 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function userAddsProductToTheWishlistInChannel(ProductInterface $product, ChannelInterface $channel): void
     {
-        $response = $this->addProductToTheWishlist($this->wishlist, $product);
+        $response = $this->addProductToTheWishlist($this->wishlist, $product, $channel);
+
         Assert::eq($response->getStatusCode(), 200);
     }
 
@@ -432,8 +433,11 @@ final class WishlistContext extends RawMinkContext implements Context
         }
     }
 
-    private function addProductToTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
-    {
+    private function addProductToTheWishlist(
+        WishlistInterface $wishlist,
+        ProductInterface $product,
+        ChannelInterface $channel = null
+    ): ResponseInterface {
         $uri = $this->router->generate('api_wishlists_shop_add_product_to_wishlist_item', [
             'token' => $wishlist->getToken(),
         ]);
@@ -442,11 +446,20 @@ final class WishlistContext extends RawMinkContext implements Context
             'productId' => $product->getId(),
         ];
 
+        if (null !== $channel){
+            return $this->client->request(
+                self::PATCH,
+                sprintf('%s%s?_channel_code=%s', self::$domain, $uri,$channel->getCode()),
+                $this->getOptions(self::PATCH, $body)
+            );
+        }
+
         return $this->client->request(
             self::PATCH,
-            sprintf('%s%s%s', self::$domain, $uri,'?_channel_code=web_eu'),
+            sprintf('%s%s', self::$domain, $uri),
             $this->getOptions(self::PATCH, $body)
         );
+
     }
 
     private function addProductVariantToTheWishlist(WishlistInterface $wishlist, ProductVariantInterface $variant): ResponseInterface
