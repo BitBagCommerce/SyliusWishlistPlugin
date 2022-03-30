@@ -16,7 +16,7 @@ final class CreateNewWishlist
 
     public ?string $channelCode = null;
 
-    public function __construct(string $name, string $channelCode)
+    public function __construct(string $name, ?string $channelCode)
     {
         $this->name = $name;
         $this->channelCode = $channelCode;
