@@ -71,15 +71,15 @@ final class WishlistVoter extends Voter
 
     public function canUpdate(WishlistInterface $wishlist, ?ShopUserInterface $user): bool
     {
-//        if (!$this->security->isGranted('ROLE_USER') && null === $wishlist->getShopUser()) {
-//            return true;
-//        }
-//
-//        if ($this->security->isGranted('ROLE_USER') && $wishlist->getShopUser() === $user) {
-//            return true;
-//        }
+        if (!$this->security->isGranted('ROLE_USER') && null === $wishlist->getShopUser()) {
+            return true;
+        }
 
-        return true;
+        if ($this->security->isGranted('ROLE_USER') && $wishlist->getShopUser() === $user) {
+            return true;
+        }
+
+        return false;
     }
 
     public function canDelete(WishlistInterface $wishlist, ?ShopUserInterface $user): bool
