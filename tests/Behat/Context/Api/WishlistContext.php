@@ -141,7 +141,7 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         $response = $this->addProductToTheWishlist($this->wishlist, $product);
         if ($response->getStatusCode() === 500){
-            dd($response);
+            dd($response->getBody()->getContents());
         }
         Assert::eq($response->getStatusCode(), 200);
     }
