@@ -446,10 +446,10 @@ final class WishlistContext extends RawMinkContext implements Context
             'productId' => $product->getId(),
         ];
 
-        if (null !== $channel){
+        if (null !== $channel) {
             return $this->client->request(
                 self::PATCH,
-                sprintf('%s%s?_channel_code=%s', self::$domain, $uri,$channel->getCode()),
+                sprintf('%s%s?_channel_code=%s', self::$domain, $uri, $channel->getCode()),
                 $this->getOptions(self::PATCH, $body)
             );
         }
@@ -459,7 +459,6 @@ final class WishlistContext extends RawMinkContext implements Context
             sprintf('%s%s', self::$domain, $uri),
             $this->getOptions(self::PATCH, $body)
         );
-
     }
 
     private function addProductVariantToTheWishlist(WishlistInterface $wishlist, ProductVariantInterface $variant): ResponseInterface

@@ -69,12 +69,11 @@ final class WishlistContext implements WishlistContextInterface
 
         try {
             $channel = $this->channelContext->getChannel();
-        } catch (ChannelNotFoundException $exception)
-        {
+        } catch (ChannelNotFoundException $exception) {
             $channel = null;
         }
 
-        if (null !== $channel){
+        if (null !== $channel) {
             if ($user instanceof ShopUserInterface) {
                 $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel($user, $channel);
 

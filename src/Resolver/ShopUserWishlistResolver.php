@@ -38,11 +38,9 @@ final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterfac
 
     public function resolve(ShopUserInterface $user): WishlistInterface
     {
-
         try {
             $channel = $this->channelContext->getChannel();
-        } catch (ChannelNotFoundException $exception)
-        {
+        } catch (ChannelNotFoundException $exception) {
             $channel = null;
         }
 
