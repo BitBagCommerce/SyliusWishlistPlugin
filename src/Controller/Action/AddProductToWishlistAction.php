@@ -82,7 +82,7 @@ final class AddProductToWishlistAction
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
-                'Wishlist not found.'
+                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_found')
             );
         }
 
@@ -94,7 +94,7 @@ final class AddProductToWishlistAction
 
         if (null !== $channel && $wishlist->getChannel()->getId() !== $channel->getId()) {
             throw new WishlistNotFoundException(
-                'Wishlist for this channel not found.'
+                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_for_channel_not_found')
             );
         }
 
