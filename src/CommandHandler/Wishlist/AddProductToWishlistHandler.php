@@ -54,7 +54,7 @@ final class AddProductToWishlistHandler implements MessageHandlerInterface
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
-                'wishlist not found'
+                'bitbag_sylius_wishlist_plugin.ui.wishlist_for_channel_not_found'
             );
         }
 
