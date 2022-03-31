@@ -53,7 +53,9 @@ final class AddProductToWishlistHandler implements MessageHandlerInterface
         }
 
         if (null === $wishlist) {
-            throw new WishlistNotFoundException();
+            throw new WishlistNotFoundException(
+                'wishlist not found'
+            );
         }
 
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);

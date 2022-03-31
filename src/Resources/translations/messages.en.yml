@@ -33,3 +33,5 @@ bitbag_sylius_wishlist_plugin:
         clear_wishlist: Wishlist has been cleared.
         create_new_wishlist_label: Choose wishlist name
         copied_selected_wishlist_items: Selected products have been successfully copied.
+        wishlist_not_found: Wishlist not found
+        wishlist_for_channel_not_found: Wishlist for channel not found
