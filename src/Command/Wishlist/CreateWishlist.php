@@ -14,8 +14,16 @@ final class CreateWishlist
 {
     public ?string $tokenValue;
 
-    public function __construct(?string $tokenValue)
+    public ?string $channelCode;
+
+    public function __construct(?string $tokenValue, ?string $channelCode)
     {
         $this->tokenValue = $tokenValue;
+        $this->channelCode = $channelCode;
+    }
+
+    public function getChannelCode(): ?string
+    {
+        return $this->channelCode;
     }
 }

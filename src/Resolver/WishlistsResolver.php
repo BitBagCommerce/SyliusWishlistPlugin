@@ -11,6 +11,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -22,24 +25,37 @@ final class WishlistsResolver implements WishlistsResolverInterface
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
+    private ChannelContextInterface $channelContext;
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         TokenStorageInterface $tokenStorage,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        ChannelContextInterface $channelContext
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
+        $this->channelContext = $channelContext;
     }
 
     public function resolve(): array
     {
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
-
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $foundException) {
+            $channel = null;
+        }
 
         if ($user instanceof ShopUserInterface) {
             return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
+        }
+
+        if ($channel instanceof ChannelInterface) {
+            return $this->wishlistRepository->findAllByAnonymousAndChannel($wishlistCookieToken, $channel);
         }
 
         return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);

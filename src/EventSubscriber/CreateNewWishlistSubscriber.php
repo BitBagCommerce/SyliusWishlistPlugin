@@ -14,6 +14,9 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -35,18 +38,22 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private TokenStorageInterface $tokenStorage;
 
+    private ChannelContextInterface $channelContext;
+
     public function __construct(
         string $wishlistCookieToken,
         WishlistsResolverInterface $wishlistsResolver,
         WishlistFactoryInterface $wishlistFactory,
         WishlistRepositoryInterface $wishlistRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        ChannelContextInterface $channelContext
     ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->channelContext = $channelContext;
     }
 
     public static function getSubscribedEvents(): array
@@ -105,7 +112,21 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
         $wishlist = $this->wishlistFactory->createNew();
 
-        if ($user instanceof ShopUserInterface) {
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $exception) {
+            $channel = null;
+        }
+
+        if ($channel instanceof ChannelInterface) {
+            $wishlist->setChannel($channel);
+        }
+
+        if ($channel instanceof ChannelInterface &&
+            $user instanceof ShopUserInterface
+        ) {
+            $wishlist = $this->wishlistFactory->createForUserAndChannel($user, $channel);
+        } elseif ($user instanceof ShopUserInterface) {
             $wishlist = $this->wishlistFactory->createForUser($user);
         }
 

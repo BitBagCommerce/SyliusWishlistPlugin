@@ -13,6 +13,8 @@ namespace BitBag\SyliusWishlistPlugin\Context;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -28,16 +30,20 @@ final class WishlistContext implements WishlistContextInterface
 
     private string $wishlistCookieToken;
 
+    private ChannelContextInterface $channelContext;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
-        string $wishlistCookieToken
+        string $wishlistCookieToken,
+        ChannelContextInterface $channelContext
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistCookieToken = $wishlistCookieToken;
+        $this->channelContext = $channelContext;
     }
 
     public function getWishlist(Request $request): WishlistInterface
@@ -58,17 +64,21 @@ final class WishlistContext implements WishlistContextInterface
         }
 
         if (null !== $cookieWishlistToken && !$user instanceof ShopUserInterface) {
-            return null !== $this->wishlistRepository->findByToken($cookieWishlistToken) ?
-                $this->wishlistRepository->findByToken($cookieWishlistToken) :
-                $wishlist
-            ;
+            return $this->wishlistRepository->findByToken($cookieWishlistToken) ?? $wishlist;
         }
 
-        if ($user instanceof ShopUserInterface) {
-            return null !== $this->wishlistRepository->findOneByShopUser($user) ?
-                $this->wishlistRepository->findOneByShopUser($user) :
-                $this->wishlistFactory->createForUser($user)
-            ;
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $exception) {
+            $channel = null;
+        }
+
+        if (null !== $channel) {
+            if ($user instanceof ShopUserInterface) {
+                $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel($user, $channel);
+
+                return $wishlist ?? $this->wishlistFactory->createForUserAndChannel($user, $channel);
+            }
         }
 
         return $wishlist;

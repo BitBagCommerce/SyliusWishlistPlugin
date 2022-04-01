@@ -9,7 +9,8 @@ default:
     - sylius.behat.context.transform.lexical
     - sylius.behat.context.transform.product
     - sylius.behat.context.transform.product_variant
-    - sylius.behat.context.ui.shop.product
+    - sylius.behat.context.transform.channel
+    - sylius.behat.context.api.shop.channel
 
     - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
     - bitbag_sylius_cms_plugin.behat.context.ui.wishlist

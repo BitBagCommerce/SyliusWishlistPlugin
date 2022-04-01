@@ -16,6 +16,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 final class AddProductToSelectedWishlist
 {
     private WishlistInterface $wishlist;
+
     private ProductInterface $product;
 
     public function __construct(WishlistInterface $wishlist, ProductInterface $product)

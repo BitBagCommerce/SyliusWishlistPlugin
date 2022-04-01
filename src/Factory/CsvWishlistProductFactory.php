@@ -10,11 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Factory;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProduct;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class CsvWishlistProductFactory implements CsvWishlistProductFactoryInterface
 {
@@ -30,8 +27,7 @@ final class CsvWishlistProductFactory implements CsvWishlistProductFactoryInterf
         int $variantId,
         int $productId,
         string $variantCode
-    ): CsvWishlistProductInterface
-    {
+    ): CsvWishlistProductInterface {
         /** @var CsvWishlistProductInterface $csvWishlistProduct */
         $csvWishlistProduct = $this->createNew();
 
@@ -42,4 +38,3 @@ final class CsvWishlistProductFactory implements CsvWishlistProductFactoryInterf
         return $csvWishlistProduct;
     }
 }
-

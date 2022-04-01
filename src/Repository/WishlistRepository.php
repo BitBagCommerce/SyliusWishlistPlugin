@@ -12,6 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Repository;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 class WishlistRepository extends EntityRepository implements WishlistRepositoryInterface
@@ -22,6 +23,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ->where('o.shopUser = :shopUser')
             ->setParameter('shopUser', $shopUser)
             ->getQuery()
+            ->setMaxResults(1)
             ->getOneOrNullResult()
         ;
     }
@@ -32,6 +34,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ->where('o.token = :token')
             ->setParameter('token', $token)
             ->getQuery()
+            ->setMaxResults(1)
             ->getOneOrNullResult()
         ;
     }
@@ -67,5 +70,38 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findOneByShopUserAndChannel(
+        ShopUserInterface $shopUser,
+        ChannelInterface $channel
+    ): ?WishlistInterface {
+        return $this->createQueryBuilder('o')
+            ->where('o.shopUser = :shopUser')
+            ->andWhere('o.channel = :channel')
+            ->setParameter('shopUser', $shopUser)
+            ->setParameter('channel', $channel)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): ?array
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->andWhere('o.channel = :channel')
+            ->andWhere('o.shopUser IS NULL')
+            ->setParameter('channel', $channel)
+            ;
+
+        if (null !== $token) {
+            $qb
+                ->andWhere('o.token = :token')
+                ->setParameter('token', $token);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

@@ -13,6 +13,7 @@ services:
             - "@sylius.manager.product_taxon"
             - "@sylius.behat.cookie_setter"
             - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
+            - '@sylius.repository.channel'
 
     bitbag_sylius_cms_plugin.behat.context.ui.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui\WishlistContext
@@ -31,6 +32,7 @@ services:
             - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
             - "@sylius.behat.shared_storage"
             - "@sylius.behat.cookie_setter"
+            - "@sylius.repository.channel"
 
     bitbag_sylius_cms_plugin.behat.page.shop.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage
@@ -70,6 +72,7 @@ services:
             - "@sylius.repository.shop_user"
             - "@bitbag_wishlist_plugin.http_client"
             - "@router"
+            - '@doctrine.orm.entity_manager'
 
     bitbag_wishlist_plugin.http_client:
         class: GuzzleHttp\Client

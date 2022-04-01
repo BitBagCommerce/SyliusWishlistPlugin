@@ -11,15 +11,14 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
-use Symfony\Component\Form\FormFactoryInterface;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 final class CreateNewWishlistAction
 {
@@ -29,21 +28,37 @@ final class CreateNewWishlistAction
 
     private TranslatorInterface $translator;
 
+    private ChannelContextInterface $channelContext;
+
     public function __construct(
         MessageBusInterface $commandBus,
         FlashBagInterface $flashBag,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ChannelContextInterface $channelContext
     ) {
         $this->commandBus = $commandBus;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
+        $this->channelContext = $channelContext;
     }
 
     public function __invoke(Request $request): Response
     {
         $wishlistName = $request->request->get('create_new_wishlist')['name'];
-        $createNewWishlist = new CreateNewWishlist($wishlistName);
-        $this->commandBus->dispatch($createNewWishlist);
+
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $exception) {
+            $channel = null;
+        }
+
+        if (null !== $channel) {
+            $createNewWishlist = new CreateNewWishlist($wishlistName, $channel->getCode());
+            $this->commandBus->dispatch($createNewWishlist);
+        } else {
+            $createNewWishlist = new CreateNewWishlist($wishlistName, null);
+            $this->commandBus->dispatch($createNewWishlist);
+        }
 
         $this->flashBag->add(
             'success',

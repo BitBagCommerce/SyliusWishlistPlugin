@@ -15,6 +15,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
 use Doctrine\Persistence\ObjectManager;
+use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -30,16 +31,20 @@ final class CreateWishlistHandler implements MessageHandlerInterface
 
     private ObjectManager $wishlistManager;
 
+    private ChannelRepositoryInterface $channelRepository;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
-        ObjectManager $wishlistManager
+        ObjectManager $wishlistManager,
+        ChannelRepositoryInterface $channelRepository
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
         $this->shopUserWishlistResolver = $shopUserWishlistResolver;
         $this->wishlistManager = $wishlistManager;
+        $this->channelRepository = $channelRepository;
     }
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
@@ -54,6 +59,13 @@ final class CreateWishlistHandler implements MessageHandlerInterface
 
         if ($user instanceof ShopUserInterface) {
             $wishlist = $this->shopUserWishlistResolver->resolve($user);
+        }
+
+        $channelCode = $createWishlist->getChannelCode();
+        $channel = null !== $channelCode ? $this->channelRepository->findOneByCode($channelCode) : null;
+
+        if (null !== $channel) {
+            $wishlist->setChannel($channel);
         }
 
         $this->wishlistManager->persist($wishlist);
