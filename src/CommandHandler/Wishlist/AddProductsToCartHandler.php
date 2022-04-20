@@ -93,6 +93,8 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
         $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderRepository->add($cart);
 
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+        if (false === $this->flashBag->has('success')){
+            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+        }
     }
 }
