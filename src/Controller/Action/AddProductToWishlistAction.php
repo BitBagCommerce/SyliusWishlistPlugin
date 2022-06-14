@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddProductToWishlistAction
@@ -38,8 +37,6 @@ final class AddProductToWishlistAction
 
     private TranslatorInterface $translator;
 
-    private UrlGeneratorInterface $urlGenerator;
-
     private WishlistsResolverInterface $wishlistsResolver;
 
     private ObjectManager $wishlistManager;
@@ -51,14 +48,12 @@ final class AddProductToWishlistAction
         WishlistProductFactoryInterface $wishlistProductFactory,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator,
         WishlistsResolverInterface $wishlistsResolver,
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
         $this->wishlistsResolver = $wishlistsResolver;
@@ -107,6 +102,9 @@ final class AddProductToWishlistAction
 
         $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+        $referer = $request->headers->get('referer');
+        $refererPathInfo = Request::create($referer)->getPathInfo();
+
+        return new RedirectResponse($refererPathInfo);
     }
 }

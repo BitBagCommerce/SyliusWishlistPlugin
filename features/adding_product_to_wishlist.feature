@@ -12,8 +12,7 @@ Feature: Adding a product to wishlist
         Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
         And all store products appear under a main taxonomy
         When I add this product to wishlist
-        Then I should be on my wishlist page
-        And I should be notified that the product has been successfully added to my wishlist
+        Then I should be notified that the product has been successfully added to my wishlist
         And I should have one item in my wishlist
 
     @ui
@@ -22,8 +21,7 @@ Feature: Adding a product to wishlist
         And all store products appear under a main taxonomy
         When I view product "Some other whiskey"
         And I add this product to wishlist
-        Then I should be on my wishlist page
-        And I should be notified that the product has been successfully added to my wishlist
+        Then I should be notified that the product has been successfully added to my wishlist
         And I should have one item in my wishlist
 
     @ui
