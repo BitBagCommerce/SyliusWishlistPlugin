@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddProductToWishlistAction
@@ -37,6 +38,8 @@ final class AddProductToWishlistAction
 
     private TranslatorInterface $translator;
 
+    private UrlGeneratorInterface $urlGenerator;
+
     private WishlistsResolverInterface $wishlistsResolver;
 
     private ObjectManager $wishlistManager;
@@ -48,12 +51,14 @@ final class AddProductToWishlistAction
         WishlistProductFactoryInterface $wishlistProductFactory,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
+        UrlGeneratorInterface $urlGenerator,
         WishlistsResolverInterface $wishlistsResolver,
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
+        $this->urlGenerator = $urlGenerator;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
         $this->wishlistsResolver = $wishlistsResolver;
