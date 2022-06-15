@@ -21,11 +21,11 @@ use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddProductToWishlistActionSpec extends ObjectBehavior
@@ -35,7 +35,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         WishlistProductFactoryInterface $wishlistProductFactory,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator,
         WishlistsResolverInterface $wishlistsResolver,
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext
@@ -45,7 +44,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
             $wishlistProductFactory,
             $flashBag,
             $translator,
-            $urlGenerator,
             $wishlistsResolver,
             $wishlistManager,
             $channelContext
@@ -76,10 +74,10 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         WishlistInterface $wishlist2,
         TranslatorInterface $translator,
         FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator,
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        ParameterBag $headers
     ): void {
         $request->get('productId')->willReturn(1);
 
@@ -93,7 +91,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
 
         $wishlistProductFactory->createForWishlistAndProduct($wishlist1, $product)->willReturn($wishlistProduct);
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
-        $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
         $channelContext->getChannel()->willReturn($channel);
         $channel->getId()->willReturn(1);
         $wishlist1->getChannel()->willReturn($channel);
@@ -101,6 +98,9 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $wishlist1->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalledOnce();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
+
+        $request->headers = $headers;
+        $headers->get('referer')->willReturn('value');
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
     }
@@ -116,10 +116,10 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         WishlistProductInterface $wishlistProduct,
         TranslatorInterface $translator,
         FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator,
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        ParameterBag $headers
     ): void {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn($product);
@@ -132,7 +132,6 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
 
         $wishlistProductFactory->createForWishlistAndProduct($wishlist1, $product)->willReturn($wishlistProduct);
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
-        $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
         $channelContext->getChannel()->willReturn($channel);
         $channel->getId()->willReturn(1);
         $wishlist1->getChannel()->willReturn($channel);
@@ -140,6 +139,9 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $wishlist1->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalledOnce();
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
+
+        $request->headers = $headers;
+        $headers->get('referer')->willReturn('value');
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);
     }
