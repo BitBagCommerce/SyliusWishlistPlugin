@@ -237,6 +237,7 @@ services:
             - "@assets.empty_package"
             - "@liip_imagine.service.filter"
             - "sylius_shop_product_thumbnail"
+            - "@assets.packages"
 
     bitbag_sylius_wishlist_plugin.services.generator.model_creator:
         class: BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreator

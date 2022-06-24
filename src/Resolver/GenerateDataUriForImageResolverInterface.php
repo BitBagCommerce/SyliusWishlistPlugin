@@ -15,4 +15,6 @@ use Sylius\Component\Core\Model\ProductImageInterface;
 interface GenerateDataUriForImageResolverInterface
 {
     public function resolve(ProductImageInterface $image): string;
+
+    public function resolveWithNoImage(): string;
 }

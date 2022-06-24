@@ -13,6 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Resolver;
 use Liip\ImagineBundle\Service\FilterService;
 use Sylius\Component\Core\Model\ProductImageInterface;
 use Symfony\Component\Asset\PackageInterface;
+use Symfony\Component\Asset\Packages;
 
 final class GenerateDataUriForImageResolver implements GenerateDataUriForImageResolverInterface
 {
@@ -22,23 +23,35 @@ final class GenerateDataUriForImageResolver implements GenerateDataUriForImageRe
 
     private string $imageFilterName;
 
+    private Packages $assetPackage;
+
     public function __construct(
         PackageInterface $package,
         FilterService $filterService,
-        string $imageFilterName
+        string $imageFilterName,
+        Packages $assetPackage
     ) {
         $this->package = $package;
         $this->filterService = $filterService;
         $this->imageFilterName = $imageFilterName;
+        $this->assetPackage = $assetPackage;
     }
 
     public function resolve(ProductImageInterface $image): string
     {
         $pathToReadFile = $this->package->getUrl($image->getPath());
-        $targetUrl = $this->filterService->getUrlOfFilteredImage($pathToReadFile, $this->imageFilterName);
+        $targetUrl = $this->filterService->getUrlOfFilteredImage($pathToReadFile, $this->imageFilterName);;
         $data = file_get_contents($targetUrl);
         $type = pathinfo($image->getPath(), \PATHINFO_EXTENSION);
 
         return 'data:image/' . $type . ';base64,' . base64_encode($data);
+    }
+
+    public function resolveWithNoImage(): string
+    {
+        $pathToReadFile = "bundles/bitbagsyliuswishlistplugin/images/SyliusLogo.png";
+        $data = file_get_contents($pathToReadFile);
+
+        return 'data:image/' . 'png' . ';base64,' . base64_encode($data);
     }
 }
