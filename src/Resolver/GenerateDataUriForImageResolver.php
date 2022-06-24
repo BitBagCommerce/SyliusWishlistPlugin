@@ -27,7 +27,7 @@ final class GenerateDataUriForImageResolver implements GenerateDataUriForImageRe
     public function __construct(
         PackageInterface $package,
         FilterService $filterService,
-        string $imageFilterName,
+        string $imageFilterName
     ) {
         $this->package = $package;
         $this->filterService = $filterService;
