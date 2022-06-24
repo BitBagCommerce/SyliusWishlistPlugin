@@ -37,13 +37,15 @@ final class VariantImageToDataUriResolverSpec extends ObjectBehavior
     public function it_resolve_empty_image_path(
         ProductVariantInterface $variant,
         ProductInterface $product,
-        Collection $productImages
+        Collection $productImages,
+        GenerateDataUriForImageResolverInterface $dataUriForImageResolver
     ): void {
         $variant->getProduct()->willReturn($product);
         $product->getImages()->willReturn($productImages);
         $productImages->first()->willReturn(false);
+        $dataUriForImageResolver->resolveWithNoImage()->willReturn(self::TEST_BASE_URL);
 
-        $this->resolve($variant, self::TEST_BASE_URL)->shouldReturn('');
+        $this->resolve($variant, self::TEST_BASE_URL)->shouldReturn(self::TEST_BASE_URL);
     }
 
     public function it_resolve_image_path(
@@ -56,7 +58,9 @@ final class VariantImageToDataUriResolverSpec extends ObjectBehavior
         $variant->getProduct()->willReturn($product);
         $product->getImages()->willReturn($productImages);
         $productImages->first()->willReturn($productImage);
+        $productImage->getPath()->willReturn('test.jpg');
         $dataUriForImageResolver->resolve($productImage)->willReturn(self::TEST_BASE_URL);
+
         $this->resolve($variant, self::TEST_BASE_URL)->shouldReturn(self::TEST_BASE_URL);
     }
 }
