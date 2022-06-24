@@ -23,24 +23,21 @@ final class GenerateDataUriForImageResolver implements GenerateDataUriForImageRe
 
     private string $imageFilterName;
 
-    private Packages $assetPackage;
 
     public function __construct(
         PackageInterface $package,
         FilterService $filterService,
         string $imageFilterName,
-        Packages $assetPackage
     ) {
         $this->package = $package;
         $this->filterService = $filterService;
         $this->imageFilterName = $imageFilterName;
-        $this->assetPackage = $assetPackage;
     }
 
     public function resolve(ProductImageInterface $image): string
     {
         $pathToReadFile = $this->package->getUrl($image->getPath());
-        $targetUrl = $this->filterService->getUrlOfFilteredImage($pathToReadFile, $this->imageFilterName);;
+        $targetUrl = $this->filterService->getUrlOfFilteredImage($pathToReadFile, $this->imageFilterName);
         $data = file_get_contents($targetUrl);
         $type = pathinfo($image->getPath(), \PATHINFO_EXTENSION);
 
