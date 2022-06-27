@@ -14,5 +14,9 @@ use Sylius\Component\Core\Model\ProductImageInterface;
 
 interface GenerateDataUriForImageResolverInterface
 {
+    public const PATH_TO_EMPTY_PRODUCT_IMAGE = 'bundles/bitbagsyliuswishlistplugin/images/SyliusLogo.png';
+
     public function resolve(ProductImageInterface $image): string;
+
+    public function resolveWithNoImage(): string;
 }

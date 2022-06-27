@@ -368,15 +368,12 @@ final class WishlistContext extends RawMinkContext implements Context
         $wishlist = $this->wishlistRepository->findOneBy([]);
 
         $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf', ['wishlistId' => $wishlist->getId()], UrlGeneratorInterface::RELATIVE_PATH);
+
         $response = $guzzle->get(sprintf('%s%s', $baseUrl, $url));
-        $driver = $this->getSession()->getDriver();
+
         $contentType = $response->getHeader('Content-Type')[0];
 
-        if ('text/html; charset=UTF-8' !== $contentType) {
-            throw new \Behat\Mink\Exception\ExpectationException('The content type of the downloaded file is not correct.', $driver);
-        }
-
-        Assert::eq($this->getSession()->getStatusCode(), '200');
+        Assert::eq($contentType, 'text/html; charset=UTF-8');
     }
 
     /**

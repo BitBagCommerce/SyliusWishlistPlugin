@@ -10,8 +10,6 @@
                 "{{- option -}}":
                     {%- if option == 'value' or option == 'original-price' -%}
                         "{{ money.convertAndFormat(value) -}}"
-                    {%- else -%}
-                        "{{ value|replace({'\"': '\''}) -}}"
                     {%- endif -%}
                     {{- not loop.last ? ', '-}}
             {%- endfor -%}
