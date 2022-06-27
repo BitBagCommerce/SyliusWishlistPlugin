@@ -48,7 +48,7 @@ final class VariantImageToDataUriResolverSpec extends ObjectBehavior
         $this->resolve($variant, self::TEST_BASE_URL)->shouldReturn(self::TEST_BASE_URL);
     }
 
-    public function it_resolve_image_path(
+    public function it_resolves_image_path(
         ProductVariantInterface $variant,
         ProductInterface $product,
         Collection $productImages,
