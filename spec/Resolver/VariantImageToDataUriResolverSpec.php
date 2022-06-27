@@ -34,7 +34,7 @@ final class VariantImageToDataUriResolverSpec extends ObjectBehavior
         $this->shouldHaveType(VariantImageToDataUriResolver::class);
     }
 
-    public function it_resolve_empty_image_path(
+    public function it_resolves_empty_image_path(
         ProductVariantInterface $variant,
         ProductInterface $product,
         Collection $productImages,
