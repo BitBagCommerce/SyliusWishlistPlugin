@@ -292,6 +292,7 @@ services:
             - "@form.factory"
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
+            - "@router.default"
         tags:
             - { name: controller.service_arguments }
 

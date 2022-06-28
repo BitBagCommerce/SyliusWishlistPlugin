@@ -17,8 +17,10 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 final class ShowChosenWishlistAction
@@ -33,33 +35,40 @@ final class ShowChosenWishlistAction
 
     private WishlistCommandProcessorInterface $wishlistCommandProcessor;
 
+    private UrlGeneratorInterface $urlGenerator;
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
-        WishlistCommandProcessorInterface $wishlistCommandProcessor
+        WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
+        $this->urlGenerator = $urlGenerator;
     }
 
-    public function __invoke(int $wishlistId, Request $request): Response
+    public function __invoke(string $wishlistId, Request $request): Response
     {
         /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->find($wishlistId);
+        $wishlist = $this->wishlistRepository->find((int)$wishlistId);
 
-        $form = $this->createForm($wishlist);
+        if ($wishlist instanceof WishlistInterface) {
+            $form = $this->createForm($wishlist);
+            return new Response(
+                $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
+                    'wishlist' => $wishlist,
+                    'form' => $form->createView(),
+                ])
+            );
+        }
 
-        return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                'wishlist' => $wishlist,
-                'form' => $form->createView(),
-            ])
-        );
+        return new RedirectResponse($this->urlGenerator->generate("bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists"));
     }
 
     private function createForm(WishlistInterface $wishlist): FormInterface
