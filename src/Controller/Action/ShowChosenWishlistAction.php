@@ -56,7 +56,7 @@ final class ShowChosenWishlistAction
     public function __invoke(string $wishlistId, Request $request): Response
     {
         /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->find($wishlistId);
+        $wishlist = $this->wishlistRepository->find((int)$wishlistId);
 
         if ($wishlist instanceof WishlistInterface) {
             $form = $this->createForm($wishlist);
