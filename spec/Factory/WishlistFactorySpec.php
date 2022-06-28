@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactory;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
@@ -48,5 +49,19 @@ final class WishlistFactorySpec extends ObjectBehavior
         $wishlist->setShopUser($shopUser)->shouldBeCalled();
 
         $this->createForUser($shopUser)->shouldReturn($wishlist);
+    }
+
+    function it_creates_wishlist_for_user_and_channel(
+        FactoryInterface $factory,
+        WishlistInterface $wishlist,
+        ShopUserInterface $shopUser,
+        ChannelInterface $channel
+    ): void {
+        $factory->createNew()->willReturn($wishlist);
+
+        $wishlist->setChannel($channel)->shouldBeCalledOnce();
+        $wishlist->setShopUser($shopUser)->shouldBeCalledOnce();
+
+        $this->createForUserAndChannel($shopUser, $channel)->shouldReturn($wishlist);
     }
 }
