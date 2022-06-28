@@ -15,13 +15,11 @@ use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
