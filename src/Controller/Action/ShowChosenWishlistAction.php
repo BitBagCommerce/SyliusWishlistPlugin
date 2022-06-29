@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -37,13 +38,16 @@ final class ShowChosenWishlistAction
 
     private UrlGeneratorInterface $urlGenerator;
 
+    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->cartContext = $cartContext;
@@ -51,14 +55,16 @@ final class ShowChosenWishlistAction
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
+        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
     public function __invoke(string $wishlistId, Request $request): Response
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$wishlistId);
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
-        if ($wishlist instanceof WishlistInterface) {
+        if ($wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken) {
             $form = $this->createForm($wishlist);
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [

@@ -293,6 +293,7 @@ services:
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@router.default"
+            - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
         tags:
             - { name: controller.service_arguments }
 
