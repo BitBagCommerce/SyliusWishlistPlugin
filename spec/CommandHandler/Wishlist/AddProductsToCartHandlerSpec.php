@@ -10,8 +10,9 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
-use Doctrine\Common\Collections\Collection;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
+use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
@@ -39,5 +40,14 @@ final class AddProductsToCartHandlerSpec extends ObjectBehavior
     {
         $this->shouldHaveType(AddProductsToCartHandler::class);
         $this->shouldImplement(MessageHandlerInterface::class);
+    }
+
+    public function it_adds_products_to_cart(
+        AddProductsToCartInterface $addProductsToCart
+    ): void {
+        $collection = new ArrayCollection();
+        $addProductsToCart->getWishlistProducts()->willReturn($collection);
+
+        $this->__invoke($addProductsToCart);
     }
 }

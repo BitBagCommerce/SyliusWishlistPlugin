@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
@@ -47,7 +47,7 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         $this->channelRepository = $channelRepository;
     }
 
-    public function __invoke(CreateWishlist $createWishlist): WishlistInterface
+    public function __invoke(CreateWishlistInterface $createWishlist): WishlistInterface
     {
         /** @var ?TokenInterface $token */
         $token = $this->tokenStorage->getToken();

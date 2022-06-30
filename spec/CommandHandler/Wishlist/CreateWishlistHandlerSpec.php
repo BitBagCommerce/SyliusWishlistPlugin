@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlistInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
@@ -19,7 +19,6 @@ use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -56,7 +55,7 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         WishlistFactoryInterface $wishlistFactory,
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
-        CreateWishlist $createWishlist,
+        CreateWishlistInterface $createWishlist,
         ChannelRepositoryInterface $channelRepository,
         ChannelInterface $channel,
         ObjectManager $wishlistManager
@@ -69,8 +68,6 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
         $createWishlist->getChannelCode()->willReturn('channelCode');
         $channelRepository->findOneByCode('channelCode')->willReturn($channel);
 
-
-//        $user->shouldBeAnInstanceOf(ShopUserInterface::class);
         $wishlist->setChannel($channel)->shouldBeCalledOnce();
         $wishlistManager->persist($wishlist)->shouldBeCalledOnce();
         $wishlistManager->flush()->shouldBeCalledOnce();

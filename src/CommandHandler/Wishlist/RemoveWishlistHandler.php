@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveWishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -30,7 +30,7 @@ final class RemoveWishlistHandler implements MessageHandlerInterface
         $this->wishlistManager = $wishlistManager;
     }
 
-    public function __invoke(RemoveWishlist $removeWishlist): void
+    public function __invoke(RemoveWishlistInterface $removeWishlist): void
     {
         $token = $removeWishlist->getWishlistTokenValue();
         $wishlist = $this->wishlistRepository->findByToken($token);

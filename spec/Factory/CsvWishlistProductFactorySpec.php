@@ -12,10 +12,8 @@ namespace spec\BitBag\SyliusWishlistPlugin\Factory;
 
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactory;
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
-
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class CsvWishlistProductFactorySpec extends ObjectBehavior
 {
@@ -35,33 +33,16 @@ final class CsvWishlistProductFactorySpec extends ObjectBehavior
 
     public function it_creates_new_csv_wishlist_product_with_properties(CsvWishlistProductInterface $csvWishlistProduct): void
     {
-//        $csvWishlistProduct = $this->createNew();
-//        $csvWishlistProduct->shouldBeAnInstanceOf(CsvWishlistProductInterface::class);
+        $csvWishlistProduct = $this->createNew();
+        $csvWishlistProduct->shouldBeAnInstanceOf(CsvWishlistProductInterface::class);
 
-        $csvWishlistProduct->setVariantId(1)->shouldBeCalledOnce();
-        $csvWishlistProduct->setProductId(1)->shouldBeCalledOnce();
-        $csvWishlistProduct->setVariantCode('one')->shouldBeCalledOnce();
+        $csvWishlistProduct->setVariantId(1);
+        $csvWishlistProduct->setProductId(1);
+        $csvWishlistProduct->setVariantCode('one');
 
-        $this->createWithProperties(1,1,'one')->shouldReturn($csvWishlistProduct);
-
+        $result = $this->createWithProperties(1,1,'one');
+        $result->getVariantId()->shouldBe(1);
+        $result->getProductId()->shouldBe(1);
+        $result->getVariantCode()->shouldBe('one');
     }
 }
-
-
-//final class CsvWishlistProductFactory implements CsvWishlistProductFactoryInterface
-//{
-//    public function createWithProperties(
-//        int $variantId,
-//        int $productId,
-//        string $variantCode
-//    ): CsvWishlistProductInterface {
-//        /** @var CsvWishlistProductInterface $csvWishlistProduct */
-//        $csvWishlistProduct = $this->createNew();
-//
-//        $csvWishlistProduct->setVariantId($variantId);
-//        $csvWishlistProduct->setProductId($productId);
-//        $csvWishlistProduct->setVariantCode($variantCode);
-//
-//        return $csvWishlistProduct;
-//    }
-//}

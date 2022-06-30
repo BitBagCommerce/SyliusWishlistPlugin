@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
@@ -38,9 +38,9 @@ final class AddProductToWishlistHandler implements MessageHandlerInterface
         $this->wishlistManager = $wishlistManager;
     }
 
-    public function __invoke(AddProductToWishlist $addProductToWishlist): WishlistInterface
+    public function __invoke(AddProductToWishlistInterface $addProductToWishlist): WishlistInterface
     {
-        $productId = $addProductToWishlist->productId;
+        $productId = $addProductToWishlist->getProductId();
 
         /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($productId);

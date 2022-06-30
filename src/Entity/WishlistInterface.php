@@ -60,6 +60,8 @@ interface WishlistInterface extends ResourceInterface
 
     public function setName(?string $name): void;
 
+    public function clear(): void;
+
     public function getChannel(): ?ChannelInterface;
 
     public function setChannel(?ChannelInterface $channel): void;

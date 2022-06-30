@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
@@ -42,7 +42,7 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
         $this->orderRepository = $orderRepository;
     }
 
-    public function __invoke(AddProductsToCart $addProductsToWishlistCommand): void
+    public function __invoke(AddProductsToCartInterface $addProductsToWishlistCommand): void
     {
         $this->addProductsToWishlist($addProductsToWishlistCommand->getWishlistProducts());
     }

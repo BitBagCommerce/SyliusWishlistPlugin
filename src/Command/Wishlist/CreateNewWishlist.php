@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-class CreateNewWishlist
+final class CreateNewWishlist implements CreateNewWishlistInterface
 {
     public string $name = 'Wishlist';
 

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductFromWishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
@@ -44,7 +44,7 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
         $this->wishlistManager = $wishlistManager;
     }
 
-    public function __invoke(RemoveProductFromWishlist $removeProductFromWishlist): WishlistInterface
+    public function __invoke(RemoveProductFromWishlistInterface $removeProductFromWishlist): WishlistInterface
     {
         $productId = $removeProductFromWishlist->getProductIdValue();
         $token = $removeProductFromWishlist->getWishlistTokenValue();

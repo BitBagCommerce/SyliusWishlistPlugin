@@ -10,20 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-final class CreateWishlist implements CreateWishlistInterface
+interface RemoveWishlistInterface
 {
-    public ?string $tokenValue;
-
-    public ?string $channelCode;
-
-    public function __construct(?string $tokenValue, ?string $channelCode)
-    {
-        $this->tokenValue = $tokenValue;
-        $this->channelCode = $channelCode;
-    }
-
-    public function getChannelCode(): ?string
-    {
-        return $this->channelCode;
-    }
+    public function getWishlistTokenValue(): string;
 }

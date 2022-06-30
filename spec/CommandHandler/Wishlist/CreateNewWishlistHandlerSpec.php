@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlistInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateNewWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
@@ -55,7 +55,7 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        CreateNewWishlist $createNewWishlist,
+        CreateNewWishlistInterface $createNewWishlist,
         ChannelRepositoryInterface $channelRepository,
         ChannelInterface $channel,
         WishlistRepositoryInterface $wishlistRepository

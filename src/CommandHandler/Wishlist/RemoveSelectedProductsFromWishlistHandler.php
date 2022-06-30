@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlistInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,7 +42,7 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
         $this->translator = $translator;
     }
 
-    public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlistCommand): void
+    public function __invoke(RemoveSelectedProductsFromWishlistInterface $removeSelectedProductsFromWishlistCommand): void
     {
         $this->removeSelectedProductsFromWishlist($removeSelectedProductsFromWishlistCommand->getWishlistProducts());
 
