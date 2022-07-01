@@ -72,12 +72,11 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 
         /** @var CsvWishlistProduct $csvWishlistProduct */
         foreach ($csvWishlistProducts as $csvWishlistProduct) {
-            if (!$this->csvWishlistProductIsValid($csvWishlistProduct)) {
-                return;
+            if ($this->csvWishlistProductIsValid($csvWishlistProduct)) {
+                $variantIdRequestAttributes[] = $csvWishlistProduct->getVariantId();
+                $request->attributes->set('variantId', $variantIdRequestAttributes);
             }
-            $variantIdRequestAttributes[] = $csvWishlistProduct->getVariantId();
         }
-        $request->attributes->set('variantId', $variantIdRequestAttributes);
     }
 
     private function fileIsValidMimeType(\SplFileInfo $fileInfo): bool
@@ -96,7 +95,7 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
         ]);
 
         if (null === $wishlistProduct) {
-            throw new NotFoundHttpException();
+            return false;
         }
 
         return true;
