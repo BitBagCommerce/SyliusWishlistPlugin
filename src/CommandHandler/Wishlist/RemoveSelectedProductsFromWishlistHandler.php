@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlistInterface;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
@@ -51,13 +51,13 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
 
     private function removeSelectedProductsFromWishlist(Collection $wishlistProducts): void
     {
-        /** @var WishlistItem $wishlistProduct */
+        /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             $this->removeProductFromWishlist($wishlistProduct);
         }
     }
 
-    private function removeProductFromWishlist(WishlistItem $wishlistProduct): void
+    private function removeProductFromWishlist(WishlistItemInterface $wishlistProduct): void
     {
         $productVariant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 

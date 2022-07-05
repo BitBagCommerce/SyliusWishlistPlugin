@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 
-final class AddProductToSelectedWishlist
+final class AddProductToSelectedWishlist implements AddProductToSelectedWishlistInterface
 {
     private WishlistInterface $wishlist;
 

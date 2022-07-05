@@ -78,28 +78,3 @@ final class AddProductVariantToWishlistHandlerSpec extends ObjectBehavior
         $this->__invoke($addProductVariantToWishlist)->shouldReturn($wishlist);
     }
 }
-
-
-//public function __invoke(AddProductVariantToWishlist $addProductVariantToWishlist): WishlistInterface
-//{
-//    $variantId = $addProductVariantToWishlist->productVariantId;
-//
-//    /** @var ?ProductVariantInterface $variant */
-//    $variant = $this->productVariantRepository->find($variantId);
-//    $wishlist = $addProductVariantToWishlist->getWishlist();
-//
-//    if (null === $variant) {
-//        throw new ProductVariantNotFoundException(
-//            sprintf('The ProductVariant %s does not exist', $variantId)
-//        );
-//    }
-//
-//    $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
-//
-//    $wishlist->addWishlistProduct($wishlistProduct);
-//
-//    $this->wishlistManager->persist($wishlist);
-//    $this->wishlistManager->flush();
-//
-//    return $wishlist;
-//}

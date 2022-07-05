@@ -10,12 +10,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
+use BitBag\SyliusWishlistPlugin\Checker\ProductInStockCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Helper\ProductToWishlistAdderInterface;
 use Doctrine\Common\Collections\Collection;
-use Sylius\Component\Core\Repository\OrderRepositoryInterface;
-use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
-use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -26,24 +25,20 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 
     private TranslatorInterface $translator;
 
-    private OrderItemQuantityModifierInterface $itemQuantityModifier;
+    private ProductInStockCheckerInterface $checker;
 
-    private OrderModifierInterface $orderModifier;
-
-    private OrderRepositoryInterface $orderRepository;
+    private ProductToWishlistAdderInterface $adder;
 
     public function __construct(
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        OrderItemQuantityModifierInterface $itemQuantityModifier,
-        OrderModifierInterface $orderModifier,
-        OrderRepositoryInterface $orderRepository
+        ProductInStockCheckerInterface $checker,
+        ProductToWishlistAdderInterface $adder
     ) {
         $this->flashBag = $flashBag;
         $this->translator = $translator;
-        $this->itemQuantityModifier = $itemQuantityModifier;
-        $this->orderModifier = $orderModifier;
-        $this->orderRepository = $orderRepository;
+        $this->checker = $checker;
+        $this->adder = $adder;
     }
 
     public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
@@ -57,38 +52,11 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
     {
         /** @var WishlistItem $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
-            if (!$this->isInStock($wishlistProduct)) {
+            if (!$this->checker->isInStock($wishlistProduct)) {
                 continue;
             }
 
-            $this->addProductToWishlist($wishlistProduct);
+            $this->adder->addAndCheckQuantity($wishlistProduct);
         }
-    }
-
-    private function isInStock(WishlistItem $wishlistProduct): bool
-    {
-        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
-
-        if ($wishlistProduct->getCartItem()->getCartItem()->getVariant()->isInStock()) {
-            return true;
-        }
-
-        $message = sprintf(' "%s" does not have sufficient stock.', $cartItem->getProductName());
-        $this->flashBag->add('error', $this->translator->trans($message));
-
-        return false;
-    }
-
-    private function addProductToWishlist(WishlistItem $wishlistProduct): void
-    {
-        $cart = $wishlistProduct->getCartItem()->getCart();
-        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
-
-        if (0 === $cartItem->getQuantity()) {
-            $this->itemQuantityModifier->modify($cartItem, 1);
-        }
-
-        $this->orderModifier->addToOrder($cart, $cartItem);
-        $this->orderRepository->add($cart);
     }
 }
