@@ -334,3 +334,12 @@ services:
             - "@bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade"
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+
+    bitbag_sylius_wishlist_plugin.helper.product_to_wishlist_adder:
+        class: BitBag\SyliusWishlistPlugin\Helper\ProductToWishlistAdder
+        arguments:
+            - '@sylius.order_item_quantity_modifier'
+            - "@sylius.order_modifier"
+            - '@sylius.repository.order'
+            - "@session.flash_bag"
+            - '@translator'

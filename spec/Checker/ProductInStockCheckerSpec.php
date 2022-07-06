@@ -69,7 +69,7 @@ final class ProductInStockCheckerSpec extends ObjectBehavior
         $productVariant->isInStock()->willReturn(false);
         $cartItem->getProductName()->willReturn('product name');
 
-        $message = sprintf(' "%s" does not have sufficient stock.', 'product name');
+        $message = sprintf('%s does not have sufficient stock.', 'product name');
         $translator->trans($message)->willReturn('translation message');
 
 

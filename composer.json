@@ -54,10 +54,5 @@
     },
     "autoload-dev": {
         "classmap": ["tests/Application/Kernel.php"]
-    },
-    "config": {
-        "allow-plugins": {
-            "symfony/flex": true
-        }
     }
 }

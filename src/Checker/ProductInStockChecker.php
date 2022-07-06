@@ -36,7 +36,7 @@ final class ProductInStockChecker implements ProductInStockCheckerInterface
             return true;
         }
 
-        $message = sprintf(' "%s" does not have sufficient stock.', $cartItem->getProductName());
+        $message = sprintf('%s does not have sufficient stock.', $cartItem->getProductName());
         $this->flashBag->add('error', $this->translator->trans($message));
 
         return false;
