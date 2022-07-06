@@ -24,8 +24,15 @@ final class VariantImageToDataUriResolver implements VariantImageToDataUriResolv
     public function resolve(ProductVariantInterface $variant, string $baseUrl): string
     {
         $image = $variant->getProduct()->getImages()->first();
+
         if (false === $image) {
-            return '';
+            return $this->dataUriForImageResolver->resolveWithNoImage();
+        }
+
+        $fileExt = explode('.', $image->getPath());
+
+        if ($fileExt[1] === "svg") {
+            return $this->dataUriForImageResolver->resolveWithNoImage();
         }
 
         return $this->dataUriForImageResolver->resolve($image);

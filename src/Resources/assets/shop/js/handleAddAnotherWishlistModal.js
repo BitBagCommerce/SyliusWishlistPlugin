@@ -12,6 +12,13 @@ const setAddWishlistModal = () => {
                 cancelAction: () => {},
                 performAction: async () => {
                     const form = document.querySelector('#create_new_wishlist')
+                    const formValue = form.querySelector('#create_new_wishlist_name');
+
+                    if (!formValue?.value) {
+                        alert('Wishlist name cannot be empty');
+
+                        return;
+                    }
 
                     const url = '/wishlists/create'
                     const formData = new FormData(form);
@@ -50,4 +57,3 @@ const turnOnListener = () => {
 };
 
 turnOnListener();
-
