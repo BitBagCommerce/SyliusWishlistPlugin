@@ -12,7 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-final class ExportWishlistToCsv
+final class ExportWishlistToCsv implements ExportWishlistToCsvInterface
 {
     private Collection $wishlistProducts;
 

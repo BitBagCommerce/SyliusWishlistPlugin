@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;

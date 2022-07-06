@@ -20,9 +20,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ProductToWishlistAdder implements ProductToWishlistAdderInterface
 {
     private OrderItemQuantityModifierInterface $itemQuantityModifier;
+
     private OrderModifierInterface $orderModifier;
+
     private OrderRepositoryInterface $orderRepository;
+
     private FlashBagInterface $flashBag;
+
     private TranslatorInterface $translator;
 
     public function __construct(
@@ -32,7 +36,6 @@ final class ProductToWishlistAdder implements ProductToWishlistAdderInterface
         FlashBagInterface $flashBag,
         TranslatorInterface $translator
     ) {
-
         $this->itemQuantityModifier = $itemQuantityModifier;
         $this->orderModifier = $orderModifier;
         $this->orderRepository = $orderRepository;
@@ -61,7 +64,7 @@ final class ProductToWishlistAdder implements ProductToWishlistAdderInterface
         $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderRepository->add($cart);
 
-        if (false === $this->flashBag->has('success')){
+        if (false === $this->flashBag->has('success')) {
             $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
         }
     }

@@ -12,7 +12,9 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-interface RemoveSelectedProductsFromWishlistInterface
+interface ExportWishlistToCsvInterface
 {
     public function getWishlistProducts(): Collection;
+
+    public function getFile(): \SplFileObject;
 }

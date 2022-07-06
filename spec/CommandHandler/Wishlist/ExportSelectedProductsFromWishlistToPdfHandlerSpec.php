@@ -66,6 +66,15 @@ final class ExportSelectedProductsFromWishlistToPdfHandlerSpec extends ObjectBeh
 //        ]))->shouldBeCalled();
 //
 //        $this->__invoke($exportSelectedProductsFromWishlistToPdf);
+
+
+
+//        $exportSelectedProductsFromWishlistToPdf->getWishlistProducts()
+//            ->willReturn(new ArrayCollection([$wishlistProduct2->getWrappedObject()]));
+//
+//        $exporter->createModelToPdfAndExportToPdf(new ArrayCollection([$wishlistProduct2->getWrappedObject()]))->shouldBeCalled();
+//
+//        $this->__invoke($exportSelectedProductsFromWishlistToPdf);
     }
 }
 

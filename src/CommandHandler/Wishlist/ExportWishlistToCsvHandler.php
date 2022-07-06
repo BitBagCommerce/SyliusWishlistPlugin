@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsvInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
@@ -38,7 +38,7 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
         $this->csvSerializerFactory = $csvSerializerFactory;
     }
 
-    public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject
+    public function __invoke(ExportWishlistToCsvInterface $exportWishlistToCsv): \SplFileObject
     {
         $wishlistProducts = $exportWishlistToCsv->getWishlistProducts();
         $file = $exportWishlistToCsv->getFile();

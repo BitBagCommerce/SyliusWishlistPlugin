@@ -12,7 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-interface RemoveSelectedProductsFromWishlistInterface
+interface AddSelectedProductsToCartInterface
 {
     public function getWishlistProducts(): Collection;
 }

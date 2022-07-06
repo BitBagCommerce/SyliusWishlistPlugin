@@ -19,9 +19,9 @@ use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class CreateWishlistHandlerSpec extends ObjectBehavior
@@ -51,7 +51,7 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
     public function it_creates_wishlist(
         TokenInterface $token,
         TokenStorageInterface $tokenStorage,
-        UserInterface $user,
+        ShopUserInterface $user,
         WishlistInterface $wishlist,
         WishlistFactoryInterface $wishlistFactory,
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
@@ -74,6 +74,5 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
 
         $this->__invoke($createWishlist)->shouldReturn($wishlist);
     }
-
 }
 

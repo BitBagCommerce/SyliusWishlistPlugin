@@ -14,14 +14,15 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ProductInStockChecker
+final class ProductInStockChecker implements ProductInStockCheckerInterface
 {
     private FlashBagInterface $flashBag;
+
     private TranslatorInterface $translator;
 
     public function __construct(
-      FlashBagInterface $flashBag,
-      TranslatorInterface $translator
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator
     ) {
         $this->flashBag = $flashBag;
         $this->translator = $translator;
