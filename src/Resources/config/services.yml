@@ -335,6 +335,11 @@ services:
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
 
+    bitbag_sylius_wishlist_plugin.validator.csv_wishlist_product_validator:
+        class: BitBag\SyliusWishlistPlugin\Validator\CsvWishlistProductValidator
+        arguments:
+            - "@sylius.repository.product_variant"
+
     bitbag_sylius_wishlist_plugin.helper.product_to_wishlist_adder:
         class: BitBag\SyliusWishlistPlugin\Helper\ProductToWishlistAdder
         arguments:
@@ -343,3 +348,10 @@ services:
             - '@sylius.repository.order'
             - "@session.flash_bag"
             - '@translator'
+
+    bitbag_sylius_wishlist_plugin.helper.get_data_from_file:
+        class: BitBag\SyliusWishlistPlugin\Helper\GetDataFromFile
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer"
+            - "@bitbag_sylius_wishlist_plugin.validator.csv_wishlist_product_validator"
+            - "%bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types%"

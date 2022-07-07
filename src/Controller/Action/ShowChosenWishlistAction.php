@@ -61,11 +61,12 @@ final class ShowChosenWishlistAction
     public function __invoke(string $wishlistId, Request $request): Response
     {
         /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->find((int)$wishlistId);
+        $wishlist = $this->wishlistRepository->find((int) $wishlistId);
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         if ($wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken) {
             $form = $this->createForm($wishlist);
+
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
                     'wishlist' => $wishlist,
@@ -74,7 +75,7 @@ final class ShowChosenWishlistAction
             );
         }
 
-        return new RedirectResponse($this->urlGenerator->generate("bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists"));
+        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
     }
 
     private function createForm(WishlistInterface $wishlist): FormInterface

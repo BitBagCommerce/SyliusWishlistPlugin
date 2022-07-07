@@ -90,9 +90,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\ImportWishlistFromCsvHandler
         arguments:
             - '@bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist'
-            - "@sylius.repository.product_variant"
-            - "%bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types%"
-            - "@bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer"
+            - "@bitbag_sylius_wishlist_plugin.helper.get_data_from_file"
         tags:
             - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
 

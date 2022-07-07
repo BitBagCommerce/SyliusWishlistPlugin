@@ -44,7 +44,7 @@ final class GenerateDataUriForImageResolver implements GenerateDataUriForImageRe
 
     public function resolveWithNoImage(): string
     {
-        $pathToReadFile =  self::PATH_TO_EMPTY_PRODUCT_IMAGE;
+        $pathToReadFile = self::PATH_TO_EMPTY_PRODUCT_IMAGE;
         $data = file_get_contents($pathToReadFile);
 
         return 'data:image/' . 'png' . ';base64,' . base64_encode($data);

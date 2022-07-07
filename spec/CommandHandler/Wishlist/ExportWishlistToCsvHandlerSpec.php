@@ -53,86 +53,38 @@ final class ExportWishlistToCsvHandlerSpec extends ObjectBehavior
         ProductVariantInterface $productVariant,
         WishlistProductInterface $wishlistProduct,
         ProductInterface $product,
-        CsvWishlistProductFactoryInterface $wishlistProductFactory,
+        CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
         CsvSerializerFactoryInterface $csvSerializerFactory,
         CsvWishlistProductInterface $csvWishlistProduct,
         Serializer $serializer
     ): void {
-//        $exportWishlistToCsv->getWishlistProducts()
-//            ->willReturn(new ArrayCollection([$wishlistItem->getWrappedObject()]));
-//        $exportWishlistToCsv->getFile()->willReturn($file);
-//
-//        $wishlistItem->getCartItem()->willReturn($cartCommand);
-//        $cartCommand->getCartItem()->willReturn($orderItem);
-//        $orderItem->getVariant()->willReturn($productVariant);
-//        $productVariant->getId()->willReturn(1);
-//
-//        $wishlistItem->getWishlistProduct()->willReturn($wishlistProduct);
-//        $wishlistProduct->getProduct()->willReturn($product);
-//        $product->getId()->willReturn(1);
-//
-//        $wishlistItem->getCartItem()->willReturn($cartCommand);
-//        $cartCommand->getCartItem()->willReturn($orderItem);
-//        $orderItem->getVariant()->willReturn($productVariant);
-//        $productVariant->getCode()->willReturn('one');
-//
-//        $wishlistProductFactory->createWithProperties(1, 1, 'one')->willReturn($csvWishlistProduct);
-//
-//        $csvSerializerFactory->createNew()->willReturn($serializer);
+        $exportWishlistToCsv->getWishlistProducts()
+            ->willReturn(new ArrayCollection([$wishlistItem->getWrappedObject()]));
+        $exportWishlistToCsv->getFile()->willReturn($file);
 
+        $wishlistItem->getCartItem()->willReturn($cartCommand);
+        $cartCommand->getCartItem()->willReturn($orderItem);
+        $orderItem->getVariant()->willReturn($productVariant);
+        $productVariant->getId()->willReturn(1);
+        $productVariant->getCode()->willReturn('one');
 
+        $wishlistItem->getWishlistProduct()->willReturn($wishlistProduct);
+        $wishlistProduct->getProduct()->willReturn($product);
+        $product->getId()->willReturn(1);
 
-//         $this->csvWishlistProductFactory->createWithProperties(
-//            $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),
-//            $wishlistProduct->getWishlistProduct()->getProduct()->getId(),
-//            $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getCode(),
-//        );
+        $csvWishlistProductFactory->createWithProperties(1, 1, 'one')->willReturn($csvWishlistProduct);
 
+        $csvSerializerFactory->createNew()->willReturn($serializer);
 
+        $file->fputcsv([
+            'variantId',
+            'productId',
+            'variantCode',
+        ])->shouldBeCalled();
 
+        $serializer->normalize($csvWishlistProduct, 'csv')->willReturn([1,1]);
+        $file->fputcsv([1,1])->shouldBeCalled();
 
-
-
-//        $file->fputcsv([
-//            'variantId',
-//            'productId',
-//            'variantCode',
-//        ])->shouldBeCalled();
-//
-//        $serializer->normalize($wishlistItem, 'csv')->shouldBeCalled();
-//        $file->fputcsv($serializer)->shouldBeCalled();
-//
-//        $this->__invoke($exportWishlistToCsv)->shouldReturn($file);
+        $this->__invoke($exportWishlistToCsv)->shouldReturn($file);
     }
 }
-
-//public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject
-//{
-//    $wishlistProducts = $exportWishlistToCsv->getWishlistProducts();
-//    $file = $exportWishlistToCsv->getFile();
-//
-//    return $this->putDataToCsv($wishlistProducts, $file);
-//}
-//
-//private function putDataToCsv(Collection $wishlistProducts, \SplFileObject $file): \SplFileObject
-//{
-//    $file->fputcsv(self::CSV_HEADERS);
-//
-//    /** @var WishlistItemInterface $wishlistProduct */
-//    foreach ($wishlistProducts as $wishlistProduct) {
-//        $csvWishlistProduct = $this->createCsvWishlistProduct($wishlistProduct);
-//
-//        $file->fputcsv($this->csvSerializerFactory->createNew()->normalize($csvWishlistProduct, 'csv'));
-//    }
-//
-//    return $file;
-//}
-//
-//private function createCsvWishlistProduct(WishlistItemInterface $wishlistProduct): CsvWishlistProductInterface
-//{
-//    return $this->csvWishlistProductFactory->createWithProperties(
-//        $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),
-//        $wishlistProduct->getWishlistProduct()->getProduct()->getId(),
-//        $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getCode(),
-//    );
-//}

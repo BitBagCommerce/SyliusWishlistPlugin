@@ -72,7 +72,6 @@ final class ProductInStockCheckerSpec extends ObjectBehavior
         $message = sprintf('%s does not have sufficient stock.', 'product name');
         $translator->trans($message)->willReturn('translation message');
 
-
         $flashBag->add('error', 'translation message')->shouldBeCalled();
 
         $this->isInStock($wishlistItem)->shouldReturn(false);

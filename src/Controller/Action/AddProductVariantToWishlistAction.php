@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class AddProductVariantToWishlistAction
+final class AddProductVariantToWishlistAction implements AddProductVariantToWishlistActionInterface
 {
     private ProductVariantRepositoryInterface $productVariantRepository;
 
