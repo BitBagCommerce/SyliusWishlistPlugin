@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactory;
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class CsvWishlistProductFactorySpec extends ObjectBehavior
 {
@@ -31,10 +32,11 @@ final class CsvWishlistProductFactorySpec extends ObjectBehavior
         $csvWishlistProduct->shouldBeAnInstanceOf(CsvWishlistProductInterface::class);
     }
 
-    public function it_creates_new_csv_wishlist_product_with_properties(CsvWishlistProductInterface $csvWishlistProduct): void
-    {
-        $csvWishlistProduct = $this->createNew();
-        $csvWishlistProduct->shouldBeAnInstanceOf(CsvWishlistProductInterface::class);
+    public function it_creates_new_csv_wishlist_product_with_properties(
+        FactoryInterface $factory,
+        CsvWishlistProductInterface $csvWishlistProduct
+    ): void {
+        $factory->createNew()->willReturn($csvWishlistProduct);
 
         $csvWishlistProduct->setVariantId(1);
         $csvWishlistProduct->setProductId(1);
