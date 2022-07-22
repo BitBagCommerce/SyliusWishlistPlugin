@@ -19,10 +19,12 @@ use Gedmo\Exception\UploadableInvalidMimeTypeException;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 {
@@ -34,16 +36,24 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 
     private CsvSerializerFactoryInterface $csvSerializerFactory;
 
+    private FlashBagInterface $flashBag;
+
+    private TranslatorInterface $translator;
+
     public function __construct(
         AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
         ProductVariantRepositoryInterface $productVariantRepository,
         array $allowedMimeTypes,
-        CsvSerializerFactoryInterface $csvSerializerFactory
+        CsvSerializerFactoryInterface $csvSerializerFactory,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator
     ) {
         $this->addProductVariantToWishlistAction = $addProductVariantToWishlistAction;
         $this->productVariantRepository = $productVariantRepository;
         $this->allowedMimeTypes = $allowedMimeTypes;
         $this->csvSerializerFactory = $csvSerializerFactory;
+        $this->flashBag = $flashBag;
+        $this->translator = $translator;
     }
 
     public function __invoke(ImportWishlistFromCsv $importWishlistFromCsv): Response
@@ -75,6 +85,9 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
             if ($this->csvWishlistProductIsValid($csvWishlistProduct)) {
                 $variantIdRequestAttributes[] = $csvWishlistProduct->getVariantId();
                 $request->attributes->set('variantId', $variantIdRequestAttributes);
+            }
+            if (!$this->csvWishlistProductIsValid($csvWishlistProduct)) {
+                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
             }
         }
     }

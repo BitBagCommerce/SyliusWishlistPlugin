@@ -35,3 +35,4 @@ bitbag_sylius_wishlist_plugin:
         copied_selected_wishlist_items: Selected products have been successfully copied.
         wishlist_not_found: Wishlist not found
         wishlist_for_channel_not_found: Wishlist for channel not found
+        csv_file_contains_incorrect_products: CSV file contains incorrect products.
