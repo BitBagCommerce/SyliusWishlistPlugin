@@ -13,6 +13,7 @@ services:
             - "@sylius.command_bus"
             - "@router"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@translator"
 
     bitbag_sylius_wishlist_plugin.controller.action.base_wishlists_listing_action:
         abstract: true
