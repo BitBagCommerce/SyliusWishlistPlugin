@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
+use BitBag\SyliusWishlistPlugin\Checker\ProductCanBeProcessedCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\Collection;
@@ -33,18 +34,22 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 
     private OrderRepositoryInterface $orderRepository;
 
+    private ProductCanBeProcessedCheckerInterface $productCanBeProcessedChecker;
+
     public function __construct(
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         OrderItemQuantityModifierInterface $itemQuantityModifier,
         OrderModifierInterface $orderModifier,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        ProductCanBeProcessedCheckerInterface $productCanBeProcessedChecker
     ) {
         $this->flashBag = $flashBag;
         $this->translator = $translator;
         $this->itemQuantityModifier = $itemQuantityModifier;
         $this->orderModifier = $orderModifier;
         $this->orderRepository = $orderRepository;
+        $this->productCanBeProcessedChecker = $productCanBeProcessedChecker;
     }
 
     public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
@@ -56,41 +61,10 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
     {
         /** @var WishlistItem $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
-            if ($this->productCanBeProcessed($wishlistProduct)) {
+            if ($this->productCanBeProcessedChecker->productCanBeProcessed($wishlistProduct)) {
                 $this->addProductToWishlist($wishlistProduct);
             }
         }
-    }
-
-    private function productCanBeProcessed(WishlistItem $wishlistProduct): bool
-    {
-        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
-
-        return $this->isInStock($wishlistProduct) && $this->productHasPositiveQuantity($cartItem);
-    }
-
-    private function isInStock(WishlistItem $wishlistProduct): bool
-    {
-        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
-
-        if ($wishlistProduct->getCartItem()->getCartItem()->getVariant()->isInStock()) {
-            return true;
-        }
-
-        $message = sprintf(' "%s" does not have sufficient stock.', $cartItem->getProductName());
-        $this->flashBag->add('error', $this->translator->trans($message));
-
-        return false;
-    }
-
-    private function productHasPositiveQuantity(OrderItemInterface $product): bool
-    {
-        if (0 < $product->getQuantity()) {
-            return true;
-        }
-        $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
-
-        return false;
     }
 
     private function addProductToWishlist(WishlistItem $wishlistProduct): void
