@@ -43,12 +43,14 @@ class ProductCanBeProcessedChecker implements ProductCanBeProcessedCheckerInterf
     {
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();
 
-        if ($wishlistProduct->getCartItem()->getCartItem()->getVariant()->isInStock()) {
+        if (0 < $wishlistProduct->getCartItem()->getCartItem()->getQuantity()) {
             return true;
         }
 
-        $message = sprintf(' "%s" does not have sufficient stock.', $cartItem->getProductName());
-        $this->flashBag->add('error', $this->translator->trans($message));
+        $message = sprintf('%s '.$this->translator->trans('bitbag_sylius_wishlist_plugin.ui.does_not_have_sufficient_stock'), $cartItem->getProductName());
+
+        $this->flashBag->add('error', $message);
+
 
         return false;
     }
