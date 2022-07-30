@@ -39,6 +39,16 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         ;
     }
 
+    public function findAllByToken(string $token): ?array
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.token = :token')
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findAllByShopUser(int $shopUser): ?array
     {
         return $this->createQueryBuilder('o')
