@@ -347,3 +347,9 @@ services:
             - '@session.flash_bag'
             - '@translator'
             - '@bitbag_sylius_wishlist_plugin.services.product_quantity_checker'
+
+    bitbag_sylius_wishlist_plugin.services.wishlist_be_created_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\WishlistCanBeCreatedChecker
+        arguments:
+            - '@bitbag_sylius_wishlist_plugin.guard.wishlist_already_exists'
+            - '@session.flash_bag'
