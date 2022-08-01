@@ -12,7 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Checker;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 
-interface ProductCanBeProcessedCheckerInterface
+interface ProductProcessingCheckerInterface
 {
     public function productCanBeProcessed(WishlistItem $wishlistProduct): bool;
 }

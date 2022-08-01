@@ -14,7 +14,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ProductCanBeProcessedChecker implements ProductCanBeProcessedCheckerInterface
+final class ProductProcessingChecker implements ProductProcessingCheckerInterface
 {
     private ProductQuantityCheckerInterface $productQuantityChecker;
 
