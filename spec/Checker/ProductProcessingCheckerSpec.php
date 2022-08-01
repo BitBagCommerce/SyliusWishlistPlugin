@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Checker;
 
-use BitBag\SyliusWishlistPlugin\Checker\ProductCanBeProcessedChecker;
+use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker;
 use BitBag\SyliusWishlistPlugin\Checker\ProductQuantityCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use PhpSpec\ObjectBehavior;
@@ -20,7 +20,7 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ProductCanBeProcessedCheckerSpec extends ObjectBehavior
+class ProductProcessingCheckerSpec extends ObjectBehavior
 {
     public function let(
         FlashBagInterface $flashBag,
@@ -36,7 +36,7 @@ class ProductCanBeProcessedCheckerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(ProductCanBeProcessedChecker::class);
+        $this->shouldHaveType(ProductProcessingChecker::class);
     }
 
     public function it_can_be_processed(

@@ -14,21 +14,13 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ProductCanBeProcessedChecker implements ProductCanBeProcessedCheckerInterface
+final class ProductCanBeProcessedChecker implements ProductCanBeProcessedCheckerInterface
 {
-    private FlashBagInterface $flashBag;
-
-    private TranslatorInterface $translator;
-
     private ProductQuantityCheckerInterface $productQuantityChecker;
 
     public function __construct(
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
         ProductQuantityCheckerInterface $productQuantityChecker
     ) {
-        $this->flashBag = $flashBag;
-        $this->translator = $translator;
         $this->productQuantityChecker = $productQuantityChecker;
     }
 
@@ -43,14 +35,9 @@ class ProductCanBeProcessedChecker implements ProductCanBeProcessedCheckerInterf
     {
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();
 
-        if (0 < $wishlistProduct->getCartItem()->getCartItem()->getQuantity()) {
+        if (0 < $cartItem->getQuantity()) {
             return true;
         }
-
-        $message = sprintf('%s '.$this->translator->trans('bitbag_sylius_wishlist_plugin.ui.does_not_have_sufficient_stock'), $cartItem->getProductName());
-
-        $this->flashBag->add('error', $message);
-
 
         return false;
     }
