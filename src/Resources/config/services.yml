@@ -334,3 +334,9 @@ services:
             - "@bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade"
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+
+    bitbag_sylius_wishlist_plugin.services.wishlist_be_created_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\WishlistCanBeCreatedChecker
+        arguments:
+            - '@bitbag_sylius_wishlist_plugin.guard.wishlist_already_exists'
+            - '@session.flash_bag'
