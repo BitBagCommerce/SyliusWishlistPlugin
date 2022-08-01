@@ -130,6 +130,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
             - "@sylius.repository.channel"
+            - "@bitbag_sylius_wishlist_plugin.services.wishlist_be_created_checker"
         tags:
             - { name: messenger.message_handler }
 
