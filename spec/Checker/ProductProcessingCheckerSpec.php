@@ -20,16 +20,13 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ProductProcessingCheckerSpec extends ObjectBehavior
+final class ProductProcessingCheckerSpec extends ObjectBehavior
 {
     public function let(
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
+
         ProductQuantityCheckerInterface $productQuantityChecker
     ): void {
         $this->beConstructedWith(
-            $flashBag,
-            $translator,
             $productQuantityChecker
         );
     }
@@ -63,12 +60,24 @@ class ProductProcessingCheckerSpec extends ObjectBehavior
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
+        $orderItem->getQuantity()->willReturn(5);
+        $productQuantityChecker->productHasPositiveQuantity($orderItem)->willReturn(false);
+
+        $this->productCanBeProcessed($wishlistProduct)->shouldReturn(false);
+    }
+
+    public function it_can_not_be_processed_due_to_lack_in_quantity(
+        WishlistItem $wishlistProduct,
+        AddToCartCommandInterface $addToCartCommand,
+        OrderItemInterface $orderItem,
+        ProductQuantityCheckerInterface $productQuantityChecker,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator
+    ): void {
+        $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
+        $addToCartCommand->getCartItem()->willReturn($orderItem);
         $orderItem->getQuantity()->willReturn(0);
         $productQuantityChecker->productHasPositiveQuantity($orderItem)->willReturn(false);
-        $orderItem->getProductName()->willReturn('Super yellow shirt');
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.does_not_have_sufficient_stock')->willReturn('does not have sufficient stock.');
-        $message = ('Super yellow shirt '.'does not have sufficient stock.');
-        $flashBag->add('error', $message)->shouldBeCalled();
 
         $this->productCanBeProcessed($wishlistProduct)->shouldReturn(false);
     }

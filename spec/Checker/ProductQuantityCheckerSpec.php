@@ -17,18 +17,8 @@ use Sylius\Component\Order\Model\OrderItemInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ProductQuantityCheckerSpec extends ObjectBehavior
+final class ProductQuantityCheckerSpec extends ObjectBehavior
 {
-    public function let(
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator
-    ): void {
-        $this->beConstructedWith(
-            $flashBag,
-            $translator
-        );
-    }
-
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(ProductQuantityChecker::class);
@@ -43,15 +33,10 @@ class ProductQuantityCheckerSpec extends ObjectBehavior
     }
 
     public function it_has_zero_products(
-        OrderItemInterface $product,
-        TranslatorInterface $translator,
-        FlashBagInterface $flashBag
+        OrderItemInterface $product
     ): void {
         $product->getQuantity()->willReturn(0);
 
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity')->willReturn('Increase the quantity of at least one item.');
-
-        $flashBag->add('error', 'Increase the quantity of at least one item.')->shouldBeCalled();
         $this->productHasPositiveQuantity($product)->shouldReturn(false);
     }
 }
