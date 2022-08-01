@@ -14,26 +14,13 @@ use Sylius\Component\Order\Model\OrderItemInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ProductQuantityChecker implements ProductQuantityCheckerInterface
+final class ProductQuantityChecker implements ProductQuantityCheckerInterface
 {
-    private FlashBagInterface $flashBag;
-
-    private TranslatorInterface $translator;
-
-    public function __construct(
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator
-    ) {
-        $this->flashBag = $flashBag;
-        $this->translator = $translator;
-    }
-
     public function productHasPositiveQuantity(OrderItemInterface $product): bool
     {
         if (0 < $product->getQuantity()) {
             return true;
         }
-        $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
 
         return false;
     }
