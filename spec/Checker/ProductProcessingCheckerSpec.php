@@ -44,7 +44,7 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
-        $orderItem->getQuantity()->willReturn(5);
+        $wishlistProduct->getOrderItemQuantity()->willReturn(5);
         $productQuantityChecker->productHasPositiveQuantity($orderItem)->willReturn(true);
 
         $this->productCanBeProcessed($wishlistProduct)->shouldReturn(true);
@@ -60,7 +60,7 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
-        $orderItem->getQuantity()->willReturn(5);
+        $wishlistProduct->getOrderItemQuantity()->willReturn(5);
         $productQuantityChecker->productHasPositiveQuantity($orderItem)->willReturn(false);
 
         $this->productCanBeProcessed($wishlistProduct)->shouldReturn(false);
@@ -76,7 +76,7 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
-        $orderItem->getQuantity()->willReturn(0);
+        $wishlistProduct->getOrderItemQuantity()->willReturn(0);
         $productQuantityChecker->productHasPositiveQuantity($orderItem)->willReturn(false);
 
         $this->productCanBeProcessed($wishlistProduct)->shouldReturn(false);
