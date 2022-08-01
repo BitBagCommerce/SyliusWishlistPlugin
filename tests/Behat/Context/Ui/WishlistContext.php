@@ -460,6 +460,14 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @Then I should be notified that I should add more products
+     */
+    public function iShouldBeNotifiedThatIShouldAddMoreProducts(): void
+    {
+        Assert::true($this->wishlistPage->addMoreProductsWishlistValidationMessage());
+    }
+
+    /**
      * @Then I should wait for one second
      */
     public function iShouldWaitForOneSecond()
