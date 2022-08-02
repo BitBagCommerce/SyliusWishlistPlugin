@@ -1,5 +1,3 @@
 services:
     bitbag_sylius_wishlist_plugin.guard.product_variant_already_in_wishlist:
         class: BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuard
-    bitbag_sylius_wishlist_plugin.guard.wishlist_already_exists:
-        class: BitBag\SyliusWishlistPlugin\Guard\WishlistAlreadyExistsGuard

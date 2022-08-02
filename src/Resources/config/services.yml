@@ -334,3 +334,6 @@ services:
             - "@bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade"
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+
+    bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\WishlistNameChecker
