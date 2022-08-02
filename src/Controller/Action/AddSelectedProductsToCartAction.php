@@ -44,7 +44,8 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
             $wishlistCommandProcessor,
             $messageBus,
             $urlGenerator,
-            $wishlistRepository
+            $wishlistRepository,
+            $translator
         );
         $this->translator = $translator;
     }
