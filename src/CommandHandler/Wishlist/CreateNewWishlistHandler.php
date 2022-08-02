@@ -10,7 +10,10 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Checker\WishlistCanBeCreatedCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
+use BitBag\SyliusWishlistPlugin\Guard\WishlistAlreadyExistsGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
@@ -29,7 +32,7 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
 
     private ChannelRepositoryInterface $channelRepository;
 
-    private WishlistCanBeCreatedCheckerInterface $wishlistCanBeCreatedChecker;
+    private WishlistAlreadyExistsGuardInterface $wishlistAlreadyExistsGuard;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
@@ -37,14 +40,14 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
         WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         ChannelRepositoryInterface $channelRepository,
-        WishlistCanBeCreatedCheckerInterface $wishlistCanBeCreatedChecker
+        WishlistAlreadyExistsGuardInterface $wishlistAlreadyExistsGuard
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
         $this->channelRepository = $channelRepository;
-        $this->wishlistCanBeCreatedChecker = $wishlistCanBeCreatedChecker;
+        $this->wishlistAlreadyExistsGuard = $wishlistAlreadyExistsGuard;
     }
 
     public function __invoke(CreateNewWishlist $createNewWishlist): void
@@ -70,9 +73,14 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
 
         $wishlists = $this->wishlistRepository->findAllByToken($wishlistCookieToken);
 
-        $this->wishlistCanBeCreatedChecker->checkIfWishlistNameExists($wishlists, $createNewWishlist->getName());
-
-        $wishlist->setName($createNewWishlist->getName());
+        /** @var WishlistInterface $wishlist */
+        foreach ($wishlists as $newWishlist) {
+            if (!$this->wishlistAlreadyExistsGuard->check($newWishlist->getName(), $createNewWishlist->getName())) {
+                $wishlist->setName($createNewWishlist->getName());
+            } else {
+                throw new WishlistNameIsTakenException();
+            }
+        }
         $this->wishlistRepository->add($wishlist);
     }
 }
