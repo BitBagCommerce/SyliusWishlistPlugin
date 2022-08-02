@@ -21,6 +21,8 @@ interface WishlistRepositoryInterface extends RepositoryInterface
 
     public function findByToken(string $token): ?WishlistInterface;
 
+    public function findAllByToken(string $token): ?array;
+
     public function findAllByShopUser(int $shopUser): ?array;
 
     public function findAllByAnonymous(?string $token): ?array;
