@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Guard;
+namespace BitBag\SyliusWishlistPlugin\Checker;
 
-class WishlistAlreadyExistsGuard implements WishlistAlreadyExistsGuardInterface
+final class WishlistNameChecker implements WishlistNameCheckerInterface
 {
     public function check(string $existingWishlistName, string $wishlistToCreate): bool
     {
