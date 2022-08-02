@@ -187,6 +187,20 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
         return $hasWishlistClearedValidationMessage->getText() === $message;
     }
 
+    public function addMoreProductsWishlistValidationMessage(): bool
+    {
+        $notEnoughQuantityOfItemsValidationError = $this->getDocument()->find('css', '.sylius-flash-message p');
+
+        if (null === $notEnoughQuantityOfItemsValidationError) {
+            return false;
+        }
+
+        $message = sprintf('Increase the quantity of at least one item.');
+
+        return $notEnoughQuantityOfItemsValidationError->getText() === $message;
+
+    }
+
     public function getRouteName(): string
     {
         return 'bitbag_sylius_wishlist_plugin_shop_wishlist_list_products';

@@ -105,6 +105,8 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddSelectedProductsToCartAction
         parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action"
+        arguments:
+            - "@translator"
         public: true
         tags:
             - { name: controller.service_arguments }
@@ -337,3 +339,11 @@ services:
 
     bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker:
         class: BitBag\SyliusWishlistPlugin\Checker\WishlistNameChecker
+        
+    bitbag_sylius_wishlist_plugin.services.product_quantity_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\ProductQuantityChecker
+
+    bitbag_sylius_wishlist_plugin.services.product_processing_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker
+        arguments:
+            - '@bitbag_sylius_wishlist_plugin.services.product_quantity_checker'

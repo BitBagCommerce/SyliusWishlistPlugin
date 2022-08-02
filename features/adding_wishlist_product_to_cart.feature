@@ -53,4 +53,4 @@ Feature: Adding wishlist product to cart
         And I select 0 quantity of "Bushmills Black Bush Whiskey" product
         And I check "Bushmills Black Bush Whiskey"
         And I add selected products to cart
-        Then I should have "Bushmills Black Bush Whiskey" product in my cart
+        Then I should be notified that I should add more products
