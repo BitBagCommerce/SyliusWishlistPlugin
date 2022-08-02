@@ -68,7 +68,6 @@ final class CreateNewWishlistAction
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist')
             );
         } catch (HandlerFailedException $exception) {
-            $exception->getNestedExceptionOfClass(WishlistNameIsTakenException::class);
             $this->flashBag->add(
                 'error',
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_already_exists')
