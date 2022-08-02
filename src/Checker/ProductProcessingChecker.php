@@ -24,11 +24,11 @@ final class ProductProcessingChecker implements ProductProcessingCheckerInterfac
         $this->productQuantityChecker = $productQuantityChecker;
     }
 
-    public function productCanBeProcessed(WishlistItem $wishlistProduct): bool
+    public function canBeProcessed(WishlistItem $wishlistProduct): bool
     {
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();
 
-        return $this->isInStock($wishlistProduct) && $this->productQuantityChecker->productHasPositiveQuantity($cartItem);
+        return $this->isInStock($wishlistProduct) && $this->productQuantityChecker->hasPositiveQuantity($cartItem);
     }
 
     private function isInStock(WishlistItem $wishlistProduct): bool

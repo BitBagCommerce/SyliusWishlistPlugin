@@ -56,7 +56,6 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
             $this->messageBus->dispatch($command);
             $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
         } catch (HandlerFailedException $exception) {
-            $exception->getNestedExceptionOfClass(ProductCantBeAddedToCartException::class);
             $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
         }
     }

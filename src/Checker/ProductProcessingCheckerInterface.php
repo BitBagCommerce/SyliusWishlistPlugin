@@ -14,5 +14,5 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 
 interface ProductProcessingCheckerInterface
 {
-    public function productCanBeProcessed(WishlistItem $wishlistProduct): bool;
+    public function canBeProcessed(WishlistItem $wishlistProduct): bool;
 }

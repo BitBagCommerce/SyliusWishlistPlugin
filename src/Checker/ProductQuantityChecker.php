@@ -16,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductQuantityChecker implements ProductQuantityCheckerInterface
 {
-    public function productHasPositiveQuantity(OrderItemInterface $product): bool
+    public function hasPositiveQuantity(OrderItemInterface $product): bool
     {
         if (0 < $product->getQuantity()) {
             return true;

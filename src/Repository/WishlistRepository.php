@@ -15,7 +15,7 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
-class WishlistRepository extends EntityRepository implements WishlistRepositoryInterface
+final class WishlistRepository extends EntityRepository implements WishlistRepositoryInterface
 {
     public function findOneByShopUser(ShopUserInterface $shopUser): ?WishlistInterface
     {

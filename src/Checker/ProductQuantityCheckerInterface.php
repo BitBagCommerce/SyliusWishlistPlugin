@@ -14,5 +14,5 @@ use Sylius\Component\Order\Model\OrderItemInterface;
 
 interface ProductQuantityCheckerInterface
 {
-    public function productHasPositiveQuantity(OrderItemInterface $product): bool;
+    public function hasPositiveQuantity(OrderItemInterface $product): bool;
 }

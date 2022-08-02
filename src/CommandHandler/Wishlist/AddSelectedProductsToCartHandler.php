@@ -52,7 +52,7 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
     {
         /** @var WishlistItem $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
-            if ($this->productProcessingChecker->productCanBeProcessed($wishlistProduct)) {
+            if ($this->productProcessingChecker->canBeProcessed($wishlistProduct)) {
                 $this->addProductToWishlist($wishlistProduct);
             } else {
                 throw new ProductCantBeAddedToCartException();
