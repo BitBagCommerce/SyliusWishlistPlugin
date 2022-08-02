@@ -8,10 +8,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exception;
+namespace BitBag\SyliusWishlistPlugin\Checker;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sylius\Component\Order\Model\OrderItemInterface;
 
-final class NoProductSelectedException extends NotFoundHttpException
+interface ProductQuantityCheckerInterface
 {
+    public function hasPositiveQuantity(OrderItemInterface $product): bool;
 }
