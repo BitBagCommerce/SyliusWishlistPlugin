@@ -29,7 +29,7 @@ final class ProductQuantityCheckerSpec extends ObjectBehavior
     ): void {
         $product->getQuantity()->willReturn(4);
 
-        $this->productHasPositiveQuantity($product)->shouldReturn(true);
+        $this->hasPositiveQuantity($product)->shouldReturn(true);
     }
 
     public function it_has_zero_products(
@@ -37,6 +37,6 @@ final class ProductQuantityCheckerSpec extends ObjectBehavior
     ): void {
         $product->getQuantity()->willReturn(0);
 
-        $this->productHasPositiveQuantity($product)->shouldReturn(false);
+        $this->hasPositiveQuantity($product)->shouldReturn(false);
     }
 }

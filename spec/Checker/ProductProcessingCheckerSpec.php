@@ -45,9 +45,9 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
         $wishlistProduct->getOrderItemQuantity()->willReturn(5);
-        $productQuantityChecker->productHasPositiveQuantity($orderItem)->willReturn(true);
+        $productQuantityChecker->hasPositiveQuantity($orderItem)->willReturn(true);
 
-        $this->productCanBeProcessed($wishlistProduct)->shouldReturn(true);
+        $this->canBeProcessed($wishlistProduct)->shouldReturn(true);
     }
 
     public function it_can_not_be_processed_due_to_lack_in_stock(
@@ -61,9 +61,9 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
         $wishlistProduct->getOrderItemQuantity()->willReturn(5);
-        $productQuantityChecker->productHasPositiveQuantity($orderItem)->willReturn(false);
+        $productQuantityChecker->hasPositiveQuantity($orderItem)->willReturn(false);
 
-        $this->productCanBeProcessed($wishlistProduct)->shouldReturn(false);
+        $this->canBeProcessed($wishlistProduct)->shouldReturn(false);
     }
 
     public function it_can_not_be_processed_due_to_lack_in_quantity(
@@ -77,8 +77,8 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
         $wishlistProduct->getOrderItemQuantity()->willReturn(0);
-        $productQuantityChecker->productHasPositiveQuantity($orderItem)->willReturn(false);
+        $productQuantityChecker->hasPositiveQuantity($orderItem)->willReturn(false);
 
-        $this->productCanBeProcessed($wishlistProduct)->shouldReturn(false);
+        $this->canBeProcessed($wishlistProduct)->shouldReturn(false);
     }
 }
