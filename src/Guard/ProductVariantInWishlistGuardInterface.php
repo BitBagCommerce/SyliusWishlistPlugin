@@ -16,5 +16,5 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 interface ProductVariantInWishlistGuardInterface
 {
-    public function check(WishlistInterface $wishlist, ProductVariantInterface $productVariant): void;
+    public function check(WishlistInterface $wishlist, ProductVariantInterface $productVariant): bool;
 }

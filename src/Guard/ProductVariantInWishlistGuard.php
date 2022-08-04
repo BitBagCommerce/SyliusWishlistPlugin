@@ -17,10 +17,12 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class ProductVariantInWishlistGuard implements ProductVariantInWishlistGuardInterface
 {
-    public function check(WishlistInterface $wishlist, ProductVariantInterface $productVariant): void
+    public function check(WishlistInterface $wishlist, ProductVariantInterface $productVariant): bool
     {
         if ($wishlist->hasProductVariant($productVariant)) {
-            throw new ProductVariantAlreadyInWishlistException();
+            return true;
+        } else {
+            return false;
         }
     }
 }
