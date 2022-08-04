@@ -26,7 +26,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
 {
     public function let(
-        ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
         WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistRepositoryInterface $wishlistRepository,
@@ -34,7 +33,6 @@ final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
         TranslatorInterface $translator
     ): void {
         $this->beConstructedWith(
-            $productVariantInWishlistGuard,
             $wishlistProductVariantFactory,
             $productVariantRepository,
             $wishlistRepository,
