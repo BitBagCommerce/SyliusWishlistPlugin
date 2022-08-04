@@ -86,9 +86,9 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
                 $variantIdRequestAttributes[] = $csvWishlistProduct->getVariantId();
                 $request->attributes->set('variantId', $variantIdRequestAttributes);
             }
-            if (!$this->csvWishlistProductIsValid($csvWishlistProduct)) {
-                $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
-            }
+        }
+        if (!$this->csvWishlistProductIsValid($csvWishlistProduct)) {
+            $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
         }
     }
 
