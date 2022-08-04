@@ -20,6 +20,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
 {
@@ -27,13 +29,17 @@ final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
         ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
         WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator
     ): void {
         $this->beConstructedWith(
             $productVariantInWishlistGuard,
             $wishlistProductVariantFactory,
             $productVariantRepository,
-            $wishlistRepository
+            $wishlistRepository,
+            $flashBag,
+            $translator
         );
     }
 

@@ -31,8 +31,9 @@ final class ProductVariantInWishlistGuardSpec extends ObjectBehavior
         ProductVariantInterface $productVariant
     ): void {
         $wishlist->hasProductVariant($productVariant)->willReturn(true);
-        $this->shouldThrow(ProductVariantAlreadyInWishlistException::class)
-            ->during('check', [$wishlist, $productVariant]);
+
+        $this->check($wishlist, $productVariant)
+            ->shouldReturn(true);
     }
 
     public function it_should_return_nothing_if_variant_is_not_in_wishlist(
@@ -42,6 +43,6 @@ final class ProductVariantInWishlistGuardSpec extends ObjectBehavior
         $wishlist->hasProductVariant($productVariant)->willReturn(false);
 
         $this->check($wishlist, $productVariant)
-            ->shouldReturn(null);
+            ->shouldReturn(false);
     }
 }
