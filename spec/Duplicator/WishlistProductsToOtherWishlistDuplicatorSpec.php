@@ -52,15 +52,14 @@ final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
         ProductVariantRepositoryInterface $productVariantRepository,
         ProductVariantInterface $variant1,
         ProductVariantInterface $variant2,
-        ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
         WishlistInterface $destinedWishlist,
         WishlistRepositoryInterface $wishlistRepository
     ): void {
         $productVariantRepository->find("1")->willReturn($variant1);
         $productVariantRepository->find("24")->willReturn($variant2);
 
-        $productVariantInWishlistGuard->check($destinedWishlist, $variant1)->shouldBeCalledOnce();
-        $productVariantInWishlistGuard->check($destinedWishlist, $variant2)->shouldBeCalledOnce();
+        $destinedWishlist->hasProductVariant($variant1)->shouldBeCalled();
+        $destinedWishlist->hasProductVariant($variant2)->shouldBeCalled();
 
         $wishlistRepository->add($destinedWishlist)->shouldBeCalledOnce();
 
