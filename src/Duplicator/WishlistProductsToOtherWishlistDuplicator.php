@@ -13,20 +13,16 @@ namespace BitBag\SyliusWishlistPlugin\Duplicator;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductVariantAlreadyInWishlistException;
 use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
 use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
-use mysql_xdevapi\Exception;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WishlistProductsToOtherWishlistDuplicator implements WishlistProductsToOtherWishlistDuplicatorInterface
 {
-    private ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard;
-
     private WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory;
 
     private ProductVariantRepositoryInterface $productVariantRepository;
@@ -38,14 +34,12 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
     private TranslatorInterface $translator;
 
     public function __construct(
-        ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
         WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistRepositoryInterface $wishlistRepository,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator
     ) {
-        $this->productVariantInWishlistGuard = $productVariantInWishlistGuard;
         $this->wishlistProductVariantFactory = $wishlistProductVariantFactory;
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistRepository = $wishlistRepository;
@@ -59,15 +53,15 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
         foreach ($wishlistProducts as $wishlistProduct) {
             $variant = $this->productVariantRepository->find($wishlistProduct['variant']);
 
-            if (!$this->productVariantInWishlistGuard->check($destinedWishlist, $variant)) {
-                $this->wishlistProductVariantFactory->createWithProductVariant($destinedWishlist, $variant);
-            } else {
+            if ($destinedWishlist->hasProductVariant($variant)) {
                 $message = $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.product_variant_exists_in_another_wishlist');
 
                 $this->flashBag->add(
                     'error',
                     sprintf("%s".$message, $variant)
                 );
+            } else {
+                $this->wishlistProductVariantFactory->createWithProductVariant($destinedWishlist, $variant);
             }
         }
         $this->wishlistRepository->add($destinedWishlist);
