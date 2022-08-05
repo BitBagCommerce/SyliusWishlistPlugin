@@ -338,9 +338,6 @@ services:
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
 
-    bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker:
-        class: BitBag\SyliusWishlistPlugin\Checker\WishlistNameChecker
-        
     bitbag_sylius_wishlist_plugin.services.product_quantity_checker:
         class: BitBag\SyliusWishlistPlugin\Checker\ProductQuantityChecker
 
