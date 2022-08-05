@@ -27,4 +27,4 @@ bitbag_sylius_wishlist_plugin:
         variant_already_in_wishlist: Wariant znajduje się już w liście życzeń.
         selected_wishlist_items_successfully_exported: Wybrane produkty zostały pomyślnie wyeksportowane.
         copied_selected_wishlist_items: Wybrane produkty zostały pomyślnie skopiowane.
-        wishlist_not_exists: Your wishlist does not exists.
+        wishlist_not_exists: Twoja wishlista nie istnieje.
