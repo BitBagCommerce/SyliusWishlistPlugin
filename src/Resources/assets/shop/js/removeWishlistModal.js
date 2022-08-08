@@ -1,4 +1,4 @@
-export class AddWishlistModal {
+export class RemoveWishlistModal {
     constructor(
         config = {},
         actions = {
@@ -8,7 +8,7 @@ export class AddWishlistModal {
     ) {
         this.config = config;
         this.defaultConfig = {
-            headerTitle: 'Choose name for your new wishlist',
+            headerTitle: 'Do you want to remove this wishlist?',
             cancelText: 'cancel',
             performText: 'perform',
             datasetWishlistTargets: '[data-bb-wishlists]',
@@ -16,7 +16,6 @@ export class AddWishlistModal {
             wishlistheaderClass: 'wishlist-confirmation-modal__header',
             wishlistH2Class: 'wishlist-confirmation-modal__header--title',
             wishlistBodyClass: 'wishlist-confirmation-modal__body',
-            wishlistBodyItemClass: 'wishlist-confirmation-modal__body--input',
             wishlistConfirmClass: 'wishlist-confirmation-modal__confirm',
             wishlistCancelBtnClass: 'wishlist-confirmation-modal__confirm--cancel',
             wishlistConfirmBtnClass: 'wishlist-confirmation-modal__confirm--perform',
@@ -27,7 +26,7 @@ export class AddWishlistModal {
 
     init() {
         if (this.config && typeof this.config !== 'object') {
-            throw new Error('BitBag - CreateCopyToWishlistsListModal - given config is not valid - expected object');
+            throw new Error('BitBag - RemoveWishlistModal - given config is not valid - expected object');
         }
         this._renderModal();
     }
@@ -44,20 +43,17 @@ export class AddWishlistModal {
     _modalTemplate() {
         const modal = document.createElement('div');
         modal.innerHTML = `    
-        <form name="create_new_wishlist_save" id="create_new_wishlist" method="post" class=${this.finalConfig.wishlistModalClass}>
+        <form name="remove_wishlist_save" id="remove_wishlist" method="post" class=${this.finalConfig.wishlistModalClass}>
             <header class=${this.finalConfig.wishlistheaderClass}>
                 <h2 class=${this.finalConfig.wishlistH2Class}>
                     ${this.finalConfig.headerTitle}
                 </h2>
             </header>
-            <section data-bb-target="wishlists" class=${this.finalConfig.wishlistBodyClass}>
-                <input type="text" id="create_new_wishlist_name" name="create_new_wishlist[name]" required="required" class=${this.finalConfig.wishlistBodyItemClass}>
-            </section>
             <section class=${this.finalConfig.wishlistConfirmClass}>
                 <button type="button" data-bb-action="cancel" class=${this.finalConfig.wishlistCancelBtnClass}>
                     ${ this.finalConfig.cancelText }
                 </button>
-                <button type="submit" data-bb-action="perform" id="create_new_wishlist_save" class=${this.finalConfig.wishlistConfirmBtnClass}>
+                <button type="submit" data-bb-action="perform" id="remove_wishlist_save" class=${this.finalConfig.wishlistConfirmBtnClass}>
                     ${this.finalConfig.performText}
                 </button>
             </section>
@@ -89,4 +85,4 @@ export class AddWishlistModal {
     }
 }
 
-export default AddWishlistModal;
+export default RemoveWishlistModal;
