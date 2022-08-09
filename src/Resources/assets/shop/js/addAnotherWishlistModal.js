@@ -51,11 +51,12 @@ export class AddWishlistModal {
                 </h2>
             </header>
             <section data-bb-target="wishlists" class=${this.finalConfig.addWishlistBodyClass}>
-                <input type="text" id="create_new_wishlist_name" name="create_new_wishlist[name]" required="required" class=${this.finalConfig.addWishlistBodyItemClass}>
+                <input type="text" id="create_new_wishlist_name" name="create_new_wishlist[name]" required="required" class=${this.finalConfig.addWishlistBodyItemClass} data-bb-target="input">
+                <div class="ui red pointing label validation-error hidden" data-bb-target="error">Please enter wishlist name.</div>
             </section>
             <section class=${this.finalConfig.addWishlistConfirmClass}>
                 <button type="button" data-bb-action="cancel" class=${this.finalConfig.addWishlistCancelBtnClass}>
-                    ${ this.finalConfig.cancelText }
+                    ${this.finalConfig.cancelText}
                 </button>
                 <button type="submit" data-bb-action="perform" id="create_new_wishlist_save" class=${this.finalConfig.addWishlistConfirmBtnClass}>
                     ${this.finalConfig.performText}
@@ -79,9 +80,31 @@ export class AddWishlistModal {
 
         confirmBtn.addEventListener('click', (e) => {
             e.preventDefault();
+
+            if(this._isInputEmpty()) {
+                this._triggerInputError();
+
+                return;
+            }
+
             this.actions.performAction();
             this._closeModal();
         });
+    }
+
+    _isInputEmpty() {
+        const input = document.querySelector('[data-bb-target="wishlists"] > [data-bb-target="input"]');
+
+        return input.value === '';
+    }
+
+    _triggerInputError() {
+        const body = document.querySelector('[data-bb-target="wishlists"]');
+        const input = body.querySelector('[data-bb-target="input"]');
+        const div = body.querySelector('[data-bb-target="error"]');
+
+        input.classList.add('error');
+        div.classList.remove('hidden');
     }
 
     _closeModal() {

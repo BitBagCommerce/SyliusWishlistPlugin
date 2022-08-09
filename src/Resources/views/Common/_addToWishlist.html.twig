@@ -21,7 +21,9 @@
                         data-product-name="{{ product.name }}"
                         {{ sylius_test_html_attribute('bitbag-add-to-wishlist') }}
                     >
-                        {{ wishlist.name }}
+                        <span>
+                            {{ wishlist.name }}
+                        </span>
                     </a>
                 {% endfor %}
             </div>
@@ -43,14 +45,16 @@
             <i class="heart icon"></i>
             <span class="text">Add to wishlist</span>
             <div class="menu" data-bb-wishlist-hrefs="hrefs-adding-variant">
-                {% for wishlist in findAllByAnonymousAndChannel(sylius.channel)  %}
+                {% for wishlist in findAllByAnonymousAndChannel(sylius.channel) %}
                     <a
                         href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
                         class="item"
                         data-product-name="{{ product.name }}"
                         {{ sylius_test_html_attribute('wishlist-add-product') }}
                     >
-                        {{ wishlist.name }}
+                        <span>
+                            {{ wishlist.name }}
+                        </span>
                     </a>
                 {% endfor %}
             </div>

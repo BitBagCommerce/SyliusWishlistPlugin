@@ -1,6 +1,6 @@
-import { AddWishlistModal } from './addAnotherWishlistModal'
+import { AddWishlistModal } from './addAnotherWishlistModal';
 
-const addWishlistBtn = document.querySelector('[data-bb-wishlist-add="add-another-wishlist"]')
+const addWishlistBtn = document.querySelector('[data-bb-wishlist-add="add-another-wishlist"]');
 
 const setAddWishlistModal = () => {
     
@@ -11,18 +11,12 @@ const setAddWishlistModal = () => {
             {
                 cancelAction: () => {},
                 performAction: async () => {
-                    const form = document.querySelector('#create_new_wishlist')
+                    const form = document.querySelector('#create_new_wishlist');
                     const formValue = form.querySelector('#create_new_wishlist_name');
 
-                    if (!formValue?.value) {
-                        alert('Wishlist name cannot be empty');
-
-                        return;
-                    }
-
-                    const url = '/wishlists/create'
+                    const url = '/wishlists/create';
                     const formData = new FormData(form);
-                    const csrfToken = document.querySelector("[data-bb-csrf]").dataset.bbCsrf
+                    const csrfToken = document.querySelector("[data-bb-csrf]").dataset.bbCsrf;
 
                     const headers = new Headers({
                         'X-CSRF-TOKEN': csrfToken
@@ -41,7 +35,7 @@ const setAddWishlistModal = () => {
                     } catch (error) {
                         console.error(error);
                     } finally {
-                        location.reload()
+                        location.reload();
                     }    
                 },
             }
