@@ -39,9 +39,13 @@ $transparent_color: rgba(0, 0, 0, 0.25);
         }
 
         &__body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             font-size: 16px;
 
             &--input {
+                width: min-content;
                 padding-top: 1rem;
                 line-height: 1.4285em;
                 color: rgba(0,0,0,.87);
@@ -59,8 +63,19 @@ $transparent_color: rgba(0, 0, 0, 0.25);
                 max-height: auto;
             }
 
+            &--input.error {
+                background-color: #FFF6F6;
+                border-color: #E0B4B4;
+                color: #9F3A38;
+            }
+
+            .validation-error {
+                width: min-content;
+                white-space: nowrap;
+            }
+
             .form-body {
-                display: flex;   
+                display: flex;
             }
             
         }

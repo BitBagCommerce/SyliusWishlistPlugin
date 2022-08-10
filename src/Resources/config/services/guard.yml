@@ -1,3 +1,0 @@
-services:
-    bitbag_sylius_wishlist_plugin.guard.product_variant_already_in_wishlist:
-        class: BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuard
