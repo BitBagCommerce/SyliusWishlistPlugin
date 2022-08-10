@@ -19,5 +19,8 @@ final class ExportWishlistToPdfAction extends BaseWishlistProductsAction
     {
         $command = new ExportSelectedProductsFromWishlistToPdf($form->getData());
         $this->messageBus->dispatch($command);
+
+        // Preventing downloads timing out. In HTTP proxies without that indicator a timeout will occur.
+        exit();
     }
 }
