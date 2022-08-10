@@ -18,27 +18,33 @@ use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WishlistProductsToOtherWishlistDuplicator implements WishlistProductsToOtherWishlistDuplicatorInterface
 {
-    private ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard;
-
     private WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory;
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
     private WishlistRepositoryInterface $wishlistRepository;
 
+    private FlashBagInterface $flashBag;
+
+    private TranslatorInterface $translator;
+
     public function __construct(
-        ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
         WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator
     ) {
-        $this->productVariantInWishlistGuard = $productVariantInWishlistGuard;
         $this->wishlistProductVariantFactory = $wishlistProductVariantFactory;
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistRepository = $wishlistRepository;
+        $this->flashBag = $flashBag;
+        $this->translator = $translator;
     }
 
     public function copyWishlistProductsToOtherWishlist(Collection $wishlistProducts, WishlistInterface $destinedWishlist): void
@@ -47,8 +53,16 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
         foreach ($wishlistProducts as $wishlistProduct) {
             $variant = $this->productVariantRepository->find($wishlistProduct['variant']);
 
-            $this->productVariantInWishlistGuard->check($destinedWishlist, $variant);
-            $this->wishlistProductVariantFactory->createWithProductVariant($destinedWishlist, $variant);
+            if ($destinedWishlist->hasProductVariant($variant)) {
+                $message = $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.product_variant_exists_in_another_wishlist');
+
+                $this->flashBag->add(
+                    'error',
+                    sprintf("%s".$message, $variant)
+                );
+            } else {
+                $this->wishlistProductVariantFactory->createWithProductVariant($destinedWishlist, $variant);
+            }
         }
         $this->wishlistRepository->add($destinedWishlist);
     }

@@ -20,20 +20,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
 {
     public function let(
-        ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
         WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator
     ): void {
         $this->beConstructedWith(
-            $productVariantInWishlistGuard,
             $wishlistProductVariantFactory,
             $productVariantRepository,
-            $wishlistRepository
+            $wishlistRepository,
+            $flashBag,
+            $translator
         );
     }
 
@@ -46,15 +50,14 @@ final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
         ProductVariantRepositoryInterface $productVariantRepository,
         ProductVariantInterface $variant1,
         ProductVariantInterface $variant2,
-        ProductVariantInWishlistGuardInterface $productVariantInWishlistGuard,
         WishlistInterface $destinedWishlist,
         WishlistRepositoryInterface $wishlistRepository
     ): void {
         $productVariantRepository->find("1")->willReturn($variant1);
         $productVariantRepository->find("24")->willReturn($variant2);
 
-        $productVariantInWishlistGuard->check($destinedWishlist, $variant1)->shouldBeCalledOnce();
-        $productVariantInWishlistGuard->check($destinedWishlist, $variant2)->shouldBeCalledOnce();
+        $destinedWishlist->hasProductVariant($variant1)->shouldBeCalled();
+        $destinedWishlist->hasProductVariant($variant2)->shouldBeCalled();
 
         $wishlistRepository->add($destinedWishlist)->shouldBeCalledOnce();
 

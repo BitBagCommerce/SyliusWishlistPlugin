@@ -333,14 +333,15 @@ services:
     bitbag_sylius_wishlist_plugin.services.duplicator:
         class: BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicator
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.guard.product_variant_already_in_wishlist"
             - "@bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade"
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@session.flash_bag"
+            - "@translator"
 
     bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker:
         class: BitBag\SyliusWishlistPlugin\Checker\WishlistNameChecker
-        
+
     bitbag_sylius_wishlist_plugin.services.product_quantity_checker:
         class: BitBag\SyliusWishlistPlugin\Checker\ProductQuantityChecker
 

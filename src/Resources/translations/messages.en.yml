@@ -38,3 +38,5 @@ bitbag_sylius_wishlist_plugin:
         csv_file_contains_incorrect_products: CSV file contains incorrect products.
         wishlist_name_already_exists: Wishlist name already exists, try another.
         does_not_have_sufficient_stock: does not have sufficient stock.
+        change_wishlist_name: Change wishlist name.
+        product_variant_exists_in_another_wishlist: exists in another wishlist.
