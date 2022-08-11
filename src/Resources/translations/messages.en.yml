@@ -41,3 +41,4 @@ bitbag_sylius_wishlist_plugin:
         wishlist_not_exists: Your wishlist does not exists.
         change_wishlist_name: Change wishlist name.
         product_variant_exists_in_another_wishlist: exists in another wishlist.
+        wishlist_name_changed: Wishlist name has been changed.
