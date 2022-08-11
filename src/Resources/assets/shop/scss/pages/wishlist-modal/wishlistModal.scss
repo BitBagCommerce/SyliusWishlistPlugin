@@ -3,11 +3,11 @@ $dark_color: #050428;
 $transparent_color: rgba(0, 0, 0, 0.25);
 
 .bitbag {
-    &.add-wishlist-modal-initialization {
+    &.wishlist-modal-initialization {
         display: none;
     }
 
-    &.add-wishlist-modal-initialized {
+    &.wishlist-modal-initialized {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -20,7 +20,7 @@ $transparent_color: rgba(0, 0, 0, 0.25);
         background-color: $transparent_color;
     }
 
-    .add-wishlist-confirmation-modal {
+    .wishlist-confirmation-modal {
         background-color: $bright_color;
         border-radius: 8px;
         padding: 24px;
@@ -30,6 +30,7 @@ $transparent_color: rgba(0, 0, 0, 0.25);
         &__confirm {
             padding: 16px 0;
             text-align: center;
+            gap: 1rem;
         }
 
         &__header {
@@ -127,7 +128,7 @@ $transparent_color: rgba(0, 0, 0, 0.25);
     }
 }
 
-.add-wishlist-confirmation-modal__body--item {
+.wishlist-confirmation-modal__body--item {
     padding-bottom: 1rem;
     font-size: 16px;
 }
