@@ -31,6 +31,7 @@ export class WishlistModal {
         if (this.config && typeof this.config !== 'object') {
             throw new Error('BitBag - WishlistsListModal - given config is not valid - expected object');
         }
+
         this._renderModal();
     }
 
@@ -45,6 +46,7 @@ export class WishlistModal {
 
     _modalTemplate() {
         const modal = document.createElement('div');
+
         modal.innerHTML = `    
             <form name="${this.finalConfig.wishlistFormName}_save" id="${this.finalConfig.wishlistFormName}" method="post" class=${this.finalConfig.wishlistModalClass}>
                 <header class=${this.finalConfig.wishlistheaderClass}>
@@ -59,7 +61,7 @@ export class WishlistModal {
                     <button type="button" data-bb-action="cancel" class=${this.finalConfig.wishlistCancelBtnClass}>
                         ${this.finalConfig.cancelText}
                     </button>
-                    <button type="submit" data-bb-action="perform" id="${this.finalConfig.wishlistFormName}_save" class=${this.finalConfig.wishlistConfirmBtnClass}>
+                    <button type="button" data-bb-action="perform" id="${this.finalConfig.wishlistFormName}_save" class=${this.finalConfig.wishlistConfirmBtnClass}>
                         ${this.finalConfig.performText}
                     </button>
                 </section>
@@ -74,15 +76,12 @@ export class WishlistModal {
         const confirmBtn = template.querySelector('[data-bb-action="perform"]');
         const input = template.querySelector('[data-bb-target="wishlists"] > [data-bb-target="input"]');
 
-        cancelBtn.addEventListener('click', (e) => {
-            e.preventDefault();
+        cancelBtn.addEventListener('click', () => {
             this.actions.cancelAction();
             this._closeModal();
         });
 
-        confirmBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-
+        confirmBtn.addEventListener('click', () => {
             if(input && input.value === '') {
                 this._triggerInputError();
 

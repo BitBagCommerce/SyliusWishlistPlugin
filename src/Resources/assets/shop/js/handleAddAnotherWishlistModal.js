@@ -4,8 +4,7 @@ const addWishlistBtn = document.querySelector('[data-bb-wishlist-add="add-anothe
 const wishlistFormName = 'create_new_wishlist';
 
 const setWishlistModal = () => {
-    addWishlistBtn.addEventListener('click', (e) => {   
-        e.preventDefault();
+    addWishlistBtn.addEventListener('click', () => {   
         new WishlistModal(
             {
                 headerTitle: 'Choose name for your new wishlist',
@@ -54,6 +53,7 @@ const turnOnListener = () => {
     if (!addWishlistBtn) {
         return;
     }
+    
     setWishlistModal();
 };
 
