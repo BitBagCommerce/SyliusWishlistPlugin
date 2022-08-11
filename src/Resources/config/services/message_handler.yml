@@ -140,3 +140,12 @@ services:
             - "@bitbag_sylius_wishlist_plugin.services.duplicator"
         tags:
             - { name: bitbag.sylius_wishlist_plugin.command_bus, bus: sylius.command_bus }
+
+    bitbag_sylius_wishlist_plugin.command_handler.wishlist.update_wishlist_name_handler:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\UpdateWishlistNameHandler
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
+            - "@sylius.repository.channel"
+        tags:
+            - { name: messenger.message_handler }
