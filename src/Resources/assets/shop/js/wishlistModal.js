@@ -11,7 +11,7 @@ export class WishlistModal {
             headerTitle: 'Modal title',
             cancelText: 'cancel',
             performText: 'perform',
-            wishlistBodyContent: 'test',
+            wishlistBodyContent: 'Modal body',
             wishlistFormName: 'wishlist',
             datasetWishlistTargets: '[data-bb-wishlists]',
             wishlistModalClass: 'wishlist-confirmation-modal',

@@ -12,7 +12,7 @@ const setWishlistModal = () => {
                     headerTitle: 'Choose new name for your wishlist',
                     wishlistFormName: wishlistFormName,
                     wishlistBodyContent: `
-                        <input type="text" id="${wishlistFormName}_name_name" name="${wishlistFormName}_name[name]" required="required" class="wishlist-confirmation-modal__body--input" data-bb-target="input">
+                        <input type="text" id="${wishlistFormName}_name" name="${wishlistFormName}_name[name]" required="required" class="wishlist-confirmation-modal__body--input" data-bb-target="input">
                         <div class="ui red pointing label validation-error hidden" data-bb-target="error">Please enter wishlist name.</div>
                     `
                 },
@@ -20,7 +20,7 @@ const setWishlistModal = () => {
                     cancelAction: () => {},
                     performAction: async () => {
                         const form = document.querySelector(`#${wishlistFormName}`);
-                        const formValue = form.querySelector(`#${wishlistFormName}_name_name`);
+                        const formValue = form.querySelector(`#${wishlistFormName}_name`);
     
                         const wishlistId = btn.dataset.wishlistEditId;
                         const url = `/wishlists/${wishlistId}/edit`;

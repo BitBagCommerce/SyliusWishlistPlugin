@@ -46,15 +46,14 @@
                         >
                             <i class="icon remove"></i>
                         </button>
-                        <a
-                            href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_edit_wishlist_name', {'id': wishlist.id}) }}"
+                        <button
                             class="ui icon button default"
                             {{ sylius_test_html_attribute('wishlist-wishlist-edit') }}
                             data-wishlist-name="{{ wishlist.name }}"
                             data-wishlist-edit-id="{{ wishlist.id }}"
                         >
                             <i class="icon edit"></i>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </article>
