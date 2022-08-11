@@ -5,8 +5,7 @@ const wishlistFormName = 'edit_wishlist';
 
 const setWishlistModal = () => {
     editWishlistBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {   
-            e.preventDefault();
+        btn.addEventListener('click', () => {   
             new WishlistModal(
                 {
                     headerTitle: 'Choose new name for your wishlist',
@@ -57,6 +56,7 @@ const turnOnListener = () => {
     if (!editWishlistBtns) {
         return;
     }
+    
     setWishlistModal();
 };
 

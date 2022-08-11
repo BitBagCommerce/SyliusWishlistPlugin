@@ -5,8 +5,7 @@ const wishlistFormName = 'remove_wishlist';
 
 const setWishlistModal = () => {
     removeWishlistBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {   
-            e.preventDefault();
+        btn.addEventListener('click', () => {   
             new WishlistModal(
                 {
                     headerTitle: 'Remove wishlist',
@@ -53,6 +52,7 @@ const turnOnListener = () => {
     if (!removeWishlistBtns) {
         return;
     }
+
     setWishlistModal();
 };
 
