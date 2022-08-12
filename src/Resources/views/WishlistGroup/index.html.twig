@@ -39,7 +39,7 @@
                     </div>
                     <div class="middle aligned column">
                         <button
-                            class="ui icon button default"
+                            id="wishlist-delete-button-{{ wishlist.name }}" class="ui icon button default"
                             {{ sylius_test_html_attribute('wishlist-wishlist-remove') }}
                             data-wishlist-name="{{ wishlist.name }}"
                             data-wishlist-remove-id="{{ wishlist.id }}"
@@ -47,7 +47,7 @@
                             <i class="icon remove"></i>
                         </button>
                         <button
-                            class="ui icon button default"
+                            id="wishlist-edit-button-{{ wishlist.name }}" class="ui icon button default"
                             {{ sylius_test_html_attribute('wishlist-wishlist-edit') }}
                             data-wishlist-name="{{ wishlist.name }}"
                             data-wishlist-edit-id="{{ wishlist.id }}"
