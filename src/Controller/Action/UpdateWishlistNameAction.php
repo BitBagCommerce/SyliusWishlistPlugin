@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\UpdateWishlistName;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
