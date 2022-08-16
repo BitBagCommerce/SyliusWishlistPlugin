@@ -146,6 +146,6 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
-            - "@sylius.repository.channel"
+            - "@sylius.context.channel"
         tags:
             - { name: messenger.message_handler }
