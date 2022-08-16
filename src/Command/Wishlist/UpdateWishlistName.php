@@ -20,21 +20,15 @@ final class UpdateWishlistName implements UpdateWishlistNameInterface
 
     private WishlistInterface $wishlist;
 
-    public function __construct(string $name, ?string $channelCode, WishlistInterface $wishlist)
+    public function __construct(string $name, WishlistInterface $wishlist)
     {
         $this->name = $name;
-        $this->channelCode = $channelCode;
         $this->wishlist = $wishlist;
     }
 
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getChannelCode(): ?string
-    {
-        return $this->channelCode;
     }
 
     public function getWishlist(): WishlistInterface

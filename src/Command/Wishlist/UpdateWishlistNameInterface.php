@@ -16,7 +16,5 @@ interface UpdateWishlistNameInterface
 {
     public function getName(): string;
 
-    public function getChannelCode(): ?string;
-
     public function getWishlist(): WishlistInterface;
 }
