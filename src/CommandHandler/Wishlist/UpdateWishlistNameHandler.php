@@ -12,7 +12,6 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\UpdateWishlistName;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
 
 final class UpdateWishlistNameHandler
 {
@@ -20,16 +19,12 @@ final class UpdateWishlistNameHandler
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
-    private ChannelContextInterface $channelContext;
-
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        ChannelContextInterface $channelContext
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-        $this->channelContext = $channelContext;
     }
 
     public function __invoke(UpdateWishlistName $updateWishlistName): void
@@ -37,11 +32,6 @@ final class UpdateWishlistNameHandler
         $wishlist = $updateWishlistName->getWishlist();
 
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
-
-        if (null !== $updateWishlistName->getChannelCode()) {
-            $channel = $this->channelContext->getChannel();
-            $wishlist->setChannel($channel);
-        }
 
         if ($this->wishlistRepository->findOneByTokenAndName($wishlistCookieToken, $updateWishlistName->getName())) {
             throw new WishlistNameIsTakenException();
