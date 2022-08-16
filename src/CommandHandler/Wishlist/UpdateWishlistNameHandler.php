@@ -9,11 +9,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\UpdateWishlistName;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
 
 final class UpdateWishlistNameHandler
 {
@@ -21,16 +20,16 @@ final class UpdateWishlistNameHandler
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
-    private ChannelRepositoryInterface $channelRepository;
+    private ChannelContextInterface $channelContext;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        ChannelRepositoryInterface $channelRepository
+        ChannelContextInterface $channelContext
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-        $this->channelRepository = $channelRepository;
+        $this->channelContext = $channelContext;
     }
 
     public function __invoke(UpdateWishlistName $updateWishlistName): void
@@ -40,19 +39,12 @@ final class UpdateWishlistNameHandler
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         if (null !== $updateWishlistName->getChannelCode()) {
-            $channel = $this->channelRepository->findOneByCode($updateWishlistName->getChannelCode());
+            $channel = $this->channelContext->getChannel();
             $wishlist->setChannel($channel);
         }
 
-        $wishlists = $this->wishlistRepository->findAllByToken($wishlistCookieToken);
-
-        /** @var WishlistInterface $wishlist */
-        foreach ($wishlists as $existingWishlist) {
-            if ($existingWishlist->getName() !== $updateWishlistName->getName()) {
-                continue;
-            } else {
-                throw new WishlistNameIsTakenException();
-            }
+        if ($this->wishlistRepository->findOneByTokenAndName($wishlistCookieToken, $updateWishlistName->getName())) {
+            throw new WishlistNameIsTakenException();
         }
 
         $wishlist->setName($updateWishlistName->getName());
