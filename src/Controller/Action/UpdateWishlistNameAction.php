@@ -55,19 +55,8 @@ final class UpdateWishlistNameAction
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
         try {
-            $channel = $this->channelContext->getChannel();
-        } catch (ChannelNotFoundException $exception) {
-            $channel = null;
-        }
-
-        try {
-            if (null !== $channel) {
-                $updateWishlistName = new UpdateWishlistName($wishlistName, $channel->getCode(), $wishlist);
-                $this->commandBus->dispatch($updateWishlistName);
-            } else {
-                $updateWishlistName = new UpdateWishlistName($wishlistName, null, $wishlist);
-                $this->commandBus->dispatch($updateWishlistName);
-            }
+            $updateWishlistName = new UpdateWishlistName($wishlistName, $wishlist);
+            $this->commandBus->dispatch($updateWishlistName);
 
             $this->flashBag->add(
                 'success',
