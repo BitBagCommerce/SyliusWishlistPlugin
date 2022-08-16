@@ -48,7 +48,7 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getResult()
             ;
     }
-    
+
     public function findAllByShopUser(int $shopUser): ?array
     {
         return $this->createQueryBuilder('o')
@@ -114,4 +114,18 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findOneByTokenAndName(string $token, string $name): ?WishlistInterface
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.token = :token')
+            ->andWhere('o.name =:name')
+            ->setParameter('token', $token)
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+            ;
+    }
+
 }
