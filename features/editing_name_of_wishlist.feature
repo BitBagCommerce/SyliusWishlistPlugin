@@ -16,6 +16,5 @@ Feature: Editing wishlists name
         When I press "wishlist-edit-button-Wishlist1"
         And I fill in "edit_wishlist_name" with "Wishlist2"
         When I press "edit_wishlist_save"
-        Then I should be on "/wishlists"
-        Then I should wait for one second
+        Then I go to "/wishlists"
         And I should see "Wishlist2"
