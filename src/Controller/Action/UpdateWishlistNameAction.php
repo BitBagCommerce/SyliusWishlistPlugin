@@ -12,14 +12,13 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\UpdateWishlistName;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Channel\Context\ChannelNotFoundException;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class UpdateWishlistNameAction
@@ -30,22 +29,22 @@ final class UpdateWishlistNameAction
 
     private TranslatorInterface $translator;
 
-    private ChannelContextInterface $channelContext;
-
     private WishlistRepositoryInterface $wishlistRepository;
+
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
         MessageBusInterface $commandBus,
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
-        ChannelContextInterface $channelContext,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->commandBus = $commandBus;
         $this->flashBag = $flashBag;
         $this->translator = $translator;
-        $this->channelContext = $channelContext;
         $this->wishlistRepository = $wishlistRepository;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(Request $request): Response
@@ -68,7 +67,8 @@ final class UpdateWishlistNameAction
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_already_exists')
             );
         }
+        return new Response($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
 
-        return new JsonResponse();
+/*        return new JsonResponse();*/
     }
 }
