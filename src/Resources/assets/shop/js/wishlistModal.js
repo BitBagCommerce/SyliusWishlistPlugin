@@ -95,7 +95,7 @@ export class WishlistModal {
     _isInputValid(template) {
         const input = template.querySelector('[data-bb-target="wishlists"] > [data-bb-target="input"]');
 
-        return input && (input.value === null || input.value.match(/^ *$|^	*$/) !== null);
+        return input && (input.value === null || input.value.match(/^ *$|^\t*$/) !== null);
     }
 
     _triggerInputError(template) {
