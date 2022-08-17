@@ -74,7 +74,6 @@ export class WishlistModal {
     _modalActions(template) {
         const cancelBtn = template.querySelector('[data-bb-action="cancel"]');
         const confirmBtn = template.querySelector('[data-bb-action="perform"]');
-        const input = template.querySelector('[data-bb-target="wishlists"] > [data-bb-target="input"]');
 
         cancelBtn.addEventListener('click', () => {
             this.actions.cancelAction();
@@ -82,8 +81,8 @@ export class WishlistModal {
         });
 
         confirmBtn.addEventListener('click', () => {
-            if(input && (input.value === '' || input.value.match(/ /gi).length === input.value.length)) {
-                this._triggerInputError();
+            if (this._isInputValid(template)) {
+                this._triggerInputError(template);
 
                 return;
             }
@@ -93,8 +92,14 @@ export class WishlistModal {
         });
     }
 
-    _triggerInputError() {
-        const body = document.querySelector('[data-bb-target="wishlists"]');
+    _isInputValid(template) {
+        const input = template.querySelector('[data-bb-target="wishlists"] > [data-bb-target="input"]');
+
+        return input && (input.value === null || input.value.match(/^ *$|^	*$/) !== null);
+    }
+
+    _triggerInputError(template) {
+        const body = template.querySelector('[data-bb-target="wishlists"]');
         const input = body.querySelector('[data-bb-target="input"]');
         const div = body.querySelector('[data-bb-target="error"]');
 
