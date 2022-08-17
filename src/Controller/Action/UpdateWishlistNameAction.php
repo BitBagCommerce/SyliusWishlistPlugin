@@ -68,7 +68,5 @@ final class UpdateWishlistNameAction
             );
         }
         return new Response($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
-
-/*        return new JsonResponse();*/
     }
 }
