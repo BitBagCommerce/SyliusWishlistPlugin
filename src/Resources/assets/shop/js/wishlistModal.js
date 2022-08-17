@@ -82,7 +82,7 @@ export class WishlistModal {
         });
 
         confirmBtn.addEventListener('click', () => {
-            if(input && input.value === '') {
+            if(input && (input.value === '' || input.value.match(/ /gi).length === input.value.length)) {
                 this._triggerInputError();
 
                 return;
@@ -100,6 +100,7 @@ export class WishlistModal {
 
         input.classList.add('error');
         div.classList.remove('hidden');
+        input.value = '';
     }
 
     _closeModal() {
