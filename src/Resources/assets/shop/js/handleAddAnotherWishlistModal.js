@@ -1,18 +1,24 @@
-import { AddWishlistModal } from './addAnotherWishlistModal';
+import { WishlistModal } from './wishlistModal';
 
 const addWishlistBtn = document.querySelector('[data-bb-wishlist-add="add-another-wishlist"]');
+const wishlistFormName = 'create_new_wishlist';
 
-const setAddWishlistModal = () => {
-    
-    addWishlistBtn.addEventListener('click', (e) => {   
-        e.preventDefault();
-        new AddWishlistModal(
-            {},
+const setWishlistModal = () => {
+    addWishlistBtn.addEventListener('click', () => {   
+        new WishlistModal(
+            {
+                headerTitle: 'Choose name for your new wishlist',
+                wishlistFormName: wishlistFormName,
+                wishlistBodyContent: `
+                    <input type="text" id="${wishlistFormName}_name" name="${wishlistFormName}[name]" required="required" class="wishlist-confirmation-modal__body--input" data-bb-target="input">
+                    <div class="ui red pointing label validation-error hidden" data-bb-target="error">Please enter wishlist name.</div>
+                `
+            },
             {
                 cancelAction: () => {},
                 performAction: async () => {
-                    const form = document.querySelector('#create_new_wishlist');
-                    const formValue = form.querySelector('#create_new_wishlist_name');
+                    const form = document.querySelector(`#${wishlistFormName}`);
+                    const formValue = form.querySelector(`#${wishlistFormName}_name`);
 
                     const url = '/wishlists/create';
                     const formData = new FormData(form);
@@ -47,7 +53,8 @@ const turnOnListener = () => {
     if (!addWishlistBtn) {
         return;
     }
-    setAddWishlistModal();
+    
+    setWishlistModal();
 };
 
 turnOnListener();

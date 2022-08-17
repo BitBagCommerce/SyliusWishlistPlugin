@@ -35,4 +35,6 @@ interface WishlistRepositoryInterface extends RepositoryInterface
     ): ?WishlistInterface;
 
     public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): ?array;
+
+    public function findOneByTokenAndName(string $token, string $name): ?WishlistInterface;
 }
