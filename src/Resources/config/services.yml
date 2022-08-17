@@ -356,7 +356,7 @@ services:
             - "@sylius.command_bus"
             - "@session.flash_bag"
             - "@translator"
-            - "@sylius.context.channel"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@router"
         tags:
             - { name: controller.service_arguments }
