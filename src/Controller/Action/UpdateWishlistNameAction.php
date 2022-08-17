@@ -12,7 +12,6 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\UpdateWishlistName;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -20,6 +19,7 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 final class UpdateWishlistNameAction
 {
@@ -50,6 +50,7 @@ final class UpdateWishlistNameAction
     public function __invoke(Request $request): Response
     {
         $wishlistName = $request->request->get('edit_wishlist_name')['name'];
+        Assert::string($wishlistName);
         $wishlistId = $request->attributes->getInt('id');
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
