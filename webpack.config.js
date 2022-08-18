@@ -12,6 +12,7 @@ const getConfig = (pluginName, type) => {
         .disableSingleRuntimeChunk()
         .cleanupOutputBeforeBuild()
         .enableSourceMaps(!Encore.isProduction())
+        .enableVersioning(Encore.isProduction())
         .enableSassLoader();
 
     const config = Encore.getWebpackConfig();
