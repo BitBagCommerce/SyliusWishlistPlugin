@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Repository;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -128,4 +129,15 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ;
     }
 
+    public function findAllByTokenForNullUser(string $token): ?Collection
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.token = :token')
+            ->andWhere('o.shopUser = :shopUser')
+            ->setParameter('token', $token)
+            ->setParameter('shopUser', null)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

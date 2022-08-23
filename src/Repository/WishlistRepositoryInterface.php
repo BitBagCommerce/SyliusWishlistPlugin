@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Repository;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -37,4 +38,6 @@ interface WishlistRepositoryInterface extends RepositoryInterface
     public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): ?array;
 
     public function findOneByTokenAndName(string $token, string $name): ?WishlistInterface;
+
+    public function findAllByTokenForNullUser(string $token): ?Collection;
 }
