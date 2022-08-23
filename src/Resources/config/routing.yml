@@ -106,3 +106,9 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_copy_selected_products_to_other_wish
     methods: [ POST ]
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.copy_selected_products_to_other_wishlist
+
+bitbag_sylius_wishlist_plugin_shop_wishlist_add_wishlist_to_user:
+    path: /wishlists/{id}/save-wishlist
+    methods: [GET, PUT, POST]
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.add_wishlists_to_user
