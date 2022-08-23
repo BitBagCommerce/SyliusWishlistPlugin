@@ -128,4 +128,17 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ;
     }
 
+    public function findOneByShopUserAndName(ShopUserInterface $shopUser, string $name): ?WishlistInterface
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.shopUser = :shopUser')
+            ->andWhere('o.name =:name')
+            ->setParameter('shopUser', $shopUser)
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+            ;
+    }
+
 }
