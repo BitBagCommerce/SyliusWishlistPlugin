@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 
 final class ShowChosenWishlistAction
@@ -39,8 +38,7 @@ final class ShowChosenWishlistAction
 
     private UrlGeneratorInterface $urlGenerator;
 
-    private TokenStorageInterface $tokenStorage;
-
+    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
@@ -49,7 +47,7 @@ final class ShowChosenWishlistAction
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         UrlGeneratorInterface $urlGenerator,
-        TokenStorageInterface $tokenStorage
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->cartContext = $cartContext;
@@ -57,16 +55,16 @@ final class ShowChosenWishlistAction
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
-        $this->tokenStorage = $tokenStorage;
+        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
     public function __invoke(string $wishlistId, Request $request): Response
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$wishlistId);
-        $shopUser = $this->tokenStorage->getToken()->getUser();
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
-        if ($wishlist instanceof WishlistInterface && $wishlist->getShopUser() === $shopUser) {
+        if ($wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken) {
             $form = $this->createForm($wishlist);
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
