@@ -41,6 +41,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
             - "@session.flash_bag"
             - "@translator"
+            - "@router"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
             - "@sylius.context.channel"
@@ -295,7 +296,7 @@ services:
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@router.default"
-            - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
+            - "@security.token_storage"
         tags:
             - { name: controller.service_arguments }
 
@@ -357,5 +358,17 @@ services:
             - "@translator"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@router"
+        tags:
+            - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.controller.action.add_wishlists_to_user:
+        class: BitBag\SyliusWishlistPlugin\Controller\Action\AddWishlistToUserAction
+        arguments:
+            - "@sylius.command_bus"
+            - "@session.flash_bag"
+            - "@translator"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@router"
+            - "@security.token_storage"
         tags:
             - { name: controller.service_arguments }
