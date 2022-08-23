@@ -146,6 +146,13 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
-            - "@sylius.context.channel"
+        tags:
+            - { name: messenger.message_handler }
+
+    bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_wishlists_to_user_handler:
+        class: BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddWishlistToUserHandler
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
         tags:
             - { name: messenger.message_handler }
