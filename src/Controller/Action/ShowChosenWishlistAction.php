@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 
 final class ShowChosenWishlistAction
@@ -38,7 +39,8 @@ final class ShowChosenWishlistAction
 
     private UrlGeneratorInterface $urlGenerator;
 
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
+    private TokenStorageInterface $tokenStorage;
+
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
@@ -47,7 +49,7 @@ final class ShowChosenWishlistAction
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         UrlGeneratorInterface $urlGenerator,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        TokenStorageInterface $tokenStorage
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->cartContext = $cartContext;
@@ -55,16 +57,16 @@ final class ShowChosenWishlistAction
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(string $wishlistId, Request $request): Response
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$wishlistId);
-        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        $shopUser = $this->tokenStorage->getToken()->getUser();
 
-        if ($wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken) {
+        if ($wishlist instanceof WishlistInterface && $wishlist->getShopUser() === $shopUser) {
             $form = $this->createForm($wishlist);
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
