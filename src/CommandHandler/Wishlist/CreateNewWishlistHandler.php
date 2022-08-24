@@ -54,14 +54,15 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
     public function __invoke(CreateNewWishlist $createNewWishlist): void
     {
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         if ($user instanceof ShopUserInterface) {
             $wishlist = $this->wishlistFactory->createForUser($user);
+            $wishlists = $this->wishlistRepository->findAllByShopUser($wishlist->getShopUser()->getId());
         } else {
             $wishlist = $this->wishlistFactory->createNew();
+            $wishlists = $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
         }
-
-        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         if ($wishlistCookieToken) {
             $wishlist->setToken($wishlistCookieToken);
@@ -70,12 +71,6 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
         if (null !== $createNewWishlist->getChannelCode()) {
             $channel = $this->channelRepository->findOneByCode($createNewWishlist->getChannelCode());
             $wishlist->setChannel($channel);
-        }
-
-        if ($user instanceof ShopUserInterface) {
-            $wishlists = $this->wishlistRepository->findAllByShopUser($wishlist->getShopUser()->getId());
-        } else {
-            $wishlists = $this->wishlistRepository->findAllByToken($wishlistCookieToken);
         }
 
         /** @var WishlistInterface $wishlist */
