@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistToUser;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistHasAnotherShopUserException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
@@ -40,7 +41,7 @@ final class AddWishlistToUserHandler implements MessageHandlerInterface
             throw new WishlistHasAnotherShopUserException();
         }
 
-        if ($this->wishlistRepository->findOneByShopUserAndName($user, $wishlist->getName())) {
+        if ($this->wishlistRepository->findOneByShopUserAndName($user, $wishlist->getName()) instanceof WishlistInterface) {
             $wishlist->setName($wishlist->getName().$wishlist->getId());
         }
 
