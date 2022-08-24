@@ -15,6 +15,7 @@ use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 
 final class ShowChosenWishlistAction
@@ -40,6 +42,8 @@ final class ShowChosenWishlistAction
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
+    private TokenStorageInterface $tokenStorage;
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         CartContextInterface $cartContext,
@@ -47,7 +51,8 @@ final class ShowChosenWishlistAction
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         UrlGeneratorInterface $urlGenerator,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->cartContext = $cartContext;
@@ -56,6 +61,7 @@ final class ShowChosenWishlistAction
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(string $wishlistId, Request $request): Response
@@ -63,8 +69,10 @@ final class ShowChosenWishlistAction
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$wishlistId);
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
-        if ($wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken) {
+        if ($wishlist instanceof WishlistInterface && $user instanceof ShopUserInterface
+        or $wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken && $wishlist->getShopUser() === null) {
             $form = $this->createForm($wishlist);
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
