@@ -56,11 +56,11 @@ final class AddWishlistToUserAction
 
     public function __invoke(Request $request): Response
     {
+        /** @var ShopUserInterface $shopUser */
+        $shopUser = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
         $wishlistId = $request->attributes->getInt('id');
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
-        /** @var ShopUserInterface $shopUser */
-        $shopUser = $this->tokenStorage->getToken()->getUser();
         try {
             $updateWishlistName = new AddWishlistToUser($wishlist, $shopUser);
             $this->commandBus->dispatch($updateWishlistName);
