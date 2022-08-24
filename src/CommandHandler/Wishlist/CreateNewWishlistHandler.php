@@ -73,9 +73,9 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
         }
 
         if ($user instanceof ShopUserInterface) {
-            $wishlists = $this->wishlistRepository->findAllByShopUser($user->getId());
+            $wishlists = $this->wishlistRepository->findAllByShopUser($wishlist->getShopUser()->getId());
         } else {
-            $wishlists = $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+            $wishlists = $this->wishlistRepository->findAllByToken($wishlistCookieToken);
         }
 
         /** @var WishlistInterface $wishlist */
