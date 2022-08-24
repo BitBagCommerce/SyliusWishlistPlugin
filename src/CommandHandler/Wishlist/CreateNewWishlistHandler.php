@@ -72,7 +72,11 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
             $wishlist->setChannel($channel);
         }
 
-        $wishlists = $this->wishlistRepository->findAllByToken($wishlistCookieToken);
+        if ($user instanceof ShopUserInterface) {
+            $wishlists = $this->wishlistRepository->findAllByShopUser($user->getId());
+        } else {
+            $wishlists = $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+        }
 
         /** @var WishlistInterface $wishlist */
         foreach ($wishlists as $newWishlist) {
