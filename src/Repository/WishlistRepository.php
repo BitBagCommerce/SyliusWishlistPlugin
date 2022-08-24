@@ -25,7 +25,7 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()
-        ;
+            ;
     }
 
     public function findByToken(string $token): ?WishlistInterface
@@ -36,7 +36,7 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()
-        ;
+            ;
     }
 
     public function findAllByToken(string $token): ?array
@@ -104,7 +104,7 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->andWhere('o.channel = :channel')
             ->andWhere('o.shopUser IS NULL')
             ->setParameter('channel', $channel)
-            ;
+        ;
 
         if (null !== $token) {
             $qb
@@ -128,4 +128,16 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ;
     }
 
+    public function findOneByShopUserAndName(ShopUserInterface $shopUser, string $name): ?WishlistInterface
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.shopUser = :shopUser')
+            ->andWhere('o.name =:name')
+            ->setParameter('shopUser', $shopUser)
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+            ;
+    }
 }
