@@ -72,7 +72,8 @@ final class ShowChosenWishlistAction
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
         if ($wishlist instanceof WishlistInterface && $user instanceof ShopUserInterface
-        or $wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken && $wishlist->getShopUser() === null) {
+        || $wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken
+            && $wishlist->getShopUser() === null) {
             $form = $this->createForm($wishlist);
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
