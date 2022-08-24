@@ -30,27 +30,36 @@
                 <div class="bb-wishlist-list-wraper-content">
                     <div class="bb-wishlist-list-wraper-content-name">
                         <a
-                        href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', {'wishlistId': wishlist.id}) }}"
-                        {{ sylius_test_html_attribute('wishlist-wishlist') }}
-                        data-wishlist-name="{{ wishlist.name }}"
+                                href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', {'wishlistId': wishlist.id}) }}"
+                                {{ sylius_test_html_attribute('wishlist-wishlist') }}
+                                data-wishlist-name="{{ wishlist.name }}"
                         >
-                        {{ wishlist.name == null ? 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans : wishlist.name|trans }}
+                            {{ wishlist.name == null ? 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans : wishlist.name|trans }}
                         </a>
                     </div>
                     <div class="middle aligned column">
+                        {% if wishlist.shopuser is null and app.user is not null %}
+                            <a
+                                    href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_wishlist_to_user', {'id': wishlist.id}) }}"
+                                    id="wishlist-add-to-user-button-{{ wishlist.name }}" class="ui icon button default"
+                                    data-wishlist-name="{{ wishlist.name }}"
+                            >
+                                {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_save'|trans }}
+                            </a>
+                        {% endif %}
                         <button
-                            id="wishlist-delete-button-{{ wishlist.name }}" class="ui icon button default"
-                            {{ sylius_test_html_attribute('wishlist-wishlist-remove') }}
-                            data-wishlist-name="{{ wishlist.name }}"
-                            data-wishlist-remove-id="{{ wishlist.id }}"
+                                id="wishlist-delete-button-{{ wishlist.name }}" class="ui icon button default"
+                                {{ sylius_test_html_attribute('wishlist-wishlist-remove') }}
+                                data-wishlist-name="{{ wishlist.name }}"
+                                data-wishlist-remove-id="{{ wishlist.id }}"
                         >
                             <i class="icon remove"></i>
                         </button>
                         <button
-                            id="wishlist-edit-button-{{ wishlist.name }}" class="ui icon button default"
-                            {{ sylius_test_html_attribute('wishlist-wishlist-edit') }}
-                            data-wishlist-name="{{ wishlist.name }}"
-                            data-wishlist-edit-id="{{ wishlist.id }}"
+                                id="wishlist-edit-button-{{ wishlist.name }}" class="ui icon button default"
+                                {{ sylius_test_html_attribute('wishlist-wishlist-edit') }}
+                                data-wishlist-name="{{ wishlist.name }}"
+                                data-wishlist-edit-id="{{ wishlist.id }}"
                         >
                             <i class="icon edit"></i>
                         </button>

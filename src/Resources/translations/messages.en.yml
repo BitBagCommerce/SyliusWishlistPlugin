@@ -42,3 +42,6 @@ bitbag_sylius_wishlist_plugin:
         change_wishlist_name: Change wishlist name.
         product_variant_exists_in_another_wishlist: exists in another wishlist.
         wishlist_name_changed: Wishlist name has been changed.
+        wishlist_save: Save wishlist
+        wishlist_saved: Wishlist has been saved.
+        you_have_no_access_to_that_wishlist: You have no access to that wishlist.
