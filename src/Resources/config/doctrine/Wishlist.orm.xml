@@ -9,6 +9,11 @@
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
+
+        <indexes>
+            <index name="token_idx" columns="token"/>
+        </indexes>
+
         <field name="name" type="string" column="name" nullable="true" />
 
         <field name="token" type="string" column="token" />
