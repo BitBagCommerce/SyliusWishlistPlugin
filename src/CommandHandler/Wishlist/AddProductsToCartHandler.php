@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -30,16 +31,20 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
 
     private OrderRepositoryInterface $orderRepository;
 
+    private AvailabilityCheckerInterface $availabilityChecker;
+
     public function __construct(
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         OrderModifierInterface $orderModifier,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        AvailabilityCheckerInterface $availabilityChecker
     ) {
         $this->flashBag = $flashBag;
         $this->translator = $translator;
         $this->orderModifier = $orderModifier;
         $this->orderRepository = $orderRepository;
+        $this->availabilityChecker = $availabilityChecker;
     }
 
     public function __invoke(AddProductsToCart $addProductsToWishlistCommand): void
@@ -66,7 +71,7 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
 
     private function productIsInStock(OrderItemInterface $product): bool
     {
-        if ($product->getVariant()->isInStock()) {
+        if ($this->availabilityChecker->isStockSufficient($product->getVariant(), $product->getQuantity())) {
             return true;
         }
         $message = sprintf('%s does not have sufficient stock.', $product->getProductName());
