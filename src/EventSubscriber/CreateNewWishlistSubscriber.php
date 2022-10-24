@@ -70,12 +70,16 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $wishlistCookieToken = $event->getRequest()->cookies->get($this->wishlistCookieToken);
+
+        if ($wishlistCookieToken) {
+            return;
+        }
+
         /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistsResolver->resolve();
 
-        $wishlistCookieToken = $event->getRequest()->cookies->get($this->wishlistCookieToken);
-
-        if ($wishlistCookieToken && !empty($wishlists)) {
+        if (!empty($wishlists)) {
             return;
         }
 
