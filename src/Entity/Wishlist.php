@@ -129,6 +129,8 @@ class Wishlist implements WishlistInterface
             $wishlistProduct->setWishlist($this);
             $this->wishlistProducts->add($wishlistProduct);
         }
+
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getShopUser(): ?ShopUserInterface
@@ -157,6 +159,8 @@ class Wishlist implements WishlistInterface
             $this->wishlistProducts->removeElement($product);
         }
 
+        $this->updatedAt = new \DateTimeImmutable();
+
         return $this;
     }
 
@@ -167,6 +171,8 @@ class Wishlist implements WishlistInterface
                 $this->wishlistProducts->removeElement($wishlistProduct);
             }
         }
+
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
