@@ -27,7 +27,11 @@ interface WishlistRepositoryInterface extends RepositoryInterface
 
     public function findAllByAnonymous(?string $token): ?array;
 
+    public function countByAnonymous(?string $token): int;
+
     public function findAllByShopUserAndToken(int $shopUser, string $token): ?array;
+
+    public function countByShopUserAndToken(int $shopUser, string $token): int;
 
     public function findOneByShopUserAndChannel(
         ShopUserInterface $shopUser,
@@ -35,6 +39,8 @@ interface WishlistRepositoryInterface extends RepositoryInterface
     ): ?WishlistInterface;
 
     public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): ?array;
+
+    public function countByAnonymousAndChannel(?string $token, ChannelInterface $channel): int;
 
     public function findOneByTokenAndName(string $token, string $name): ?WishlistInterface;
 

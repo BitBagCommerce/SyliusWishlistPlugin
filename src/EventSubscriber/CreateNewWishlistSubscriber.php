@@ -76,10 +76,9 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var WishlistInterface[] $wishlists */
-        $wishlists = $this->wishlistsResolver->resolve();
+        $nbWishlists = $this->wishlistsResolver->count();
 
-        if (!empty($wishlists)) {
+        if (0 < $nbWishlists) {
             return;
         }
 

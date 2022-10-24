@@ -71,6 +71,20 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ;
     }
 
+    public function countByShopUserAndToken(int $shopUser, string $token): int
+    {
+        return (int) $this
+            ->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->where('o.shopUser = :shopUser')
+            ->orWhere('o.token = :token')
+            ->setParameter('token', $token)
+            ->setParameter('shopUser', $shopUser)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     public function findAllByAnonymous(?string $token): ?array
     {
         return $this->createQueryBuilder('o')
@@ -80,6 +94,19 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function countByAnonymous(?string $token): int
+    {
+        return (int) $this
+            ->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->where('o.token = :token')
+            ->andWhere('o.shopUser IS NULL')
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     public function findOneByShopUserAndChannel(
@@ -113,6 +140,26 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function countByAnonymousAndChannel(?string $token, ChannelInterface $channel): int
+    {
+        $qb = $this
+            ->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->andWhere('o.channel = :channel')
+            ->andWhere('o.shopUser IS NULL')
+            ->setParameter('channel', $channel)
+        ;
+
+        if (null !== $token) {
+            $qb
+                ->andWhere('o.token = :token')
+                ->setParameter('token', $token)
+            ;
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function findOneByTokenAndName(string $token, string $name): ?WishlistInterface

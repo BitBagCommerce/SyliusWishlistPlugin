@@ -43,12 +43,7 @@ final class WishlistsResolver implements WishlistsResolverInterface
     {
         $user = $this->security->getUser();
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
-
-        try {
-            $channel = $this->channelContext->getChannel();
-        } catch (ChannelNotFoundException $foundException) {
-            $channel = null;
-        }
+        $channel = $this->getChannel();
 
         if ($user instanceof ShopUserInterface) {
             return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
@@ -59,5 +54,31 @@ final class WishlistsResolver implements WishlistsResolverInterface
         }
 
         return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+    }
+
+    public function count(): int
+    {
+        $user = $this->security->getUser();
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        $channel = $this->getChannel();
+
+        if ($user instanceof ShopUserInterface) {
+            return $this->wishlistRepository->countByShopUserAndToken($user->getId(), $wishlistCookieToken);
+        }
+
+        if ($channel instanceof ChannelInterface) {
+            return $this->wishlistRepository->countByAnonymousAndChannel($wishlistCookieToken, $channel);
+        }
+
+        return $this->wishlistRepository->countByAnonymous($wishlistCookieToken);
+    }
+
+    private function getChannel(): ?ChannelInterface
+    {
+        try {
+            return $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $foundException) {
+            return null;
+        }
     }
 }
