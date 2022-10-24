@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
 final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
@@ -36,7 +36,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private TokenStorageInterface $tokenStorage;
+    private Security $security;
 
     private ChannelContextInterface $channelContext;
 
@@ -45,14 +45,14 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         WishlistsResolverInterface $wishlistsResolver,
         WishlistFactoryInterface $wishlistFactory,
         WishlistRepositoryInterface $wishlistRepository,
-        TokenStorageInterface $tokenStorage,
+        Security $security,
         ChannelContextInterface $channelContext
     ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
         $this->channelContext = $channelContext;
     }
 
@@ -112,7 +112,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private function createNewWishlist(?string $wishlistCookieToken): WishlistInterface
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $user = $this->security->getUser();
 
         $wishlist = $this->wishlistFactory->createNew();
 

@@ -15,13 +15,13 @@ use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
 final class WishlistsResolver implements WishlistsResolverInterface
 {
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private TokenStorageInterface $tokenStorage;
+    private Security $security;
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
@@ -29,19 +29,19 @@ final class WishlistsResolver implements WishlistsResolverInterface
 
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
-        TokenStorageInterface $tokenStorage,
+        Security $security,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         ChannelContextInterface $channelContext
     ) {
         $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
         $this->channelContext = $channelContext;
     }
 
     public function resolve(): array
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $user = $this->security->getUser();
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         try {
