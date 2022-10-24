@@ -33,6 +33,10 @@ class Wishlist implements WishlistInterface
 
     protected ?ChannelInterface $channel;
 
+    protected \DateTimeInterface $createdAt;
+
+    protected ?\DateTimeInterface $updatedAt;
+
     public function __construct()
     {
         $this->wishlistProducts = new ArrayCollection();
@@ -180,5 +184,15 @@ class Wishlist implements WishlistInterface
     public function setChannel(?ChannelInterface $channel): void
     {
         $this->channel = $channel;
+    }
+
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): \DateTimeInterface
+    {
+        return $this->updatedAt;
     }
 }
