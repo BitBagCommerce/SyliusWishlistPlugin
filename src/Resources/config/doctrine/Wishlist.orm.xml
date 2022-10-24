@@ -6,6 +6,10 @@
                                       http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <mapped-superclass name="BitBag\SyliusWishlistPlugin\Entity\Wishlist" table="bitbag_wishlist">
+        <indexes>
+            <index name="token_idx" columns="token" />
+        </indexes>
+
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
@@ -13,8 +17,8 @@
 
         <field name="token" type="string" column="token" />
 
-        <one-to-many field="wishlistProducts" 
-                     target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface" 
+        <one-to-many field="wishlistProducts"
+                     target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface"
                      mapped-by="wishlist" orphan-removal="true"
         >
             <cascade>
