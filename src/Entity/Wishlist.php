@@ -35,7 +35,7 @@ class Wishlist implements WishlistInterface
 
     protected \DateTimeInterface $createdAt;
 
-    protected ?\DateTimeInterface $updatedAt;
+    protected ?\DateTimeInterface $updatedAt = null;
 
     public function __construct()
     {
@@ -197,7 +197,7 @@ class Wishlist implements WishlistInterface
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): \DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }

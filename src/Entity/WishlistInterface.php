@@ -63,4 +63,8 @@ interface WishlistInterface extends ResourceInterface
     public function getChannel(): ?ChannelInterface;
 
     public function setChannel(?ChannelInterface $channel): void;
+
+    public function getCreatedAt(): \DateTimeInterface;
+
+    public function getUpdatedAt(): ?\DateTimeInterface;
 }
