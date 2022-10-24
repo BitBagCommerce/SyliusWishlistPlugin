@@ -372,3 +372,11 @@ services:
             - "@security.token_storage"
         tags:
             - { name: controller.service_arguments }
+
+    bitbag_sylius_wishlist_plugin.command.remove_expired_wishlists:
+        class: BitBag\SyliusWishlistPlugin\Command\RemoveExpiredWishlistsCommand
+        arguments:
+            - '@bitbag_sylius_wishlist_plugin.repository.wishlist'
+            - '%bitbag_sylius_wishlist_plugin.parameters.wishlist_expiration_period%'
+        tags:
+            - { name: console.command }

@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Order\Model\OrderInterface;
 
 final class WishlistRepository extends EntityRepository implements WishlistRepositoryInterface
 {
@@ -186,5 +187,18 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->setMaxResults(1)
             ->getOneOrNullResult()
             ;
+    }
+
+    public function deleteWishlistsNotModifiedSince(\DateTimeInterface $period): void
+    {
+        $this
+            ->createQueryBuilder('o')
+            ->delete()
+            ->where('o.updatedAt IS NULL AND o.createdAt < :period')
+            ->orWhere('o.updatedAt < :period')
+            ->setParameter('period', $period)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

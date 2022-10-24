@@ -97,6 +97,11 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->scalarNode('wishlist_expiration_period')
+                    ->defaultValue('1 month')
+                    ->cannotBeEmpty()
+                    ->info('Period for which delete old wishlists without products')
+                ->end()
             ->end()
         ;
 
