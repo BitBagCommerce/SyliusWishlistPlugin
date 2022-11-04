@@ -88,6 +88,10 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
 
     public function findAllByAnonymous(?string $token): ?array
     {
+        if (null === $token) {
+            return [];
+        }
+
         return $this->createQueryBuilder('o')
             ->where('o.token = :token')
             ->andWhere('o.shopUser IS NULL')
@@ -99,6 +103,10 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
 
     public function countByAnonymous(?string $token): int
     {
+        if (null === $token) {
+            return 0;
+        }
+
         return (int) $this
             ->createQueryBuilder('o')
             ->select('COUNT(o.id)')
