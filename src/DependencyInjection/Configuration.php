@@ -101,6 +101,20 @@ final class Configuration implements ConfigurationInterface
                     ->defaultValue('1 month')
                     ->cannotBeEmpty()
                     ->info('Period for which delete old wishlists without products')
+                    ->validate()
+                    ->always(function ($value) {
+                        try {
+                            new \DateTime('-'.$value);
+                        } catch (\Throwable $e) {
+                            throw new InvalidConfigurationException(sprintf(
+                                'The interval "%s" seems to be invalid, please check it\'s value.',
+                                $value
+                            ));
+                        }
+
+                        return $value;
+                    })
+                    ->end()
                 ->end()
             ->end()
         ;
