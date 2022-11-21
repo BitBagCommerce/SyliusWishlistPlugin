@@ -8,7 +8,7 @@ services:
         arguments:
             - "@sylius.context.cart"
             - "@form.factory"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@sylius.command_bus"
             - "@router"
@@ -39,7 +39,7 @@ services:
         arguments:
             - "@sylius.repository.product"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
@@ -53,7 +53,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.context.wishlist"
             - "@sylius.repository.product"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
             - "@router"
         tags:
@@ -64,7 +64,7 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
-            - '@session.flash_bag'
+            - '@request_stack'
             - '@translator'
             - '@router'
         tags:
@@ -76,7 +76,7 @@ services:
         arguments:
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
             - "@router"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
@@ -89,7 +89,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
             - "@router"
         tags:
@@ -116,7 +116,7 @@ services:
         arguments:
             - '@sylius.context.cart.new_shop_based.inner'
             - '@form.factory'
-            - '@session.flash_bag'
+            - '@request_stack'
             - "@sylius.command_bus"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@router"
@@ -129,7 +129,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ImportWishlistFromCsvAction
         arguments:
             - "@form.factory"
-            - '@session.flash_bag'
+            - '@request_stack'
             - "@sylius.command_bus"
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
@@ -266,7 +266,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\CreateNewWishlistAction
         arguments:
             - "@sylius.command_bus"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
             - "@sylius.context.channel"
         tags:
@@ -305,7 +305,7 @@ services:
         arguments:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@sylius.repository.product"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
             - "@router"
             - "@sylius.command_bus"
@@ -316,7 +316,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\CopySelectedProductsToOtherWishlistAction
         arguments:
             - "@sylius.command_bus"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
         tags:
             - { name: controller.service_arguments }
@@ -336,7 +336,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade"
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
 
     bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker:
@@ -354,7 +354,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\UpdateWishlistNameAction
         arguments:
             - "@sylius.command_bus"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@router"
@@ -365,7 +365,7 @@ services:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddWishlistToUserAction
         arguments:
             - "@sylius.command_bus"
-            - "@session.flash_bag"
+            - '@request_stack'
             - "@translator"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@router"

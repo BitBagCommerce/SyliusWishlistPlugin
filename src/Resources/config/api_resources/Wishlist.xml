@@ -145,7 +145,7 @@
                 <attribute name="openapi_context">
                     <attribute name="parameters">
                         <attribute>
-                            <attribute name="name">id</attribute>
+                            <attribute name="name">token</attribute>
                             <attribute name="in">path</attribute>
                             <attribute name="required">true</attribute>
                             <attribute name="schema">

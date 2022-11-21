@@ -16,13 +16,15 @@ use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddProductsToCartHandler implements MessageHandlerInterface
 {
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -31,12 +33,12 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
     private OrderRepositoryInterface $orderRepository;
 
     public function __construct(
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         OrderModifierInterface $orderModifier,
         OrderRepositoryInterface $orderRepository
     ) {
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->orderModifier = $orderModifier;
         $this->orderRepository = $orderRepository;
@@ -70,7 +72,11 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
             return true;
         }
         $message = sprintf('%s does not have sufficient stock.', $product->getProductName());
-        $this->flashBag->add('error', $this->translator->trans($message));
+
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        $session->getFlashBag()->add('error', $this->translator->trans($message));
 
         return false;
     }
@@ -80,7 +86,10 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
         if (0 < $product->getQuantity()) {
             return true;
         }
-        $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
 
         return false;
     }
@@ -93,8 +102,13 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
         $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderRepository->add($cart);
 
-        if (false === $this->flashBag->has('success')) {
-            $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+        
+        $flashBag = $session->getFlashBag();
+
+        if (false === $flashBag->has('success')) {
+            $flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
         }
     }
 }

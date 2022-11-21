@@ -74,7 +74,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_remove_wishlist:
     path: /wishlists/{id}/remove
     methods: [GET, POST, DELETE]
     defaults:
-        _controller: bitbag_sylius_wishlist_plugin.controller.wishlist:deleteAction
+        _controller: bitbag_sylius_wishlist_plugin.controller.wishlist::deleteAction
         _sylius:
             csrf_protection: false
             redirect:

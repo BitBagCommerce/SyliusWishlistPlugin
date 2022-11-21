@@ -14,8 +14,6 @@ namespace spec\BitBag\SyliusWishlistPlugin\Checker;
 use BitBag\SyliusWishlistPlugin\Checker\ProductQuantityChecker;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Order\Model\OrderItemInterface;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductQuantityCheckerSpec extends ObjectBehavior
 {

@@ -21,7 +21,9 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -32,7 +34,7 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
         WishlistContextInterface $wishlistContext,
         ProductRepositoryInterface $productRepository,
         EntityManagerInterface $wishlistProductManager,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator
     ): void {
@@ -40,7 +42,7 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
             $wishlistContext,
             $productRepository,
             $wishlistProductManager,
-            $flashBag,
+            $requestStack,
             $translator,
             $urlGenerator
         );
@@ -68,8 +70,10 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
         WishlistProductInterface $wishlistProduct,
         EntityManagerInterface $wishlistProductManager,
         TranslatorInterface $translator,
+        RequestStack $requestStack,
+        UrlGeneratorInterface $urlGenerator,
+        Session $session,
         FlashBagInterface $flashBag,
-        UrlGeneratorInterface $urlGenerator
     ): void {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn($product);
@@ -81,6 +85,9 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
 
         $wishlistProductManager->remove($wishlistProduct)->shouldBeCalled();
         $wishlistProductManager->flush()->shouldBeCalled();
+
+        $requestStack->getSession()->willReturn($session);
+        $session->getFlashBag()->willReturn($flashBag);
         $flashBag->add('success', 'Product has been removed from your wishlist.')->shouldBeCalled();
 
         $this->__invoke($request)->shouldHaveType(RedirectResponse::class);

@@ -15,8 +15,10 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -26,7 +28,7 @@ final class CleanWishlistAction
 
     private EntityManagerInterface $wishlistManager;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -35,14 +37,14 @@ final class CleanWishlistAction
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         EntityManagerInterface $wishlistManager,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistManager = $wishlistManager;
         $this->urlGenerator = $urlGenerator;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
     }
 
@@ -54,7 +56,10 @@ final class CleanWishlistAction
         $wishlist->clear();
         $this->wishlistManager->flush();
 
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.clear_wishlist'));
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.clear_wishlist'));
 
         return new RedirectResponse(
             $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [

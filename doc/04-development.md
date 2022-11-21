@@ -27,6 +27,16 @@ $ bin/console doctrine:database:create
 $ bin/console doctrine:schema:create
 $ bin/console sylius:fixtures:load
 $ bin/console assets:install --symlink
+```
+
+Copy `package.json.~1.xx.dist` file to `package.json` for specific version of Sylius (example for 1.12.0):
+```bash
+$ cp package.json.\~1.12.dist package.json
+```
+
+Then:
+
+```bash
 $ yarn install
 $ yarn dev
 ```

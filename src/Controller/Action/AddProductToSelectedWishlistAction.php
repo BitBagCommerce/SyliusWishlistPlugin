@@ -18,8 +18,10 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,7 +32,7 @@ final class AddProductToSelectedWishlistAction
 
     private ProductRepositoryInterface $productRepository;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -41,14 +43,14 @@ final class AddProductToSelectedWishlistAction
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         ProductRepositoryInterface $productRepository,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         MessageBusInterface $commandBus
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->productRepository = $productRepository;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->urlGenerator = $urlGenerator;
         $this->commandBus = $commandBus;
@@ -77,7 +79,10 @@ final class AddProductToSelectedWishlistAction
         $addProductToSelectedWishlist = new AddProductToSelectedWishlist($wishlist, $product);
         $this->commandBus->dispatch($addProductToSelectedWishlist);
 
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 
         return new RedirectResponse(
             $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [

@@ -15,8 +15,9 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWish
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,24 +25,24 @@ final class CopySelectedProductsToOtherWishlistAction
 {
     private MessageBusInterface $commandBus;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
     public function __construct(
         MessageBusInterface $commandBus,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator
     ) {
         $this->commandBus = $commandBus;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
     }
 
     public function __invoke(Request $request): Response
     {
         $destinedWishlist = $request->attributes->getInt('destinedWishlistId');
-        $wishlistProducts = new ArrayCollection((array) $request->request->get('wishlist_collection')['items']);
+        $wishlistProducts = new ArrayCollection((array) $request->get('wishlist_collection')['items']);
         $selectedProducts = new ArrayCollection();
 
         foreach ($wishlistProducts as $wishlistProduct) {
@@ -52,7 +53,10 @@ final class CopySelectedProductsToOtherWishlistAction
         $copyProductsToAnotherWishlist = new CopySelectedProductsToOtherWishlist($selectedProducts, $destinedWishlist);
         $this->commandBus->dispatch($copyProductsToAnotherWishlist);
 
-        $this->flashBag->add(
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        $session->getFlashBag()->add(
             'success',
             $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.copied_selected_wishlist_items')
         );
