@@ -18,9 +18,9 @@ use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Gedmo\Exception\UploadableInvalidMimeTypeException;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -36,7 +36,7 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 
     private CsvSerializerFactoryInterface $csvSerializerFactory;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -45,14 +45,14 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
         ProductVariantRepositoryInterface $productVariantRepository,
         array $allowedMimeTypes,
         CsvSerializerFactoryInterface $csvSerializerFactory,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator
     ) {
         $this->addProductVariantToWishlistAction = $addProductVariantToWishlistAction;
         $this->productVariantRepository = $productVariantRepository;
         $this->allowedMimeTypes = $allowedMimeTypes;
         $this->csvSerializerFactory = $csvSerializerFactory;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
     }
 
@@ -88,7 +88,10 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
             }
         }
         if (!$this->csvWishlistProductIsValid($csvWishlistProduct)) {
-            $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+
+            $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
         }
     }
 

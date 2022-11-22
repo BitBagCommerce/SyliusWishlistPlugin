@@ -18,8 +18,9 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,7 +31,7 @@ final class AddProductVariantToWishlistAction
 
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -41,7 +42,7 @@ final class AddProductVariantToWishlistAction
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         WishlistRepositoryInterface $wishlistRepository
@@ -49,7 +50,7 @@ final class AddProductVariantToWishlistAction
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->urlGenerator = $urlGenerator;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->wishlistRepository = $wishlistRepository;
     }
@@ -84,15 +85,20 @@ final class AddProductVariantToWishlistAction
         ProductVariantInterface $variant,
         WishlistProductInterface $wishlistProduct
     ): void {
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        $flashBag = $session->getFlashBag();
+
         if ($wishlist->hasProductVariant($variant)) {
             $message = sprintf('%s variant is already in wishlist.', $wishlistProduct->getProduct()->getName());
-            $this->flashBag->add('error', $this->translator->trans($message));
+            $flashBag->add('error', $this->translator->trans($message));
 
             return;
         }
 
         $wishlist->addWishlistProduct($wishlistProduct);
         $this->wishlistRepository->add($wishlist);
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+        $flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
     }
 }

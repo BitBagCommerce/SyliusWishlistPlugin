@@ -18,8 +18,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Twig\Environment;
@@ -30,7 +31,7 @@ final class ImportWishlistFromCsvAction
 
     private FormFactoryInterface $formFactory;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private Environment $twigEnvironment;
 
@@ -38,13 +39,13 @@ final class ImportWishlistFromCsvAction
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         MessageBusInterface $messageBus,
         Environment $twigEnvironment,
         WishlistsResolverInterface $wishlistsResolver
     ) {
         $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->messageBus = $messageBus;
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistsResolver = $wishlistsResolver;
@@ -60,8 +61,11 @@ final class ImportWishlistFromCsvAction
             return $this->handleCommand($form, $request);
         }
 
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
         foreach ($form->getErrors() as $error) {
-            $this->flashBag->add('error', $error->getMessage());
+            $session->getFlashBag()->add('error', $error->getMessage());
         }
 
         return new Response(

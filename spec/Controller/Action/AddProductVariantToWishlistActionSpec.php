@@ -20,7 +20,9 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,7 +32,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
     public function let(
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
         WishlistRepositoryInterface $wishlistRepository
@@ -38,7 +40,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         $this->beConstructedWith(
             $productVariantRepository,
             $wishlistProductFactory,
-            $flashBag,
+            $requestStack,
             $translator,
             $urlGenerator,
             $wishlistRepository
@@ -66,9 +68,11 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistProductInterface $wishlistProduct,
         TranslatorInterface $translator,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
+        Session $session,
+        FlashBagInterface $flashBag,
     ): void {
         $request->get('variantId')->willReturn(1);
 
@@ -83,6 +87,9 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistRepository->add($wishlist)->shouldBeCalled();
+
+        $requestStack->getSession()->willReturn($session);
+        $session->getFlashBag()->willReturn($flashBag);
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
 
         $this->__invoke(1, $request)->shouldHaveType(RedirectResponse::class);
@@ -96,9 +103,11 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistProductInterface $wishlistProduct,
         TranslatorInterface $translator,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
+        Session $session,
+        FlashBagInterface $flashBag,
     ): void {
         $request->get('variantId')->willReturn(1);
         $productVariantRepository->find(1)->willReturn($productVariant);
@@ -112,6 +121,9 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistRepository->add($wishlist)->shouldBeCalled();
+
+        $requestStack->getSession()->willReturn($session);
+        $session->getFlashBag()->willReturn($flashBag);
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
 
         $this->__invoke(1, $request)->shouldHaveType(RedirectResponse::class);

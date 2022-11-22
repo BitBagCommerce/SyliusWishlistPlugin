@@ -22,9 +22,10 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -38,7 +39,7 @@ final class ExportSelectedProductsToCsvAction
 
     private FormFactoryInterface $formFactory;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private WishlistCommandProcessorInterface $wishlistCommandProcessor;
 
@@ -53,7 +54,7 @@ final class ExportSelectedProductsToCsvAction
     public function __construct(
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         MessageBusInterface $messageBus,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         UrlGeneratorInterface $urlGenerator,
@@ -62,7 +63,7 @@ final class ExportSelectedProductsToCsvAction
     ) {
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->messageBus = $messageBus;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
@@ -80,8 +81,11 @@ final class ExportSelectedProductsToCsvAction
             return $this->exportSelectedWishlistProductsToCsv($form);
         }
 
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
         foreach ($form->getErrors() as $error) {
-            $this->flashBag->add('error', $error->getMessage());
+            $session->getFlashBag()->add('error', $error->getMessage());
         }
 
         return new RedirectResponse(
@@ -112,7 +116,10 @@ final class ExportSelectedProductsToCsvAction
             /** @var \SplFileObject $file */
             $file = $this->getCsvFileFromWishlistProducts($form);
         } catch (NoProductSelectedException $e) {
-            $this->flashBag->add('error', $this->translator->trans($e->getMessage()));
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+
+            $session->getFlashBag()->add('error', $this->translator->trans($e->getMessage()));
 
             return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
         }

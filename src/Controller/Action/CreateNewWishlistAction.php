@@ -16,8 +16,10 @@ use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -26,7 +28,7 @@ final class CreateNewWishlistAction
 {
     private MessageBusInterface $commandBus;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -34,19 +36,19 @@ final class CreateNewWishlistAction
 
     public function __construct(
         MessageBusInterface $commandBus,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         ChannelContextInterface $channelContext
     ) {
         $this->commandBus = $commandBus;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->channelContext = $channelContext;
     }
 
     public function __invoke(Request $request): Response
     {
-        $wishlistName = $request->request->get('create_new_wishlist')['name'];
+        $wishlistName = $request->get('create_new_wishlist')['name'];
 
         try {
             $channel = $this->channelContext->getChannel();
@@ -63,12 +65,18 @@ final class CreateNewWishlistAction
                 $this->commandBus->dispatch($createNewWishlist);
             }
 
-            $this->flashBag->add(
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+
+            $session->getFlashBag()->add(
                 'success',
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist')
             );
         } catch (HandlerFailedException $exception) {
-            $this->flashBag->add(
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+
+            $session->getFlashBag()->add(
                 'error',
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_already_exists')
             );

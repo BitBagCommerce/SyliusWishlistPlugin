@@ -24,7 +24,11 @@ use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,7 +37,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
     public function let(
         ProductRepositoryInterface $productRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         WishlistsResolverInterface $wishlistsResolver,
         ObjectManager $wishlistManager,
@@ -42,7 +46,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $this->beConstructedWith(
             $productRepository,
             $wishlistProductFactory,
-            $flashBag,
+            $requestStack,
             $translator,
             $wishlistsResolver,
             $wishlistManager,
@@ -73,11 +77,13 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         WishlistInterface $wishlist1,
         WishlistInterface $wishlist2,
         TranslatorInterface $translator,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
-        ParameterBag $headers
+        ParameterBag $headers,
+        Session $session,
+        FlashBagInterface $flashBag,
     ): void {
         $request->get('productId')->willReturn(1);
 
@@ -97,6 +103,9 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
 
         $wishlist1->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalledOnce();
+
+        $requestStack->getSession()->willReturn($session);
+        $session->getFlashBag()->willReturn($flashBag);
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
 
         $request->headers = $headers;
@@ -115,11 +124,13 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistProductInterface $wishlistProduct,
         TranslatorInterface $translator,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
-        ParameterBag $headers
+        ParameterBag $headers,
+        Session $session,
+        FlashBagInterface $flashBag,
     ): void {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn($product);
@@ -138,6 +149,9 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
 
         $wishlist1->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalledOnce();
+
+        $requestStack->getSession()->willReturn($session);
+        $session->getFlashBag()->willReturn($flashBag);
         $flashBag->add('success', 'Product has been added to your wishlist.')->shouldBeCalled();
 
         $request->headers = $headers;

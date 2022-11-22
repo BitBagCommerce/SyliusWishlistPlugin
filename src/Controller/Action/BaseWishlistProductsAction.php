@@ -18,8 +18,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,7 +31,7 @@ abstract class BaseWishlistProductsAction
 
     public FormFactoryInterface $formFactory;
 
-    public FlashBagInterface $flashBag;
+    public RequestStack $requestStack;
 
     public WishlistCommandProcessorInterface $wishlistCommandProcessor;
 
@@ -45,7 +46,7 @@ abstract class BaseWishlistProductsAction
     public function __construct(
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         MessageBusInterface $messageBus,
         UrlGeneratorInterface $urlGenerator,
@@ -54,7 +55,7 @@ abstract class BaseWishlistProductsAction
     ) {
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->messageBus = $messageBus;
         $this->urlGenerator = $urlGenerator;
@@ -82,8 +83,11 @@ abstract class BaseWishlistProductsAction
             }
         }
 
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
         foreach ($form->getErrors() as $error) {
-            $this->flashBag->add('error', $error->getMessage());
+            $session->getFlashBag()->add('error', $error->getMessage());
         }
 
         return new RedirectResponse(
@@ -100,7 +104,10 @@ abstract class BaseWishlistProductsAction
         $wishlist = $this->wishlistRepository->find($wishlistId);
         $cart = $this->cartContext->getCart();
         if ($wishlist == null) {
-            $this->flashBag->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_exists'));
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+
+            $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_exists'));
             return null;
         } else {
             $commandsArray = $this->wishlistCommandProcessor->createWishlistItemsCollection($wishlist->getWishlistProducts());
