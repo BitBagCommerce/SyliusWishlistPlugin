@@ -67,6 +67,7 @@ bitbag_sylius_wishlist_plugin_shop_wishlist_clean:
 
 bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist:
     path: /wishlists/create
+    methods: [GET, POST, DELETE]
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist
 
