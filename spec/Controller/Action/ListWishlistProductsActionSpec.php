@@ -25,6 +25,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class ListWishlistProductsActionSpec extends ObjectBehavior
@@ -34,14 +35,16 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        WishlistsResolverInterface $wishlistsResolver
+        WishlistsResolverInterface $wishlistsResolver,
+        TranslatorInterface $translator
     ): void {
         $this->beConstructedWith(
             $cartContext,
             $formFactory,
             $twigEnvironment,
             $wishlistCommandProcessor,
-            $wishlistsResolver
+            $wishlistsResolver,
+            $translator
         );
     }
 
