@@ -17,8 +17,11 @@ use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\Component\Order\Context\CartNotFoundException;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class ListWishlistProductsAction
@@ -33,18 +36,22 @@ final class ListWishlistProductsAction
 
     private WishlistsResolverInterface $wishlistsResolver;
 
+    private TranslatorInterface $translator;
+
     public function __construct(
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        WishlistsResolverInterface $wishlistsResolver
+        WishlistsResolverInterface $wishlistsResolver,
+        TranslatorInterface $translator
     ) {
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->wishlistsResolver = $wishlistsResolver;
+        $this->translator = $translator;
     }
 
     public function __invoke(Request $request): Response
@@ -53,6 +60,13 @@ final class ListWishlistProductsAction
 
         /** @var WishlistInterface $wishlist */
         $wishlist = array_shift($wishlists);
+        if (null === $wishlist) {
+            $referer = $request->headers->get('referer');
+            /** @var Session $session */
+            $session = $request->getSession();
+            $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.go_to_wishlist_failure'));
+            return new RedirectResponse($referer);
+        }
 
         try {
             $cart = $this->cartContext->getCart();
