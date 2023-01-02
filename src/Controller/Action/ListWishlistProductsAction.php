@@ -67,13 +67,13 @@ final class ListWishlistProductsAction
         $wishlist = array_shift($wishlists);
 
         if (null === $wishlist) {
-            $referer = $this->generator->generate('sylius_shop_homepage');
+            $homepageUrl = $this->generator->generate('sylius_shop_homepage');
 
             /** @var Session $session */
             $session = $request->getSession();
             $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.go_to_wishlist_failure'));
 
-            return new RedirectResponse($referer);
+            return new RedirectResponse($homepageUrl);
         }
 
         try {
