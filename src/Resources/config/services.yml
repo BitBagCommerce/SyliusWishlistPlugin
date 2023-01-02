@@ -145,6 +145,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
             - "@translator"
+            - "@router"
         tags:
             - { name: controller.service_arguments }
 

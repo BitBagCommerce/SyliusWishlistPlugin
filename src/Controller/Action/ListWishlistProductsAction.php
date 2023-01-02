@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -38,13 +39,16 @@ final class ListWishlistProductsAction
 
     private TranslatorInterface $translator;
 
+    private UrlGeneratorInterface $generator;
+
     public function __construct(
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         WishlistsResolverInterface $wishlistsResolver,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        UrlGeneratorInterface $generator
     ) {
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
@@ -52,6 +56,7 @@ final class ListWishlistProductsAction
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->wishlistsResolver = $wishlistsResolver;
         $this->translator = $translator;
+        $this->generator = $generator;
     }
 
     public function __invoke(Request $request): Response
@@ -60,11 +65,14 @@ final class ListWishlistProductsAction
 
         /** @var WishlistInterface $wishlist */
         $wishlist = array_shift($wishlists);
+
         if (null === $wishlist) {
-            $referer = $request->headers->get('referer');
+            $referer = $this->generator->generate('sylius_shop_homepage');
+
             /** @var Session $session */
             $session = $request->getSession();
             $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.go_to_wishlist_failure'));
+
             return new RedirectResponse($referer);
         }
 

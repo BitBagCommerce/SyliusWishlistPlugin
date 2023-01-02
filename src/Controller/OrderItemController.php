@@ -67,9 +67,11 @@ final class OrderItemController extends BaseController
                 /** @var Session $session */
                 $session = $request->getSession();
                 $translator = $this->get('translator');
+
                 if (null !== $translator) {
                     $session->getFlashBag()->add('error', $translator->trans('bitbag_sylius_wishlist_plugin.ui.go_to_wishlist_failure'));
                 }
+
                 return new Response($this->generateUrl('sylius_shop_homepage'));
             }
             return new Response($this->generateUrl('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product_variant', [
