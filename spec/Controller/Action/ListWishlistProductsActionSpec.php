@@ -25,6 +25,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -36,7 +37,8 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         WishlistsResolverInterface $wishlistsResolver,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        UrlGeneratorInterface $generator
     ): void {
         $this->beConstructedWith(
             $cartContext,
@@ -44,7 +46,8 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
             $twigEnvironment,
             $wishlistCommandProcessor,
             $wishlistsResolver,
-            $translator
+            $translator,
+            $generator
         );
     }
 
