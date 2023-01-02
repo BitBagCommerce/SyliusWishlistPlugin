@@ -144,6 +144,8 @@ services:
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
+            - "@translator"
+            - "@router"
         tags:
             - { name: controller.service_arguments }
 
@@ -202,7 +204,7 @@ services:
             - "@security.token_storage"
             - "@sylius.context.channel"
         tags:
-            - { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber, event: kernel.exception }
 
     bitbag_sylius_wishlist_plugin.form.type.add_products_to_cart:
         class: BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType
