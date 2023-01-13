@@ -6,7 +6,8 @@
     "require": {
         "php": "^8.0",
         "sylius/sylius": "~1.11.0 || ~1.12.0",
-        "symfony/webpack-encore-bundle": "^1.15"
+        "symfony/webpack-encore-bundle": "^1.15",
+        "dompdf/dompdf": "^2.0"
     },
     "require-dev": {
         "behat/behat": "^3.7",
@@ -33,7 +34,6 @@
         "symfony/web-profiler-bundle": "^5.4 || ^6.0",
         "polishsymfonycommunity/symfony-mocker-container": "^1.0",
         "symfony/dependency-injection": "^5.4 || ^6.0",
-        "dompdf/dompdf": "1.0.2",
         "league/flysystem-bundle": "2.4.0",
         "sylius/mailer-bundle":  "^1.8 || ^2.0@beta"
     },
