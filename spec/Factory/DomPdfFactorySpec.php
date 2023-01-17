@@ -46,6 +46,7 @@ final class DomPdfFactorySpec extends ObjectBehavior
 
         $pdfOptions->set('isRemoteEnabled', true)->shouldBeCalled();
         $pdfOptions->set('defaultFont', 'Arial')->shouldBeCalled();
+        $pdfOptions->getHttpContext()->willReturn(['http' =>[]]);
 
         $domPdf = $this->createNewWithDefaultOptions();
         $domPdf->shouldBeAnInstanceOf(Dompdf::class);
