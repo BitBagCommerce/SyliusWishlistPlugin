@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
+use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
@@ -44,6 +45,10 @@ final class WishlistsResolver implements WishlistsResolverInterface
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
+        if (empty($wishlistCookieToken)) {
+            return [new Wishlist()];
+        }
+
         try {
             $channel = $this->channelContext->getChannel();
         } catch (ChannelNotFoundException $foundException) {
@@ -51,13 +56,13 @@ final class WishlistsResolver implements WishlistsResolverInterface
         }
 
         if ($user instanceof ShopUserInterface) {
-            return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
+            return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken) ?? [];
         }
 
         if ($channel instanceof ChannelInterface) {
-            return $this->wishlistRepository->findAllByAnonymousAndChannel($wishlistCookieToken, $channel);
+            return $this->wishlistRepository->findAllByAnonymousAndChannel($wishlistCookieToken, $channel) ?? [];
         }
 
-        return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+        return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken) ?? [];
     }
 }
