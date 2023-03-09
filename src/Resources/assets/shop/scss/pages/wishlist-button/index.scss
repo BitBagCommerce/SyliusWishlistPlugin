@@ -1,0 +1,20 @@
+.bb-wishlist-button > span.text{
+  @media screen and (max-width: $breakpoint-sm) {
+    display: none !important;
+  }
+}
+
+.bb-wishlist-button{
+  @media screen and (max-width: $breakpoint-sm) {
+    display: flex !important;
+    justify-content: center;
+    width: 20%;
+  }
+}
+
+.bb-wishlist-button > span > i.heart{
+  @media screen and (max-width: $breakpoint-sm) {
+    margin: unset !important;
+  }
+}
+
