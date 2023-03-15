@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Doctrine\Common\Collections\Collection;
@@ -33,15 +33,15 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
 
     private OrderRepositoryInterface $orderRepository;
 
-    private AvailabilityCheckerInterface $availabilityChecker;
+    private ?AvailabilityCheckerInterface $availabilityChecker;
 
     public function __construct(
         RequestStack $requestStack,
         TranslatorInterface $translator,
         OrderModifierInterface $orderModifier,
         OrderRepositoryInterface $orderRepository,
-        AvailabilityCheckerInterface $availabilityChecker,
-        ) {
+        ?AvailabilityCheckerInterface $availabilityChecker = null
+    ) {
         $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->orderModifier = $orderModifier;
@@ -49,7 +49,7 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
         $this->availabilityChecker = $availabilityChecker;
     }
 
-    public function __invoke(AddProductsToCartInterface $addProductsToWishlistCommand): void
+    public function __invoke(AddProductsToCart $addProductsToWishlistCommand): void
     {
         $this->addProductsToWishlist($addProductsToWishlistCommand->getWishlistProducts());
     }
@@ -73,7 +73,11 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
 
     private function productIsStockSufficient(OrderItemInterface $product): bool
     {
-        if ($this->availabilityChecker->isStockSufficient($product->getVariant(), $product->getQuantity())) {
+        if (null !== $this->availabilityChecker) {
+            if ($this->availabilityChecker->isStockSufficient($product->getVariant(), $product->getQuantity())) {
+                return true;
+            }
+        } elseif ($product->getVariant()->isInStock()) {
             return true;
         }
 
