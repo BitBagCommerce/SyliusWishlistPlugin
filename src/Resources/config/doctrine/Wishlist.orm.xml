@@ -13,8 +13,8 @@
 
         <field name="token" type="string" column="token" />
 
-        <one-to-many field="wishlistProducts" 
-                     target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface" 
+        <one-to-many field="wishlistProducts"
+                     target-entity="BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface"
                      mapped-by="wishlist" orphan-removal="true"
         >
             <cascade>
@@ -30,6 +30,9 @@
             <join-column name="channel_id" on-delete="CASCADE" />
         </many-to-one>
 
+        <indexes>
+            <index name="token_idx" columns="token"/>
+        </indexes>
     </mapped-superclass>
 
 </doctrine-mapping>

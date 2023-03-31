@@ -12,6 +12,7 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
+use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +24,9 @@ use Sylius\Component\Core\Model\ProductTaxonInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context
 {
@@ -47,6 +50,8 @@ final class WishlistContext implements Context
 
     private ChannelRepositoryInterface $channelRepository;
 
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistContextInterface $wishlistContext,
@@ -57,7 +62,8 @@ final class WishlistContext implements Context
         EntityManagerInterface $productTaxonManager,
         CookieSetterInterface $cookieSetter,
         string $wishlistCookieToken,
-        ChannelRepositoryInterface $channelRepository
+        ChannelRepositoryInterface $channelRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistContext = $wishlistContext;
@@ -69,6 +75,7 @@ final class WishlistContext implements Context
         $this->cookieSetter = $cookieSetter;
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->channelRepository = $channelRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -140,5 +147,25 @@ final class WishlistContext implements Context
         $this->wishlistManager->flush();
 
         $this->cookieSetter->setCookie($this->wishlistCookieToken, $wishlist->getToken());
+    }
+
+    /**
+     * @Given user :email has a wishlist named :name with token :token
+     */
+    public function userHasAWishlistNamedWithToken(string $email, string $name, string $token): void
+    {
+        $user = $this->userRepository->findOneByEmail($email);
+        Assert::notNull($user);
+
+        $wishlist = new Wishlist();
+        $channel = $this->channelRepository->findOneByCode('WEB-US');
+
+        $wishlist->setName($name);
+        $wishlist->setChannel($channel);
+        $wishlist->setToken($token);
+        $wishlist->setShopUser($user);
+
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
     }
 }

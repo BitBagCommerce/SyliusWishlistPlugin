@@ -56,6 +56,8 @@ interface WishlistInterface extends ResourceInterface
 
     public function removeProductVariant(ProductVariantInterface $variant): self;
 
+    public function clear(): void;
+
     public function getName(): ?string;
 
     public function setName(?string $name): void;

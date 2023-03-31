@@ -18,7 +18,8 @@ use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WishlistProductsToOtherWishlistDuplicator implements WishlistProductsToOtherWishlistDuplicatorInterface
@@ -29,7 +30,7 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
 
     private WishlistRepositoryInterface $wishlistRepository;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -37,13 +38,13 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
         WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistRepositoryInterface $wishlistRepository,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator
     ) {
         $this->wishlistProductVariantFactory = $wishlistProductVariantFactory;
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistRepository = $wishlistRepository;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
     }
 
@@ -56,7 +57,10 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
             if ($destinedWishlist->hasProductVariant($variant)) {
                 $message = $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.product_variant_exists_in_another_wishlist');
 
-                $this->flashBag->add(
+                /** @var Session $session */
+                $session = $this->requestStack->getSession();
+
+                $session->getFlashBag()->add(
                     'error',
                     sprintf("%s".$message, $variant)
                 );

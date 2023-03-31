@@ -18,8 +18,9 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -32,7 +33,7 @@ final class RemoveProductVariantFromWishlistAction
 
     private EntityManagerInterface $wishlistProductManager;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -42,7 +43,7 @@ final class RemoveProductVariantFromWishlistAction
         WishlistRepositoryInterface $wishlistRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
         EntityManagerInterface $wishlistProductManager,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator
     ) {
@@ -50,7 +51,7 @@ final class RemoveProductVariantFromWishlistAction
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistProductManager = $wishlistProductManager;
         $this->urlGenerator = $urlGenerator;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
     }
 
@@ -82,7 +83,10 @@ final class RemoveProductVariantFromWishlistAction
         }
         $this->wishlistProductManager->flush();
 
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_wishlist_item'));
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_wishlist_item'));
 
         return new RedirectResponse(
             $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [

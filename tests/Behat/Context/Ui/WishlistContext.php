@@ -24,6 +24,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -52,7 +53,7 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private ProductVariantResolverInterface $defaultVariantResolver;
 
-    private Session $session;
+    private RequestStack $requestStack;
 
     private RouterInterface $router;
 
@@ -75,7 +76,7 @@ final class WishlistContext extends RawMinkContext implements Context
         LoginerInterface $loginer,
         WishlistCreatorInterface $wishlistCreator,
         ProductVariantResolverInterface $defaultVariantResolver,
-        Session $session,
+        RequestStack $requestStack,
         RouterInterface $router,
         WishlistRepositoryInterface $wishlistRepository,
         string $wishlistCookieToken,
@@ -91,7 +92,7 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->wishlistCreator = $wishlistCreator;
         $this->productShowPage = $productShowPage;
         $this->defaultVariantResolver = $defaultVariantResolver;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistCookieToken = $wishlistCookieToken;
@@ -316,7 +317,7 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function iShouldHaveDownloadedCsvFile(): void
     {
-        Assert::eq($this->getSession()->getResponseHeader('content-type'), 'text/csv');
+        Assert::eq($this->getSession()->getResponseHeader('content-type'), 'text/csv; charset=UTF-8');
         Assert::eq($this->getSession()->getResponseHeader('content-disposition'), 'attachment; filename=wishlist.csv');
         Assert::eq($this->getSession()->getStatusCode(), '200');
     }
@@ -352,18 +353,10 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         $this->wishlistPage->exportToPdfSelectedProductsFromWishlist();
 
-        $cookieName = $this->session->getName();
-        $sessionId = $this->session->getId();
         $baseUrl = $this->getMinkParameter('base_url');
-        $domain = parse_url($baseUrl)['host'];
-
-        $cookieJar = \GuzzleHttp\Cookie\CookieJar::fromArray([
-            $cookieName => $sessionId,
-        ], $domain);
 
         $guzzle = new \GuzzleHttp\Client([
             'timeout' => 10,
-            'cookies' => $cookieJar,
         ]);
         $wishlist = $this->wishlistRepository->findOneBy([]);
 

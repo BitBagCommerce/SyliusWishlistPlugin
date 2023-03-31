@@ -66,7 +66,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -75,7 +75,10 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
         $wishlistCookieToken = $event->getRequest()->cookies->get($this->wishlistCookieToken);
 
-        if ($wishlistCookieToken && !empty($wishlists)) {
+        if (!empty($wishlists)) {
+            if (null === $wishlistCookieToken) {
+                $event->getRequest()->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
+            }
             return;
         }
 
@@ -87,7 +90,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

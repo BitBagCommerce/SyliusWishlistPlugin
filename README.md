@@ -6,7 +6,7 @@
 
 [ ![](https://img.shields.io/packagist/l/bitbag/wishlist-plugin.svg) ](https://packagist.org/packages/bitbag/wishlist-plugin "License")
 [ ![](https://img.shields.io/packagist/v/bitbag/wishlist-plugin.svg) ](https://packagist.org/packages/bitbag/wishlist-plugin "Version")
-[ ![](https://img.shields.io/travis/BitBagCommerce/SyliusWishlistPlugin/master.svg) ](http://travis-ci.org/BitBagCommerce/SyliusWishlistPlugin "Build status")
+[ ![](https://img.shields.io/github/actions/workflow/status/BitBagCommerce/SyliusWishlistPlugin/build.yml) ](https://github.com/BitBagCommerce/SyliusWishlistPlugin/actions "Build status")
 [ ![](https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusWishlistPlugin.svg) ](https://scrutinizer-ci.com/g/BitBagCommerce/SyliusWishlistPlugin/ "Scrutinizer")
 [ ![](https://poser.pugx.org/bitbag/wishlist-plugin/downloads)](https://packagist.org/packages/bitbag/wishlist-plugin "Total Downloads")
 [ ![Slack](https://img.shields.io/badge/community%20chat-slack-FF1493.svg)](http://sylius-devs.slack.com)

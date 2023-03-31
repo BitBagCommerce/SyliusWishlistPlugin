@@ -22,8 +22,9 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,7 +34,7 @@ final class AddProductToWishlistAction
 
     private WishlistProductFactoryInterface $wishlistProductFactory;
 
-    private FlashBagInterface $flashBag;
+    private RequestStack $requestStack;
 
     private TranslatorInterface $translator;
 
@@ -46,7 +47,7 @@ final class AddProductToWishlistAction
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        FlashBagInterface $flashBag,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         WishlistsResolverInterface $wishlistsResolver,
         ObjectManager $wishlistManager,
@@ -54,7 +55,7 @@ final class AddProductToWishlistAction
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->flashBag = $flashBag;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->wishlistsResolver = $wishlistsResolver;
         $this->wishlistManager = $wishlistManager;
@@ -100,7 +101,10 @@ final class AddProductToWishlistAction
 
         $this->wishlistManager->flush();
 
-        $this->flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 
         $referer = $request->headers->get('referer');
         $refererPathInfo = Request::create($referer)->getPathInfo();
