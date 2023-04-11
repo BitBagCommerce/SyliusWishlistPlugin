@@ -11,7 +11,7 @@ const setWishlistModal = () => {
                     headerTitle: 'Choose new name for your wishlist',
                     wishlistFormName: wishlistFormName,
                     wishlistBodyContent: `
-                        <input type="text" id="${wishlistFormName}_name" name="${wishlistFormName}_name[name]" required="required" class="wishlist-confirmation-modal__body--input" data-bb-target="input">
+                        <input type="text" id="${wishlistFormName}_name" name="${wishlistFormName}_name[name]" required="required" class="wishlist-confirmation-modal__body--input" data-bb-target="input" maxlength="50">
                         <div class="ui red pointing label validation-error hidden" data-bb-target="error">Please enter wishlist name.</div>
                     `
                 },
