@@ -37,7 +37,7 @@
                             {{ wishlist.name == null ? 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans : wishlist.name|trans }}
                         </a>
                     </div>
-                    <div class="middle aligned column">
+                    <div class="middle aligned column bb-wishlist-list-wraper-content-buttons">
                         {% if wishlist.shopuser is null and app.user is not null %}
                             <a
                                     href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_wishlist_to_user', {'id': wishlist.id}) }}"
