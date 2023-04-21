@@ -14,6 +14,7 @@ services:
             - "@sylius.behat.cookie_setter"
             - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
             - '@sylius.repository.channel'
+            - '@sylius.repository.shop_user'
 
     bitbag_sylius_cms_plugin.behat.context.ui.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui\WishlistContext

@@ -25,6 +25,12 @@
 
             &-name {
                 padding-left: 1rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            &-buttons {
+                flex-shrink: 0;
             }
         }
     }

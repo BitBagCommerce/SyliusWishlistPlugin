@@ -12,12 +12,13 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -32,16 +33,20 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
 
     private OrderRepositoryInterface $orderRepository;
 
+    private ?AvailabilityCheckerInterface $availabilityChecker;
+
     public function __construct(
         RequestStack $requestStack,
         TranslatorInterface $translator,
         OrderModifierInterface $orderModifier,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        ?AvailabilityCheckerInterface $availabilityChecker = null
     ) {
         $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->orderModifier = $orderModifier;
         $this->orderRepository = $orderRepository;
+        $this->availabilityChecker = $availabilityChecker;
     }
 
     public function __invoke(AddProductsToCart $addProductsToWishlistCommand): void
@@ -59,23 +64,27 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
         }
     }
 
-    private function productCanBeProcessed(WishlistItem $wishlistProduct): bool
+    private function productCanBeProcessed(WishlistItemInterface $wishlistProduct): bool
     {
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();
 
-        return $this->productIsInStock($cartItem) && $this->productHasPositiveQuantity($cartItem);
+        return $this->productIsStockSufficient($cartItem) && $this->productHasPositiveQuantity($cartItem);
     }
 
-    private function productIsInStock(OrderItemInterface $product): bool
+    private function productIsStockSufficient(OrderItemInterface $product): bool
     {
-        if ($product->getVariant()->isInStock()) {
+        if (null !== $this->availabilityChecker) {
+            if ($this->availabilityChecker->isStockSufficient($product->getVariant(), $product->getQuantity())) {
+                return true;
+            }
+        } elseif ($product->getVariant()->isInStock()) {
             return true;
         }
+
         $message = sprintf('%s does not have sufficient stock.', $product->getProductName());
 
         /** @var Session $session */
         $session = $this->requestStack->getSession();
-
         $session->getFlashBag()->add('error', $this->translator->trans($message));
 
         return false;
@@ -88,13 +97,12 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
         }
         /** @var Session $session */
         $session = $this->requestStack->getSession();
-
         $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
 
         return false;
     }
 
-    private function addProductToWishlist(WishlistItem $wishlistProduct): void
+    private function addProductToWishlist(WishlistItemInterface $wishlistProduct): void
     {
         $cart = $wishlistProduct->getCartItem()->getCart();
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();
@@ -104,7 +112,6 @@ final class AddProductsToCartHandler implements MessageHandlerInterface
 
         /** @var Session $session */
         $session = $this->requestStack->getSession();
-        
         $flashBag = $session->getFlashBag();
 
         if (false === $flashBag->has('success')) {

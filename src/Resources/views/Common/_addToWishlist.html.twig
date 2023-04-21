@@ -2,16 +2,16 @@
     {% if findAllByShopUserAndToken(app.user)|length < 2 %}
         <a
             href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
-            class="bitbag-add-to-wishlist ui icon labeled button blue"
+            class="bitbag-add-to-wishlist ui icon labeled button blue bb-wishlist-button"
             data-product-name="{{ product.name }}"
             {{ sylius_test_html_attribute('wishlist-add-product') }}
         >
-            <i class="icon heart"></i>
+            <span><i class="icon heart"></i></span>
             {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
         </a>
     {% else %}
-        <div class="ui dropdown button">
-            <i class="heart icon"></i>
+        <div class="ui dropdown button bb-wishlist-button">
+            <span><i class="icon heart"></i></span>
             <span class="text">Add to wishlist</span>
             <div class="menu" data-bb-wishlist-hrefs="hrefs-adding-variant">
                 {% for wishlist in findAllByShopUserAndToken(app.user)  %}
@@ -33,16 +33,16 @@
     {% if findAllByAnonymousAndChannel(sylius.channel)|length < 2 %}
         <a
                 href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
-                class="bitbag-add-to-wishlist ui icon labeled button blue"
+                class="bitbag-add-to-wishlist ui icon labeled button blue bb-wishlist-button"
                 data-product-name="{{ product.name }}"
                 {{ sylius_test_html_attribute('wishlist-add-product') }}
         >
-            <i class="icon heart"></i>
+            <span><i class="icon heart"></i></span>
             {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
         </a>
     {% else %}
-        <div class="ui dropdown button">
-            <i class="heart icon"></i>
+        <div class="ui dropdown button bb-wishlist-button">
+            <span><i class="icon heart"></i></span>
             <span class="text">Add to wishlist</span>
             <div class="menu" data-bb-wishlist-hrefs="hrefs-adding-variant">
                 {% for wishlist in findAllByAnonymousAndChannel(sylius.channel) %}

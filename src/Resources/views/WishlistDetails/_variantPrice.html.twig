@@ -3,18 +3,24 @@
 {% set pricing = sylius_product_variant_prices(product, sylius.channel) %}
 
 {% set prices %}
-[
+    [
     {%- for price in pricing -%}
-            {%- for option, value in price -%}
-                "{{- option -}}":
-                    {%- if option == 'value' or option == 'original-price' -%}
-                        "{{ money.convertAndFormat(value) -}}"
-                    {%- endif -%}
-                    {{- not loop.last ? ', '-}}
-            {%- endfor -%}
+        {
+        {%- for option, value in price -%}
+            "{{- option -}}":
+            {%- if option == 'value' or option == 'original-price' -%}
+                "{{ money.convertAndFormat(value) -}}"
+            {%- elseif not value is iterable -%}
+                "{{ value|replace({'\"': '\''}) -}}"
+            {%- else -%}
+                ""
+            {%- endif -%}
+            {{- not loop.last ? ', '-}}
+        {%- endfor -%}
+        }
         {{- not loop.last ? ', '-}}
     {%- endfor -%}
-]
+    ]
 {% endset %}
 
 <b data-bb-toggle="wishlist-variant-price" data-bb-target="#{{ itemId }}" data-bb-pricing='{{ prices }}'>
