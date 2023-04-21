@@ -36,22 +36,22 @@
 
     {{ form_widget(form.wishlists) }}
 
-    <button type="submit" class="ui large right floated primary icon labeled button">
-        <i class="cart icon"></i>
-        {{ 'sylius.ui.add_to_cart'|trans }}
-    </button>
-
-    <button
-            id="{{ form.addToWishlist.vars.id }}"
-            name="{{ form.addToWishlist.vars.full_name }}"
-            class="{{ form.addToWishlist.vars.attr.class }}"
-            data-bb-toggle="wishlist-variant"
-            {{ sylius_test_html_attribute('wishlist-add-variant') }}
-    >
-        <i class="heart icon"></i>
-        {{ form.addToWishlist.vars.label|trans }}
-    </button>
-
+    <div class="ui two padded column grid stackable ">
+        <button type="submit" class="ui large primary icon labeled button column seven wide">
+            <i class="cart icon"></i>
+            {{ 'sylius.ui.add_to_cart'|trans }}
+        </button>
+        <button
+                id="{{ form.addToWishlist.vars.id }}"
+                name="{{ form.addToWishlist.vars.full_name }}"
+                class="{{ form.addToWishlist.vars.attr.class }} right floated column seven wide"
+                data-bb-toggle="wishlist-variant"
+                {{ sylius_test_html_attribute('wishlist-add-variant') }}
+        >
+            <i class="heart icon"></i>
+            {{ form.addToWishlist.vars.label|trans }}
+        </button>
+    </div>
     {{ form_row(form._token) }}
     {{ form_end(form, {'render_rest': false}) }}
 </div>
