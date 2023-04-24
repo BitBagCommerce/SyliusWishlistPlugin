@@ -9,7 +9,7 @@ Feature: Listing wishlists
 
     @ui
     Scenario: Listing wishlist
-        Given I am on "/"
+        Given I am on "/wishlist"
         And the store has a wishlist named "Wishlist1"
         And the store has a wishlist named "Wishlist2"
         When I go to "/wishlists"

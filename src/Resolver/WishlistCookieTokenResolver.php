@@ -32,6 +32,9 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
         $wishlistCookieToken = $this->requestStack->getMainRequest()->cookies->get($this->wishlistCookieToken);
 
         if (!$wishlistCookieToken) {
+            if ($this->requestStack->getMainRequest()->attributes->get('wishlist_cookie_token')) {
+                return $this->requestStack->getMainRequest()->attributes->get('wishlist_cookie_token');
+            }
             return '';
         }
 

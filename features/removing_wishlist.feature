@@ -6,7 +6,7 @@ Feature: Removing a wishlist
 
     Background:
         Given the store operates on a single channel in "United States"
-        Given I am on "/"
+        Given I am on "/wishlist"
 
     @ui @javascript
     Scenario: Removing a wishlist

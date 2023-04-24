@@ -12,7 +12,7 @@ Feature: Assigning a wishlist to a user
 
   @ui
   Scenario: Listing wishlists
-    When I go to "/"
+    When I go to "/wishlist"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
     Then I should have 3 wishlists
@@ -20,7 +20,7 @@ Feature: Assigning a wishlist to a user
 
   @ui
   Scenario: Assigning a wishlist
-    When I go to "/"
+    When I go to "/wishlist"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
     And I follow "Save wishlist"
@@ -29,7 +29,7 @@ Feature: Assigning a wishlist to a user
 
   @ui @javascript
   Scenario: Assigning a wishlist to a user and logout
-    When I go to "/"
+    When I go to "/wishlist"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
     And I press "wishlist-edit-button-Wishlist"
@@ -45,6 +45,7 @@ Feature: Assigning a wishlist to a user
   @ui @javascript
   Scenario: Logout without assigning a wishlist to a user
     When I go to "/"
+    When I go to "/wishlist"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
     And I press "wishlist-edit-button-Wishlist"
