@@ -66,18 +66,21 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMainRequest()) {
+        $request = $event->getRequest();
+        $currentPath = $request->getPathInfo();
+
+        if (!$event->isMainRequest() || !str_starts_with($currentPath, '/wishlist')) {
             return;
         }
 
         /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistsResolver->resolve();
 
-        $wishlistCookieToken = $event->getRequest()->cookies->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $request->cookies->get($this->wishlistCookieToken);
 
         if (!empty($wishlists)) {
             if (null === $wishlistCookieToken) {
-                $event->getRequest()->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
+                $request->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
             }
             return;
         }
@@ -85,28 +88,29 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->createNewWishlist($wishlistCookieToken);
 
-        $event->getRequest()->attributes->set($this->wishlistCookieToken, $wishlist->getToken());
+        $request->attributes->set($this->wishlistCookieToken, $wishlist->getToken());
     }
 
     public function onKernelResponse(ResponseEvent $event): void
     {
-        if (!$event->isMainRequest()) {
+        $request = $event->getRequest();
+        $currentPath = $request->getPathInfo();
+        if (!$event->isMainRequest() || !str_starts_with($currentPath, '/wishlist')) {
             return;
         }
-
-        if ($event->getRequest()->cookies->has($this->wishlistCookieToken)) {
+        if ($request->cookies->has($this->wishlistCookieToken)) {
             return;
         }
 
         $response = $event->getResponse();
-        $wishlistCookieToken = $event->getRequest()->attributes->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $request->attributes->get($this->wishlistCookieToken);
 
         if (!$wishlistCookieToken) {
             return;
         }
         $this->setWishlistCookieToken($response, $wishlistCookieToken);
 
-        $event->getRequest()->attributes->remove($this->wishlistCookieToken);
+        $request->attributes->remove($this->wishlistCookieToken);
     }
 
     private function createNewWishlist(?string $wishlistCookieToken): WishlistInterface
