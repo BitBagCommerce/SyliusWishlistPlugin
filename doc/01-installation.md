@@ -42,7 +42,21 @@ bitbag_sylius_wishlist_plugin:
     resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing.yml"
 ```
 
-5. Update your database
+5. Clear application cache by using command:
+
+```bash
+$ bin/console cache:clear
+```
+
+6. Update your database
+
+First, please run legacy-versioned migrations by using command:
+
+```bash
+$ bin/console doctrine:migrations:migrate
+```
+
+After migration, please create a new diff migration and run it:
 
 ```bash
 $ bin/console doctrine:migrations:diff
@@ -57,14 +71,14 @@ $ bin/console doctrine:migrations:migrate
 $ bin/console doctrine:migrations:version BitBag\\SyliusWishlistPlugin\\Migrations\\Version20201029161558 --add --no-interaction
 ```
 
-6. Please add plugin templates into your project:
+7. Please add plugin templates into your project:
 ```bash
 $ cp -R vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/Product templates/bundles/SyliusShopBundle
 $ cp vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/_header.html.twig templates/bundles/SyliusShopBundle
 $ cp vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/_logo.html.twig templates/bundles/SyliusShopBundle
 ```
 
-7. Add plugin assets to your project
+8. Add plugin assets to your project
 
 We recommend you to use Webpack (Encore), for which we have prepared four different instructions on how to add this plugin's assets to your project:
 
