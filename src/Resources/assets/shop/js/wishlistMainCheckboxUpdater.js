@@ -13,7 +13,7 @@ export class WishlistMainCheckboxUpdater {
         this.checkboxes = Array.prototype.slice.call( document.querySelectorAll(this.finalConfig.checkboxesData) )
     }
 
-    init() {    
+    init() {
         if (this.config && typeof this.config !== 'object') {
             throw new Error('BitBag - WishlistMainCheckboxUpdater - given config is not valid - expected object');
         }
@@ -22,14 +22,14 @@ export class WishlistMainCheckboxUpdater {
 
     _toggleCheckboxesON() {
         for (let index = 0; index < this.checkboxes.length; index++) {
-            this.checkboxes[index].checked = true;    
-        }  
+            this.checkboxes[index].checked = true;
+        }
     }
 
     _toggleCheckboxesOFF() {
         for (let index = 0; index < this.checkboxes.length; index++) {
-            this.checkboxes[index].checked = false;    
-        }  
+            this.checkboxes[index].checked = false;
+        }
     }
 
     _checkCheckboxes() {
@@ -77,7 +77,7 @@ export class WishlistMainCheckboxUpdater {
     }
 
 
-    _connectListeners = () => {
+    _connectListeners() {
         this.checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
                 this._handleCheckboxes();
@@ -86,7 +86,7 @@ export class WishlistMainCheckboxUpdater {
 
         this.mainCheckbox.addEventListener('change', (e) => {
             this._handleMainCheckboxToggle();
-        });        
+        });
     };
 }
 

@@ -4,7 +4,7 @@ const DEFAULT_SELECTORS = {
 
 export class WishlistVariantButton {
     constructor(node, options = {}) {
-        if (!node?.nodeType) throw new Error("The first parameter must be a NodeElement")
+        if (node === null || !node?.nodeType) throw new Error("The first parameter must be a NodeElement")
 
         const { selectors } = options;
 
