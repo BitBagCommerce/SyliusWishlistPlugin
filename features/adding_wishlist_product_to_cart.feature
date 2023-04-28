@@ -65,3 +65,17 @@ Feature: Adding wishlist product to cart
         And I select 4 quantity of "Jack Daniels Gentleman" product
         And I add my wishlist products to cart
         Then I should be notified that "Jack Daniels Gentleman" does not have sufficient stock
+
+    @ui
+    Scenario: Adding more than available in stock wishlist products to cart
+        Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
+        And all store products appear under a main taxonomy
+        And the store has a product "Bushmills Black Bush Whiskey" priced at "$230.00"
+        And there is 1 units of product "Bushmills Black Bush Whiskey" available in the inventory
+        And the "Bushmills Black Bush Whiskey" product is tracked by the inventory
+        And I have these products in my wishlist
+        When I go to the wishlist page
+        And I select 6 quantity of "Bushmills Black Bush Whiskey" product
+        And I check "Bushmills Black Bush Whiskey"
+        And I add selected products to cart
+        Then I should be notified that "Bushmills Black Bush Whiskey" does not have sufficient stock
