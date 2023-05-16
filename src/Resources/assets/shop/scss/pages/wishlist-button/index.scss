@@ -18,3 +18,17 @@
   }
 }
 
+.bb-add-to-cart-container{
+  display: flex;
+  gap: 1em;
+  padding: 1em 0;
+  
+  >*{
+    margin: 0 !important;
+    width: 100%;
+  }
+
+  @media screen and (max-width: $breakpoint-sm) {
+    flex-direction: column;
+  }
+}
