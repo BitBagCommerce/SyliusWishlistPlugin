@@ -5,10 +5,13 @@
 }
 
 .bb-wishlist-button{
-  @media screen and (max-width: $breakpoint-sm) {
-    display: flex !important;
-    justify-content: center;
-    width: 20%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px !important;
+  margin: 0 !important;
+  i{
+    width: 35px !important;
   }
 }
 
