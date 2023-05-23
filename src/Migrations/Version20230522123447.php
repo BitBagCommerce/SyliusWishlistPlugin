@@ -35,6 +35,5 @@ final class Version20230522123447 extends AbstractMigration
         $this->addSql('ALTER TABLE bitbag_wishlist DROP channel_id, DROP name');
 
         $this->addSql('ALTER TABLE bitbag_wishlist DROP INDEX IDX_578D4E77A45D93BF, ADD UNIQUE INDEX UNIQ_578D4E77A45D93BF (shop_user_id)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_578D4E775F37A13B ON bitbag_wishlist (token)');
     }
 }
