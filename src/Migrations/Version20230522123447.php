@@ -26,7 +26,6 @@ final class Version20230522123447 extends AbstractMigration
 
         # Missing indexes
         $this->addSql('ALTER TABLE bitbag_wishlist DROP INDEX UNIQ_578D4E77A45D93BF, ADD INDEX IDX_578D4E77A45D93BF (shop_user_id)');
-        $this->addSql('DROP INDEX UNIQ_578D4E775F37A13B ON bitbag_wishlist');
     }
 
     public function down(Schema $schema): void
