@@ -33,6 +33,9 @@
         <indexes>
             <index name="token_idx" columns="token"/>
         </indexes>
+        <unique-constraints>
+            <unique-constraint columns="token" name="UNIQ_578D4E775F37A13B" />
+        </unique-constraints>
     </mapped-superclass>
 
 </doctrine-mapping>
