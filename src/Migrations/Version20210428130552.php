@@ -13,9 +13,6 @@ namespace BitBag\SyliusWishlistPlugin\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * @deprecated Since bitbag/wishlist-plugin 2.0: Doctrine migrations existing in a bundle will be removed, move migrations to the project directory.
- */
 final class Version20210428130552 extends AbstractMigration
 {
     public function getDescription(): string
