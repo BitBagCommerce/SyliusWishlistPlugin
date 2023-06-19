@@ -27,7 +27,7 @@ Feature: Listing wishlists
     @ui
     Scenario: Listing wishlist as user on same computer as another user
         Given there is a customer account "jdeer@sylius.pl"
-        Given there is a customer account "user2@sylius.pl"
+        And there is a customer account "user2@sylius.pl"
         And user "jdeer@sylius.pl" has a wishlist named "Wishlist1" with token "123456token"
         And user "jdeer@sylius.pl" has a wishlist named "Wishlist2" with token "123456token"
         And user "user2@sylius.pl" has a wishlist named "Wishlist3" with token "123456token"
