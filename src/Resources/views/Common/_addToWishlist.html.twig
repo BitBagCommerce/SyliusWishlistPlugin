@@ -2,7 +2,7 @@
     {% if findAllByShopUserAndToken(app.user)|length < 2 %}
         <a
             href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
-            class="bitbag-add-to-wishlist ui icon labeled button blue bb-wishlist-button"
+            class="ui button bb-wishlist-button"
             data-product-name="{{ product.name }}"
             {{ sylius_test_html_attribute('wishlist-add-product') }}
         >
@@ -32,10 +32,10 @@
 {% else %}
     {% if findAllByAnonymousAndChannel(sylius.channel)|length < 2 %}
         <a
-                href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
-                class="bitbag-add-to-wishlist ui icon labeled button blue bb-wishlist-button"
-                data-product-name="{{ product.name }}"
-                {{ sylius_test_html_attribute('wishlist-add-product') }}
+            href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_add_product', {'productId': product.id}) }}"
+            class="ui button bb-wishlist-button"
+            data-product-name="{{ product.name }}"
+            {{ sylius_test_html_attribute('wishlist-add-product') }}
         >
             <span><i class="icon heart"></i></span>
             {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
