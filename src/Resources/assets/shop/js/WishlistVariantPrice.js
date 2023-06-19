@@ -1,6 +1,6 @@
 export class WishlistVariantPrice {
     constructor(node) {
-        if (!node?.nodeType) throw new Error("The first parameter must be a NodeElement");
+        if (node === null || !node.nodeType) throw new Error("The first parameter must be a NodeElement");
 
         this.item = document.querySelector(node.dataset.bbTarget);
         this.nodePrice = node;
