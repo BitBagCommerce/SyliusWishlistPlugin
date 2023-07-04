@@ -20,23 +20,17 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 {
+    //TODO enum?
     private const CSV_HEADERS = [
         'variantId',
         'productId',
         'variantCode',
     ];
 
-    private CsvWishlistProductFactoryInterface $csvWishlistProductFactory;
-
-    private CsvSerializerFactoryInterface $csvSerializerFactory;
-
     public function __construct(
-        CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
-        CsvSerializerFactoryInterface $csvSerializerFactory
-    ) {
-        $this->csvWishlistProductFactory = $csvWishlistProductFactory;
-        $this->csvSerializerFactory = $csvSerializerFactory;
-    }
+        private CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
+        private CsvSerializerFactoryInterface $csvSerializerFactory
+    ) {}
 
     public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject
     {

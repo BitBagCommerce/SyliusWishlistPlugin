@@ -15,17 +15,10 @@ use Doctrine\Common\Collections\Collection;
 
 final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
 {
-    private VariantPdfModelProcessorInterface $variantPdfModelProcessor;
-
-    private DomPdfWishlistExporterInterface $domPdfWishlistExporter;
-
     public function __construct(
-        VariantPdfModelProcessorInterface $variantPdfModelProcessor,
-        DomPdfWishlistExporterInterface $domPdfWishlistExporter
-    ) {
-        $this->variantPdfModelProcessor = $variantPdfModelProcessor;
-        $this->domPdfWishlistExporter = $domPdfWishlistExporter;
-    }
+        private VariantPdfModelProcessorInterface $variantPdfModelProcessor,
+        private DomPdfWishlistExporterInterface $domPdfWishlistExporter
+    ) {}
 
     public function createModelToPdfAndExportToPdf(Collection $wishlistProducts): void
     {

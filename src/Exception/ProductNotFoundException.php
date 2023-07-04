@@ -12,6 +12,6 @@ namespace BitBag\SyliusWishlistPlugin\Exception;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductNotFoundException extends NotFoundHttpException
+final class ProductNotFoundException extends NotFoundHttpException
 {
 }

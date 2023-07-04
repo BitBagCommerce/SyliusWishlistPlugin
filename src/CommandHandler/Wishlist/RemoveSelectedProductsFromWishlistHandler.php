@@ -24,25 +24,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerInterface
 {
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private EntityManagerInterface $wishlistProductManager;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        ProductVariantRepositoryInterface $productVariantRepository,
-        EntityManagerInterface $wishlistProductManager,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
-    ) {
-        $this->productVariantRepository = $productVariantRepository;
-        $this->wishlistProductManager = $wishlistProductManager;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
-    }
+        private ProductVariantRepositoryInterface $productVariantRepository,
+        private EntityManagerInterface $wishlistProductManager,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator
+    ) {}
 
     public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlistCommand): void
     {

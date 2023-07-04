@@ -28,33 +28,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
-    private string $wishlistCookieToken;
-
-    private WishlistsResolverInterface $wishlistsResolver;
-
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private ChannelContextInterface $channelContext;
-
     public function __construct(
-        string $wishlistCookieToken,
-        WishlistsResolverInterface $wishlistsResolver,
-        WishlistFactoryInterface $wishlistFactory,
-        WishlistRepositoryInterface $wishlistRepository,
-        TokenStorageInterface $tokenStorage,
-        ChannelContextInterface $channelContext
-    ) {
-        $this->wishlistCookieToken = $wishlistCookieToken;
-        $this->wishlistsResolver = $wishlistsResolver;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->channelContext = $channelContext;
-    }
+        private string $wishlistCookieToken,
+        private WishlistsResolverInterface $wishlistsResolver,
+        private WishlistFactoryInterface $wishlistFactory,
+        private WishlistRepositoryInterface $wishlistRepository,
+        private TokenStorageInterface $tokenStorage,
+        private ChannelContextInterface $channelContext
+    ) {}
 
     public static function getSubscribedEvents(): array
     {

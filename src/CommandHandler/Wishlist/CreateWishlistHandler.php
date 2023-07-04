@@ -23,29 +23,13 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class CreateWishlistHandler implements MessageHandlerInterface
 {
-    private TokenStorageInterface $tokenStorage;
-
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private ShopUserWishlistResolverInterface $shopUserWishlistResolver;
-
-    private ObjectManager $wishlistManager;
-
-    private ChannelRepositoryInterface $channelRepository;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        WishlistFactoryInterface $wishlistFactory,
-        ShopUserWishlistResolverInterface $shopUserWishlistResolver,
-        ObjectManager $wishlistManager,
-        ChannelRepositoryInterface $channelRepository
-    ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->shopUserWishlistResolver = $shopUserWishlistResolver;
-        $this->wishlistManager = $wishlistManager;
-        $this->channelRepository = $channelRepository;
-    }
+        private TokenStorageInterface $tokenStorage,
+        private WishlistFactoryInterface $wishlistFactory,
+        private ShopUserWishlistResolverInterface $shopUserWishlistResolver,
+        private ObjectManager $wishlistManager,
+        private ChannelRepositoryInterface $channelRepository
+    ) {}
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
     {

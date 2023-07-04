@@ -18,17 +18,10 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 
 final class CopySelectedProductsToOtherWishlistHandler
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private WishlistProductsToOtherWishlistDuplicatorInterface $duplicatorProductsToWishlist;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistProductsToOtherWishlistDuplicatorInterface $duplicatorProductsToWishlist
-    ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->duplicatorProductsToWishlist = $duplicatorProductsToWishlist;
-    }
+        private WishlistRepositoryInterface $wishlistRepository,
+        private WishlistProductsToOtherWishlistDuplicatorInterface $duplicatorProductsToWishlist
+    ) {}
 
     public function __invoke(CopySelectedProductsToOtherWishlistInterface $copySelectedProductsToOtherWishlist): void
     {

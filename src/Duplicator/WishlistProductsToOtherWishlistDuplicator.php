@@ -24,29 +24,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WishlistProductsToOtherWishlistDuplicator implements WishlistProductsToOtherWishlistDuplicatorInterface
 {
-    private WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory;
-
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        WishlistRepositoryInterface $wishlistRepository,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
-    ) {
-        $this->wishlistProductVariantFactory = $wishlistProductVariantFactory;
-        $this->productVariantRepository = $productVariantRepository;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
-    }
+        private WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
+        private ProductVariantRepositoryInterface $productVariantRepository,
+        private WishlistRepositoryInterface $wishlistRepository,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator
+    ) { }
 
     public function copyWishlistProductsToOtherWishlist(Collection $wishlistProducts, WishlistInterface $destinedWishlist): void
     {

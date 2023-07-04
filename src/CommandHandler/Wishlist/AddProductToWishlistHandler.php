@@ -22,21 +22,11 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class AddProductToWishlistHandler implements MessageHandlerInterface
 {
-    private WishlistProductFactoryInterface $wishlistProductFactory;
-
-    private ProductRepositoryInterface $productRepository;
-
-    private ObjectManager $wishlistManager;
-
     public function __construct(
-        WishlistProductFactoryInterface $wishlistProductFactory,
-        ProductRepositoryInterface $productRepository,
-        ObjectManager $wishlistManager
-    ) {
-        $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->productRepository = $productRepository;
-        $this->wishlistManager = $wishlistManager;
-    }
+        private WishlistProductFactoryInterface $wishlistProductFactory,
+        private ProductRepositoryInterface $productRepository,
+        private ObjectManager $wishlistManager
+    ) {}
 
     public function __invoke(AddProductToWishlist $addProductToWishlist): WishlistInterface
     {
