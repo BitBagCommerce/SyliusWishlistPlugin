@@ -12,11 +12,11 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -49,7 +49,7 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
         }
     }
 
-    private function removeProductFromWishlist(WishlistItem $wishlistProduct): void
+    private function removeProductFromWishlist(WishlistItemInterface $wishlistProduct): void
     {
         $productVariant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
 

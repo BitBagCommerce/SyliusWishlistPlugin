@@ -20,7 +20,6 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class ExportWishlistToCsvHandler implements MessageHandlerInterface
 {
-    //TODO enum?
     private const CSV_HEADERS = [
         'variantId',
         'productId',
