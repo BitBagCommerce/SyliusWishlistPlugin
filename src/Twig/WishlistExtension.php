@@ -23,17 +23,10 @@ use Twig\TwigFunction;
 
 class WishlistExtension extends AbstractExtension
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
-    ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-    }
+        private WishlistRepositoryInterface $wishlistRepository,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+    ) {}
 
     public function getFunctions(): array
     {

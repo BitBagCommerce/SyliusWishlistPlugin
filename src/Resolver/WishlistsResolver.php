@@ -19,25 +19,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class WishlistsResolver implements WishlistsResolverInterface
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
-    private ChannelContextInterface $channelContext;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        TokenStorageInterface $tokenStorage,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        ChannelContextInterface $channelContext
-    ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-        $this->channelContext = $channelContext;
-    }
+        private WishlistRepositoryInterface $wishlistRepository,
+        private TokenStorageInterface $tokenStorage,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        private ChannelContextInterface $channelContext
+    ) {}
 
     public function resolve(): array
     {

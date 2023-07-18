@@ -23,33 +23,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class CreateNewWishlistHandler implements MessageHandlerInterface
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
-    private ChannelRepositoryInterface $channelRepository;
-
-    private WishlistNameCheckerInterface $wishlistNameChecker;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        TokenStorageInterface $tokenStorage,
-        WishlistFactoryInterface $wishlistFactory,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        ChannelRepositoryInterface $channelRepository,
-        WishlistNameCheckerInterface $wishlistNameChecker
-    ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-        $this->channelRepository = $channelRepository;
-        $this->wishlistNameChecker = $wishlistNameChecker;
-    }
+        private WishlistRepositoryInterface $wishlistRepository,
+        private TokenStorageInterface $tokenStorage,
+        private WishlistFactoryInterface $wishlistFactory,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        private ChannelRepositoryInterface $channelRepository,
+        private WishlistNameCheckerInterface $wishlistNameChecker
+    ) {}
 
     public function __invoke(CreateNewWishlist $createNewWishlist): void
     {

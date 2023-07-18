@@ -21,12 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddToCartTypeExtension extends AbstractTypeExtension
 {
-    private WishlistsResolverInterface $wishlistsResolver;
-
-    public function __construct(WishlistsResolverInterface $wishlistsResolver)
-    {
-        $this->wishlistsResolver = $wishlistsResolver;
-    }
+    public function __construct(
+        private WishlistsResolverInterface $wishlistsResolver
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

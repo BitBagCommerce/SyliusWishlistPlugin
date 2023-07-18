@@ -11,20 +11,18 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Checker;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductProcessingChecker implements ProductProcessingCheckerInterface
 {
-    private ProductQuantityCheckerInterface $productQuantityChecker;
-
     public function __construct(
-        ProductQuantityCheckerInterface $productQuantityChecker
+        private ProductQuantityCheckerInterface $productQuantityChecker
     ) {
-        $this->productQuantityChecker = $productQuantityChecker;
     }
 
-    public function canBeProcessed(WishlistItem $wishlistProduct): bool
+    public function canBeProcessed(WishlistItemInterface $wishlistProduct): bool
     {
         $cartItem = $wishlistProduct->getCartItem()->getCartItem();
 

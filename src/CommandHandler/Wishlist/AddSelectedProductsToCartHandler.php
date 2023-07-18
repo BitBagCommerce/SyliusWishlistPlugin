@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker;
 use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductCantBeAddedToCartException;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
@@ -23,25 +24,12 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 {
-    private OrderItemQuantityModifierInterface $itemQuantityModifier;
-
-    private OrderModifierInterface $orderModifier;
-
-    private OrderRepositoryInterface $orderRepository;
-
-    private ProductProcessingCheckerInterface $productProcessingChecker;
-
     public function __construct(
-        OrderItemQuantityModifierInterface $itemQuantityModifier,
-        OrderModifierInterface $orderModifier,
-        OrderRepositoryInterface $orderRepository,
-        ProductProcessingCheckerInterface $productProcessingChecker
-    ) {
-        $this->itemQuantityModifier = $itemQuantityModifier;
-        $this->orderModifier = $orderModifier;
-        $this->orderRepository = $orderRepository;
-        $this->productProcessingChecker = $productProcessingChecker;
-    }
+        private OrderItemQuantityModifierInterface $itemQuantityModifier,
+        private OrderModifierInterface $orderModifier,
+        private OrderRepositoryInterface $orderRepository,
+        private ProductProcessingCheckerInterface $productProcessingChecker
+    ) {}
 
     public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
     {
@@ -50,7 +38,7 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 
     private function addSelectedProductsToCart(Collection $wishlistProducts): void
     {
-        /** @var WishlistItem $wishlistProduct */
+        /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($this->productProcessingChecker->canBeProcessed($wishlistProduct)) {
                 $this->addProductToWishlist($wishlistProduct);

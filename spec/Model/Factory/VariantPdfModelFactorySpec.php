@@ -18,17 +18,17 @@ use Sylius\Component\Core\Model\ProductVariant;
 
 final class VariantPdfModelFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(VariantPdfModelFactory::class);
     }
 
-    function it_implements_variant_pdf_model_factory_interface(): void
+    public function it_implements_variant_pdf_model_factory_interface(): void
     {
         $this->shouldHaveType(VariantPdfModelFactoryInterface::class);
     }
 
-    function it_returns_product_pdf_model(): void
+    public function it_returns_product_pdf_model(): void
     {
         $productVariant = new ProductVariant();
         $productPdfModel = $this->createWithVariantAndImagePath(

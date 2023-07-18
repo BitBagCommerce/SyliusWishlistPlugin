@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Checker;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 
 interface ProductProcessingCheckerInterface
 {
-    public function canBeProcessed(WishlistItem $wishlistProduct): bool;
+    public function canBeProcessed(WishlistItemInterface $wishlistProduct): bool;
 }

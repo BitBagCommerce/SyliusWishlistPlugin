@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Doctrine\Common\Collections\Collection;
@@ -25,31 +26,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddProductsToCartHandler implements MessageHandlerInterface
 {
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
-    private OrderModifierInterface $orderModifier;
-
-    private OrderRepositoryInterface $orderRepository;
-
-    private ?AvailabilityCheckerInterface $availabilityChecker;
-
     public function __construct(
-        RequestStack $requestStack,
-        TranslatorInterface $translator,
-        OrderModifierInterface $orderModifier,
-        OrderRepositoryInterface $orderRepository,
-        ?AvailabilityCheckerInterface $availabilityChecker = null
-    ) {
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
-        $this->orderModifier = $orderModifier;
-        $this->orderRepository = $orderRepository;
-        $this->availabilityChecker = $availabilityChecker;
-    }
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator,
+        private OrderModifierInterface $orderModifier,
+        private OrderRepositoryInterface $orderRepository,
+        private ?AvailabilityCheckerInterface $availabilityChecker = null
+    ) {}
 
-    public function __invoke(AddProductsToCart $addProductsToWishlistCommand): void
+    public function __invoke(AddProductsToCartInterface $addProductsToWishlistCommand): void
     {
         $this->addProductsToWishlist($addProductsToWishlistCommand->getWishlistProducts());
     }

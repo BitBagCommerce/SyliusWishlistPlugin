@@ -16,21 +16,11 @@ use Symfony\Component\Asset\PackageInterface;
 
 final class GenerateDataUriForImageResolver implements GenerateDataUriForImageResolverInterface
 {
-    private PackageInterface $package;
-
-    private FilterService $filterService;
-
-    private string $imageFilterName;
-
     public function __construct(
-        PackageInterface $package,
-        FilterService $filterService,
-        string $imageFilterName
-    ) {
-        $this->package = $package;
-        $this->filterService = $filterService;
-        $this->imageFilterName = $imageFilterName;
-    }
+        private PackageInterface $package,
+        private FilterService $filterService,
+        private string $imageFilterName
+    ) {}
 
     public function resolve(ProductImageInterface $image): string
     {

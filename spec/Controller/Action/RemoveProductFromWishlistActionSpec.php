@@ -30,7 +30,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         WishlistContextInterface $wishlistContext,
         ProductRepositoryInterface $productRepository,
         EntityManagerInterface $wishlistProductManager,
@@ -48,12 +48,12 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RemoveProductFromWishlistAction::class);
     }
 
-    function it_throws_404_if_product_was_not_found(Request $request, ProductRepositoryInterface $productRepository): void
+    public function it_throws_404_if_product_was_not_found(Request $request, ProductRepositoryInterface $productRepository): void
     {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn(null);
@@ -61,7 +61,7 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
         $this->shouldThrow(NotFoundHttpException::class)->during('__invoke', [$request]);
     }
 
-    function it_handles_request_and_redirects_to_wishlist(
+    public function it_handles_request_and_redirects_to_wishlist(
         Request $request,
         ProductRepositoryInterface $productRepository,
         ProductInterface $product,

@@ -18,17 +18,10 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class RemoveWishlistHandler implements MessageHandlerInterface
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private ObjectManager $wishlistManager;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        ObjectManager $wishlistManager
-    ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistManager = $wishlistManager;
-    }
+        private WishlistRepositoryInterface $wishlistRepository,
+        private ObjectManager $wishlistManager
+    ) {}
 
     public function __invoke(RemoveWishlist $removeWishlist): void
     {

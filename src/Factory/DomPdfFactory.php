@@ -15,12 +15,9 @@ use Dompdf\Dompdf;
 
 class DomPdfFactory implements DomPdfFactoryInterface
 {
-    private DomPdfOptionsFactoryInterface $domPdfOptionsFactory;
-
-    public function __construct(DomPdfOptionsFactoryInterface $domPdfOptionsFactory)
-    {
-        $this->domPdfOptionsFactory = $domPdfOptionsFactory;
-    }
+    public function __construct(
+        private DomPdfOptionsFactoryInterface $domPdfOptionsFactory
+    ) {}
 
     public function createNew(): Dompdf
     {

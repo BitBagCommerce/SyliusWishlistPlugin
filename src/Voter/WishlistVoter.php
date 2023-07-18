@@ -22,12 +22,9 @@ final class WishlistVoter extends Voter
 
     public const DELETE = 'delete';
 
-    private Security $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
+    public function __construct(
+        private Security $security
+    ) {}
 
     protected function supports($attribute, $subject): bool
     {

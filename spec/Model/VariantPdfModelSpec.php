@@ -17,17 +17,17 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class VariantPdfModelSpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(VariantPdfModel::class);
     }
 
-    function it_implements_variant_pdf_model_interface(): void
+    public function it_implements_variant_pdf_model_interface(): void
     {
         $this->shouldHaveType(VariantPdfModelInterface::class);
     }
 
-    function it_returns_property_of_variant_pdf_model(ProductVariantInterface $productVariant): void
+    public function it_returns_property_of_variant_pdf_model(ProductVariantInterface $productVariant): void
     {
         $this->setActualVariant('variant test');
         $this->setVariant($productVariant);
