@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
+
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
@@ -45,17 +52,17 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
     }
 
     public function it_creates_new_wishlist_for_user(
-        WishlistRepositoryInterface          $wishlistRepository,
-        TokenStorageInterface                $tokenStorage,
-        WishlistFactoryInterface             $wishlistFactory,
+        WishlistRepositoryInterface $wishlistRepository,
+        TokenStorageInterface $tokenStorage,
+        WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        WishlistNameCheckerInterface         $wishlistNameChecker,
-        ChannelRepositoryInterface           $channelRepository,
-        TokenInterface                       $token,
-        ShopUserInterface                    $shopUser,
-        WishlistInterface                    $wishlist,
-        WishlistInterface                    $existingWishlist,
-        ChannelInterface                     $channel
+        WishlistNameCheckerInterface $wishlistNameChecker,
+        ChannelRepositoryInterface $channelRepository,
+        TokenInterface $token,
+        ShopUserInterface $shopUser,
+        WishlistInterface $wishlist,
+        WishlistInterface $existingWishlist,
+        ChannelInterface $channel
     ): void {
         $wishlists = [$existingWishlist];
 
@@ -85,13 +92,13 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
     }
 
     public function it_creates_new_wishlist_for_guest(
-        WishlistRepositoryInterface          $wishlistRepository,
-        TokenStorageInterface                $tokenStorage,
-        WishlistFactoryInterface             $wishlistFactory,
+        WishlistRepositoryInterface $wishlistRepository,
+        TokenStorageInterface $tokenStorage,
+        WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        ChannelRepositoryInterface           $channelRepository,
-        WishlistInterface                    $newWishlist,
-        ChannelInterface                     $channel,
+        ChannelRepositoryInterface $channelRepository,
+        WishlistInterface $newWishlist,
+        ChannelInterface $channel,
     ): void {
         $tokenStorage->getToken()->willReturn(null);
 
@@ -112,17 +119,17 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
     }
 
     public function it_doesnt_add_duplicated_wishlist_name_for_user(
-        WishlistRepositoryInterface          $wishlistRepository,
-        TokenStorageInterface                $tokenStorage,
-        WishlistFactoryInterface             $wishlistFactory,
+        WishlistRepositoryInterface $wishlistRepository,
+        TokenStorageInterface $tokenStorage,
+        WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        WishlistNameCheckerInterface         $wishlistNameChecker,
-        ChannelRepositoryInterface           $channelRepository,
-        TokenInterface                       $token,
-        ShopUserInterface                    $shopUser,
-        WishlistInterface                    $wishlist,
-        WishlistInterface                    $existingWishlist,
-        ChannelInterface                     $channel
+        WishlistNameCheckerInterface $wishlistNameChecker,
+        ChannelRepositoryInterface $channelRepository,
+        TokenInterface $token,
+        ShopUserInterface $shopUser,
+        WishlistInterface $wishlist,
+        WishlistInterface $existingWishlist,
+        ChannelInterface $channel
     ): void {
         $wishlists = [$existingWishlist];
 

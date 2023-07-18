@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class WishlistContextSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         TokenStorageInterface $tokenStorage,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
@@ -41,17 +41,17 @@ final class WishlistContextSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(WishlistContext::class);
     }
 
-    function it_implements_wishlist_context_interface(): void
+    public function it_implements_wishlist_context_interface(): void
     {
         $this->shouldHaveType(WishlistContextInterface::class);
     }
 
-    function it_creates_new_wishlist_if_no_cookie_and_user(
+    public function it_creates_new_wishlist_if_no_cookie_and_user(
         Request $request,
         ParameterBag $parameterBag,
         TokenStorageInterface $tokenStorage,
@@ -68,7 +68,7 @@ final class WishlistContextSpec extends ObjectBehavior
         $this->getWishlist($request)->shouldReturn($wishlist);
     }
 
-    function it_returns_cookie_wishlist_if_cookie_and_no_user(
+    public function it_returns_cookie_wishlist_if_cookie_and_no_user(
         Request $request,
         ParameterBag $parameterBag,
         TokenStorageInterface $tokenStorage,
@@ -85,7 +85,7 @@ final class WishlistContextSpec extends ObjectBehavior
         $this->getWishlist($request)->shouldReturn($wishlist);
     }
 
-    function it_returns_new_wishlist_if_cookie_not_found_and_no_user(
+    public function it_returns_new_wishlist_if_cookie_not_found_and_no_user(
         Request $request,
         ParameterBag $parameterBag,
         TokenStorageInterface $tokenStorage,
@@ -104,7 +104,7 @@ final class WishlistContextSpec extends ObjectBehavior
         $this->getWishlist($request)->shouldReturn($wishlist);
     }
 
-    function it_returns_user_wishlist_if_found_and_user_logged_in(
+    public function it_returns_user_wishlist_if_found_and_user_logged_in(
         Request $request,
         ParameterBag $parameterBag,
         TokenStorageInterface $tokenStorage,
@@ -126,7 +126,7 @@ final class WishlistContextSpec extends ObjectBehavior
         $this->getWishlist($request)->shouldReturn($wishlist);
     }
 
-    function it_returns_new_wishlist_if_not_found_and_user_logged_in(
+    public function it_returns_new_wishlist_if_not_found_and_user_logged_in(
         Request $request,
         ParameterBag $parameterBag,
         TokenStorageInterface $tokenStorage,

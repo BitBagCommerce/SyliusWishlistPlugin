@@ -20,33 +20,35 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class WishlistSpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(Wishlist::class);
     }
 
-    function it_implements_wishlist_interface(): void
+    public function it_implements_wishlist_interface(): void
     {
         $this->shouldHaveType(WishlistInterface::class);
     }
 
-    function it_has_no_products_by_default(): void
+    public function it_has_no_products_by_default(): void
     {
         $this->getProducts()->toArray()->shouldReturn([]);
     }
 
-    function it_has_no_wishlist_products_by_default(): void
+    public function it_has_no_wishlist_products_by_default(): void
     {
         $this->getWishlistProducts()->toArray()->shouldReturn([]);
     }
 
-    function it_does_not_have_product_by_default(ProductInterface $product): void
+    public function it_does_not_have_product_by_default(ProductInterface $product): void
     {
         $this->hasProduct($product)->shouldReturn(false);
     }
 
-    function it_adds_wishlist_product(WishlistProductInterface $wishlistProduct, ProductVariantInterface $productVariant): void
-    {
+    public function it_adds_wishlist_product(
+        WishlistProductInterface $wishlistProduct,
+        ProductVariantInterface $productVariant
+    ): void {
         $wishlistProduct->getVariant()->willReturn($productVariant);
 
         $wishlistProduct->setWishlist($this)->shouldBeCalled();

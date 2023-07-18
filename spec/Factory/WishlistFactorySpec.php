@@ -41,8 +41,11 @@ final class WishlistFactorySpec extends ObjectBehavior
         $this->createNew()->shouldReturn($wishlist);
     }
 
-    public function it_creates_wishlist_for_user(FactoryInterface $factory, WishlistInterface $wishlist, ShopUserInterface $shopUser): void
-    {
+    public function it_creates_wishlist_for_user(
+        FactoryInterface $factory,
+        WishlistInterface $wishlist,
+        ShopUserInterface $shopUser
+    ): void {
         $factory->createNew()->willReturn($wishlist);
 
         $wishlist->setShopUser($shopUser)->shouldBeCalled();

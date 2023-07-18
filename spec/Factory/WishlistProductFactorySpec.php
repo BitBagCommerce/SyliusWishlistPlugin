@@ -37,8 +37,10 @@ final class WishlistProductFactorySpec extends ObjectBehavior
         $this->shouldHaveType(WishlistProductFactoryInterface::class);
     }
 
-    public function it_creates_wishlist_product(FactoryInterface $factory, WishlistProductInterface $wishlistProduct): void
-    {
+    public function it_creates_wishlist_product(
+        FactoryInterface $factory,
+        WishlistProductInterface $wishlistProduct
+    ): void {
         $factory->createNew()->willReturn($wishlistProduct);
 
         $this->createNew()->shouldReturn($wishlistProduct);

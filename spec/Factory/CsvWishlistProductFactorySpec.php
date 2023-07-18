@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 
 final class CsvWishlistProductFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(CsvWishlistProductFactory::class);
         $this->shouldImplement(CsvWishlistProductFactoryInterface::class);

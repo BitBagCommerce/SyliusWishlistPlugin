@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 
 final class CsvSerializerFactorySpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(CsvSerializerFactory::class);
         $this->shouldImplement(CsvSerializerFactoryInterface::class);

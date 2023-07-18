@@ -16,12 +16,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class ConfigurationSpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ConfigurationInterface::class);
     }
 
-    function it_returns_tree_builder(): void
+    public function it_returns_tree_builder(): void
     {
         $this->getConfigTreeBuilder()->shouldBeAnInstanceOf(TreeBuilder::class);
     }
