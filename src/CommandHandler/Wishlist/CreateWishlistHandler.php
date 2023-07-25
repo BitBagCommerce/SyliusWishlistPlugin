@@ -56,9 +56,15 @@ final class CreateWishlistHandler implements MessageHandlerInterface
 
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
+        $wishlist->setName('Wishlist');
 
         if ($user instanceof ShopUserInterface) {
             $wishlist = $this->shopUserWishlistResolver->resolve($user);
+        }
+
+        if (null !== $createWishlist->getTokenValue())
+        {
+            $wishlist->setToken($createWishlist->getTokenValue());
         }
 
         $channelCode = $createWishlist->getChannelCode();

@@ -81,6 +81,7 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
                 throw new WishlistNameIsTakenException();
             }
         }
+
         $this->wishlistRepository->add($wishlist);
     }
 }
