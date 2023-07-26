@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToWishlistAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -41,7 +42,8 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         TranslatorInterface $translator,
         WishlistsResolverInterface $wishlistsResolver,
         ObjectManager $wishlistManager,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ): void {
         $this->beConstructedWith(
             $productRepository,
@@ -50,7 +52,8 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
             $translator,
             $wishlistsResolver,
             $wishlistManager,
-            $channelContext
+            $channelContext,
+            $wishlistCookieTokenResolver
         );
     }
 
@@ -84,16 +87,19 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         ParameterBag $headers,
         Session $session,
         FlashBagInterface $flashBag,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ): void {
         $request->get('productId')->willReturn(1);
 
         $productRepository->find(1)->willReturn($product);
 
-        $wishlistsResolver->resolve()
+        $wishlistsResolver->resolveAndCreate()
             ->willReturn([
                 $wishlist1,
                 $wishlist2,
             ]);
+
+        $wishlistCookieTokenResolver->resolve()->willReturn('cookie-wishlist-token');
 
         $wishlistProductFactory->createForWishlistAndProduct($wishlist1, $product)->willReturn($wishlistProduct);
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
@@ -131,15 +137,18 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         ParameterBag $headers,
         Session $session,
         FlashBagInterface $flashBag,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ): void {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn($product);
 
-        $wishlistsResolver->resolve()
+        $wishlistsResolver->resolveAndCreate()
             ->willReturn([
                 $wishlist1,
                 $wishlist2,
             ]);
+
+        $wishlistCookieTokenResolver->resolve()->willReturn('cookie-wishlist-token');
 
         $wishlistProductFactory->createForWishlistAndProduct($wishlist1, $product)->willReturn($wishlistProduct);
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
