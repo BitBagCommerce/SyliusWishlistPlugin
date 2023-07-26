@@ -20,3 +20,6 @@ services:
         arguments:
             - "@request_stack"
             - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@security.token_storage"
+            - "@sylius.context.channel"

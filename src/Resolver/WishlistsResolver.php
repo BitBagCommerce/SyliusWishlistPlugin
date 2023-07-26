@@ -60,7 +60,13 @@ final class WishlistsResolver implements WishlistsResolverInterface
             $channel = null;
         }
 
-        return $this->getWishlistsByUserOrCookieToken($wishlistCookieToken, $user, $channel);
+        $wishlists = $this->getWishlistsByUserOrCookieToken($wishlistCookieToken, $user, $channel);
+
+        if (null !== $user) {
+            $this->checkAndUpdateMissingShopUserRelations($wishlists, $user);
+        }
+
+        return $wishlists;
     }
 
     public function resolveAndCreate(): array
@@ -101,5 +107,20 @@ final class WishlistsResolver implements WishlistsResolverInterface
         }
 
         return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+    }
+
+    private function checkAndUpdateMissingShopUserRelations(array $wishlists, ShopUserInterface $shopUser)
+    {
+        /** @var WishlistInterface $wishlist */
+        foreach ($wishlists as $wishlist)
+        {
+            if (null !== $wishlist->getShopUser())
+            {
+                continue;
+            }
+
+            $wishlist->setShopUser($shopUser);
+            $this->wishlistRepository->add($wishlist);
+        }
     }
 }
