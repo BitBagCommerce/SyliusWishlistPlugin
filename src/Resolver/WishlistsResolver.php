@@ -34,8 +34,6 @@ final class WishlistsResolver implements WishlistsResolverInterface
 
     private ChannelContextInterface $channelContext;
 
-    private MessageBusInterface $messageBus;
-
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         TokenStorageInterface $tokenStorage,
