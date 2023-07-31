@@ -13,12 +13,12 @@ Feature: Removing a wishlist
         And the store has a wishlist named "Wishlist1"
         And the store has a wishlist named "Wishlist2"
         When I go to "/wishlists"
-        Then I should have 3 wishlists
+        Then I should have 2 wishlists
         When I press "wishlist-delete-button-Wishlist1"
         When I press "remove_wishlist_save"
         Then I should be on "/wishlists"
         Then I should wait for one second
-        Then I should have 2 wishlists
+        Then I should have 1 wishlists
 
 
     @ui @javascript

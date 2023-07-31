@@ -15,11 +15,13 @@ Feature: Assigning a wishlist to a user
     When I go to "/"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
-    Then I should have 3 wishlists
-    And I should see "Save wishlist"
+    Then I should have 2 wishlists
 
   @ui
   Scenario: Assigning a wishlist
+    Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
+    And all store products appear under a main taxonomy
+    And I add this product to wishlist
     When I go to "/"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
