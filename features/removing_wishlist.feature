@@ -29,4 +29,4 @@ Feature: Removing a wishlist
         When I press "remove_wishlist_save"
         Then I should be on "/wishlists"
         Then I should wait for one second
-        Then I should have 1 wishlists
+        Then I should have 0 wishlists
