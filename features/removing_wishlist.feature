@@ -23,9 +23,10 @@ Feature: Removing a wishlist
 
     @ui @javascript
     Scenario: Removing a wishlist with one existing
+        And the store has a wishlist named "Wishlist1"
         When I go to "/wishlists"
         Then I should have 1 wishlists
-        When I press "wishlist-delete-button-Wishlist"
+        When I press "wishlist-delete-button-Wishlist1"
         When I press "remove_wishlist_save"
         Then I should be on "/wishlists"
         Then I should wait for one second
