@@ -11,8 +11,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\EventSubscriber;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
@@ -40,13 +42,16 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private ChannelContextInterface $channelContext;
 
+    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
+
     public function __construct(
         string $wishlistCookieToken,
         WishlistsResolverInterface $wishlistsResolver,
         WishlistFactoryInterface $wishlistFactory,
         WishlistRepositoryInterface $wishlistRepository,
         TokenStorageInterface $tokenStorage,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
@@ -54,6 +59,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->channelContext = $channelContext;
+        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
     public static function getSubscribedEvents(): array
@@ -79,13 +85,16 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             if (null === $wishlistCookieToken) {
                 $event->getRequest()->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
             }
+
             return;
         }
 
-        /** @var WishlistInterface $wishlist */
-        $wishlist = $this->createNewWishlist($wishlistCookieToken);
+        if (null === $wishlistCookieToken)
+        {
+            $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        }
 
-        $event->getRequest()->attributes->set($this->wishlistCookieToken, $wishlist->getToken());
+        $event->getRequest()->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
     }
 
     public function onKernelResponse(ResponseEvent $event): void

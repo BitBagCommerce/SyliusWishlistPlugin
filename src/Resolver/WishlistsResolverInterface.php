@@ -13,4 +13,6 @@ namespace BitBag\SyliusWishlistPlugin\Resolver;
 interface WishlistsResolverInterface
 {
     public function resolve(): array;
+
+    public function resolveAndCreate(): array;
 }
