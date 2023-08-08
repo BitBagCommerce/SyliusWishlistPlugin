@@ -46,4 +46,4 @@ bitbag_sylius_wishlist_plugin:
         wishlist_save: Save wishlist
         wishlist_saved: Wishlist has been saved.
         you_have_no_access_to_that_wishlist: You have no access to that wishlist.
-        wishlist_has_product_variant: '%productName% variant is already in wishlist'
+        wishlist_has_product_variant: '%productName% variant is already in wishlist.'
