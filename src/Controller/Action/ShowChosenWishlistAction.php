@@ -68,19 +68,18 @@ final class ShowChosenWishlistAction
     {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$wishlistId);
-        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
         $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
-
-        if ($wishlist instanceof WishlistInterface && $user instanceof ShopUserInterface
-        || $wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken
-            && $wishlist->getShopUser() === null) {
-            $form = $this->createForm($wishlist);
-            return new Response(
-                $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                    'wishlist' => $wishlist,
-                    'form' => $form->createView(),
-                ])
-            );
+        
+        if ($wishlist instanceof WishlistInterface){
+            if ($this->isUserAllowedToViewWishlist($user, $wishlist)) {
+                $form = $this->createForm($wishlist);
+                return new Response(
+                    $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
+                        'wishlist' => $wishlist,
+                        'form' => $form->createView(),
+                    ])
+                );
+            }
         }
 
         return new RedirectResponse($this->urlGenerator->generate("bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists"));
@@ -95,5 +94,19 @@ final class ShowChosenWishlistAction
         return $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
         ]);
+    }
+
+    private function isUserAllowedToViewWishlist(?ShopUserInterface $user, WishlistInterface $wishlist): bool
+    {
+        if ($user instanceof ShopUserInterface && $user === $wishlist->getShopUser()){
+            return true;
+        }
+
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        if ($wishlistCookieToken === $wishlist->getToken() && null === $wishlist->getShopUser()){
+            return true;
+        }
+
+        return false;
     }
 }
