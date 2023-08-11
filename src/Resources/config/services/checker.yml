@@ -1,0 +1,18 @@
+services:
+    bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\WishlistNameChecker
+
+    bitbag_sylius_wishlist_plugin.services.product_quantity_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\ProductQuantityChecker
+
+    bitbag_sylius_wishlist_plugin.services.product_processing_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker
+        arguments:
+            - '@bitbag_sylius_wishlist_plugin.services.product_quantity_checker'
+
+    bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker:
+        class: BitBag\SyliusWishlistPlugin\Checker\WishlistAccessChecker
+        arguments:
+            - '@bitbag_sylius_wishlist_plugin.repository.wishlist'
+            - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
+            - "@security.token_storage"

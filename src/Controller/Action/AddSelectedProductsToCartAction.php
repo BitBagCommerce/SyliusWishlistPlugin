@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Checker\WishlistAccessCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -34,7 +34,7 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         MessageBusInterface $messageBus,
         UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository,
+        WishlistAccessCheckerInterface $wishlistAccessChecker,
         TranslatorInterface $translator
     ) {
         parent::__construct(
@@ -44,7 +44,7 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
             $wishlistCommandProcessor,
             $messageBus,
             $urlGenerator,
-            $wishlistRepository,
+            $wishlistAccessChecker,
             $translator
         );
         $this->translator = $translator;

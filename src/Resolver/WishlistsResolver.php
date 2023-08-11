@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
@@ -75,8 +74,7 @@ final class WishlistsResolver implements WishlistsResolverInterface
             $channel = null;
         }
 
-        if ([] === $wishlists || null === $wishlists)
-        {
+        if ([] === $wishlists || null === $wishlists) {
             $createWishlist = new CreateWishlist($wishlistCookieToken, $channel?->getCode());
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->handle($createWishlist);

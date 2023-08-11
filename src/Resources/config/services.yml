@@ -12,7 +12,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@sylius.command_bus"
             - "@router"
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker"
             - "@translator"
 
     bitbag_sylius_wishlist_plugin.controller.action.base_wishlists_listing_action:
@@ -63,7 +63,7 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\CleanWishlistAction
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
             - '@request_stack'
             - '@translator'
@@ -81,13 +81,14 @@ services:
             - "@translator"
             - "@router"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker"
         tags:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.remove_product_variant_from_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\RemoveProductVariantFromWishlistAction
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker"
             - "@sylius.repository.product_variant"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist_product"
             - '@request_stack'
@@ -123,6 +124,7 @@ services:
             - "@router"
             - "@translator"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - '@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker'
         tags:
             - { name: controller.service_arguments }
 
@@ -293,21 +295,21 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\ShowChosenWishlistAction
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@sylius.context.cart"
             - "@form.factory"
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@router.default"
-            - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
-            - "@security.token_storage"
+            - '@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker'
+            - '@request_stack'
+            - '@translator'
         tags:
             - { name: controller.service_arguments }
 
     bitbag_sylius_wishlist_plugin.controller.action.add_product_to_selected_wishlist:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToSelectedWishlistAction
         arguments:
-            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - '@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker'
             - "@sylius.repository.product"
             - '@request_stack'
             - "@translator"
@@ -322,6 +324,8 @@ services:
             - "@sylius.command_bus"
             - '@request_stack'
             - "@translator"
+            - "@router"
+            - "@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker"
         tags:
             - { name: controller.service_arguments }
 
@@ -343,17 +347,6 @@ services:
             - '@request_stack'
             - "@translator"
 
-    bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker:
-        class: BitBag\SyliusWishlistPlugin\Checker\WishlistNameChecker
-
-    bitbag_sylius_wishlist_plugin.services.product_quantity_checker:
-        class: BitBag\SyliusWishlistPlugin\Checker\ProductQuantityChecker
-
-    bitbag_sylius_wishlist_plugin.services.product_processing_checker:
-        class: BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker
-        arguments:
-            - '@bitbag_sylius_wishlist_plugin.services.product_quantity_checker'
-
     bitbag_sylius_wishlist_plugin.controller.action.update_wishlist_name_action:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\UpdateWishlistNameAction
         arguments:
@@ -362,6 +355,7 @@ services:
             - "@translator"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@router"
+            - "@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker"
         tags:
             - { name: controller.service_arguments }
 
@@ -374,5 +368,6 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@router"
             - "@security.token_storage"
+            - "@bitbag_sylius_wishlist_plugin.checker.wishlist_access_checker"
         tags:
             - { name: controller.service_arguments }

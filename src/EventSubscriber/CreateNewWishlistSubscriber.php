@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\EventSubscriber;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
@@ -89,8 +88,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null === $wishlistCookieToken)
-        {
+        if (null === $wishlistCookieToken) {
             $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
         }
 

@@ -11,14 +11,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Checker;
 
-final class WishlistNameChecker implements WishlistNameCheckerInterface
-{
-    public function check(string $existingWishlistName, string $wishlistToCreate): bool
-    {
-        if ($existingWishlistName == $wishlistToCreate) {
-            return true;
-        }
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 
-        return false;
-    }
+interface WishlistAccessCheckerInterface
+{
+    public function resolveWishlist(int $wishlistId): ?WishlistInterface;
+
+    public function resolveWishlistByToken(string $wishlistToken): ?WishlistInterface;
 }

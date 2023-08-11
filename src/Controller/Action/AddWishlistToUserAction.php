@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Checker\WishlistAccessCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistToUser;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,20 +40,24 @@ final class AddWishlistToUserAction
 
     private TokenStorageInterface $tokenStorage;
 
+    private WishlistAccessCheckerInterface $wishlistAccessChecker;
+
     public function __construct(
         MessageBusInterface $commandBus,
         RequestStack $requestStack,
         TranslatorInterface $translator,
         WishlistRepositoryInterface $wishlistRepository,
         UrlGeneratorInterface $urlGenerator,
-        TokenStorageInterface $tokenStorage
-    ) {
+        TokenStorageInterface $tokenStorage,
+        WishlistAccessCheckerInterface $wishlistAccessChecker,
+        ) {
         $this->commandBus = $commandBus;
         $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->wishlistRepository = $wishlistRepository;
         $this->urlGenerator = $urlGenerator;
         $this->tokenStorage = $tokenStorage;
+        $this->wishlistAccessChecker = $wishlistAccessChecker;
     }
 
     public function __invoke(Request $request): Response
@@ -59,6 +65,17 @@ final class AddWishlistToUserAction
         /** @var ShopUserInterface $shopUser */
         $shopUser = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
         $wishlistId = $request->attributes->getInt('id');
+
+        $wishlist = $this->wishlistAccessChecker->resolveWishlist($wishlistId);
+
+        if (false === $wishlist instanceof WishlistInterface) {
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add('info', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.you_have_no_access_to_that_wishlist'));
+
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
+        }
+
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
         /** @var Session $session */

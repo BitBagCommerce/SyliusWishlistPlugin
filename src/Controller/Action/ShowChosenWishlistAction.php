@@ -10,26 +10,24 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Checker\WishlistAccessCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class ShowChosenWishlistAction
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
     private CartContextInterface $cartContext;
 
     private FormFactoryInterface $formFactory;
@@ -40,49 +38,52 @@ final class ShowChosenWishlistAction
 
     private UrlGeneratorInterface $urlGenerator;
 
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
+    private WishlistAccessCheckerInterface $wishlistAccessChecker;
 
-    private TokenStorageInterface $tokenStorage;
+    private RequestStack $requestStack;
+
+    private TranslatorInterface $translator;
 
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
         Environment $twigEnvironment,
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         UrlGeneratorInterface $urlGenerator,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->wishlistRepository = $wishlistRepository;
+        WishlistAccessCheckerInterface $wishlistAccessChecker,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        ) {
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
         $this->twigEnvironment = $twigEnvironment;
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->urlGenerator = $urlGenerator;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-        $this->tokenStorage = $tokenStorage;
+        $this->wishlistAccessChecker = $wishlistAccessChecker;
+        $this->requestStack = $requestStack;
+        $this->translator = $translator;
     }
 
     public function __invoke(string $wishlistId, Request $request): Response
     {
-        /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->find((int)$wishlistId);
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
-        
-        if ($wishlist instanceof WishlistInterface){
-            if ($this->isUserAllowedToViewWishlist($user, $wishlist)) {
-                $form = $this->createForm($wishlist);
-                return new Response(
-                    $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
-                        'wishlist' => $wishlist,
-                        'form' => $form->createView(),
-                    ])
-                );
-            }
+        $wishlist = $this->wishlistAccessChecker->resolveWishlist((int) $wishlistId);
+
+        if (false === $wishlist instanceof WishlistInterface) {
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add('info', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.you_have_no_access_to_that_wishlist'));
+
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
         }
 
-        return new RedirectResponse($this->urlGenerator->generate("bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists"));
+        $form = $this->createForm($wishlist);
+
+        return new Response(
+            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
+                'wishlist' => $wishlist,
+                'form' => $form->createView(),
+            ])
+        );
     }
 
     private function createForm(WishlistInterface $wishlist): FormInterface
@@ -94,19 +95,5 @@ final class ShowChosenWishlistAction
         return $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
             'cart' => $cart,
         ]);
-    }
-
-    private function isUserAllowedToViewWishlist(?ShopUserInterface $user, WishlistInterface $wishlist): bool
-    {
-        if ($user instanceof ShopUserInterface && $user === $wishlist->getShopUser()){
-            return true;
-        }
-
-        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
-        if ($wishlistCookieToken === $wishlist->getToken() && null === $wishlist->getShopUser()){
-            return true;
-        }
-
-        return false;
     }
 }

@@ -10,9 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Checker\WishlistAccessCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
@@ -27,7 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveProductVariantFromWishlistAction
 {
-    private WishlistRepositoryInterface $wishlistRepository;
+    private WishlistAccessCheckerInterface $wishlistAccessChecker;
 
     private ProductVariantRepositoryInterface $productVariantRepository;
 
@@ -40,14 +39,14 @@ final class RemoveProductVariantFromWishlistAction
     private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
+        WishlistAccessCheckerInterface $wishlistAccessChecker,
         ProductVariantRepositoryInterface $productVariantRepository,
         EntityManagerInterface $wishlistProductManager,
         RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->wishlistRepository = $wishlistRepository;
+        $this->wishlistAccessChecker = $wishlistAccessChecker;
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistProductManager = $wishlistProductManager;
         $this->urlGenerator = $urlGenerator;
@@ -60,20 +59,21 @@ final class RemoveProductVariantFromWishlistAction
         int $variantId,
         Request $request
     ): Response {
+        $wishlist = $this->wishlistAccessChecker->resolveWishlist($wishlistId);
+
+        if (false === $wishlist instanceof WishlistInterface) {
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add('info', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.you_have_no_access_to_that_wishlist'));
+
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
+        }
+
         /** @var ProductVariantInterface|null $variant */
         $variant = $this->productVariantRepository->find($variantId);
 
         if (null === $variant) {
             throw new NotFoundHttpException();
-        }
-
-        /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->find($wishlistId);
-
-        if (null === $wishlist) {
-            throw new WishlistNotFoundException(
-                'Wishlist not found.'
-            );
         }
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProduct) {
