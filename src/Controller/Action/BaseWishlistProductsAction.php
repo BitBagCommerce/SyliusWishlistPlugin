@@ -10,9 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Checker\WishlistAccessCheckerInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -39,7 +40,7 @@ abstract class BaseWishlistProductsAction
 
     public UrlGeneratorInterface $urlGenerator;
 
-    private WishlistRepositoryInterface $wishlistRepository;
+    private WishlistAccessCheckerInterface $wishlistAccessChecker;
 
     private TranslatorInterface $translator;
 
@@ -50,7 +51,7 @@ abstract class BaseWishlistProductsAction
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         MessageBusInterface $messageBus,
         UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository,
+        WishlistAccessCheckerInterface $wishlistAccessChecker,
         TranslatorInterface $translator
     ) {
         $this->cartContext = $cartContext;
@@ -59,28 +60,28 @@ abstract class BaseWishlistProductsAction
         $this->wishlistCommandProcessor = $wishlistCommandProcessor;
         $this->messageBus = $messageBus;
         $this->urlGenerator = $urlGenerator;
-        $this->wishlistRepository = $wishlistRepository;
+        $this->wishlistAccessChecker = $wishlistAccessChecker;
         $this->translator = $translator;
     }
 
     public function __invoke(int $wishlistId, Request $request): Response
     {
-        if ($this->createForm($wishlistId) == null) {
+        if (null === $this->createForm($wishlistId)) {
             return new RedirectResponse(
-                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
-        } else {
-            $form = $this->createForm($wishlistId);
-            $form->handleRequest($request);
+                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists')
+            );
+        }
+        $form = $this->createForm($wishlistId);
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->handleCommand($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->handleCommand($form);
 
-                return new RedirectResponse(
-                    $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+            return new RedirectResponse(
+                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
                         'wishlistId' => $wishlistId,
                     ])
-                );
-            }
+            );
         }
 
         /** @var Session $session */
@@ -101,20 +102,19 @@ abstract class BaseWishlistProductsAction
 
     private function createForm(int $wishlistId): ?FormInterface
     {
-        $wishlist = $this->wishlistRepository->find($wishlistId);
-        $cart = $this->cartContext->getCart();
-        if ($wishlist == null) {
+        $wishlist = $this->wishlistAccessChecker->resolveWishlist($wishlistId);
+        if (false === $wishlist instanceof WishlistInterface) {
             /** @var Session $session */
             $session = $this->requestStack->getSession();
-
             $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_exists'));
-            return null;
-        } else {
-            $commandsArray = $this->wishlistCommandProcessor->createWishlistItemsCollection($wishlist->getWishlistProducts());
 
-            return $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
+            return null;
+        }
+        $commandsArray = $this->wishlistCommandProcessor->createWishlistItemsCollection($wishlist->getWishlistProducts());
+        $cart = $this->cartContext->getCart();
+
+        return $this->formFactory->create(WishlistCollectionType::class, ['items' => $commandsArray], [
                 'cart' => $cart,
             ]);
-        }
     }
 }

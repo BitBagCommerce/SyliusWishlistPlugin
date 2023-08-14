@@ -36,4 +36,3 @@ final class UpdateWishlistName implements UpdateWishlistNameInterface
         return $this->wishlist;
     }
 }
-

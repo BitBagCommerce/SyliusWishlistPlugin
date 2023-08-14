@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
+use BitBag\SyliusWishlistPlugin\Checker\WishlistAccessCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
@@ -39,25 +40,37 @@ final class AddProductVariantToWishlistAction
 
     private WishlistRepositoryInterface $wishlistRepository;
 
+    private WishlistAccessCheckerInterface $wishlistAccessChecker;
+
     public function __construct(
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
         RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository
-    ) {
+        WishlistRepositoryInterface $wishlistRepository,
+        WishlistAccessCheckerInterface $wishlistAccessChecker,
+        ) {
         $this->productVariantRepository = $productVariantRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->urlGenerator = $urlGenerator;
         $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->wishlistRepository = $wishlistRepository;
+        $this->wishlistAccessChecker = $wishlistAccessChecker;
     }
 
     public function __invoke(int $wishlistId, Request $request): Response
     {
-        $wishlist = $this->wishlistRepository->find($wishlistId);
+        $wishlist = $this->wishlistAccessChecker->resolveWishlist($wishlistId);
+
+        if (false === $wishlist instanceof WishlistInterface) {
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add('info', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.you_have_no_access_to_that_wishlist'));
+
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
+        }
 
         foreach ((array) $request->get('variantId') as $variantId) {
             /** @var ProductVariantInterface|null $variant */

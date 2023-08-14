@@ -8,8 +8,7 @@ Feature: Removing product from the wishlist
         Given user has a wishlist
         And the store has a product "Jack Daniels Gentleman" priced at "$10.00"
         When user adds product "Jack Daniels Gentleman" to the wishlist
-        And user removes product "Jack Daniels Gentleman" from the wishlist
-        Then user should have an empty wishlist
+        And user tries to remove unauthorised product "Jack Daniels Gentleman" from the wishlist
 
     @api
     Scenario: Removing product from the wishlist as an authenticated user

@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform;
 
+use BitBag\SyliusWishlistPlugin\Checker\WishlistAccessCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,15 +22,24 @@ final class RemoveProductFromWishlistAction
 {
     private MessageBusInterface $messageBus;
 
-    public function __construct(MessageBusInterface $messageBus)
+    private WishlistAccessCheckerInterface $wishlistAccessChecker;
+
+    public function __construct(MessageBusInterface $messageBus, WishlistAccessCheckerInterface $wishlistAccessChecker)
     {
         $this->messageBus = $messageBus;
+        $this->wishlistAccessChecker = $wishlistAccessChecker;
     }
 
     public function __invoke(Request $request): JsonResponse
     {
         $wishlistToken = (string) $request->attributes->get('token');
         $productId = (int) $request->attributes->get('productId');
+
+        $wishlist = $this->wishlistAccessChecker->resolveWishlistByToken($wishlistToken);
+
+        if (false === $wishlist instanceof WishlistInterface) {
+            return new JsonResponse([], Response::HTTP_FORBIDDEN);
+        }
 
         $removeProductFromWishlist = new RemoveProductFromWishlist($productId, $wishlistToken);
         $this->messageBus->dispatch($removeProductFromWishlist);

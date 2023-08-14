@@ -11,8 +11,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Checker;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductProcessingChecker implements ProductProcessingCheckerInterface
 {

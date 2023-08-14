@@ -278,6 +278,25 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @When user tries to remove unauthorised product :product from the wishlist
+     */
+    public function userRemovesUnauthorizedProductFromTheWishlist(ProductInterface $product): void
+    {
+        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item', [
+            'token' => $this->wishlist->getToken(),
+            'productId' => $product->getId(),
+        ]);
+
+        $response = $this->client->request(
+            self::DELETE,
+            sprintf('%s%s', self::$domain, $uri),
+            $this->getOptions(self::DELETE, [])
+        );
+
+        Assert::eq($response->getStatusCode(), 403);
+    }
+
+    /**
      * @Then user tries to add product :product to the wishlist
      */
     public function userTriesToAddProductToTheWishlist(ProductInterface $product): void
@@ -316,6 +335,27 @@ final class WishlistContext extends RawMinkContext implements Context
         );
 
         Assert::eq($response->getStatusCode(), 204);
+    }
+
+    /**
+     * @Then user tries to remove unauthorised :variant product variant from the wishlist
+     *
+     * @throws GuzzleException
+     */
+    public function userRemovesUnauthorisedProductVariantFromTheWishlist(ProductVariantInterface $variant): void
+    {
+        $uri = $this->router->generate('api_wishlists_shop_remove_product_variant_from_wishlist_item', [
+            'token' => $this->wishlist->getToken(),
+            'productVariantId' => $variant->getId(),
+        ]);
+
+        $response = $this->client->request(
+            self::DELETE,
+            sprintf('%s%s', self::$domain, $uri),
+            $this->getOptions(self::DELETE)
+        );
+
+        Assert::eq($response->getStatusCode(), 403);
     }
 
     /**

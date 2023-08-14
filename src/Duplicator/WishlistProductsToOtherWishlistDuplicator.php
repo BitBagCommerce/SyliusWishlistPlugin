@@ -14,7 +14,6 @@ namespace BitBag\SyliusWishlistPlugin\Duplicator;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
-use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
@@ -62,7 +61,7 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
 
                 $session->getFlashBag()->add(
                     'error',
-                    sprintf("%s".$message, $variant)
+                    sprintf('%s' . $message, $variant)
                 );
             } else {
                 $this->wishlistProductVariantFactory->createWithProductVariant($destinedWishlist, $variant);

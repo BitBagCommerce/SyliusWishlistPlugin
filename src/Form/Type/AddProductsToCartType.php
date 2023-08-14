@@ -57,7 +57,7 @@ final class AddProductsToCartType extends AbstractType
 
             $form
                 ->add('cartItem', AddToCartType::class, [
-                'constraints'=> new Valid(),
+                'constraints' => new Valid(),
                 'label' => false,
                 'required' => false,
                 'product' => $wishlistProduct->getProduct(),

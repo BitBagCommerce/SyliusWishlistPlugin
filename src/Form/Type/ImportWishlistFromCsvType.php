@@ -54,7 +54,7 @@ final class ImportWishlistFromCsvType extends AbstractType
             'allowedMimeTypes' => [
                 'text/plain',
                 'text/csv',
-                'application/csv'
+                'application/csv',
             ],
             'wishlists' => [],
         ]);

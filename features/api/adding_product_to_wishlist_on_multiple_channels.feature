@@ -34,7 +34,7 @@ Feature: Adding a product to wishlist
     Then user should have product "Leprechaun's Gold" in the wishlist
 
   @api
-  Scenario: Adding product to wishlist on both channels and removing from one channel.
+  Scenario: Trying to remove product from wishlist by anonymous user without cookie token set
     Given I change my current channel to "Web-EU"
     And user has a wishlist in "Web-EU"
     When user adds product "Leprechaun's Silver" to the wishlist in "Web-EU"
@@ -43,7 +43,4 @@ Feature: Adding a product to wishlist
     And user has a wishlist in "Web-US"
     When user adds product "Leprechaun's Gold" to the wishlist in "Web-US"
     Then user should have product "Leprechaun's Gold" in the wishlist
-    Then user removes product "Leprechaun's Gold" from the wishlist
-    Then user should have an empty wishlist
-    And I change my current channel to "Web-EU"
-    Then user should have product "Leprechaun's Silver" in the wishlist on "Web-EU"
+    Then user tries to remove unauthorised product "Leprechaun's Gold" from the wishlist
