@@ -9,8 +9,7 @@ Feature: Removing product variant from wishlist
         And the store has a product "Jack Daniels Gentleman" priced at "$10.00"
         And the product "Jack Daniels Gentleman" has a "700ML" variant priced at "$10.00"
         When user adds "700ML" product variant to the wishlist
-        Then user removes "700ML" product variant from the wishlist
-        Then user should have an empty wishlist
+        Then user tries to remove unauthorised "700ML" product variant from the wishlist
 
     @api
     Scenario: Removing a product variant from wishlist as an authenticated user
