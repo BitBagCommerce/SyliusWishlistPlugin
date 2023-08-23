@@ -53,7 +53,10 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
 
     public function __invoke(CreateNewWishlist $createNewWishlist): void
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $token = $this->tokenStorage->getToken();
+
+        $user = (null === $token || 'anon.' === $token->getUser()) ? null : $token->getUser();
+
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         if ($user instanceof ShopUserInterface) {

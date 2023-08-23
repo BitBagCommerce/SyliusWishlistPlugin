@@ -66,10 +66,13 @@ final class ShowChosenWishlistAction
 
     public function __invoke(string $wishlistId, Request $request): Response
     {
+        $token = $this->tokenStorage->getToken();
+
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$wishlistId);
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+
+        $user = (null === $token || 'anon.' === $token->getUser()) ? null : $token->getUser();
 
         if ($wishlist instanceof WishlistInterface && $user instanceof ShopUserInterface
         || $wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken

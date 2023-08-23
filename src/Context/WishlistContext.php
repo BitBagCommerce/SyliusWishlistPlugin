@@ -57,7 +57,7 @@ final class WishlistContext implements WishlistContextInterface
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
 
-        $user = null !== $token ? $token->getUser() : null;
+        $user = (null === $token || 'anon.' === $token->getUser()) ? null : $token->getUser();
 
         if (null === $cookieWishlistToken && null === $user) {
             return $wishlist;

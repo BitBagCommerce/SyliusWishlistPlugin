@@ -120,7 +120,9 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private function createNewWishlist(?string $wishlistCookieToken): WishlistInterface
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $token = $this->tokenStorage->getToken();
+
+        $user = (null === $token || 'anon.' === $token->getUser()) ? null : $token->getUser();
 
         $wishlist = $this->wishlistFactory->createNew();
 

@@ -56,8 +56,11 @@ final class AddWishlistToUserAction
 
     public function __invoke(Request $request): Response
     {
+        $token = $this->tokenStorage->getToken();
+
         /** @var ShopUserInterface $shopUser */
-        $shopUser = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $shopUser = (null === $token || 'anon.' === $token->getUser()) ? null : $token->getUser();
+
         $wishlistId = $request->attributes->getInt('id');
         $wishlist = $this->wishlistRepository->find($wishlistId);
 

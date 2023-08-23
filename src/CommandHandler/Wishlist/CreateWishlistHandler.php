@@ -52,7 +52,7 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         /** @var ?TokenInterface $token */
         $token = $this->tokenStorage->getToken();
 
-        $user = null !== $token ? $token->getUser() : null;
+        $user = (null === $token || 'anon.' === $token->getUser()) ? null : $token->getUser();
 
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
