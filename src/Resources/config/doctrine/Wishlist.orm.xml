@@ -32,6 +32,7 @@
 
         <indexes>
             <index name="token_idx" columns="token"/>
+            <index name="channel_shop_user_token_idx" columns="channel_id,shop_user_id,token"/>
         </indexes>
     </mapped-superclass>
 
