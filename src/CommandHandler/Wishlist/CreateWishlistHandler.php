@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -33,26 +34,29 @@ final class CreateWishlistHandler implements MessageHandlerInterface
 
     private ChannelRepositoryInterface $channelRepository;
 
+    private TokenUserResolverInterface $tokenUserResolver;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
         ObjectManager $wishlistManager,
-        ChannelRepositoryInterface $channelRepository
+        ChannelRepositoryInterface $channelRepository,
+        TokenUserResolverInterface $tokenUserResolver,
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
         $this->shopUserWishlistResolver = $shopUserWishlistResolver;
         $this->wishlistManager = $wishlistManager;
         $this->channelRepository = $channelRepository;
+        $this->tokenUserResolver = $tokenUserResolver;
     }
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
     {
         /** @var ?TokenInterface $token */
         $token = $this->tokenStorage->getToken();
-
-        $user = null !== $token ? $token->getUser() : null;
+        $user = $this->tokenUserResolver->resolve($token);
 
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();

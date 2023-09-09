@@ -56,6 +56,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
             - "@sylius.repository.channel"
+            - "@bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"
         tags:
             - { name: messenger.message_handler }
 
@@ -131,6 +132,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
             - "@sylius.repository.channel"
             - "@bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker"
+            - "@bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"
         tags:
             - { name: messenger.message_handler }
 

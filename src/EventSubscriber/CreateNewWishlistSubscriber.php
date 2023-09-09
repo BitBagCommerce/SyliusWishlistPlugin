@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
@@ -44,6 +45,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
+    private TokenUserResolverInterface $tokenUserResolver;
+
     public function __construct(
         string $wishlistCookieToken,
         WishlistsResolverInterface $wishlistsResolver,
@@ -51,7 +54,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         WishlistRepositoryInterface $wishlistRepository,
         TokenStorageInterface $tokenStorage,
         ChannelContextInterface $channelContext,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        TokenUserResolverInterface $tokenUserResolver,
     ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
@@ -60,6 +64,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $this->tokenStorage = $tokenStorage;
         $this->channelContext = $channelContext;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
+        $this->tokenUserResolver = $tokenUserResolver;
     }
 
     public static function getSubscribedEvents(): array
@@ -120,7 +125,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private function createNewWishlist(?string $wishlistCookieToken): WishlistInterface
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $token = $this->tokenStorage->getToken();
+        $user = $this->tokenUserResolver->resolve($token);
 
         $wishlist = $this->wishlistFactory->createNew();
 
