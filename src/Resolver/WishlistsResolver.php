@@ -35,25 +35,28 @@ final class WishlistsResolver implements WishlistsResolverInterface
 
     private ChannelContextInterface $channelContext;
 
+    private TokenUserResolverInterface $tokenUserResolver;
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         TokenStorageInterface $tokenStorage,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         ChannelContextInterface $channelContext,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        TokenUserResolverInterface $tokenUserResolver,
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
         $this->channelContext = $channelContext;
         $this->messageBus = $messageBus;
+        $this->tokenUserResolver = $tokenUserResolver;
     }
 
     public function resolve(): array
     {
         $token = $this->tokenStorage->getToken();
-
-        $user = (null === $token || 'anon.' === $token->getUser()) ? null : $token->getUser();
+        $user = $this->tokenUserResolver->resolve($token);
 
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 

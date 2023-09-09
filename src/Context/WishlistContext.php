@@ -13,6 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Context;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -32,18 +33,22 @@ final class WishlistContext implements WishlistContextInterface
 
     private ChannelContextInterface $channelContext;
 
+    private TokenUserResolverInterface $tokenUserResolver;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
         string $wishlistCookieToken,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
+        TokenUserResolverInterface $tokenUserResolver,
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->channelContext = $channelContext;
+        $this->tokenUserResolver = $tokenUserResolver;
     }
 
     public function getWishlist(Request $request): WishlistInterface
@@ -57,7 +62,7 @@ final class WishlistContext implements WishlistContextInterface
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
 
-        $user = (null === $token || 'anon.' === $token->getUser()) ? null : $token->getUser();
+        $user = $this->tokenUserResolver->resolve($token);
 
         if (null === $cookieWishlistToken && null === $user) {
             return $wishlist;

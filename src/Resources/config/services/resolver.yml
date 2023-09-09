@@ -14,6 +14,7 @@ services:
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
             - "@sylius.context.channel"
             - "@sylius.command_bus"
+            - "@bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"
 
     bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver:
         class: BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolver
@@ -23,3 +24,6 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - "@security.token_storage"
             - "@sylius.context.channel"
+
+    bitbag_sylius_wishlist_plugin.resolver.token_user_resolver:
+        class: BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolver
