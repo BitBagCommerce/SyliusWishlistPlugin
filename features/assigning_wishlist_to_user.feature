@@ -15,11 +15,13 @@ Feature: Assigning a wishlist to a user
     When I go to "/wishlist"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
-    Then I should have 3 wishlists
-    And I should see "Save wishlist"
+    Then I should have 2 wishlists
 
-  @ui
+  @ui @javascript
   Scenario: Assigning a wishlist
+    Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
+    And all store products appear under a main taxonomy
+    And I add this product to wishlist
     When I go to "/wishlist"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
@@ -32,18 +34,19 @@ Feature: Assigning a wishlist to a user
     When I go to "/wishlist"
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
-    And I press "wishlist-edit-button-Wishlist"
+    And I press "wishlist-edit-button-Wishlist1"
     And I fill in "edit_wishlist_name" with "Wishlist-assigned"
     And I press "edit_wishlist_save"
-    And I follow "Save wishlist"
     And I log out
     And I go to "/wishlists"
-    Then I should have 1 wishlists
+    Then I should have 0 wishlists
     And I should not see "Wishlist-assigned"
-    And I should see "Wishlist"
 
   @ui @javascript
   Scenario: Logout without assigning a wishlist to a user
+    Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
+    And all store products appear under a main taxonomy
+    And I add this product to wishlist
     When I go to "/"
     When I go to "/wishlist"
     And I log in as "jdeer@sylius.pl"

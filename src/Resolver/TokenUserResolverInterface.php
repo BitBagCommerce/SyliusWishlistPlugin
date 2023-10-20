@@ -10,9 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
-interface WishlistsResolverInterface
-{
-    public function resolve(): array;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-    public function resolveAndCreate(): array;
+interface TokenUserResolverInterface
+{
+    public function resolve(?TokenInterface $token): ?UserInterface;
 }

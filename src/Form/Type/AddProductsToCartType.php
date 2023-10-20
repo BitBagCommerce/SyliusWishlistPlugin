@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 final class AddProductsToCartType extends AbstractType
 {
@@ -56,6 +57,7 @@ final class AddProductsToCartType extends AbstractType
 
             $form
                 ->add('cartItem', AddToCartType::class, [
+                'constraints'=> new Valid(),
                 'label' => false,
                 'required' => false,
                 'product' => $wishlistProduct->getProduct(),

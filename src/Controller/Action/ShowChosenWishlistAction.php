@@ -14,6 +14,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
@@ -44,6 +45,8 @@ final class ShowChosenWishlistAction
 
     private TokenStorageInterface $tokenStorage;
 
+    private TokenUserResolverInterface $tokenUserResolver;
+
     public function __construct(
         WishlistRepositoryInterface $wishlistRepository,
         CartContextInterface $cartContext,
@@ -52,7 +55,8 @@ final class ShowChosenWishlistAction
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         UrlGeneratorInterface $urlGenerator,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        TokenUserResolverInterface $tokenUserResolver,
     ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->cartContext = $cartContext;
@@ -62,14 +66,18 @@ final class ShowChosenWishlistAction
         $this->urlGenerator = $urlGenerator;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
         $this->tokenStorage = $tokenStorage;
+        $this->tokenUserResolver = $tokenUserResolver;
     }
 
     public function __invoke(string $wishlistId, Request $request): Response
     {
+        $token = $this->tokenStorage->getToken();
+
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find((int)$wishlistId);
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+
+        $user = $this->tokenUserResolver->resolve($token);
 
         if ($wishlist instanceof WishlistInterface && $user instanceof ShopUserInterface
         || $wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken

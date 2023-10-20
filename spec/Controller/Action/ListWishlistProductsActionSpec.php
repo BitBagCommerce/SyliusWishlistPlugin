@@ -71,7 +71,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         WishlistCommandProcessorInterface $wishlistCommandProcessor,
         ArrayCollection $commandsArray
     ): void {
-        $wishlistsResolver->resolve()
+        $wishlistsResolver->resolveAndCreate()
             ->willReturn([
                 $wishlist,
                 $wishlist2,

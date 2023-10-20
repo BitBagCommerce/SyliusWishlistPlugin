@@ -12,6 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistToUser;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,13 +39,16 @@ final class AddWishlistToUserAction
 
     private TokenStorageInterface $tokenStorage;
 
+    private TokenUserResolverInterface $tokenUserResolver;
+
     public function __construct(
         MessageBusInterface $commandBus,
         RequestStack $requestStack,
         TranslatorInterface $translator,
         WishlistRepositoryInterface $wishlistRepository,
         UrlGeneratorInterface $urlGenerator,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        TokenUserResolverInterface $tokenUserResolver,
     ) {
         $this->commandBus = $commandBus;
         $this->requestStack = $requestStack;
@@ -52,12 +56,16 @@ final class AddWishlistToUserAction
         $this->wishlistRepository = $wishlistRepository;
         $this->urlGenerator = $urlGenerator;
         $this->tokenStorage = $tokenStorage;
+        $this->tokenUserResolver = $tokenUserResolver;
     }
 
     public function __invoke(Request $request): Response
     {
+        $token = $this->tokenStorage->getToken();
+
         /** @var ShopUserInterface $shopUser */
-        $shopUser = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $shopUser = $this->tokenUserResolver->resolve($token);
+
         $wishlistId = $request->attributes->getInt('id');
         $wishlist = $this->wishlistRepository->find($wishlistId);
 

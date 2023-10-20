@@ -11,8 +11,11 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\EventSubscriber;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
@@ -40,13 +43,19 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private ChannelContextInterface $channelContext;
 
+    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
+
+    private TokenUserResolverInterface $tokenUserResolver;
+
     public function __construct(
         string $wishlistCookieToken,
         WishlistsResolverInterface $wishlistsResolver,
         WishlistFactoryInterface $wishlistFactory,
         WishlistRepositoryInterface $wishlistRepository,
         TokenStorageInterface $tokenStorage,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        TokenUserResolverInterface $tokenUserResolver,
     ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
@@ -54,6 +63,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->channelContext = $channelContext;
+        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
+        $this->tokenUserResolver = $tokenUserResolver;
     }
 
     public static function getSubscribedEvents(): array
@@ -82,13 +93,16 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             if (null === $wishlistCookieToken) {
                 $request->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
             }
+
             return;
         }
 
-        /** @var WishlistInterface $wishlist */
-        $wishlist = $this->createNewWishlist($wishlistCookieToken);
+        if (null === $wishlistCookieToken)
+        {
+            $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        }
 
-        $request->attributes->set($this->wishlistCookieToken, $wishlist->getToken());
+        $request->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
     }
 
     public function onKernelResponse(ResponseEvent $event): void
@@ -115,7 +129,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private function createNewWishlist(?string $wishlistCookieToken): WishlistInterface
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $token = $this->tokenStorage->getToken();
+        $user = $this->tokenUserResolver->resolve($token);
 
         $wishlist = $this->wishlistFactory->createNew();
 
