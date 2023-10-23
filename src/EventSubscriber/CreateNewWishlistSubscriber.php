@@ -100,6 +100,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         if (null === $wishlistCookieToken)
         {
             $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+            $this->createNewWishlist($wishlistCookieToken);
         }
 
         $request->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
