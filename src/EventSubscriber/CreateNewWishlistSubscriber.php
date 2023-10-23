@@ -132,41 +132,6 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $event->getRequest()->attributes->remove($this->wishlistCookieToken);
     }
 
-    private function createNewWishlist(?string $wishlistCookieToken): WishlistInterface
-    {
-        $token = $this->tokenStorage->getToken();
-        $user = $this->tokenUserResolver->resolve($token);
-
-        $wishlist = $this->wishlistFactory->createNew();
-
-        try {
-            $channel = $this->channelContext->getChannel();
-        } catch (ChannelNotFoundException $exception) {
-            $channel = null;
-        }
-
-        if ($channel instanceof ChannelInterface) {
-            $wishlist->setChannel($channel);
-        }
-
-        if ($channel instanceof ChannelInterface &&
-            $user instanceof ShopUserInterface
-        ) {
-            $wishlist = $this->wishlistFactory->createForUserAndChannel($user, $channel);
-        } elseif ($user instanceof ShopUserInterface) {
-            $wishlist = $this->wishlistFactory->createForUser($user);
-        }
-
-        if ($wishlistCookieToken) {
-            $wishlist->setToken($wishlistCookieToken);
-        }
-
-        $wishlist->setName('Wishlist');
-        $this->wishlistRepository->add($wishlist);
-
-        return $wishlist;
-    }
-
     private function setWishlistCookieToken(Response $response, string $wishlistCookieToken): void
     {
         $cookie = new Cookie($this->wishlistCookieToken, $wishlistCookieToken, strtotime('+1 year'));
