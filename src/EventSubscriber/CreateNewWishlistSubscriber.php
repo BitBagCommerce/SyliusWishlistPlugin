@@ -23,6 +23,7 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -47,6 +48,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private TokenUserResolverInterface $tokenUserResolver;
 
+    private RequestStack $requestStack;
+
     public function __construct(
         string $wishlistCookieToken,
         WishlistsResolverInterface $wishlistsResolver,
@@ -56,6 +59,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         ChannelContextInterface $channelContext,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         TokenUserResolverInterface $tokenUserResolver,
+        RequestStack $requestStack,
     ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
@@ -65,6 +69,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $this->channelContext = $channelContext;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
         $this->tokenUserResolver = $tokenUserResolver;
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents(): array
@@ -81,14 +86,16 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $request = $this->requestStack->getMainRequest();
+
         /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistsResolver->resolve();
 
-        $wishlistCookieToken = $event->getRequest()->cookies->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $request->cookies->get($this->wishlistCookieToken);
 
         if (!empty($wishlists)) {
             if (null === $wishlistCookieToken) {
-                $event->getRequest()->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
+                $request->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
             }
 
             return;
@@ -99,7 +106,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
         }
 
-        $event->getRequest()->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
+        $request->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
     }
 
     public function onKernelResponse(ResponseEvent $event): void
@@ -108,12 +115,14 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($event->getRequest()->cookies->has($this->wishlistCookieToken)) {
+        $request = $this->requestStack->getMainRequest();
+
+        if ($request->cookies->has($this->wishlistCookieToken)) {
             return;
         }
 
         $response = $event->getResponse();
-        $wishlistCookieToken = $event->getRequest()->attributes->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $request->attributes->get($this->wishlistCookieToken);
 
         if (!$wishlistCookieToken) {
             return;
