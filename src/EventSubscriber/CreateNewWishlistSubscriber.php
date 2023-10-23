@@ -93,7 +93,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         if (!str_starts_with($currentPath, '/wishlist')) {
             return;
         }
-        
+
         if ($request->cookies->has($this->wishlistCookieToken)) {
             return;
         }
@@ -108,6 +108,6 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $cookie = new Cookie($this->wishlistCookieToken, $wishlistCookieToken, strtotime('+1 year'));
         $response->headers->setCookie($cookie);
 
-        $event->getRequest()->attributes->remove($this->wishlistCookieToken);
+        $request->attributes->remove($this->wishlistCookieToken);
     }
 }
