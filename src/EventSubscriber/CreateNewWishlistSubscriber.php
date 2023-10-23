@@ -11,24 +11,14 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\EventSubscriber;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Channel\Context\ChannelNotFoundException;
-use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
@@ -36,39 +26,19 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private WishlistsResolverInterface $wishlistsResolver;
 
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private ChannelContextInterface $channelContext;
-
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
-    private TokenUserResolverInterface $tokenUserResolver;
 
     private RequestStack $requestStack;
 
     public function __construct(
         string $wishlistCookieToken,
         WishlistsResolverInterface $wishlistsResolver,
-        WishlistFactoryInterface $wishlistFactory,
-        WishlistRepositoryInterface $wishlistRepository,
-        TokenStorageInterface $tokenStorage,
-        ChannelContextInterface $channelContext,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        TokenUserResolverInterface $tokenUserResolver,
         RequestStack $requestStack,
     ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->channelContext = $channelContext;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-        $this->tokenUserResolver = $tokenUserResolver;
         $this->requestStack = $requestStack;
     }
 
