@@ -207,6 +207,7 @@ services:
             - "@sylius.context.channel"
             - '@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver'
             - '@bitbag_sylius_wishlist_plugin.resolver.token_user_resolver'
+            - '@request_stack'
         tags:
             - { name: kernel.event_subscriber, event: kernel.exception }
 

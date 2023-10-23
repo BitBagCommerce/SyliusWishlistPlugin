@@ -20,6 +20,8 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
 
     private string $wishlistCookieToken;
 
+    private ?string $generatedToken = null;
+
     public function __construct(
         RequestStack $requestStack,
         string $wishlistCookieToken
@@ -30,11 +32,20 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
 
     public function resolve(): string
     {
+        if (null !== $this->generatedToken) {
+            return $this->generatedToken;
+        }
+
         $wishlistCookieToken = $this->requestStack->getMainRequest()->cookies->get($this->wishlistCookieToken);
 
         if (!$wishlistCookieToken) {
-            return (string) new WishlistToken();
+            $newToken = (string) new WishlistToken();
+            $this->generatedToken = $newToken;
+
+            return $newToken;
         }
+
+        $this->generatedToken = $wishlistCookieToken;
 
         return $wishlistCookieToken;
     }

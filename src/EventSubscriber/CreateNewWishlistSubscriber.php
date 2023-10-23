@@ -23,6 +23,7 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -47,6 +48,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     private TokenUserResolverInterface $tokenUserResolver;
 
+    private RequestStack $requestStack;
+
     public function __construct(
         string $wishlistCookieToken,
         WishlistsResolverInterface $wishlistsResolver,
@@ -56,6 +59,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         ChannelContextInterface $channelContext,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         TokenUserResolverInterface $tokenUserResolver,
+        RequestStack $requestStack,
     ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
@@ -65,6 +69,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $this->channelContext = $channelContext;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
         $this->tokenUserResolver = $tokenUserResolver;
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents(): array
@@ -77,7 +82,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        $request = $event->getRequest();
+        $request = $this->requestStack->getMainRequest();
         $currentPath = $request->getPathInfo();
 
         if (!$event->isMainRequest() || !str_starts_with($currentPath, '/wishlist')) {
@@ -100,7 +105,6 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         if (null === $wishlistCookieToken)
         {
             $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
-            $this->createNewWishlist($wishlistCookieToken);
         }
 
         $request->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
@@ -108,7 +112,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event): void
     {
-        $request = $event->getRequest();
+        $request = $this->requestStack->getMainRequest();
         $currentPath = $request->getPathInfo();
         if (!$event->isMainRequest() || !str_starts_with($currentPath, '/wishlist')) {
             return;
