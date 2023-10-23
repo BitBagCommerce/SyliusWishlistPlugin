@@ -57,6 +57,10 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         }
 
         $request = $this->requestStack->getMainRequest();
+        $currentPath = $request->getPathInfo();
+        if (!str_starts_with($currentPath, '/wishlist')) {
+            return;
+        }
 
         /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistsResolver->resolve();
@@ -85,6 +89,11 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         }
 
         $request = $this->requestStack->getMainRequest();
+        $currentPath = $request->getPathInfo();
+        if (!str_starts_with($currentPath, '/wishlist')) {
+            return;
+        }
+        
         if ($request->cookies->has($this->wishlistCookieToken)) {
             return;
         }
