@@ -101,8 +101,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null === $wishlistCookieToken)
-        {
+        if (null === $wishlistCookieToken) {
             $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
         }
 
@@ -116,7 +115,6 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         }
 
         $request = $this->requestStack->getMainRequest();
-
         if ($request->cookies->has($this->wishlistCookieToken)) {
             return;
         }
@@ -127,15 +125,10 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         if (!$wishlistCookieToken) {
             return;
         }
-        $this->setWishlistCookieToken($response, $wishlistCookieToken);
+
+        $cookie = new Cookie($this->wishlistCookieToken, $wishlistCookieToken, strtotime('+1 year'));
+        $response->headers->setCookie($cookie);
 
         $event->getRequest()->attributes->remove($this->wishlistCookieToken);
-    }
-
-    private function setWishlistCookieToken(Response $response, string $wishlistCookieToken): void
-    {
-        $cookie = new Cookie($this->wishlistCookieToken, $wishlistCookieToken, strtotime('+1 year'));
-
-        $response->headers->setCookie($cookie);
     }
 }
