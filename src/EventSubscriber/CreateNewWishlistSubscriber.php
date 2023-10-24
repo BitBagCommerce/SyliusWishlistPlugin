@@ -15,20 +15,23 @@ use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Webmozart\Assert\Assert;
 
 final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
+    private const ALLOWED_ENDPOINTS_PREFIX = '/wishlist';
     private string $wishlistCookieToken;
 
     private WishlistsResolverInterface $wishlistsResolver;
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
-    private RequestStack $requestStack;
+    private Request $mainRequest;
 
     public function __construct(
         string $wishlistCookieToken,
@@ -39,7 +42,11 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-        $this->requestStack = $requestStack;
+
+        $mainRequest = $requestStack->getMainRequest();
+        Assert::notNull($mainRequest, 'The class has to be used in HTTP context only');
+
+        $this->mainRequest = $mainRequest;
     }
 
     public static function getSubscribedEvents(): array
@@ -56,20 +63,19 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $request = $this->requestStack->getMainRequest();
-        $currentPath = $request->getPathInfo();
-        if (!str_starts_with($currentPath, '/wishlist')) {
+        $currentPath = $this->mainRequest->getPathInfo();
+        if (!str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX)) {
             return;
         }
 
         /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistsResolver->resolve();
 
-        $wishlistCookieToken = $request->cookies->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $this->mainRequest->cookies->get($this->wishlistCookieToken);
 
         if (!empty($wishlists)) {
             if (null === $wishlistCookieToken) {
-                $request->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
+                $this->mainRequest->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
             }
 
             return;
@@ -79,7 +85,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
         }
 
-        $request->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
+        $this->mainRequest->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
     }
 
     public function onKernelResponse(ResponseEvent $event): void
@@ -88,18 +94,17 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $request = $this->requestStack->getMainRequest();
-        $currentPath = $request->getPathInfo();
-        if (!str_starts_with($currentPath, '/wishlist')) {
+        $currentPath = $this->mainRequest->getPathInfo();
+        if (!str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX)) {
             return;
         }
 
-        if ($request->cookies->has($this->wishlistCookieToken)) {
+        if ($this->mainRequest->cookies->has($this->wishlistCookieToken)) {
             return;
         }
 
         $response = $event->getResponse();
-        $wishlistCookieToken = $request->attributes->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $this->mainRequest->attributes->get($this->wishlistCookieToken);
 
         if (!$wishlistCookieToken) {
             return;
@@ -108,6 +113,6 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $cookie = new Cookie($this->wishlistCookieToken, $wishlistCookieToken, strtotime('+1 year'));
         $response->headers->setCookie($cookie);
 
-        $request->attributes->remove($this->wishlistCookieToken);
+        $this->mainRequest->attributes->remove($this->wishlistCookieToken);
     }
 }
