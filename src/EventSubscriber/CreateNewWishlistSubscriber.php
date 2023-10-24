@@ -25,6 +25,7 @@ use Webmozart\Assert\Assert;
 final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
     private const ALLOWED_ENDPOINTS_PREFIX = '/wishlist';
+    
     private string $wishlistCookieToken;
 
     private WishlistsResolverInterface $wishlistsResolver;
