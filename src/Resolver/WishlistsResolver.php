@@ -66,7 +66,15 @@ final class WishlistsResolver implements WishlistsResolverInterface
             $channel = null;
         }
 
-        return $this->getWishlistsByUserOrCookieToken($wishlistCookieToken, $user, $channel);
+        if ($user instanceof ShopUserInterface) {
+            return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
+        }
+
+        if ($channel instanceof ChannelInterface) {
+            return $this->wishlistRepository->findAllByAnonymousAndChannel($wishlistCookieToken, $channel);
+        }
+
+        return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
     }
 
     public function resolveAndCreate(): array
@@ -81,8 +89,7 @@ final class WishlistsResolver implements WishlistsResolverInterface
             $channel = null;
         }
 
-        if ([] === $wishlists || null === $wishlists)
-        {
+        if (0 === count($wishlists)) {
             $createWishlist = new CreateWishlist($wishlistCookieToken, $channel?->getCode());
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->handle($createWishlist);
@@ -91,21 +98,5 @@ final class WishlistsResolver implements WishlistsResolverInterface
         }
 
         return $wishlists;
-    }
-
-    public function getWishlistsByUserOrCookieToken(
-        string $wishlistCookieToken,
-        ?UserInterface $user,
-        ?ChannelInterface $channel
-    ): ?array {
-        if ($user instanceof ShopUserInterface) {
-            return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
-        }
-
-        if ($channel instanceof ChannelInterface) {
-            return $this->wishlistRepository->findAllByAnonymousAndChannel($wishlistCookieToken, $channel);
-        }
-
-        return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
     }
 }
