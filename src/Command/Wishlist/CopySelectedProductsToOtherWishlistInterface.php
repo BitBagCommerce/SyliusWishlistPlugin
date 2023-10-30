@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-interface CopySelectedProductsToOtherWishlistInterface
+interface CopySelectedProductsToOtherWishlistInterface extends WishlistSyncCommandInterface
 {
     public function getWishlistProducts(): Collection;
 
