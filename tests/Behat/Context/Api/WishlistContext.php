@@ -127,6 +127,7 @@ final class WishlistContext extends RawMinkContext implements Context
             $this->getOptions(self::POST, [])
         );
 
+        Assert::eq($response->getStatusCode(), 201);
         $jsonBody = json_decode((string) $response->getBody());
 
         /** @var WishlistInterface $wishlist */

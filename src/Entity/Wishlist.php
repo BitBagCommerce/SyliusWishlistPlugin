@@ -16,9 +16,12 @@ use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Resource\Model\TimestampableTrait;
 
 class Wishlist implements WishlistInterface
 {
+    use TimestampableTrait;
+
     protected ?int $id = null;
 
     protected ?string $name;
@@ -38,6 +41,8 @@ class Wishlist implements WishlistInterface
         $this->wishlistProducts = new ArrayCollection();
         $this->token = new WishlistToken();
         $this->id = null;
+
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
