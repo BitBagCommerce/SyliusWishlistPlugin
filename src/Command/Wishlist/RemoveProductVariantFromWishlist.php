@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-final class RemoveProductVariantFromWishlist
+final class RemoveProductVariantFromWishlist implements WishlistSyncCommandInterface
 {
     private int $productVariantId;
 

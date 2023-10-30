@@ -12,7 +12,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 
-interface UpdateWishlistNameInterface
+interface UpdateWishlistNameInterface extends WishlistSyncCommandInterface
 {
     public function getName(): string;
 

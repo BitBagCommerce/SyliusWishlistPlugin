@@ -6,7 +6,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-interface ExportSelectedProductsFromWishlistToPdfInterface
+interface ExportSelectedProductsFromWishlistToPdfInterface extends WishlistSyncCommandInterface
 {
     public function getWishlistProducts(): ?Collection;
 }

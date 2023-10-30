@@ -93,3 +93,21 @@ We recommend you to use Webpack (Encore), for which we have prepared four differ
 However, if you are not using Webpack, here are instructions on how to add optimized and compressed assets directly to your project templates:
 
 - [Non webpack solution](./01.5-non-webpack.md)
+
+## Asynchronous Messenger case
+
+In case you use asynchronous Messenger transport by default, there is a need to configure all Wishlist commands to sync transport.
+You can do this by configuring the `WishlistSyncCommandInterface` interface to sync transport (as presented on code listing below). 
+
+```yaml
+# config/packages/messenger.yaml
+
+framework:
+    messenger:
+        transports:
+            sync: 'sync://'
+    routing:
+        'BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface': sync
+```
+
+All commands from the plugin implement the `WishlistSyncCommandInterface` interface, so there is no need for other configuration.
