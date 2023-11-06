@@ -40,6 +40,10 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         RequestStack $requestStack,
     ) {
+        if(php_sapi_name() === 'cli') {
+            return;
+        }
+
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
