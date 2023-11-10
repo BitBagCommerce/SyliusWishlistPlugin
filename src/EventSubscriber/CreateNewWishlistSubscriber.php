@@ -25,14 +25,14 @@ use Webmozart\Assert\Assert;
 final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
     private const ALLOWED_ENDPOINTS_PREFIX = '/wishlist';
-    
+
     private string $wishlistCookieToken;
 
     private WishlistsResolverInterface $wishlistsResolver;
 
     private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
 
-    private Request $mainRequest;
+    private ?Request $mainRequest = null;
 
     public function __construct(
         string $wishlistCookieToken,
@@ -44,10 +44,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         $this->wishlistsResolver = $wishlistsResolver;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
 
-        $mainRequest = $requestStack->getMainRequest();
-        Assert::notNull($mainRequest, 'The class has to be used in HTTP context only');
-
-        $this->mainRequest = $mainRequest;
+        $this->mainRequest = $requestStack->getMainRequest();
     }
 
     public static function getSubscribedEvents(): array
@@ -60,6 +57,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
+        Assert::notNull($this->mainRequest, 'The class has to be used in HTTP context only');
+
         if (!$event->isMainRequest()) {
             return;
         }
