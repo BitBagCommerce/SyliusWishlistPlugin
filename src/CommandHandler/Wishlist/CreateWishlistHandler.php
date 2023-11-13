@@ -18,6 +18,7 @@ use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -36,6 +37,10 @@ final class CreateWishlistHandler implements MessageHandlerInterface
 
     private TokenUserResolverInterface $tokenUserResolver;
 
+    private RequestStack $requestStack;
+
+    private string $wishlistCookieToken;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
@@ -43,6 +48,8 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         ObjectManager $wishlistManager,
         ChannelRepositoryInterface $channelRepository,
         TokenUserResolverInterface $tokenUserResolver,
+        RequestStack $requestStack,
+        string $wishlistCookieToken,
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;
@@ -50,6 +57,8 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         $this->wishlistManager = $wishlistManager;
         $this->channelRepository = $channelRepository;
         $this->tokenUserResolver = $tokenUserResolver;
+        $this->requestStack = $requestStack;
+        $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
@@ -69,6 +78,8 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         if (null !== $createWishlist->getTokenValue())
         {
             $wishlist->setToken($createWishlist->getTokenValue());
+            $mainRequest = $this->requestStack->getMainRequest();
+            $mainRequest->attributes->set($this->wishlistCookieToken, $createWishlist->getTokenValue());
         }
 
         $channelCode = $createWishlist->getChannelCode();

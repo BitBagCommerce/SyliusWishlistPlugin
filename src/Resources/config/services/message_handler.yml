@@ -57,6 +57,8 @@ services:
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
             - "@sylius.repository.channel"
             - "@bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"
+            - "@request_stack"
+            - "%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%"
         tags:
             - { name: messenger.message_handler }
 
