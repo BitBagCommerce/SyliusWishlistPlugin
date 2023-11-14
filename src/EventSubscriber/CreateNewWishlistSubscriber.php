@@ -64,7 +64,8 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         }
 
         $currentPath = $this->mainRequest->getPathInfo();
-        if (!str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX)) {
+        $isWishlistUrl = str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX);
+        if (!$isWishlistUrl) {
             return;
         }
 
@@ -94,8 +95,10 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $tokenWasGenerated = $this->mainRequest->attributes->has($this->wishlistCookieToken);
         $currentPath = $this->mainRequest->getPathInfo();
-        if (!str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX)) {
+        $isWishlistUrl = str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX);
+        if (!$tokenWasGenerated && !$isWishlistUrl) {
             return;
         }
 
