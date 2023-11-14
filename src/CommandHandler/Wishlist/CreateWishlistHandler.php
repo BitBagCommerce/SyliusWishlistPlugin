@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Webmozart\Assert\Assert;
 
 final class CreateWishlistHandler implements MessageHandlerInterface
 {
@@ -79,6 +80,8 @@ final class CreateWishlistHandler implements MessageHandlerInterface
         {
             $wishlist->setToken($createWishlist->getTokenValue());
             $mainRequest = $this->requestStack->getMainRequest();
+
+            Assert::notNull($mainRequest, 'The handler is destined to HTTP context only');
             $mainRequest->attributes->set($this->wishlistCookieToken, $createWishlist->getTokenValue());
         }
 
