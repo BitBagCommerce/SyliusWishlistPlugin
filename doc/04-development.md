@@ -15,30 +15,30 @@
 Clone this repository, go to the plugin root directory and run
 
 ```bash
-$ composer install
-$ cd tests/Application
+composer install
+cd tests/Application
 ```
 
 If needed, create `.env.local` file with the correct configuration for your environment in the `tests/Application` directory. <br>
 Then run the following commands from `tests/Application`:
 
 ```bash
-$ bin/console doctrine:database:create
-$ bin/console doctrine:schema:create
-$ bin/console sylius:fixtures:load
-$ bin/console assets:install --symlink
+bin/console doctrine:database:create
+bin/console doctrine:schema:create
+bin/console sylius:fixtures:load
+bin/console assets:install --symlink
 ```
 
 Copy `package.json.~1.xx.dist` file to `package.json` for specific version of Sylius (example for 1.12.0):
 ```bash
-$ cp package.json.\~1.12.dist package.json
+cp package.json.\~1.12.dist package.json
 ```
 
 Then:
 
 ```bash
-$ yarn install
-$ yarn dev
+yarn install
+yarn dev
 ```
 
 You're ready to start coding 🎉
@@ -48,7 +48,7 @@ You're ready to start coding 🎉
 To start the development server, from the `tests/Application` directory run:
 
 ```bash
-$ symfony server:start
+symfony server:start
 ```
 
 and then you should get information about the server address and port (usually http://localhost:8000). <br>
@@ -60,7 +60,7 @@ If you don't already have Symfony CLI, here's how to install it: https://symfony
 To start working on frontend, from the `tests/Application` directory run:
 
 ```bash
-$ yarn watch
+yarn watch
 ```
 
 It's an infinite process, which will watch your changes in the assets folder and (re)build them. So all of your frontend changes should be done in `{root}/src/Resources/assets` directory. We have configured two independent entry points that should not be combined - `shop` for the storefront and `admin` for the admin panel.

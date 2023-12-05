@@ -9,7 +9,7 @@
 1. *We work on stable, supported and up-to-date versions of packages. We recommend you to do the same.*
 
 ```bash
-$ composer require bitbag/wishlist-plugin
+composer require bitbag/wishlist-plugin
 ```
 
 2. Add plugin dependencies to your `config/bundles.php` file:
@@ -45,7 +45,7 @@ bitbag_sylius_wishlist_plugin:
 5. Clear application cache by using command:
 
 ```bash
-$ bin/console cache:clear
+bin/console cache:clear
 ```
 
 6. Update your database
@@ -53,14 +53,14 @@ $ bin/console cache:clear
 First, please run legacy-versioned migrations by using command:
 
 ```bash
-$ bin/console doctrine:migrations:migrate
+bin/console doctrine:migrations:migrate
 ```
 
 After migration, please create a new diff migration and run it:
 
 ```bash
-$ bin/console doctrine:migrations:diff
-$ bin/console doctrine:migrations:migrate
+bin/console doctrine:migrations:diff
+bin/console doctrine:migrations:migrate
 ```
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
@@ -68,14 +68,14 @@ $ bin/console doctrine:migrations:migrate
 **Note:** If you are updating this plugin from version 1.4.x you need to run:
 
 ```bash
-$ bin/console doctrine:migrations:version BitBag\\SyliusWishlistPlugin\\Migrations\\Version20201029161558 --add --no-interaction
+bin/console doctrine:migrations:version BitBag\\SyliusWishlistPlugin\\Migrations\\Version20201029161558 --add --no-interaction
 ```
 
 7. Please add plugin templates into your project:
 ```bash
-$ cp -R vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/Product templates/bundles/SyliusShopBundle
-$ cp vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/_header.html.twig templates/bundles/SyliusShopBundle
-$ cp vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/_logo.html.twig templates/bundles/SyliusShopBundle
+cp -R vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/Product templates/bundles/SyliusShopBundle
+cp vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/_header.html.twig templates/bundles/SyliusShopBundle
+cp vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/_logo.html.twig templates/bundles/SyliusShopBundle
 ```
 
 8. Add plugin assets to your project
