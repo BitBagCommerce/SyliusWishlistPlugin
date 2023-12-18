@@ -92,18 +92,18 @@
 
 ## Asynchronous Messenger case
 
-    In case you use asynchronous Messenger transport by default, there is a need to configure all Wishlist commands to sync transport.
-    You can do this by configuring the `WishlistSyncCommandInterface` interface to sync transport (as presented on code listing below). 
+ In case you use asynchronous Messenger transport by default, there is a need to configure all Wishlist commands to sync transport.
+ You can do this by configuring the `WishlistSyncCommandInterface` interface to sync transport (as presented on code listing below). 
 
-    ```yaml
-    # config/packages/messenger.yaml
+ ```yaml
+ # config/packages/messenger.yaml
 
-    framework:
-        messenger:
-            transports:
-                sync: 'sync://'
-        routing:
-            'BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface': sync
-    ```
+ framework:
+     messenger:
+         transports:
+             sync: 'sync://'
+     routing:
+         'BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface': sync
+ ```
 
-    All commands from the plugin implement the `WishlistSyncCommandInterface` interface, so there is no need for other configuration.
+ All commands from the plugin implement the `WishlistSyncCommandInterface` interface, so there is no need for other configuration.
