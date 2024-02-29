@@ -17,7 +17,7 @@
     {% if wishlists|length > 1 %}
     {% else %}
     <div class="middle aligned column">
-        <button id="create_new_wishlist_button" class="ui right floated primary  button" data-bb-wishlist-add="add-another-wishlist">
+        <button id="create_new_wishlist_button" class="ui right floated primary  button" data-bb-wishlist-add="add-another-wishlist" data-bb-wishlist-add-url="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_create_new_wishlist') }}">
             {{ 'bitbag_sylius_wishlist_plugin.ui.add_another_wishlist'|trans }}
         </button>
         <input type="hidden" data-bb-csrf="{{ csrf_token('some-name') }}"/>

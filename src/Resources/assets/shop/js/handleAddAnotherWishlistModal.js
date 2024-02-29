@@ -20,7 +20,7 @@ const setWishlistModal = () => {
                     const form = document.querySelector(`#${wishlistFormName}`);
                     const formValue = form.querySelector(`#${wishlistFormName}_name`);
 
-                    const url = '/wishlists/create';
+                    const url = document.querySelector("[data-bb-wishlist-add-url]").dataset.bbWishlistAddUrl;
                     const formData = new FormData(form);
                     const csrfToken = document.querySelector("[data-bb-csrf]").dataset.bbCsrf;
 
