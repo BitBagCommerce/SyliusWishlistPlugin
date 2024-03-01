@@ -67,7 +67,7 @@ abstract class BaseWishlistProductsAction
     {
         if ($this->createForm($wishlistId) == null) {
             return new RedirectResponse(
-                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_wishlists'));
+                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
         } else {
             $form = $this->createForm($wishlistId);
             $form->handleRequest($request);
@@ -76,7 +76,7 @@ abstract class BaseWishlistProductsAction
                 $this->handleCommand($form);
 
                 return new RedirectResponse(
-                    $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+                    $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                         'wishlistId' => $wishlistId,
                     ])
                 );
@@ -91,7 +91,7 @@ abstract class BaseWishlistProductsAction
         }
 
         return new RedirectResponse(
-            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                 'wishlistId' => $wishlistId,
             ])
         );

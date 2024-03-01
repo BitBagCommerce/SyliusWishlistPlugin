@@ -1,10 +1,10 @@
 bitbag_sylius_wishlist_plugin_shop_no_prefix:
   resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing/shop.yml"
-  name_prefix: 'bitbag_sylius_wishlist_plugin_shop_nolocale_'
+  name_prefix: 'bitbag_sylius_wishlist_plugin_shop_'
 
 bitbag_sylius_wishlist_plugin_shop:
   resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing/shop.yml"
-  name_prefix: 'bitbag_sylius_wishlist_plugin_shop_'
+  name_prefix: 'bitbag_sylius_wishlist_plugin_shop_locale_'
   prefix: /{_locale}
   requirements:
     _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
