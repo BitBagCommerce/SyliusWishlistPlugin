@@ -81,7 +81,7 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
         $wishlist->getWishlistProducts()->willReturn(new ArrayCollection([$wishlistProduct->getWrappedObject()]));
         $wishlistProduct->getProduct()->willReturn($product);
         $translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_wishlist_item')->willReturn('Product has been removed from your wishlist.');
-        $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products')->willReturn('/wishlist');
+        $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products')->willReturn('/wishlist');
 
         $wishlistProductManager->remove($wishlistProduct)->shouldBeCalled();
         $wishlistProductManager->flush()->shouldBeCalled();
