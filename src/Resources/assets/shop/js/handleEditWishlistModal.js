@@ -8,11 +8,13 @@ const setWishlistModal = () => {
         btn.addEventListener('click', () => {   
             new WishlistModal(
                 {
-                    headerTitle: 'Choose new name for your wishlist',
+                    headerTitle: btn.dataset.wishlistEditTitle,
+                    cancelText: btn.dataset.wishlistEditCancel,
+                    performText: btn.dataset.wishlistEditPerform,
                     wishlistFormName: wishlistFormName,
                     wishlistBodyContent: `
                         <input type="text" id="${wishlistFormName}_name" name="${wishlistFormName}_name[name]" required="required" class="wishlist-confirmation-modal__body--input" data-bb-target="input" maxlength="50">
-                        <div class="ui red pointing label validation-error hidden" data-bb-target="error">Please enter wishlist name.</div>
+                        <div class="ui red pointing label validation-error hidden" data-bb-target="error">${btn.dataset.wishlistEditError}</div>
                     `
                 },
                 {

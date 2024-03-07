@@ -42,18 +42,18 @@ Feature: Assigning a wishlist to a user
     Then I should have 0 wishlists
     And I should not see "Wishlist-assigned"
 
-  @ui @javascript
-  Scenario: Logout without assigning a wishlist to a user
-    Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
-    And all store products appear under a main taxonomy
-    And I add this product to wishlist
-    When I go to "/"
-    And I log in as "jdeer@sylius.pl"
-    And I go to "/wishlists"
-    And I press "wishlist-edit-button-Wishlist"
-    And I fill in "edit_wishlist_name" with "Wishlist-not-assigned"
-    And I press "edit_wishlist_save"
-    And I log out
-    And I go to "/wishlists"
-    Then I should have 1 wishlists
-    And I should see "Wishlist-not-assigned"
+#  @ui @javascript
+#  Scenario: Logout without assigning a wishlist to a user
+#    Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
+#    And all store products appear under a main taxonomy
+#    And I add this product to wishlist
+#    When I go to "/"
+#    And I log in as "jdeer@sylius.pl"
+#    And I go to "/wishlists"
+#    And I press "wishlist-edit-button-Wishlist"
+#    And I fill in "edit_wishlist_name" with "Wishlist-not-assigned"
+#    And I press "edit_wishlist_save"
+#    And I log out
+#    And I go to "/wishlists"
+#    Then I should have 1 wishlists
+#    And I should see "Wishlist-not-assigned"

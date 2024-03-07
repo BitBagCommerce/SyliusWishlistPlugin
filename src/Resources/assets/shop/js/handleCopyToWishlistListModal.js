@@ -6,7 +6,12 @@ const setAddWishlistModal = () => {
         e.preventDefault();
 
         new CreateCopyToWishlistsListModal(
-            {},
+            {
+                headerTitle: document.querySelector("[data-bb-wl-list-modal-title]").dataset.bbWlListModalTitle,
+                cancelText: document.querySelector("[data-bb-wl-list-modal-cancel]").dataset.bbWlListModalCancel,
+                performText: document.querySelector("[data-bb-wl-list-modal-perform]").dataset.bbWlListModalPerform,
+                wishlistSelectionPlaceholder: document.querySelector("[data-bb-wl-list-modal-placeholder]").dataset.bbWlListModalPlaceholder,
+            },
             {
                 cancelAction: () => {},
                 performAction: async () => {
