@@ -8,9 +8,11 @@ const setWishlistModal = () => {
         btn.addEventListener('click', () => {   
             new WishlistModal(
                 {
-                    headerTitle: 'Remove wishlist',
+                    headerTitle: btn.dataset.wishlistRemoveTitle,
                     wishlistFormName: wishlistFormName,
-                    wishlistBodyContent: 'Are you sure?'
+                    wishlistBodyContent: btn.dataset.wishlistRemoveContent,
+                    performText: btn.dataset.wishlistRemovePerform,
+                    cancelText: btn.dataset.wishlistRemoveCancel
                 },
                 {
                     cancelAction: () => {},

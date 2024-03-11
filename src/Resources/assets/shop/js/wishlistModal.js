@@ -74,6 +74,7 @@ export class WishlistModal {
     _modalActions(template) {
         const cancelBtn = template.querySelector('[data-bb-action="cancel"]');
         const confirmBtn = template.querySelector('[data-bb-action="perform"]');
+        const input = template.querySelector('[data-bb-target="wishlists"] > [data-bb-target="input"]');
 
         cancelBtn.addEventListener('click', () => {
             this.actions.cancelAction();
@@ -90,6 +91,15 @@ export class WishlistModal {
             this.actions.performAction();
             this._closeModal();
         });
+
+        if (input) {
+            input.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    confirmBtn.click();
+                }
+            });
+        }
     }
 
     _isInputValid(template) {

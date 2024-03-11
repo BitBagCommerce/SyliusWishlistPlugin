@@ -11,6 +11,7 @@ export class CreateCopyToWishlistsListModal {
             headerTitle: 'Choose a wishlist to which selected items should be copied',
             cancelText: 'cancel',
             performText: 'perform',
+            wishlistSelectionPlaceholder: 'My Wishlist…',
             datasetWishlistTargets: '[data-bb-wishlists]',
             datasetWishlistTargetsId: '[data-bb-wishlists-id]',
             datasetWishlistCurrentId: '[data-bb-current-wishlist-id]',
@@ -86,7 +87,7 @@ export class CreateCopyToWishlistsListModal {
         const select = document.createElement('select')
         select.name = 'wishlist'
         select.classList.add('ui', 'selection', 'dropdown')
-        select.insertAdjacentHTML("beforeend" ,'<option selected disabled>My Wishlist…</option>')
+        select.insertAdjacentHTML("beforeend" ,`<option selected disabled>${this.finalConfig.wishlistSelectionPlaceholder}</option>`)
 
         this.wishlistTargets.forEach(wishlist => {
             select.insertAdjacentHTML("beforeend" , this._wishlistTemplate(wishlist))
