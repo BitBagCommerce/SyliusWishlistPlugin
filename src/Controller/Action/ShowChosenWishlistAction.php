@@ -57,7 +57,7 @@ final class ShowChosenWishlistAction
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         TokenStorageInterface $tokenStorage,
         TokenUserResolverInterface $tokenUserResolver,
-    ) {
+        ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->cartContext = $cartContext;
         $this->formFactory = $formFactory;
@@ -74,15 +74,16 @@ final class ShowChosenWishlistAction
         $token = $this->tokenStorage->getToken();
 
         /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->find((int)$wishlistId);
+        $wishlist = $this->wishlistRepository->find((int) $wishlistId);
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         $user = $this->tokenUserResolver->resolve($token);
 
         if ($wishlist instanceof WishlistInterface && $user instanceof ShopUserInterface
         || $wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken
-            && $wishlist->getShopUser() === null) {
+            && null === $wishlist->getShopUser()) {
             $form = $this->createForm($wishlist);
+
             return new Response(
                 $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
                     'wishlist' => $wishlist,
@@ -91,7 +92,7 @@ final class ShowChosenWishlistAction
             );
         }
 
-        return new RedirectResponse($this->urlGenerator->generate("bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists"));
+        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
     }
 
     private function createForm(WishlistInterface $wishlist): FormInterface

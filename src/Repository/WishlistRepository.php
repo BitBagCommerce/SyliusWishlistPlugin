@@ -62,6 +62,7 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
     public function findAllByShopUserAndToken(int $shopUser, string $token): ?array
     {
         $qb = $this->createQueryBuilder('o');
+
         return $qb->where('o.shopUser = :shopUser')
             ->orWhere($qb->expr()->andX(
                 'o.token = :token',
