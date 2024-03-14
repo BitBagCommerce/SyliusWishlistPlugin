@@ -74,6 +74,7 @@ final class OrderItemController extends BaseController
 
                 return new Response($this->generateUrl('sylius_shop_homepage'));
             }
+
             return new Response($this->generateUrl('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_product_variant', [
                 'wishlistId' => $wishlist->getId(),
                 'variantId' => $variant->getId(),

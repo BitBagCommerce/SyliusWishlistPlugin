@@ -37,12 +37,12 @@ final class AddWishlistToUserHandler implements MessageHandlerInterface
         $user = $addWishlistsToUser->getShopUser();
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
-        if ($wishlistCookieToken !== $wishlist->getToken()){
+        if ($wishlistCookieToken !== $wishlist->getToken()) {
             throw new WishlistHasAnotherShopUserException();
         }
 
         if ($this->wishlistRepository->findOneByShopUserAndName($user, $wishlist->getName()) instanceof WishlistInterface) {
-            $wishlist->setName($wishlist->getName().$wishlist->getId());
+            $wishlist->setName($wishlist->getName() . $wishlist->getId());
         }
 
         $wishlist->setShopUser($user);

@@ -1,0 +1,61 @@
+bitbag_sylius_wishlist_plugin:
+    ui:
+        wishlist: Wishlist
+        go_to_wishlist_failure: There was a problem with the redirection. Try again
+        add_to_wishlist: Add to wishlist
+        remove_from_wishlist: Remove from wishlist
+        your_wishlist_is_empty: Your wishlist is empty
+        your_wishlists: Your wishlists
+        add_another_wishlist: Add another wishlist
+        added_wishlist_item: Product has been added to your wishlist.
+        removed_wishlist_item: Product has been removed from your wishlist.
+        add_items_to_cart: Add all wishlist items to cart
+        export_wishlist_to_pdf: Export to PDF
+        added_to_cart: Wishlist items have been added to your cart.
+        save_wishlist: Save wishlist
+        variant_not_unique: You already have this variant on your wishlist
+        increase_quantity: Increase the quantity of at least one item.
+        select_products: Select at least one item.
+        added_selected_wishlist_items_to_cart: Selected wishlist items have been added to your cart.
+        removed_selected_wishlist_items: Selected products have been removed from your wishlist.
+        toggle_checkboxes: Toggle
+        remove: Remove from wishlist
+        add: Add
+        add_to_cart: Add to cart
+        copy_to_wishlist: Copy to another wishlist
+        export_to_csv: Export to CSV
+        import_from_csv: Import from CSV
+        upload_valid_csv: Uploaded file has wrong type
+        variant_already_in_wishlist: Variant already in wishlist
+        selected_wishlist_items_successfully_exported: Selected products have been successfully exported.
+        create_new_wishlist: New wishlist has been created.
+        remove_wishlist: Wishlist has been removed.
+        edit_wishlist_name: Wishlist name has been edited.
+        clear_wishlist: Wishlist has been cleared.
+        create_new_wishlist_label: Choose wishlist name
+        copied_selected_wishlist_items: Selected products have been successfully copied.
+        wishlist_not_found: Wishlist not found
+        wishlist_for_channel_not_found: Wishlist for channel not found
+        csv_file_contains_incorrect_products: CSV file contains incorrect products.
+        wishlist_name_already_exists: Wishlist name already exists, try another.
+        does_not_have_sufficient_stock: does not have sufficient stock.
+        wishlist_not_exists: Your wishlist does not exists.
+        change_wishlist_name: Change wishlist name.
+        product_variant_exists_in_another_wishlist: exists in another wishlist.
+        wishlist_name_changed: Wishlist name has been changed.
+        wishlist_save: Save wishlist
+        wishlist_saved: Wishlist has been saved.
+        you_have_no_access_to_that_wishlist: You have no access to that wishlist.
+        wishlist_has_product_variant: '%productName% variant is already in wishlist.'
+        wishlist_modal_copy_title: 'Wählen Sie eine Wunschliste, auf die ausgewählte Artikel kopiert werden sollen'
+        wishlist_modal_copy_cancel: 'lösen'
+        wishlist_modal_copy_perform: 'vornehmen'
+        wishlist_modal_add_title: 'Wählen Sie einen Namen für die neue Wunschliste'
+        wishlist_modal_add_perform: 'vornehmen'
+        wishlist_modal_add_cancel: 'lösen'
+        wishlist_modal_add_error: 'Bitte geben Sie den Wunschlistennamen ein'
+        wishlist_modal_edit_title: 'Choose new name for your wishlist'
+        wishlist_modal_edit_error: 'Please enter wishlist name.'
+        wishlist_modal_edit_perform: 'perform'
+        wishlist_modal_edit_cancel: 'cancel'
+        wishlist_modal_placeholder: 'Wunschliste auswählen..'

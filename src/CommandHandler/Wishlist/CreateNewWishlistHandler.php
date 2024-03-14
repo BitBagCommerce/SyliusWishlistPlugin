@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Checker\WishlistNameCheckerInterface;
-use BitBag\SyliusWishlistPlugin\Checker\WishlistCanBeCreatedCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
@@ -46,7 +45,7 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
         ChannelRepositoryInterface $channelRepository,
         WishlistNameCheckerInterface $wishlistNameChecker,
         TokenUserResolverInterface $tokenUserResolver,
-    ) {
+        ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->wishlistFactory = $wishlistFactory;

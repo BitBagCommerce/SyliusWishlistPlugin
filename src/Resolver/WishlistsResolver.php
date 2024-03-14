@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
@@ -18,7 +17,6 @@ use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
-use Sylius\Component\User\Model\UserInterface;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -44,7 +42,7 @@ final class WishlistsResolver implements WishlistsResolverInterface
         ChannelContextInterface $channelContext,
         MessageBusInterface $messageBus,
         TokenUserResolverInterface $tokenUserResolver,
-    ) {
+        ) {
         $this->wishlistRepository = $wishlistRepository;
         $this->tokenStorage = $tokenStorage;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
