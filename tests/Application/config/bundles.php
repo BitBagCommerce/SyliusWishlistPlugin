@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-return [
+use Sylius\Bundle\CoreBundle\SyliusCoreBundle;
+
+$bundles = [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
@@ -59,3 +61,9 @@ return [
     League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
     Sylius\Calendar\SyliusCalendarBundle::class => ['all' => true],
 ];
+
+if ( class_exists('\Sylius\Bundle\CoreBundle\SyliusCoreBundle') && defined(SyliusCoreBundle::class.'::VERSION_ID') && SyliusCoreBundle::VERSION_ID >= '11300') {
+    $bundles[Sylius\Abstraction\StateMachine\SyliusStateMachineAbstractionBundle::class] = ['all' => true];
+}
+
+return $bundles;
