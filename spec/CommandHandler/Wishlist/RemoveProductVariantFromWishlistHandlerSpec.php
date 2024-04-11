@@ -79,11 +79,13 @@ final class RemoveProductVariantFromWishlistHandlerSpec extends ObjectBehavior
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistRepositoryInterface $wishlistRepository,
         RepositoryInterface $wishlistProductRepository,
-        ProductVariantInterface $variant
+        ProductVariantInterface $variant,
+        WishlistProductInterface $wishlistProduct,
     ): void {
         $removeProductVariantCommand = new RemoveProductVariantFromWishlist(1, 'wishlist_token');
 
         $productVariantRepository->find(1)->willReturn($variant);
+        $wishlistProductRepository->findOneBy(['variant' => $variant])->willReturn($wishlistProduct);
         $wishlistRepository->findByToken('wishlist_token')->willReturn(null);
 
         $this->shouldThrow(WishlistNotFoundException::class)->during('__invoke', [$removeProductVariantCommand]);

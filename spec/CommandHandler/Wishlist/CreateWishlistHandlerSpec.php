@@ -15,11 +15,15 @@ use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -31,14 +35,19 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
         WishlistFactoryInterface $wishlistFactory,
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
         ObjectManager $wishlistManager,
-        ChannelRepositoryInterface $channelRepository
+        ChannelRepositoryInterface $channelRepository,
+        TokenUserResolverInterface $tokenUserResolver,
+        RequestStack $requestStack,
     ): void {
         $this->beConstructedWith(
             $tokenStorage,
             $wishlistFactory,
             $shopUserWishlistResolver,
             $wishlistManager,
-            $channelRepository
+            $channelRepository,
+            $tokenUserResolver,
+            $requestStack,
+            'token'
         );
     }
 
@@ -56,7 +65,11 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
         ChannelRepositoryInterface $channelRepository,
         ChannelInterface $channel,
-        ObjectManager $wishlistManager
+        ObjectManager $wishlistManager,
+        TokenUserResolverInterface $tokenUserResolver,
+        RequestStack $requestStack,
+        Request $request,
+        ParameterBag $attributes
     ): void {
         $tokenValue = 'test_token_value';
         $channelCode = 'test_channel_code';
@@ -64,10 +77,15 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
         $createWishlist = new CreateWishlist($tokenValue, $channelCode);
 
         $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
+        $tokenUserResolver->resolve($token)->willReturn($user);
 
         $wishlistFactory->createNew()->willReturn($wishlist);
         $shopUserWishlistResolver->resolve($user)->willReturn($wishlist);
+        $wishlist->setName('Wishlist')->shouldBeCalledOnce();
+        $wishlist->setToken($tokenValue)->shouldBeCalledOnce();
+
+        $requestStack->getMainRequest()->willReturn($request)->shouldBeCalledOnce();
+        $request->attributes = $attributes;
 
         $channelRepository->findOneByCode($channelCode)->willReturn($channel);
 
@@ -88,7 +106,11 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
         ShopUserWishlistResolverInterface $shopUserWishlistResolver,
         ChannelRepositoryInterface $channelRepository,
         ChannelInterface $channel,
-        ObjectManager $wishlistManager
+        ObjectManager $wishlistManager,
+        TokenUserResolverInterface $tokenUserResolver,
+        RequestStack $requestStack,
+        Request $request,
+        ParameterBag $attributes
     ): void {
         $tokenValue = 'test_token_value';
         $channelCode = null;
@@ -96,12 +118,17 @@ final class CreateWishlistHandlerSpec extends ObjectBehavior
         $createWishlist = new CreateWishlist($tokenValue, $channelCode);
 
         $tokenStorage->getToken()->willReturn(null);
-        $token->getUser()->shouldNotBeCalled();
+        $tokenUserResolver->resolve(null)->willReturn(null);
 
         $wishlistFactory->createNew()->willReturn($wishlist);
         $shopUserWishlistResolver->resolve($user)->shouldNotBeCalled();
+        $wishlist->setName('Wishlist')->shouldBeCalledOnce();
+        $wishlist->setToken($tokenValue)->shouldBeCalledOnce();
 
-        $channelRepository->findOneByCode('test')->shouldNotBeCalled();
+        $requestStack->getMainRequest()->willReturn($request)->shouldBeCalledOnce();
+        $request->attributes = $attributes;
+
+        $channelRepository->findOneByCode('test')->willReturn(null);
 
         $wishlist->setChannel($channel)->shouldNotBeCalled();
 

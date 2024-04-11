@@ -81,11 +81,17 @@ final class RemoveProductFromWishlistHandlerSpec extends ObjectBehavior
     public function it_throws_exception_when_wishlist_not_found(
         ProductRepositoryInterface $productRepository,
         WishlistRepositoryInterface $wishlistRepository,
-        ProductInterface $product
+        ProductInterface $product,
+        WishlistProductInterface $wishlistProduct,
+        RepositoryInterface $wishlistProductRepository
     ): void {
         $removeProductCommand = new RemoveProductFromWishlist(1, 'wishlist_token');
 
         $productRepository->find(1)->willReturn($product);
+        $wishlistProductRepository->findOneBy([
+            'product' => $product,
+            'wishlist' => null,
+        ])->willReturn($wishlistProduct);
         $wishlistRepository->findByToken('wishlist_token')->willReturn(null);
 
         $this->shouldThrow(WishlistNotFoundException::class)->during('__invoke', [$removeProductCommand]);

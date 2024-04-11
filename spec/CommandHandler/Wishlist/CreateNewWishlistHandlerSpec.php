@@ -17,6 +17,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
@@ -34,7 +35,8 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         ChannelRepositoryInterface $channelRepository,
-        WishlistNameCheckerInterface $wishlistNameChecker
+        WishlistNameCheckerInterface $wishlistNameChecker,
+        TokenUserResolverInterface $tokenUserResolver
     ): void {
         $this->beConstructedWith(
             $wishlistRepository,
@@ -42,7 +44,8 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
             $wishlistFactory,
             $wishlistCookieTokenResolver,
             $channelRepository,
-            $wishlistNameChecker
+            $wishlistNameChecker,
+            $tokenUserResolver
         );
     }
 
@@ -62,12 +65,13 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         ShopUserInterface $shopUser,
         WishlistInterface $wishlist,
         WishlistInterface $existingWishlist,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        TokenUserResolverInterface $tokenUserResolver
     ): void {
         $wishlists = [$existingWishlist];
 
         $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($shopUser);
+        $tokenUserResolver->resolve($token)->willReturn($shopUser);
 
         $wishlistCookieTokenResolver->resolve()->willReturn('token');
         $wishlistFactory->createForUser($shopUser)->willReturn($wishlist);
@@ -99,8 +103,10 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         WishlistInterface $newWishlist,
         ChannelInterface $channel,
+        TokenUserResolverInterface $tokenUserResolver
     ): void {
         $tokenStorage->getToken()->willReturn(null);
+        $tokenUserResolver->resolve(null)->willReturn(null);
 
         $wishlistCookieTokenResolver->resolve()->willReturn('token');
         $wishlistFactory->createNew()->willReturn($newWishlist);
@@ -129,12 +135,13 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         ShopUserInterface $shopUser,
         WishlistInterface $wishlist,
         WishlistInterface $existingWishlist,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        TokenUserResolverInterface $tokenUserResolver
     ): void {
         $wishlists = [$existingWishlist];
 
         $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($shopUser);
+        $tokenUserResolver->resolve($token)->willReturn($shopUser);
 
         $wishlistCookieTokenResolver->resolve()->willReturn('token');
         $wishlistFactory->createForUser($shopUser)->willReturn($wishlist);

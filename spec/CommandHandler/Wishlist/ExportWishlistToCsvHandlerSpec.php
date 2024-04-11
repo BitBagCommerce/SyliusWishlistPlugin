@@ -50,16 +50,16 @@ final class ExportWishlistToCsvHandlerSpec extends ObjectBehavior
         AddToCartCommandInterface $addToCartCommand,
         OrderItemInterface $orderItem,
         ProductVariantInterface $productVariant,
+        WishlistItemInterface $wishlistItem,
         WishlistProductInterface $wishlistProduct,
         ProductInterface $product,
-        WishlistItemInterface $wishlistItem,
         \SplFileObject $file,
         CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
         CsvWishlistProductInterface $csvWishlistProduct,
         CsvSerializerFactoryInterface $csvSerializerFactory,
         Serializer $serializer
     ): void {
-        $wishlistProducts = new ArrayCollection([$wishlistItem]);
+        $wishlistProducts = new ArrayCollection([$wishlistItem->getWrappedObject()]);
 
         $headers = [
             'variantId',
@@ -90,7 +90,7 @@ final class ExportWishlistToCsvHandlerSpec extends ObjectBehavior
 
         $file->fputcsv(['serializer_result'])->shouldBeCalled();
 
-        $exportWishlistToCsv = new ExportWishlistToCsv($wishlistProducts, $file);
+        $exportWishlistToCsv = new ExportWishlistToCsv($wishlistProducts, $file->getWrappedObject());
 
         $this->__invoke($exportWishlistToCsv);
     }
