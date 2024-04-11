@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 
-final class AddProductToSelectedWishlist implements WishlistSyncCommandInterface
+final class AddProductToSelectedWishlist implements AddProductToSelectedWishlistInterface
 {
     public function __construct(
         private WishlistInterface $wishlist,
