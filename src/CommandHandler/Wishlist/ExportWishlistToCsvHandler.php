@@ -29,7 +29,8 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
     public function __construct(
         private CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
         private CsvSerializerFactoryInterface $csvSerializerFactory
-    ) {}
+    ) {
+    }
 
     public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject
     {

@@ -20,7 +20,8 @@ final class DomPdfWishlistExporter implements DomPdfWishlistExporterInterface
     public function __construct(
         private Environment $twigEnvironment,
         private DomPdfFactoryInterface $domPdfFactory
-    ) {}
+    ) {
+    }
 
     public function export(Collection $data): void
     {

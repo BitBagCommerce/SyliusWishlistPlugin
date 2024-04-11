@@ -23,7 +23,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class WishlistContext implements WishlistContextInterface
 {
-
     public function __construct(
         private TokenStorageInterface $tokenStorage,
         private WishlistRepositoryInterface $wishlistRepository,
@@ -31,7 +30,7 @@ final class WishlistContext implements WishlistContextInterface
         private string $wishlistCookieToken,
         private ChannelContextInterface $channelContext,
         private TokenUserResolverInterface $tokenUserResolver,
-    ) {
+        ) {
     }
 
     public function getWishlist(Request $request): WishlistInterface

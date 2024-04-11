@@ -22,7 +22,8 @@ final class ModelCreator implements ModelCreatorInterface
         private VariantImageToDataUriResolverInterface $variantImageToDataUriResolver,
         private VariantPdfModelFactoryInterface $variantPdfModelFactory,
         private RequestStack $requestStack
-    ) {}
+    ) {
+    }
 
     public function createWishlistItemToPdf(WishlistItemInterface $wishlistProduct): VariantPdfModelInterface
     {

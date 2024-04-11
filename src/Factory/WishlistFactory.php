@@ -19,7 +19,8 @@ final class WishlistFactory implements WishlistFactoryInterface
 {
     public function __construct(
         private FactoryInterface $wishlistFactory
-    ) {}
+    ) {
+    }
 
     public function createNew(): WishlistInterface
     {

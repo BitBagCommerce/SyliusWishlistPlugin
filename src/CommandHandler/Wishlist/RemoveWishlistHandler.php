@@ -21,7 +21,8 @@ final class RemoveWishlistHandler implements MessageHandlerInterface
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
         private ObjectManager $wishlistManager
-    ) {}
+    ) {
+    }
 
     public function __invoke(RemoveWishlist $removeWishlist): void
     {

@@ -24,7 +24,8 @@ final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterfac
         private WishlistRepositoryInterface $wishlistRepository,
         private WishlistFactoryInterface $wishlistFactory,
         private ChannelContextInterface $channelContext
-    ) {}
+    ) {
+    }
 
     public function resolve(ShopUserInterface $user): WishlistInterface
     {

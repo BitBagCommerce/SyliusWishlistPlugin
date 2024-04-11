@@ -26,7 +26,8 @@ class WishlistExtension extends AbstractExtension
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
-    ) {}
+    ) {
+    }
 
     public function getFunctions(): array
     {

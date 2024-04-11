@@ -29,7 +29,8 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
         private EntityManagerInterface $wishlistProductManager,
         private RequestStack $requestStack,
         private TranslatorInterface $translator
-    ) {}
+    ) {
+    }
 
     public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlistCommand): void
     {

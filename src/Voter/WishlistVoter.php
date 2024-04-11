@@ -24,7 +24,8 @@ final class WishlistVoter extends Voter
 
     public function __construct(
         private Security $security
-    ) {}
+    ) {
+    }
 
     protected function supports($attribute, $subject): bool
     {

@@ -16,7 +16,8 @@ final class VariantImageToDataUriResolver implements VariantImageToDataUriResolv
 {
     public function __construct(
         private GenerateDataUriForImageResolverInterface $dataUriForImageResolver
-    ) {}
+    ) {
+    }
 
     public function resolve(ProductVariantInterface $variant, string $baseUrl): string
     {
@@ -28,7 +29,7 @@ final class VariantImageToDataUriResolver implements VariantImageToDataUriResolv
 
         $fileExt = explode('.', $image->getPath());
 
-        if ($fileExt[1] === "svg") {
+        if ('svg' === $fileExt[1]) {
             return $this->dataUriForImageResolver->resolveWithNoImage();
         }
 

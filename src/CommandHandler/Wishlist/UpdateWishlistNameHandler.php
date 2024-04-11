@@ -18,7 +18,8 @@ final class UpdateWishlistNameHandler
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdateWishlistName $updateWishlistName): void
     {

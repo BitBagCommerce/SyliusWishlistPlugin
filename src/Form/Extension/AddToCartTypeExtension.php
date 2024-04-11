@@ -23,7 +23,8 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
 {
     public function __construct(
         private WishlistsResolverInterface $wishlistsResolver
-    ) {}
+    ) {
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

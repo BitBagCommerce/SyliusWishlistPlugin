@@ -18,7 +18,8 @@ final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHan
 {
     public function __construct(
         private WishlistToPdfExporterInterface $exporterWishlistToPdf
-    ) {}
+    ) {
+    }
 
     public function __invoke(ExportSelectedProductsFromWishlistToPdfInterface $exportSelectedProductsFromWishlistToPdf): void
     {

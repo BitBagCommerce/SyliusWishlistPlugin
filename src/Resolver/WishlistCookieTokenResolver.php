@@ -19,7 +19,8 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
     public function __construct(
         private RequestStack $requestStack,
         private string $wishlistCookieToken
-    ) {}
+    ) {
+    }
 
     public function resolve(): string
     {

@@ -35,7 +35,8 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
         private CsvSerializerFactoryInterface $csvSerializerFactory,
         private RequestStack $requestStack,
         private TranslatorInterface $translator
-    ) {}
+    ) {
+    }
 
     public function __invoke(ImportWishlistFromCsv $importWishlistFromCsv): Response
     {

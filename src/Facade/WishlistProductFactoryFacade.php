@@ -20,7 +20,8 @@ final class WishlistProductFactoryFacade implements WishlistProductFactoryFacade
 {
     public function __construct(
         private WishlistProductFactoryInterface $wishlistProductFactory
-    ) {}
+    ) {
+    }
 
     public function createWithProduct(WishlistInterface $wishlist, ProductInterface $product): void
     {

@@ -26,7 +26,8 @@ final class AddProductToWishlistHandler implements MessageHandlerInterface
         private WishlistProductFactoryInterface $wishlistProductFactory,
         private ProductRepositoryInterface $productRepository,
         private ObjectManager $wishlistManager
-    ) {}
+    ) {
+    }
 
     public function __invoke(AddProductToWishlist $addProductToWishlist): WishlistInterface
     {

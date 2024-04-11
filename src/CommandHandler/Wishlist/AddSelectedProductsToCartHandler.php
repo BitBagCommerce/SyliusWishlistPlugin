@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker;
 use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
@@ -29,7 +28,8 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
         private OrderModifierInterface $orderModifier,
         private OrderRepositoryInterface $orderRepository,
         private ProductProcessingCheckerInterface $productProcessingChecker
-    ) {}
+    ) {
+    }
 
     public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
     {

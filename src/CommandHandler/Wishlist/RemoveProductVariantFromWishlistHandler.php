@@ -29,7 +29,8 @@ final class RemoveProductVariantFromWishlistHandler implements MessageHandlerInt
         private ProductVariantRepositoryInterface $productVariantRepository,
         private RepositoryInterface $wishlistProductRepository,
         private ObjectManager $wishlistManager
-    ) {}
+    ) {
+    }
 
     public function __invoke(RemoveProductVariantFromWishlist $removeProductVariantFromWishlist): WishlistInterface
     {

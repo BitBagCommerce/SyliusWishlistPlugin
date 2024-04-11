@@ -18,7 +18,8 @@ final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
     public function __construct(
         private VariantPdfModelProcessorInterface $variantPdfModelProcessor,
         private DomPdfWishlistExporterInterface $domPdfWishlistExporter
-    ) {}
+    ) {
+    }
 
     public function createModelToPdfAndExportToPdf(Collection $wishlistProducts): void
     {

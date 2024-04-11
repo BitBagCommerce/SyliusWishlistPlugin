@@ -52,8 +52,7 @@ final class CreateWishlistHandler implements MessageHandlerInterface
             $wishlist = $this->shopUserWishlistResolver->resolve($user);
         }
 
-        if (null !== $createWishlist->getTokenValue())
-        {
+        if (null !== $createWishlist->getTokenValue()) {
             $wishlist->setToken($createWishlist->getTokenValue());
             $mainRequest = $this->requestStack->getMainRequest();
 

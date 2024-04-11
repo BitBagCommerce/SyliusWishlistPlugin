@@ -21,7 +21,8 @@ final class VariantPdfModelProcessor implements VariantPdfModelProcessorInterfac
 {
     public function __construct(
         private ModelCreatorInterface $pdfModelCreator
-    ) {}
+    ) {
+    }
 
     public function createVariantPdfModelCollection(Collection $wishlistProducts): ArrayCollection
     {

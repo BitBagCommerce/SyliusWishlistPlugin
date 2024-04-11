@@ -17,12 +17,12 @@ final class TokenUserResolver implements TokenUserResolverInterface
 {
     public function resolve(?TokenInterface $token): ?UserInterface
     {
-        if ($token === null) {
+        if (null === $token) {
             return null;
         }
 
         $user = $token->getUser();
-        if (is_string($user) && $user === 'anon.') {
+        if (is_string($user) && 'anon.' === $user) {
             return null;
         }
 
