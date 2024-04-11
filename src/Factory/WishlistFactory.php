@@ -26,6 +26,8 @@ final class WishlistFactory implements WishlistFactoryInterface
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
 
+        $wishlist->setName('Wishlist');
+
         return $wishlist;
     }
 

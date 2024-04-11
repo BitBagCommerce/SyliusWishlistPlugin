@@ -15,6 +15,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -29,12 +30,16 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
         private WishlistFactoryInterface $wishlistFactory,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         private ChannelRepositoryInterface $channelRepository,
-        private WishlistNameCheckerInterface $wishlistNameChecker
-    ) {}
+        private WishlistNameCheckerInterface $wishlistNameChecker,
+        private TokenUserResolverInterface $tokenUserResolver
+    ) {
+    }
 
     public function __invoke(CreateNewWishlist $createNewWishlist): void
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $token = $this->tokenStorage->getToken();
+        $user = $this->tokenUserResolver->resolve($token);
+
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         if ($user instanceof ShopUserInterface) {
@@ -62,6 +67,7 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
                 throw new WishlistNameIsTakenException();
             }
         }
+
         $this->wishlistRepository->add($wishlist);
     }
 }

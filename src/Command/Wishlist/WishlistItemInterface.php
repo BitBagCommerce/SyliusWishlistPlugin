@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 
-interface WishlistItemInterface
+interface WishlistItemInterface extends WishlistSyncCommandInterface
 {
     public function getWishlistProduct(): ?WishlistProductInterface;
 

@@ -8,13 +8,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
+namespace BitBag\SyliusWishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-interface UpdateWishlistNameInterface extends WishlistSyncCommandInterface
+interface TokenUserResolverInterface
 {
-    public function getName(): string;
-
-    public function getWishlist(): WishlistInterface;
+    public function resolve(?TokenInterface $token): ?UserInterface;
 }

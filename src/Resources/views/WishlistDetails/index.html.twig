@@ -17,7 +17,14 @@
     {% if wishlists|length > 1 %}
     {% else %}
     <div class="middle aligned column">
-        <button id="create_new_wishlist_button" class="ui right floated primary  button" data-bb-wishlist-add="add-another-wishlist">
+        <button id="create_new_wishlist_button" class="ui right floated primary  button"
+                data-bb-wishlist-add="add-another-wishlist"
+                data-bb-wishlist-add-url="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_create_new_wishlist') }}"
+                data-bb-wishlist-add-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_title'|trans }}"
+                data-bb-wishlist-add-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_perform'|trans }}"
+                data-bb-wishlist-add-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_cancel'|trans }}"
+                data-bb-wishlist-add-error="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_error'|trans }}"
+        >
             {{ 'bitbag_sylius_wishlist_plugin.ui.add_another_wishlist'|trans }}
         </button>
         <input type="hidden" data-bb-csrf="{{ csrf_token('some-name') }}"/>
@@ -27,7 +34,7 @@
 
     {% if wishlist.wishlistProducts.count > 0 %}
         <div class="middle aligned column">
-            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
                 <i class="icon remove"></i>Clear wishlist
             </a>
         </div>
@@ -75,7 +82,7 @@
             <div class="column">
                 {{ messages.info('bitbag_sylius_wishlist_plugin.ui.your_wishlist_is_empty'|trans) }}
             </div>
-            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_wishlist_import_from_csv') }}">
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_import_from_csv') }}">
                 <button type="button" class="ui secondary button bb-wishlist-actions-import-button" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
                     <i class="cart icon"></i>
                     {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}

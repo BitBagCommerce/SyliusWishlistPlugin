@@ -11,31 +11,31 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\EventSubscriber;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Channel\Context\ChannelNotFoundException;
-use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
+    private const ALLOWED_ENDPOINTS_PREFIX = '/wishlist';
+
     public function __construct(
         private string $wishlistCookieToken,
         private WishlistsResolverInterface $wishlistsResolver,
-        private WishlistFactoryInterface $wishlistFactory,
-        private WishlistRepositoryInterface $wishlistRepository,
-        private TokenStorageInterface $tokenStorage,
-        private ChannelContextInterface $channelContext
-    ) {}
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        private RequestStack $requestStack,
+        private ?Request $mainRequest = null
+    ) {
+        $this->mainRequest = $requestStack->getMainRequest();
+    }
 
     public static function getSubscribedEvents(): array
     {
@@ -47,26 +47,36 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
+        Assert::notNull($this->mainRequest, 'The class has to be used in HTTP context only');
+
         if (!$event->isMainRequest()) {
+            return;
+        }
+
+        $currentPath = $this->mainRequest->getPathInfo();
+        $isWishlistUrl = str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX);
+        if (!$isWishlistUrl) {
             return;
         }
 
         /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistsResolver->resolve();
 
-        $wishlistCookieToken = $event->getRequest()->cookies->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $this->mainRequest->cookies->get($this->wishlistCookieToken);
 
         if (!empty($wishlists)) {
             if (null === $wishlistCookieToken) {
-                $event->getRequest()->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
+                $this->mainRequest->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
             }
+
             return;
         }
 
-        /** @var WishlistInterface $wishlist */
-        $wishlist = $this->createNewWishlist($wishlistCookieToken);
+        if (null === $wishlistCookieToken) {
+            $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        }
 
-        $event->getRequest()->attributes->set($this->wishlistCookieToken, $wishlist->getToken());
+        $this->mainRequest->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
     }
 
     public function onKernelResponse(ResponseEvent $event): void
@@ -75,59 +85,27 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($event->getRequest()->cookies->has($this->wishlistCookieToken)) {
+        $tokenWasGenerated = $this->mainRequest->attributes->has($this->wishlistCookieToken);
+        $currentPath = $this->mainRequest->getPathInfo();
+        $isWishlistUrl = str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX);
+        if (!$tokenWasGenerated && !$isWishlistUrl) {
+            return;
+        }
+
+        if ($this->mainRequest->cookies->has($this->wishlistCookieToken)) {
             return;
         }
 
         $response = $event->getResponse();
-        $wishlistCookieToken = $event->getRequest()->attributes->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $this->mainRequest->attributes->get($this->wishlistCookieToken);
 
         if (!$wishlistCookieToken) {
             return;
         }
-        $this->setWishlistCookieToken($response, $wishlistCookieToken);
 
-        $event->getRequest()->attributes->remove($this->wishlistCookieToken);
-    }
-
-    private function createNewWishlist(?string $wishlistCookieToken): WishlistInterface
-    {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
-
-        $wishlist = $this->wishlistFactory->createNew();
-
-        try {
-            $channel = $this->channelContext->getChannel();
-        } catch (ChannelNotFoundException $exception) {
-            $channel = null;
-        }
-
-        if ($channel instanceof ChannelInterface) {
-            $wishlist->setChannel($channel);
-        }
-
-        if ($channel instanceof ChannelInterface &&
-            $user instanceof ShopUserInterface
-        ) {
-            $wishlist = $this->wishlistFactory->createForUserAndChannel($user, $channel);
-        } elseif ($user instanceof ShopUserInterface) {
-            $wishlist = $this->wishlistFactory->createForUser($user);
-        }
-
-        if ($wishlistCookieToken) {
-            $wishlist->setToken($wishlistCookieToken);
-        }
-
-        $wishlist->setName('Wishlist');
-        $this->wishlistRepository->add($wishlist);
-
-        return $wishlist;
-    }
-
-    private function setWishlistCookieToken(Response $response, string $wishlistCookieToken): void
-    {
         $cookie = new Cookie($this->wishlistCookieToken, $wishlistCookieToken, strtotime('+1 year'));
-
         $response->headers->setCookie($cookie);
+
+        $this->mainRequest->attributes->remove($this->wishlistCookieToken);
     }
 }

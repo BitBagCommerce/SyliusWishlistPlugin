@@ -78,7 +78,7 @@ final class ImportWishlistFromCsvAction
     private function createForm(): FormInterface
     {
         return $this->formFactory->create(ImportWishlistFromCsvType::class, [], [
-            'wishlists' => $this->wishlistsResolver->resolve(),
+            'wishlists' => $this->wishlistsResolver->resolveAndCreate(),
         ]);
     }
 

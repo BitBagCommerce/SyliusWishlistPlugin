@@ -20,15 +20,24 @@ jobs:
   strategy:
     fail-fast: false
     matrix:
-      php: ["8.0"]
+      php: ["8.0", "8.1"]
       symfony: ["^5.4", "^6.0"]
-      sylius: ["~1.11.0", "~1.12.0"]
+      sylius: ["~1.11.0", "~1.12.0", "1.13.x-dev"]
       node: ["^14.17.x"]
       mysql: ["8.0"]
 
       exclude:
         - sylius: ~1.11.0
           symfony: "^6.0"
+        - sylius: 1.13.x-dev.11.0
+          symfony: "^5.4"
+          php: "8.0"
+        - sylius: 1.13.x-dev.11.0
+          symfony: "^5.4"
+          php: "8.1"
+        - sylius: 1.13.x-dev.11.0
+          symfony: "^6.0"
+          php: "8.0"
   env:
    APP_ENV: test
    DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
@@ -165,3 +174,15 @@ jobs:
       name: Var logs
       path: tests/Application/var/log/
       if-no-files-found: ignore
+
+   - name: Failed build Slack notification
+     uses: rtCamp/action-slack-notify@v2
+     if: ${{ failure() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') }}
+     env:
+      SLACK_CHANNEL: ${{ secrets.FAILED_BUILD_SLACK_CHANNEL }}
+      SLACK_COLOR: ${{ job.status }}
+      SLACK_ICON: https://github.com/rtCamp.png?size=48
+      SLACK_MESSAGE: ':x:'
+      SLACK_TITLE: Failed build on ${{ github.event.repository.name }} repository
+      SLACK_USERNAME: ${{ secrets.FAILED_BUILD_SLACK_USERNAME }}
+      SLACK_WEBHOOK: ${{ secrets.FAILED_BUILD_SLACK_WEBHOOK }}

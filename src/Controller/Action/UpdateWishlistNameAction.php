@@ -73,6 +73,6 @@ final class UpdateWishlistNameAction
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_already_exists')
             );
         }
-        return new Response($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_list_products'));
+        return new Response($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products'));
     }
 }

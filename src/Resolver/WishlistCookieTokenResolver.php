@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
+use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverInterface
@@ -24,10 +25,15 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
     {
         $wishlistCookieToken = $this->requestStack->getMainRequest()->cookies->get($this->wishlistCookieToken);
 
-        if (!$wishlistCookieToken) {
-            return '';
+        if (null !== $wishlistCookieToken) {
+            return $wishlistCookieToken;
         }
 
-        return $wishlistCookieToken;
+        $wishlistCookieToken = $this->requestStack->getMainRequest()->attributes->get($this->wishlistCookieToken);
+        if (null !== $wishlistCookieToken) {
+            return $wishlistCookieToken;
+        }
+
+        return (string) new WishlistToken();
     }
 }

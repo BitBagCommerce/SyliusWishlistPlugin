@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-final class CreateWishlist
+final class CreateWishlist implements WishlistSyncCommandInterface
 {
     public ?string $tokenValue;
 
@@ -25,5 +25,10 @@ final class CreateWishlist
     public function getChannelCode(): ?string
     {
         return $this->channelCode;
+    }
+
+    public function getTokenValue(): ?string
+    {
+        return $this->tokenValue;
     }
 }

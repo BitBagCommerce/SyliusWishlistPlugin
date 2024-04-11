@@ -10,25 +10,38 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\User\Model\UserInterface;
+use Symfony\Component\Messenger\HandleTrait;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class WishlistsResolver implements WishlistsResolverInterface
 {
+    use HandleTrait;
+
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
         private TokenStorageInterface $tokenStorage,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        private ChannelContextInterface $channelContext
-    ) {}
+        private ChannelContextInterface $channelContext,
+        private MessageBusInterface $messageBus,
+        private TokenUserResolverInterface $tokenUserResolver,
+    ) {
+    }
 
     public function resolve(): array
     {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        $token = $this->tokenStorage->getToken();
+        $user = $this->tokenUserResolver->resolve($token);
+
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         try {
@@ -46,5 +59,28 @@ final class WishlistsResolver implements WishlistsResolverInterface
         }
 
         return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+    }
+
+    public function resolveAndCreate(): array
+    {
+        $wishlists = $this->resolve();
+
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $foundException) {
+            $channel = null;
+        }
+
+        if (0 === count($wishlists)) {
+            $createWishlist = new CreateWishlist($wishlistCookieToken, $channel?->getCode());
+            /** @var WishlistInterface $wishlist */
+            $wishlist = $this->handle($createWishlist);
+
+            $wishlists = [$wishlist];
+        }
+
+        return $wishlists;
     }
 }

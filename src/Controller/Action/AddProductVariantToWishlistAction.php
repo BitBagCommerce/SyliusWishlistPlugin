@@ -74,7 +74,7 @@ final class AddProductVariantToWishlistAction
         }
 
         return new RedirectResponse(
-            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_show_chosen_wishlist', [
+            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                 'wishlistId' => $wishlistId,
             ])
         );
@@ -91,8 +91,13 @@ final class AddProductVariantToWishlistAction
         $flashBag = $session->getFlashBag();
 
         if ($wishlist->hasProductVariant($variant)) {
-            $message = sprintf('%s variant is already in wishlist.', $wishlistProduct->getProduct()->getName());
-            $flashBag->add('error', $this->translator->trans($message));
+            $flashBag->add(
+                'error',
+                $this->translator->trans(
+                    'bitbag_sylius_wishlist_plugin.ui.wishlist_has_product_variant',
+                    ['%productName%' => $wishlistProduct->getProduct()->getName()]
+                )
+            );
 
             return;
         }

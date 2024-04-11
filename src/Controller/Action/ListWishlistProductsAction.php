@@ -61,7 +61,7 @@ final class ListWishlistProductsAction
 
     public function __invoke(Request $request): Response
     {
-        $wishlists = $this->wishlistsResolver->resolve();
+        $wishlists = $this->wishlistsResolver->resolveAndCreate();
 
         /** @var WishlistInterface $wishlist */
         $wishlist = array_shift($wishlists);

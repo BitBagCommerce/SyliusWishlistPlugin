@@ -5,13 +5,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "sylius/sylius": "~1.11.0 || ~1.12.0",
+        "sylius/sylius": "~1.11.0 || ~1.12.0 || ~1.13.x-dev",
         "symfony/webpack-encore-bundle": "^1.15",
         "dompdf/dompdf": "^2.0"
     },
     "require-dev": {
         "behat/behat": "^3.7",
-        "behat/mink-selenium2-driver": "^1.4",
+        "behat/mink-selenium2-driver": "~1.6.0",
         "bitbag/coding-standard": "^1.0.1",
         "dmore/behat-chrome-extension": "^1.3",
         "dmore/chrome-mink-driver": "^2.7",

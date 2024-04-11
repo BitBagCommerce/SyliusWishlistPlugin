@@ -11,7 +11,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-interface AddProductsToCartInterface
+interface AddProductsToCartInterface extends WishlistSyncCommandInterface
 {
     public function getWishlistProducts(): Collection;
 }
