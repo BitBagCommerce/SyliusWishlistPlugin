@@ -12,7 +12,6 @@ namespace BitBag\SyliusWishlistPlugin\EventSubscriber;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -34,7 +33,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         private RequestStack $requestStack,
         private ?Request $mainRequest = null
     ) {
-        $this->mainRequest = $requestStack->getMainRequest();
+        $this->mainRequest = $this->requestStack->getMainRequest();
     }
 
     public static function getSubscribedEvents(): array
