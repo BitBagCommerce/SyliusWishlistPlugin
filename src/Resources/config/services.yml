@@ -118,11 +118,11 @@ services:
             - '@sylius.context.cart.new_shop_based.inner'
             - '@form.factory'
             - '@request_stack'
-            - "@sylius.command_bus"
             - "@bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"
             - "@router"
             - "@translator"
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@sylius.command_bus"
         tags:
             - { name: controller.service_arguments }
 
@@ -131,9 +131,9 @@ services:
         arguments:
             - "@form.factory"
             - '@request_stack'
-            - "@sylius.command_bus"
             - "@twig"
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
+            - "@sylius.command_bus"
         tags:
             - { name: controller.service_arguments }
 

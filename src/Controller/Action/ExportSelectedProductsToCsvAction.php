@@ -35,40 +35,19 @@ final class ExportSelectedProductsToCsvAction
 {
     use HandleTrait;
 
-    private CartContextInterface $cartContext;
-
-    private FormFactoryInterface $formFactory;
-
-    private RequestStack $requestStack;
-
-    private WishlistCommandProcessorInterface $wishlistCommandProcessor;
-
-    private UrlGeneratorInterface $urlGenerator;
-
-    private TranslatorInterface $translator;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
     private string $wishlistName;
 
     public function __construct(
-        CartContextInterface $cartContext,
-        FormFactoryInterface $formFactory,
-        RequestStack $requestStack,
-        MessageBusInterface $messageBus,
-        WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        UrlGeneratorInterface $urlGenerator,
-        TranslatorInterface $translator,
-        WishlistRepositoryInterface $wishlistRepository
+        private CartContextInterface $cartContext,
+        private FormFactoryInterface $formFactory,
+        private RequestStack $requestStack,
+        private WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
+        private WishlistRepositoryInterface $wishlistRepository,
+        MessageBusInterface $messageBus
     ) {
-        $this->cartContext = $cartContext;
-        $this->formFactory = $formFactory;
-        $this->requestStack = $requestStack;
         $this->messageBus = $messageBus;
-        $this->wishlistCommandProcessor = $wishlistCommandProcessor;
-        $this->urlGenerator = $urlGenerator;
-        $this->translator = $translator;
-        $this->wishlistRepository = $wishlistRepository;
     }
 
     public function __invoke(int $wishlistId, Request $request): Response

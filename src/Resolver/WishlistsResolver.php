@@ -30,9 +30,10 @@ final class WishlistsResolver implements WishlistsResolverInterface
         private TokenStorageInterface $tokenStorage,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         private ChannelContextInterface $channelContext,
-        private MessageBusInterface $messageBus,
         private TokenUserResolverInterface $tokenUserResolver,
-        ) {
+        MessageBusInterface $messageBus
+    ) {
+        $this->messageBus = $messageBus;
     }
 
     public function resolve(): array
