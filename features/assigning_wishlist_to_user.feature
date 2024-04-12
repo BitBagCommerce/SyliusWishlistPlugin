@@ -32,6 +32,8 @@ Feature: Assigning a wishlist to a user
   @ui @javascript
   Scenario: Assigning a wishlist to a user and logout
     When I go to "/"
+    And I go to "/wishlists"
+    And I should have 0 wishlists
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
     And I press "wishlist-edit-button-Wishlist1"
