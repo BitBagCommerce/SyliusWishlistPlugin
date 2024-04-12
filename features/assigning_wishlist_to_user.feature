@@ -36,9 +36,11 @@ Feature: Assigning a wishlist to a user
     And I should have 0 wishlists
     And I log in as "jdeer@sylius.pl"
     And I go to "/wishlists"
+    And I should have 2 wishlists
     And I press "wishlist-edit-button-Wishlist1"
     And I fill in "edit_wishlist_name" with "Wishlist-assigned"
     And I press "edit_wishlist_save"
+    And I should wait for one second
     And I log out
     And I go to "/wishlists"
     Then I should have 0 wishlists
