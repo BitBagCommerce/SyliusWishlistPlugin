@@ -148,8 +148,7 @@ final class WishlistRepositoryTest extends JsonApiTestCase
 
         /** @var ?WishlistInterface $result */
         $result = $this->repository->findOneByTokenAndName('token', 'Olivier Wishlist');
-        /** @var ?WishlistInterface $missingResult */
-
+        /** @var ?WishlistInterface $result */
         $this->assertNotNull($result);
         $this->assertInstanceOf(WishlistInterface::class, $result);
         $this->assertCount(1, [$result]);
@@ -167,8 +166,7 @@ final class WishlistRepositoryTest extends JsonApiTestCase
 
         /** @var ?WishlistInterface $result */
         $result = $this->repository->findOneByShopUserAndName($shopUser, 'Olivier Wishlist');
-        /** @var ?WishlistInterface $missingResult */
-
+        /** @var ?WishlistInterface $result */
         $this->assertNotNull($result);
         $this->assertInstanceOf(WishlistInterface::class, $result);
         $this->assertCount(1, [$result]);

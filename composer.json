@@ -54,7 +54,12 @@
         }
     },
     "autoload-dev": {
-        "classmap": ["tests/Application/Kernel.php"]
+        "classmap": ["tests/Application/Kernel.php"],
+        "psr-4": {
+            "BitBag\\SyliusWishlistPlugin\\": "src/",
+            "Tests\\BitBag\\SyliusWishlistPlugin\\": "tests/",
+            "Sylius\\Tests\\Api\\": ["vendor/sylius/sylius/tests/Api/"]
+        }
     },
     "config": {
         "allow-plugins": {
