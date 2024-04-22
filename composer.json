@@ -37,7 +37,8 @@
         "league/flysystem-bundle": "2.4.0",
         "sylius/mailer-bundle":  "^1.8 || ^2.0@beta",
         "lchrusciel/api-test-case": "^4.1 || ^5.0",
-        "nelmio/alice": "^3.10"
+        "nelmio/alice": "^3.10",
+        "symfony/phpunit-bridge": "^5.4 || ^6.0"
     },
     "conflict": {
         "symfony/symfony": "4.1.8",
