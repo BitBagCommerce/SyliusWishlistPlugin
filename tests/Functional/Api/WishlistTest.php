@@ -36,7 +36,7 @@ final class WishlistTest extends FunctionalTestCase
 
         $response = $this->client->getResponse();
 
-        $this->assertResponse($response, 'Api/WishlistTest/test_user_can_create_wishlist', Response::HTTP_CREATED);
+        $this->assertResponse($response, $this->getResponseDirectory('test_user_can_create_wishlist'), Response::HTTP_CREATED);
     }
 
     public function test_admin_can_get_wishlists(): void
@@ -47,7 +47,7 @@ final class WishlistTest extends FunctionalTestCase
 
         $response = $this->client->getResponse();
 
-        $this->assertResponse($response, 'Api/WishlistTest/test_admin_can_get_wishlists', Response::HTTP_OK);
+        $this->assertResponse($response, $this->getResponseDirectory('test_admin_can_get_wishlists'), Response::HTTP_OK);
     }
 
     public function test_user_can_get_wishlist_items(): void
@@ -60,7 +60,7 @@ final class WishlistTest extends FunctionalTestCase
         $this->client->request('GET', '/api/v2/shop/wishlists/' . $token, [], [], $header);
 
         $response = $this->client->getResponse();
-        $this->assertResponse($response, 'Api/WishlistTest/test_user_can_get_wishlist_items', Response::HTTP_OK);
+        $this->assertResponse($response, $this->getResponseDirectory('test_user_can_get_wishlist_items'), Response::HTTP_OK);
     }
 
     public function test_user_can_add_product_to_wishlist(): void
@@ -86,7 +86,7 @@ final class WishlistTest extends FunctionalTestCase
 
         $this->assertNotNull($updatedWishlist);
         $this->assertCount(1, $updatedWishlist->getWishlistProducts());
-        $this->assertResponse($response, 'Api/WishlistTest/test_user_can_add_product_to_wishlist', Response::HTTP_OK);
+        $this->assertResponse($response, $this->getResponseDirectory('test_user_can_add_product_to_wishlist'), Response::HTTP_OK);
     }
 
     public function test_user_can_add_variant_to_wishlist(): void
@@ -112,7 +112,7 @@ final class WishlistTest extends FunctionalTestCase
 
         $this->assertNotNull($updatedWishlist);
         $this->assertCount(1, $updatedWishlist->getWishlistProducts());
-        $this->assertResponse($response, 'Api/WishlistTest/test_user_can_add_product_variant_to_wishlist', Response::HTTP_OK);
+        $this->assertResponse($response, $this->getResponseDirectory('test_user_can_add_product_variant_to_wishlist'), Response::HTTP_OK);
     }
 
     public function test_user_can_delete_product_from_wishlist(): void
@@ -180,5 +180,10 @@ final class WishlistTest extends FunctionalTestCase
 
         $this->assertNull($updatedWishlist);
         $this->assertResponseCode($response, Response::HTTP_NO_CONTENT);
+    }
+
+    private function getResponseDirectory(string $filename): string
+    {
+        return 'Api/WishlistTest/' . $this->getSyliusVersion(). '/' . $filename;
     }
 }
