@@ -58,11 +58,18 @@ final class Kernel extends BaseKernel
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
         $confDir = $this->getProjectDir() . '/config';
+        $syliusDir = $this->getProjectDir() . '/config/sylius/' . SyliusKernel::MAJOR_VERSION . '.' . SyliusKernel::MINOR_VERSION;
 
         $loader->load($confDir . '/{packages}/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{packages}/' . $this->environment . '/**/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{services}' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
+        if (is_dir($syliusDir)) {
+            $loader->load($syliusDir . '/{packages}/*' . self::CONFIG_EXTS, 'glob');
+            $loader->load($syliusDir . '/{packages}/' . $this->environment . '/**/*' . self::CONFIG_EXTS, 'glob');
+            $loader->load($syliusDir . '/{services}' . self::CONFIG_EXTS, 'glob');
+            $loader->load($syliusDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
+        }
         $loader->load($confDir . '/{api_resources}/*' . self::CONFIG_EXTS, 'glob');
     }
 
