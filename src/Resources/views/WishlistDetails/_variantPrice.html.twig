@@ -1,6 +1,6 @@
 {% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
 
-{% set pricing = sylius_product_variants_map(product, {'channel': sylius.channel}) %}
+{% set pricing = sylius_product_variant_prices(product, sylius.channel) %}
 
 {% set prices %}
     [
@@ -17,7 +17,7 @@
             {%- endif -%}
             {{- not loop.last ? ', '-}}
         {%- endfor -%}
-        }}
+        }
         {{- not loop.last ? ', '-}}
     {%- endfor -%}
     ]
