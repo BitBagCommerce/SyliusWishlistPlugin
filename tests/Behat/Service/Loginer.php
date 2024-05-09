@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class Loginer implements LoginerInterface
 {
-    private const EXAMPLE_USER_LOGIN = 'shop@exaple.com';
+    private const EXAMPLE_USER_LOGIN = 'shop@example.com';
 
     private const EXAMPLE_USER_PASSWORD = 'bitbag';
 

@@ -206,6 +206,15 @@ services:
         tags:
             - { name: kernel.event_subscriber, event: kernel.exception }
 
+    bitbag_sylius_wishlist_plugin.event_subscriber.logged_user_wishlist_subscriber:
+        class: BitBag\SyliusWishlistPlugin\EventSubscriber\LoggedUserWishlistSubscriber
+        arguments:
+            - '@sylius.section_resolver.uri_based_section_resolver'
+            - '@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver'
+            - '@bitbag_sylius_wishlist_plugin.manager.wishlist_product'
+        tags:
+            - { name: kernel.event_subscriber }
+
     bitbag_sylius_wishlist_plugin.form.type.add_products_to_cart:
         class: BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType
         arguments:

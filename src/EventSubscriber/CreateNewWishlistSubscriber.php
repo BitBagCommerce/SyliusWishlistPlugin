@@ -39,7 +39,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         WishlistsResolverInterface $wishlistsResolver,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         RequestStack $requestStack,
-    ) {
+        ) {
         $this->wishlistCookieToken = $wishlistCookieToken;
         $this->wishlistsResolver = $wishlistsResolver;
         $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
