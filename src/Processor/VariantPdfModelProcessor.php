@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
 final class VariantPdfModelProcessor implements VariantPdfModelProcessorInterface
 {
     public function __construct(
-        private ModelCreatorInterface $pdfModelCreator
+        private ModelCreatorInterface $pdfModelCreator,
     ) {
     }
 

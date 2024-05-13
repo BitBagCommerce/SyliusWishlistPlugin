@@ -19,7 +19,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 final class WishlistProductFactoryFacade implements WishlistProductFactoryFacadeInterface
 {
     public function __construct(
-        private WishlistProductFactoryInterface $wishlistProductFactory
+        private WishlistProductFactoryInterface $wishlistProductFactory,
     ) {
     }
 

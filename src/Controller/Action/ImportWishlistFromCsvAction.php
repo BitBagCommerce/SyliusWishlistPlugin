@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -14,6 +15,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use BitBag\SyliusWishlistPlugin\Form\Type\ImportWishlistFromCsvType;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -34,7 +36,7 @@ final class ImportWishlistFromCsvAction
         private RequestStack $requestStack,
         private Environment $twigEnvironment,
         private WishlistsResolverInterface $wishlistsResolver,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
     ) {
         $this->messageBus = $messageBus;
     }
@@ -52,6 +54,7 @@ final class ImportWishlistFromCsvAction
         /** @var Session $session */
         $session = $this->requestStack->getSession();
 
+        /** @var FormError $error */
         foreach ($form->getErrors() as $error) {
             $session->getFlashBag()->add('error', $error->getMessage());
         }
@@ -59,7 +62,7 @@ final class ImportWishlistFromCsvAction
         return new Response(
             $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/importWishlist.html.twig', [
                 'form' => $form->createView(),
-            ])
+            ]),
         );
     }
 
@@ -78,7 +81,7 @@ final class ImportWishlistFromCsvAction
         /** @var Wishlist $wishlist */
         $wishlist = $form->get('wishlists')->getData();
 
-        $command = new ImportWishlistFromCsv($file->getFileInfo(), $request, $wishlist->getId());
+        $command = new ImportWishlistFromCsv($file->getFileInfo(), $request, (int) $wishlist->getId());
 
         return $this->handle($command);
     }

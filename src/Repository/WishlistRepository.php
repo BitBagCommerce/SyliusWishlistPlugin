@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -12,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Repository;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class WishlistRepository extends EntityRepository implements WishlistRepositoryInterface
@@ -25,7 +26,7 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()
-            ;
+        ;
     }
 
     public function findByToken(string $token): ?WishlistInterface
@@ -36,46 +37,46 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()
-            ;
+        ;
     }
 
-    public function findAllByToken(string $token): ?array
+    public function findAllByToken(string $token): array
     {
         return $this->createQueryBuilder('o')
             ->where('o.token = :token')
             ->setParameter('token', $token)
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
-    public function findAllByShopUser(int $shopUser): ?array
+    public function findAllByShopUser(int $shopUser): array
     {
         return $this->createQueryBuilder('o')
             ->where('o.shopUser = :shopUser')
             ->setParameter('shopUser', $shopUser)
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
-    public function findAllByShopUserAndToken(int $shopUser, string $token): ?array
+    public function findAllByShopUserAndToken(int $shopUser, string $token): array
     {
         $qb = $this->createQueryBuilder('o');
 
         return $qb->where('o.shopUser = :shopUser')
             ->orWhere($qb->expr()->andX(
                 'o.token = :token',
-                'o.shopUser IS NULL'
+                'o.shopUser IS NULL',
             ))
             ->setParameter('token', $token)
             ->setParameter('shopUser', $shopUser)
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
-    public function findAllByAnonymous(?string $token): ?array
+    public function findAllByAnonymous(?string $token): array
     {
         return $this->createQueryBuilder('o')
             ->where('o.token = :token')
@@ -83,12 +84,12 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->setParameter('token', $token)
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     public function findOneByShopUserAndChannel(
         ShopUserInterface $shopUser,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): ?WishlistInterface {
         return $this->createQueryBuilder('o')
             ->where('o.shopUser = :shopUser')
@@ -99,10 +100,10 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()
-            ;
+        ;
     }
 
-    public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): ?array
+    public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): array
     {
         $qb = $this->createQueryBuilder('o')
             ->andWhere('o.channel = :channel')
@@ -129,7 +130,7 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()
-            ;
+        ;
     }
 
     public function findOneByShopUserAndName(ShopUserInterface $shopUser, string $name): ?WishlistInterface
@@ -142,6 +143,6 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->setMaxResults(1)
             ->getOneOrNullResult()
-            ;
+        ;
     }
 }

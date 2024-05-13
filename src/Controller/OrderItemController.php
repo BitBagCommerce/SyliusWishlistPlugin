@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -14,12 +15,14 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseController;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Order\CartActions;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OrderItemController extends BaseController
 {
@@ -40,7 +43,7 @@ final class OrderItemController extends BaseController
         $form = $this->getFormFactory()->create(
             $formType,
             $this->createAddToCartCommand($cart, $orderItem),
-            $configuration->getFormOptions()
+            $configuration->getFormOptions(),
         );
 
         $form->handleRequest($request);
@@ -54,18 +57,20 @@ final class OrderItemController extends BaseController
 
             /** @var OrderItemInterface $item */
             $item = $addToCartCommand->getCartItem();
+            /** @var ?ProductVariantInterface $variant */
             $variant = $item->getVariant();
 
-            /** @var WishlistInterface $wishlist */
+            /** @var ?WishlistInterface $wishlist */
             $wishlist = $form->get('wishlists')->getData();
 
             if (null === $variant) {
                 throw new NotFoundHttpException('Could not find variant');
             }
 
-            if (null === $wishlist || null === $variant) {
+            if (null === $wishlist) {
                 /** @var Session $session */
                 $session = $request->getSession();
+                /** @var ?TranslatorInterface $translator */
                 $translator = $this->get('translator');
 
                 if (null !== $translator) {

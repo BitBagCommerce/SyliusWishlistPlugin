@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -12,6 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class WishlistItem implements WishlistItemInterface
 {
@@ -19,7 +21,7 @@ class WishlistItem implements WishlistItemInterface
 
     private ?AddToCartCommandInterface $cartItem;
 
-    private ?bool $selected;
+    private bool $selected;
 
     public function getWishlistProduct(): ?WishlistProductInterface
     {
@@ -31,12 +33,12 @@ class WishlistItem implements WishlistItemInterface
         $this->wishlistProduct = $wishlistProduct;
     }
 
-    public function isSelected(): ?bool
+    public function isSelected(): bool
     {
         return $this->selected;
     }
 
-    public function setSelected(?bool $selected): void
+    public function setSelected(bool $selected): void
     {
         $this->selected = $selected;
     }
@@ -53,6 +55,13 @@ class WishlistItem implements WishlistItemInterface
 
     public function getOrderItemQuantity(): int
     {
-        return $this->getCartItem()->getCartItem()->getQuantity();
+        /** @var ?AddToCartCommandInterface $addToCartCommand */
+        $addToCartCommand = $this->getCartItem();
+
+        if (null === $addToCartCommand) {
+            throw new ResourceNotFoundException();
+        }
+
+        return $addToCartCommand->getCartItem()->getQuantity();
     }
 }

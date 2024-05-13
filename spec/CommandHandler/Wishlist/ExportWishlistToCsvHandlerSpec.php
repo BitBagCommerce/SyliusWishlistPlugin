@@ -61,13 +61,7 @@ final class ExportWishlistToCsvHandlerSpec extends ObjectBehavior
     ): void {
         $wishlistProducts = new ArrayCollection([$wishlistItem->getWrappedObject()]);
 
-        $headers = [
-            'variantId',
-            'productId',
-            'variantCode',
-        ];
-
-        $file->fputcsv($headers)->shouldBeCalled();
+        $file->fputcsv(ExportWishlistToCsvHandler::CSV_HEADERS)->shouldBeCalled();
 
         $wishlistItem->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);

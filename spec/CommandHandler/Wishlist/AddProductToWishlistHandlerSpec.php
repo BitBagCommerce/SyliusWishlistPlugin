@@ -59,8 +59,7 @@ final class AddProductToWishlistHandlerSpec extends ObjectBehavior
         $wishlistManager->persist($wishlistProduct)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
 
-        $addProductToWishlist = new AddProductToWishlist(1);
-        $addProductToWishlist->setWishlist($wishlist->getWrappedObject());
+        $addProductToWishlist = new AddProductToWishlist(1, $wishlist->getWrappedObject());
 
         $this->__invoke($addProductToWishlist);
     }
@@ -82,8 +81,7 @@ final class AddProductToWishlistHandlerSpec extends ObjectBehavior
         $wishlistManager->persist($wishlistProduct)->shouldNotBeCalled();
         $wishlistManager->flush()->shouldNotBeCalled();
 
-        $addProductToWishlist = new AddProductToWishlist(1);
-        $addProductToWishlist->setWishlist($wishlist->getWrappedObject());
+        $addProductToWishlist = new AddProductToWishlist(1, $wishlist->getWrappedObject());
 
         $this
             ->shouldThrow(ProductNotFoundException::class)
