@@ -24,24 +24,12 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class RemoveProductVariantFromWishlistHandler implements MessageHandlerInterface
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private RepositoryInterface $wishlistProductRepository;
-
-    private ObjectManager $wishlistManager;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        RepositoryInterface $wishlistProductRepository,
-        ObjectManager $wishlistManager
+        private WishlistRepositoryInterface $wishlistRepository,
+        private ProductVariantRepositoryInterface $productVariantRepository,
+        private RepositoryInterface $wishlistProductRepository,
+        private ObjectManager $wishlistManager
     ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->productVariantRepository = $productVariantRepository;
-        $this->wishlistProductRepository = $wishlistProductRepository;
-        $this->wishlistManager = $wishlistManager;
     }
 
     public function __invoke(RemoveProductVariantFromWishlist $removeProductVariantFromWishlist): WishlistInterface

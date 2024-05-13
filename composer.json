@@ -4,8 +4,8 @@
     "description": "Wishlist plugin for Sylius.",
     "license": "MIT",
     "require": {
-        "php": "^8.0",
-        "sylius/sylius": "~1.11.0 || ~1.12.0 || ~1.13.x-dev",
+        "php": "^8.1",
+        "sylius/sylius": "~1.12.0 || ~1.13.0",
         "symfony/webpack-encore-bundle": "^1.15",
         "dompdf/dompdf": "^2.0"
     },
@@ -35,7 +35,9 @@
         "polishsymfonycommunity/symfony-mocker-container": "^1.0",
         "symfony/dependency-injection": "^5.4 || ^6.0",
         "league/flysystem-bundle": "2.4.0",
-        "sylius/mailer-bundle":  "^1.8 || ^2.0@beta"
+        "sylius/mailer-bundle":  "^1.8 || ^2.0@beta",
+        "lchrusciel/api-test-case": "^4.1 || ^5.0",
+        "nelmio/alice": "^3.10"
     },
     "conflict": {
         "symfony/symfony": "4.1.8",
@@ -52,7 +54,12 @@
         }
     },
     "autoload-dev": {
-        "classmap": ["tests/Application/Kernel.php"]
+        "classmap": ["tests/Application/Kernel.php"],
+        "psr-4": {
+            "BitBag\\SyliusWishlistPlugin\\": "src/",
+            "Tests\\BitBag\\SyliusWishlistPlugin\\": "tests/",
+            "Sylius\\Tests\\Api\\": ["vendor/sylius/sylius/tests/Api/"]
+        }
     },
     "config": {
         "allow-plugins": {
@@ -61,6 +68,15 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "symfony/thanks": true,
             "symfony/flex": true
+        },
+        "preferred-install": {
+            "sylius/sylius": "source"
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     }
 }

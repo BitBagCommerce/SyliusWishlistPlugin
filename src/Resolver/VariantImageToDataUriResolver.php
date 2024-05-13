@@ -14,11 +14,9 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class VariantImageToDataUriResolver implements VariantImageToDataUriResolverInterface
 {
-    private GenerateDataUriForImageResolverInterface $dataUriForImageResolver;
-
-    public function __construct(GenerateDataUriForImageResolverInterface $dataUriForImageResolver)
-    {
-        $this->dataUriForImageResolver = $dataUriForImageResolver;
+    public function __construct(
+        private GenerateDataUriForImageResolverInterface $dataUriForImageResolver
+    ) {
     }
 
     public function resolve(ProductVariantInterface $variant, string $baseUrl): string
@@ -31,7 +29,7 @@ final class VariantImageToDataUriResolver implements VariantImageToDataUriResolv
 
         $fileExt = explode('.', $image->getPath());
 
-        if ($fileExt[1] === "svg") {
+        if ('svg' === $fileExt[1]) {
             return $this->dataUriForImageResolver->resolveWithNoImage();
         }
 

@@ -29,26 +29,14 @@ final class ImportWishlistFromCsvAction
 {
     use HandleTrait;
 
-    private FormFactoryInterface $formFactory;
-
-    private RequestStack $requestStack;
-
-    private Environment $twigEnvironment;
-
-    private WishlistsResolverInterface $wishlistsResolver;
-
     public function __construct(
-        FormFactoryInterface $formFactory,
-        RequestStack $requestStack,
-        MessageBusInterface $messageBus,
-        Environment $twigEnvironment,
-        WishlistsResolverInterface $wishlistsResolver
+        private FormFactoryInterface $formFactory,
+        private RequestStack $requestStack,
+        private Environment $twigEnvironment,
+        private WishlistsResolverInterface $wishlistsResolver,
+        MessageBusInterface $messageBus
     ) {
-        $this->formFactory = $formFactory;
-        $this->requestStack = $requestStack;
         $this->messageBus = $messageBus;
-        $this->twigEnvironment = $twigEnvironment;
-        $this->wishlistsResolver = $wishlistsResolver;
     }
 
     public function __invoke(Request $request): Response

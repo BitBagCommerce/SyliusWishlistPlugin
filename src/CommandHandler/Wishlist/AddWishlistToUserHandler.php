@@ -19,16 +19,10 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class AddWishlistToUserHandler implements MessageHandlerInterface
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        private WishlistRepositoryInterface $wishlistRepository,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
     public function __invoke(AddWishlistToUser $addWishlistsToUser): void
@@ -37,12 +31,12 @@ final class AddWishlistToUserHandler implements MessageHandlerInterface
         $user = $addWishlistsToUser->getShopUser();
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
-        if ($wishlistCookieToken !== $wishlist->getToken()){
+        if ($wishlistCookieToken !== $wishlist->getToken()) {
             throw new WishlistHasAnotherShopUserException();
         }
 
         if ($this->wishlistRepository->findOneByShopUserAndName($user, $wishlist->getName()) instanceof WishlistInterface) {
-            $wishlist->setName($wishlist->getName().$wishlist->getId());
+            $wishlist->setName($wishlist->getName() . $wishlist->getId());
         }
 
         $wishlist->setShopUser($user);

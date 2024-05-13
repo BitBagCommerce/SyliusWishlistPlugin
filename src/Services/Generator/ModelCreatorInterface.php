@@ -15,5 +15,5 @@ use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 
 interface ModelCreatorInterface
 {
-    public function createWishlistItemToPdf(WishlistItemInterface $wishlistProduct): VariantPdfModelInterface;
+    public function createWishlistItemToPdf(WishlistItemInterface $wishlistItem): VariantPdfModelInterface;
 }

@@ -1,0 +1,34 @@
+{
+  "@context":"\/api\/v2\/contexts\/Wishlist",
+  "@id":"\/api\/v2\/shop\/wishlists\/@string@",
+  "@type":"Wishlist",
+  "id":"@integer@",
+  "wishlistProducts":[
+    {
+      "@type":"WishlistProduct",
+      "product":{
+        "@id":"\/api\/v2\/shop\/products\/@string@",
+        "@type":"Product",
+        "id":"@integer@",
+        "variants":[
+          "\/api\/v2\/shop\/product-variants\/@string@"
+        ],
+        "defaultVariant":"\/api\/v2\/shop\/product-variants\/@string@"
+      },
+      "variant":{
+        "@id":"\/api\/v2\/shop\/product-variants\/@string@",
+        "@type":"ProductVariant",
+        "id":"@integer@",
+        "inStock":true
+      },
+      "quantity":"@integer@"
+    }
+  ],
+  "shopUser":{
+    "@id": "\/api\/v2\/admin\/shop-users\/@integer@",
+    "@type":"ShopUser",
+    "id":"@integer@",
+    "email":"@string@"
+  },
+  "token":"@string@"
+}

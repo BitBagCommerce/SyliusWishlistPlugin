@@ -18,25 +18,16 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ModelCreator implements ModelCreatorInterface
 {
-    private VariantImageToDataUriResolverInterface $variantImageToDataUriResolver;
-
-    private VariantPdfModelFactoryInterface $variantPdfModelFactory;
-
-    private RequestStack $requestStack;
-
     public function __construct(
-        VariantImageToDataUriResolverInterface $variantImageToDataUriResolver,
-        VariantPdfModelFactoryInterface $variantPdfModelFactory,
-        RequestStack $requestStack
+        private VariantImageToDataUriResolverInterface $variantImageToDataUriResolver,
+        private VariantPdfModelFactoryInterface $variantPdfModelFactory,
+        private RequestStack $requestStack
     ) {
-        $this->variantImageToDataUriResolver = $variantImageToDataUriResolver;
-        $this->variantPdfModelFactory = $variantPdfModelFactory;
-        $this->requestStack = $requestStack;
     }
 
-    public function createWishlistItemToPdf(WishlistItemInterface $wishlistProduct): VariantPdfModelInterface
+    public function createWishlistItemToPdf(WishlistItemInterface $wishlistItem): VariantPdfModelInterface
     {
-        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
+        $cartItem = $wishlistItem->getCartItem()->getCartItem();
         $variant = $cartItem->getVariant();
         $quantity = $cartItem->getQuantity();
         $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();

@@ -24,24 +24,12 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
 {
-    private ProductRepositoryInterface $productRepository;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private RepositoryInterface $wishlistProductRepository;
-
-    private ObjectManager $wishlistManager;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        WishlistRepositoryInterface $wishlistRepository,
-        RepositoryInterface $wishlistProductRepository,
-        ObjectManager $wishlistManager
+        private ProductRepositoryInterface $productRepository,
+        private WishlistRepositoryInterface $wishlistRepository,
+        private RepositoryInterface $wishlistProductRepository,
+        private ObjectManager $wishlistManager
     ) {
-        $this->productRepository = $productRepository;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistProductRepository = $wishlistProductRepository;
-        $this->wishlistManager = $wishlistManager;
     }
 
     public function __invoke(RemoveProductFromWishlist $removeProductFromWishlist): WishlistInterface
@@ -51,9 +39,10 @@ final class RemoveProductFromWishlistHandler implements MessageHandlerInterface
 
         /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($productId);
-        /** @var ?WishlistProductInterface $wishlistProduct */
-       /** @var ?WishlistInterface $wishlist */
+
+        /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->findByToken($token);
+
         /** @var ?WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductRepository->findOneBy(['product' => $product, 'wishlist' => $wishlist]);
 

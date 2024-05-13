@@ -23,32 +23,14 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class WishlistContext implements WishlistContextInterface
 {
-    private TokenStorageInterface $tokenStorage;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private string $wishlistCookieToken;
-
-    private ChannelContextInterface $channelContext;
-
-    private TokenUserResolverInterface $tokenUserResolver;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistFactoryInterface $wishlistFactory,
-        string $wishlistCookieToken,
-        ChannelContextInterface $channelContext,
-        TokenUserResolverInterface $tokenUserResolver,
-    ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->wishlistCookieToken = $wishlistCookieToken;
-        $this->channelContext = $channelContext;
-        $this->tokenUserResolver = $tokenUserResolver;
+        private TokenStorageInterface $tokenStorage,
+        private WishlistRepositoryInterface $wishlistRepository,
+        private WishlistFactoryInterface $wishlistFactory,
+        private string $wishlistCookieToken,
+        private ChannelContextInterface $channelContext,
+        private TokenUserResolverInterface $tokenUserResolver,
+        ) {
     }
 
     public function getWishlist(Request $request): WishlistInterface

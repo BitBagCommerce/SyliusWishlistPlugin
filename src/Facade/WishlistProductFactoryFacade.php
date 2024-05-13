@@ -18,11 +18,9 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class WishlistProductFactoryFacade implements WishlistProductFactoryFacadeInterface
 {
-    private WishlistProductFactoryInterface $wishlistProductFactory;
-
-    public function __construct(WishlistProductFactoryInterface $wishlistProductFactory)
-    {
-        $this->wishlistProductFactory = $wishlistProductFactory;
+    public function __construct(
+        private WishlistProductFactoryInterface $wishlistProductFactory
+    ) {
     }
 
     public function createWithProduct(WishlistInterface $wishlist, ProductInterface $product): void

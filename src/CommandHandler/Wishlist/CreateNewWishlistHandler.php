@@ -1,15 +1,16 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
  * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 */
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Checker\WishlistNameCheckerInterface;
-use BitBag\SyliusWishlistPlugin\Checker\WishlistCanBeCreatedCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
@@ -24,36 +25,15 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class CreateNewWishlistHandler implements MessageHandlerInterface
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private TokenStorageInterface $tokenStorage;
-
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
-    private ChannelRepositoryInterface $channelRepository;
-
-    private WishlistNameCheckerInterface $wishlistNameChecker;
-
-    private TokenUserResolverInterface $tokenUserResolver;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        TokenStorageInterface $tokenStorage,
-        WishlistFactoryInterface $wishlistFactory,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        ChannelRepositoryInterface $channelRepository,
-        WishlistNameCheckerInterface $wishlistNameChecker,
-        TokenUserResolverInterface $tokenUserResolver,
+        private WishlistRepositoryInterface $wishlistRepository,
+        private TokenStorageInterface $tokenStorage,
+        private WishlistFactoryInterface $wishlistFactory,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        private ChannelRepositoryInterface $channelRepository,
+        private WishlistNameCheckerInterface $wishlistNameChecker,
+        private TokenUserResolverInterface $tokenUserResolver
     ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-        $this->channelRepository = $channelRepository;
-        $this->wishlistNameChecker = $wishlistNameChecker;
-        $this->tokenUserResolver = $tokenUserResolver;
     }
 
     public function __invoke(CreateNewWishlist $createNewWishlist): void
@@ -80,7 +60,7 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
             $wishlist->setChannel($channel);
         }
 
-        /** @var WishlistInterface $wishlist */
+        /** @var WishlistInterface $newWishlist */
         foreach ($wishlists as $newWishlist) {
             if (!$this->wishlistNameChecker->check($newWishlist->getName(), $createNewWishlist->getName())) {
                 $wishlist->setName($createNewWishlist->getName());

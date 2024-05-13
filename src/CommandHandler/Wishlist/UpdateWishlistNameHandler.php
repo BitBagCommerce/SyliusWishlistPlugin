@@ -15,16 +15,10 @@ use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 
 final class UpdateWishlistNameHandler
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        private WishlistRepositoryInterface $wishlistRepository,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
     ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
     public function __invoke(UpdateWishlistName $updateWishlistName): void

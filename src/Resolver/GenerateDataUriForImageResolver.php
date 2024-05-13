@@ -16,20 +16,11 @@ use Symfony\Component\Asset\PackageInterface;
 
 final class GenerateDataUriForImageResolver implements GenerateDataUriForImageResolverInterface
 {
-    private PackageInterface $package;
-
-    private FilterService $filterService;
-
-    private string $imageFilterName;
-
     public function __construct(
-        PackageInterface $package,
-        FilterService $filterService,
-        string $imageFilterName
+        private PackageInterface $package,
+        private FilterService $filterService,
+        private string $imageFilterName
     ) {
-        $this->package = $package;
-        $this->filterService = $filterService;
-        $this->imageFilterName = $imageFilterName;
     }
 
     public function resolve(ProductImageInterface $image): string
@@ -44,7 +35,7 @@ final class GenerateDataUriForImageResolver implements GenerateDataUriForImageRe
 
     public function resolveWithNoImage(): string
     {
-        $pathToReadFile =  self::PATH_TO_EMPTY_PRODUCT_IMAGE;
+        $pathToReadFile = self::PATH_TO_EMPTY_PRODUCT_IMAGE;
         $data = file_get_contents($pathToReadFile);
 
         return 'data:image/' . 'png' . ';base64,' . base64_encode($data);

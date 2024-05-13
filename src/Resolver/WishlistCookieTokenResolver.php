@@ -16,16 +16,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverInterface
 {
-    private RequestStack $requestStack;
-
-    private string $wishlistCookieToken;
-
     public function __construct(
-        RequestStack $requestStack,
-        string $wishlistCookieToken
+        private RequestStack $requestStack,
+        private string $wishlistCookieToken
     ) {
-        $this->requestStack = $requestStack;
-        $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
     public function resolve(): string

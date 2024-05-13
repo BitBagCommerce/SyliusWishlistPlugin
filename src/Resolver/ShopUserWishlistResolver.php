@@ -20,20 +20,11 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterface
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private ChannelContextInterface $channelContext;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistFactoryInterface $wishlistFactory,
-        ChannelContextInterface $channelContext
+        private WishlistRepositoryInterface $wishlistRepository,
+        private WishlistFactoryInterface $wishlistFactory,
+        private ChannelContextInterface $channelContext
     ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->channelContext = $channelContext;
     }
 
     public function resolve(ShopUserInterface $user): WishlistInterface

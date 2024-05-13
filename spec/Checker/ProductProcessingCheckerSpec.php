@@ -23,7 +23,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ProductProcessingCheckerSpec extends ObjectBehavior
 {
     public function let(
-
         ProductQuantityCheckerInterface $productQuantityChecker
     ): void {
         $this->beConstructedWith(

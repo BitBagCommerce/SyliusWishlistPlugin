@@ -24,12 +24,12 @@ final class WishlistFactorySpec extends ObjectBehavior
         $this->beConstructedWith($factory);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(WishlistFactory::class);
     }
 
-    function it_implements_wishlist_factory_interface(): void
+    public function it_implements_wishlist_factory_interface(): void
     {
         $this->shouldHaveType(WishlistFactoryInterface::class);
     }
@@ -41,8 +41,11 @@ final class WishlistFactorySpec extends ObjectBehavior
         $this->createNew()->shouldReturn($wishlist);
     }
 
-    function it_creates_wishlist_for_user(FactoryInterface $factory, WishlistInterface $wishlist, ShopUserInterface $shopUser): void
-    {
+    public function it_creates_wishlist_for_user(
+        FactoryInterface $factory,
+        WishlistInterface $wishlist,
+        ShopUserInterface $shopUser
+    ): void {
         $factory->createNew()->willReturn($wishlist);
 
         $wishlist->setName('Wishlist')->shouldBeCalled();

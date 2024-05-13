@@ -26,16 +26,10 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
         'variantCode',
     ];
 
-    private CsvWishlistProductFactoryInterface $csvWishlistProductFactory;
-
-    private CsvSerializerFactoryInterface $csvSerializerFactory;
-
     public function __construct(
-        CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
-        CsvSerializerFactoryInterface $csvSerializerFactory
+        private CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
+        private CsvSerializerFactoryInterface $csvSerializerFactory
     ) {
-        $this->csvWishlistProductFactory = $csvWishlistProductFactory;
-        $this->csvSerializerFactory = $csvSerializerFactory;
     }
 
     public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject

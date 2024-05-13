@@ -26,25 +26,14 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
     private const ALLOWED_ENDPOINTS_PREFIX = '/wishlist';
 
-    private string $wishlistCookieToken;
-
-    private WishlistsResolverInterface $wishlistsResolver;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
-    private ?Request $mainRequest = null;
-
     public function __construct(
-        string $wishlistCookieToken,
-        WishlistsResolverInterface $wishlistsResolver,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        RequestStack $requestStack,
+        private string $wishlistCookieToken,
+        private WishlistsResolverInterface $wishlistsResolver,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        private RequestStack $requestStack,
+        private ?Request $mainRequest = null
     ) {
-        $this->wishlistCookieToken = $wishlistCookieToken;
-        $this->wishlistsResolver = $wishlistsResolver;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-
-        $this->mainRequest = $requestStack->getMainRequest();
+        $this->mainRequest = $this->requestStack->getMainRequest();
     }
 
     public static function getSubscribedEvents(): array

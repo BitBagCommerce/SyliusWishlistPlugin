@@ -26,40 +26,16 @@ use Webmozart\Assert\Assert;
 
 final class CreateWishlistHandler implements MessageHandlerInterface
 {
-    private TokenStorageInterface $tokenStorage;
-
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private ShopUserWishlistResolverInterface $shopUserWishlistResolver;
-
-    private ObjectManager $wishlistManager;
-
-    private ChannelRepositoryInterface $channelRepository;
-
-    private TokenUserResolverInterface $tokenUserResolver;
-
-    private RequestStack $requestStack;
-
-    private string $wishlistCookieToken;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        WishlistFactoryInterface $wishlistFactory,
-        ShopUserWishlistResolverInterface $shopUserWishlistResolver,
-        ObjectManager $wishlistManager,
-        ChannelRepositoryInterface $channelRepository,
-        TokenUserResolverInterface $tokenUserResolver,
-        RequestStack $requestStack,
-        string $wishlistCookieToken,
+        private TokenStorageInterface $tokenStorage,
+        private WishlistFactoryInterface $wishlistFactory,
+        private ShopUserWishlistResolverInterface $shopUserWishlistResolver,
+        private ObjectManager $wishlistManager,
+        private ChannelRepositoryInterface $channelRepository,
+        private TokenUserResolverInterface $tokenUserResolver,
+        private RequestStack $requestStack,
+        private string $wishlistCookieToken
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->shopUserWishlistResolver = $shopUserWishlistResolver;
-        $this->wishlistManager = $wishlistManager;
-        $this->channelRepository = $channelRepository;
-        $this->tokenUserResolver = $tokenUserResolver;
-        $this->requestStack = $requestStack;
-        $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
@@ -76,8 +52,7 @@ final class CreateWishlistHandler implements MessageHandlerInterface
             $wishlist = $this->shopUserWishlistResolver->resolve($user);
         }
 
-        if (null !== $createWishlist->getTokenValue())
-        {
+        if (null !== $createWishlist->getTokenValue()) {
             $wishlist->setToken($createWishlist->getTokenValue());
             $mainRequest = $this->requestStack->getMainRequest();
 

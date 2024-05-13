@@ -49,7 +49,7 @@ final class AddWishlistToUserAction
         UrlGeneratorInterface $urlGenerator,
         TokenStorageInterface $tokenStorage,
         TokenUserResolverInterface $tokenUserResolver,
-    ) {
+        ) {
         $this->commandBus = $commandBus;
         $this->requestStack = $requestStack;
         $this->translator = $translator;

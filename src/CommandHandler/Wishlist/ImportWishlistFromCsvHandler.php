@@ -28,32 +28,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
 {
-    private AddProductVariantToWishlistAction $addProductVariantToWishlistAction;
-
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private array $allowedMimeTypes;
-
-    private CsvSerializerFactoryInterface $csvSerializerFactory;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        array $allowedMimeTypes,
-        CsvSerializerFactoryInterface $csvSerializerFactory,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
+        private AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
+        private ProductVariantRepositoryInterface $productVariantRepository,
+        private array $allowedMimeTypes,
+        private CsvSerializerFactoryInterface $csvSerializerFactory,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator
     ) {
-        $this->addProductVariantToWishlistAction = $addProductVariantToWishlistAction;
-        $this->productVariantRepository = $productVariantRepository;
-        $this->allowedMimeTypes = $allowedMimeTypes;
-        $this->csvSerializerFactory = $csvSerializerFactory;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
     }
 
     public function __invoke(ImportWishlistFromCsv $importWishlistFromCsv): Response

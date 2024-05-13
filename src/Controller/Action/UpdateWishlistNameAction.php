@@ -15,7 +15,6 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -73,6 +72,7 @@ final class UpdateWishlistNameAction
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_already_exists')
             );
         }
+
         return new Response($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products'));
     }
 }

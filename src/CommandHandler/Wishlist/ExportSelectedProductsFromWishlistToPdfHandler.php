@@ -16,12 +16,9 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class ExportSelectedProductsFromWishlistToPdfHandler implements MessageHandlerInterface
 {
-    private WishlistToPdfExporterInterface $exporterWishlistToPdf;
-
     public function __construct(
-        WishlistToPdfExporterInterface $exporterWishlistToPdf
+        private WishlistToPdfExporterInterface $exporterWishlistToPdf
     ) {
-        $this->exporterWishlistToPdf = $exporterWishlistToPdf;
     }
 
     public function __invoke(ExportSelectedProductsFromWishlistToPdfInterface $exportSelectedProductsFromWishlistToPdf): void
