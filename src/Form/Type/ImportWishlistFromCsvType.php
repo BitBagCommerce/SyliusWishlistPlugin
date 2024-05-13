@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints\File;
 
 final class ImportWishlistFromCsvType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('wishlist_file', FileType::class, [
@@ -48,7 +48,7 @@ final class ImportWishlistFromCsvType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'maxFileSize' => '512k',
