@@ -46,7 +46,7 @@ final class ExportWishlistToCsvHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(ExportWishlistToCsvHandler::class);
     }
 
-    public function it_export_wishlist_to_csv(
+    public function it_exports_wishlist_to_csv(
         AddToCartCommandInterface $addToCartCommand,
         OrderItemInterface $orderItem,
         ProductVariantInterface $productVariant,

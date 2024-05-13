@@ -90,30 +90,4 @@ final class AddProductToWishlistHandlerSpec extends ObjectBehavior
             ->during('__invoke', [$addProductToWishlist])
         ;
     }
-
-//    public function it_doesnt_add_product_to_wishlist_if_wishlist_isnt_found(
-//        ProductInterface $product,
-//        WishlistInterface $wishlist,
-//        ProductRepositoryInterface $productRepository,
-//        WishlistProductFactoryInterface $wishlistProductFactory,
-//        WishlistProductInterface $wishlistProduct,
-//        ObjectManager $wishlistManager
-//    ): void
-//    {
-//        $productRepository->find(1)->willReturn($product);
-//
-//        $wishlistProductFactory->createForWishlistAndProduct($wishlist, $product)->shouldNotBeCalled();
-//        $wishlist->addWishlistProduct($wishlistProduct)->shouldNotBeCalled();
-//
-//        $wishlistManager->persist($wishlistProduct)->shouldNotBeCalled();
-//        $wishlistManager->flush()->shouldNotBeCalled();
-//
-//        $addProductToWishlist = new AddProductToWishlist(1);
-//        $addProductToWishlist->setWishlist($wishlist->getWrappedObject());
-//
-//        $this
-//            ->shouldThrow(WishlistNotFoundException::class)
-//            ->during('__invoke', [$addProductToWishlist])
-//        ;
-//    }
 }

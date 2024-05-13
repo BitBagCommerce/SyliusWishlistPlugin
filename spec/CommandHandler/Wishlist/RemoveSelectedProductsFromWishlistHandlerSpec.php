@@ -49,6 +49,28 @@ final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(RemoveSelectedProductsFromWishlistHandler::class);
     }
 
+    public function it_removes_selected_products_from_wishlist(
+        ProductVariantRepositoryInterface $productVariantRepository,
+        WishlistItemInterface $wishlistItem,
+        WishlistProductInterface $wishlistProduct,
+        ProductVariantInterface $productVariant,
+        RequestStack $requestStack,
+        Session $session,
+        FlashBagInterface $flashBag,
+        TranslatorInterface $translator
+    ): void {
+        $removeSelectedProductsCommand = new RemoveSelectedProductsFromWishlist(new ArrayCollection([$wishlistItem->getWrappedObject()]));
+
+        $productVariant->getId()->willReturn(1);
+        $wishlistItem->getWishlistProduct()->willReturn($wishlistProduct);
+        $wishlistProduct->getVariant()->willReturn($productVariant);
+        $productVariantRepository->find($productVariant)->willReturn($productVariant);
+        $requestStack->getSession()->willReturn($session);
+        $session->getFlashBag()->willReturn($flashBag);
+
+        $this->__invoke($removeSelectedProductsCommand);
+    }
+
     public function it_throws_exception_when_variant_not_found(
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistItemInterface $wishlistItem,
