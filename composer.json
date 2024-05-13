@@ -67,7 +67,7 @@
             "composer/package-versions-deprecated": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "symfony/thanks": true,
-            "symfony/flex": true
+            "symfony/flex": false
         },
         "preferred-install": {
             "sylius/sylius": "source"
