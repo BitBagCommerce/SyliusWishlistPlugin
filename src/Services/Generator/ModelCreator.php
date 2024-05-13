@@ -25,9 +25,9 @@ final class ModelCreator implements ModelCreatorInterface
     ) {
     }
 
-    public function createWishlistItemToPdf(WishlistItemInterface $wishlistProduct): VariantPdfModelInterface
+    public function createWishlistItemToPdf(WishlistItemInterface $wishlistItem): VariantPdfModelInterface
     {
-        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
+        $cartItem = $wishlistItem->getCartItem()->getCartItem();
         $variant = $cartItem->getVariant();
         $quantity = $cartItem->getQuantity();
         $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();

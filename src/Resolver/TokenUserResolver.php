@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
+use BitBag\SyliusWishlistPlugin\Util\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -22,7 +23,7 @@ final class TokenUserResolver implements TokenUserResolverInterface
         }
 
         $user = $token->getUser();
-        if (is_string($user) && 'anon.' === $user) {
+        if (is_string($user) && User::SYMFONY_5_ANON_USER === $user) {
             return null;
         }
 

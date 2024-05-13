@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Model\Factory;
 
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModel;
+use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class VariantPdfModelFactory implements VariantPdfModelFactoryInterface
@@ -20,7 +21,7 @@ final class VariantPdfModelFactory implements VariantPdfModelFactoryInterface
         string $path,
         int $quantity,
         string $actualVariant
-    ): VariantPdfModel {
+    ): VariantPdfModelInterface {
         $productPdfModel = new VariantPdfModel();
 
         $productPdfModel->setVariant($variant);

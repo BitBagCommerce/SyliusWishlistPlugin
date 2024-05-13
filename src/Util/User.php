@@ -8,8 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
+namespace BitBag\SyliusWishlistPlugin\Util;
 
-interface WishlistSyncCommandInterface
+class User
 {
+    public const SYMFONY_5_ANON_USER = 'anon.';
 }

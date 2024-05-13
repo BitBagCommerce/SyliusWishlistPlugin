@@ -13,7 +13,6 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductInterface;
@@ -40,12 +39,6 @@ final class AddProductToWishlistHandler implements MessageHandlerInterface
         if (null === $product) {
             throw new ProductNotFoundException(
                 sprintf('The Product %s does not exist', $productId)
-            );
-        }
-
-        if (null === $wishlist) {
-            throw new WishlistNotFoundException(
-                'bitbag_sylius_wishlist_plugin.ui.wishlist_for_channel_not_found'
             );
         }
 
