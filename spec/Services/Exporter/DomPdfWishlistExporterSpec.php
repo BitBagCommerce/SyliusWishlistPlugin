@@ -24,11 +24,11 @@ final class DomPdfWishlistExporterSpec extends ObjectBehavior
 {
     public function let(
         Environment $twigEnvironment,
-        DomPdfFactoryInterface $domPdfFactory
+        DomPdfFactoryInterface $domPdfFactory,
     ) {
         $this->beConstructedWith(
             $twigEnvironment,
-            $domPdfFactory
+            $domPdfFactory,
         );
     }
 
@@ -42,7 +42,7 @@ final class DomPdfWishlistExporterSpec extends ObjectBehavior
         Environment $twigEnvironment,
         VariantPdfModelInterface $pdfModel,
         Dompdf $dompdf,
-        DomPdfFactoryInterface $domPdfFactory
+        DomPdfFactoryInterface $domPdfFactory,
     ): void {
         $domPdfFactory->createNewWithDefaultOptions()->willReturn($dompdf);
 

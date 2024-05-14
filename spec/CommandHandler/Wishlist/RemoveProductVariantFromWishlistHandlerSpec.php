@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -29,13 +30,13 @@ final class RemoveProductVariantFromWishlistHandlerSpec extends ObjectBehavior
         WishlistRepositoryInterface $wishlistRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
         RepositoryInterface $wishlistProductRepository,
-        ObjectManager $wishlistManager
+        ObjectManager $wishlistManager,
     ): void {
         $this->beConstructedWith(
             $wishlistRepository,
             $productVariantRepository,
             $wishlistProductRepository,
-            $wishlistManager
+            $wishlistManager,
         );
     }
 
@@ -51,7 +52,7 @@ final class RemoveProductVariantFromWishlistHandlerSpec extends ObjectBehavior
         ObjectManager $wishlistManager,
         ProductVariantInterface $variant,
         WishlistInterface $wishlist,
-        WishlistProductInterface $wishlistProduct
+        WishlistProductInterface $wishlistProduct,
     ): void {
         $removeProductVariantCommand = new RemoveProductVariantFromWishlist(1, 'wishlist_token');
 
@@ -66,7 +67,7 @@ final class RemoveProductVariantFromWishlistHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_exception_when_product_variant_not_found(
-        ProductVariantRepositoryInterface $productVariantRepository
+        ProductVariantRepositoryInterface $productVariantRepository,
     ): void {
         $removeProductVariantCommand = new RemoveProductVariantFromWishlist(1, 'wishlist_token');
 

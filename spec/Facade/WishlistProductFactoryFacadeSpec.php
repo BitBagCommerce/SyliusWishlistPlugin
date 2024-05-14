@@ -23,10 +23,10 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 final class WishlistProductFactoryFacadeSpec extends ObjectBehavior
 {
     public function let(
-        WishlistProductFactoryInterface $wishlistProductFactory
+        WishlistProductFactoryInterface $wishlistProductFactory,
     ): void {
         $this->beConstructedWith(
-            $wishlistProductFactory
+            $wishlistProductFactory,
         );
     }
 
@@ -40,7 +40,7 @@ final class WishlistProductFactoryFacadeSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         ProductVariantInterface $productVariant,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        WishlistProductInterface $wishlistProduct
+        WishlistProductInterface $wishlistProduct,
     ): void {
         $wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant)
             ->willReturn($wishlistProduct);
@@ -56,7 +56,7 @@ final class WishlistProductFactoryFacadeSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         ProductInterface $product,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        WishlistProductInterface $wishlistProduct
+        WishlistProductInterface $wishlistProduct,
     ): void {
         $wishlistProductFactory->createForWishlistAndProduct($wishlist, $product)
             ->willReturn($wishlistProduct);

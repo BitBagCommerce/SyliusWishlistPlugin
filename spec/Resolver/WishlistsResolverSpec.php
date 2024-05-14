@@ -1,39 +1,28 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolver;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
-use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
-use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -45,7 +34,7 @@ final class WishlistsResolverSpec extends ObjectBehavior
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         ChannelContextInterface $channelContext,
         TokenUserResolverInterface $tokenUserResolver,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
     ): void {
         $this->beConstructedWith(
             $wishlistRepository,
@@ -53,7 +42,7 @@ final class WishlistsResolverSpec extends ObjectBehavior
             $wishlistCookieTokenResolver,
             $channelContext,
             $tokenUserResolver,
-            $messageBus
+            $messageBus,
         );
     }
 
@@ -72,10 +61,10 @@ final class WishlistsResolverSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         TokenInterface $token,
         ShopUserInterface $user,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $wishlists = [
-            $wishlist->getWrappedObject()
+            $wishlist->getWrappedObject(),
         ];
 
         $wishlistToken = 'wishlist_token';
@@ -98,10 +87,10 @@ final class WishlistsResolverSpec extends ObjectBehavior
         TokenUserResolverInterface $tokenUserResolver,
         WishlistInterface $wishlist,
         TokenInterface $token,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $wishlists = [
-            $wishlist->getWrappedObject()
+            $wishlist->getWrappedObject(),
         ];
 
         $wishlistToken = 'wishlist_token';
@@ -122,10 +111,10 @@ final class WishlistsResolverSpec extends ObjectBehavior
         ChannelContextInterface $channelContext,
         TokenUserResolverInterface $tokenUserResolver,
         WishlistInterface $wishlist,
-        TokenInterface $token
+        TokenInterface $token,
     ): void {
         $wishlists = [
-            $wishlist->getWrappedObject()
+            $wishlist->getWrappedObject(),
         ];
 
         $wishlistToken = 'wishlist_token';

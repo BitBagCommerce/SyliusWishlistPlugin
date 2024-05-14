@@ -23,10 +23,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ProductProcessingCheckerSpec extends ObjectBehavior
 {
     public function let(
-        ProductQuantityCheckerInterface $productQuantityChecker
+        ProductQuantityCheckerInterface $productQuantityChecker,
     ): void {
         $this->beConstructedWith(
-            $productQuantityChecker
+            $productQuantityChecker,
         );
     }
 
@@ -39,7 +39,7 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
         WishlistItem $wishlistProduct,
         AddToCartCommandInterface $addToCartCommand,
         OrderItemInterface $orderItem,
-        ProductQuantityCheckerInterface $productQuantityChecker
+        ProductQuantityCheckerInterface $productQuantityChecker,
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
@@ -55,7 +55,7 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
         OrderItemInterface $orderItem,
         ProductQuantityCheckerInterface $productQuantityChecker,
         FlashBagInterface $flashBag,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
@@ -71,7 +71,7 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
         OrderItemInterface $orderItem,
         ProductQuantityCheckerInterface $productQuantityChecker,
         FlashBagInterface $flashBag,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);

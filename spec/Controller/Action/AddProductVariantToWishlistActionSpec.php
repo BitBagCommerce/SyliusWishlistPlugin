@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -36,7 +37,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         RequestStack $requestStack,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
     ): void {
         $this->beConstructedWith(
             $productVariantRepository,
@@ -44,7 +45,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
             $requestStack,
             $translator,
             $urlGenerator,
-            $wishlistRepository
+            $wishlistRepository,
         );
     }
 
@@ -55,7 +56,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
 
     public function it_throws_404_when_wishlist_is_not_found(
         Request $request,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
     ): void {
         $wishlistRepository->find(1)->willReturn(null);
 
@@ -66,7 +67,7 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
         Request $request,
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistInterface $wishlist
+        WishlistInterface $wishlist,
     ): void {
         $wishlistRepository->find(1)->willReturn($wishlist);
         $request->get('variantId')->willReturn(1);

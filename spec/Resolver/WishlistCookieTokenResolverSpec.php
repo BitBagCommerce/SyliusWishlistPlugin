@@ -1,10 +1,12 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
@@ -13,7 +15,6 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolver;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class WishlistCookieTokenResolverSpec extends ObjectBehavior
 {
     public function let(
-        RequestStack $requestStack
+        RequestStack $requestStack,
     ): void {
         $this->beConstructedWith($requestStack, 'token');
     }
@@ -35,7 +36,7 @@ final class WishlistCookieTokenResolverSpec extends ObjectBehavior
     public function it_returns_wishlist_cookie_token_from_main_request_cookies(
         RequestStack $requestStack,
         Request $request,
-        ParameterBag $inputBag
+        ParameterBag $inputBag,
     ): void {
         $requestStack->getMainRequest()->willReturn($request);
         $inputBag->get('token')->willReturn('wishlist_token');
@@ -48,7 +49,7 @@ final class WishlistCookieTokenResolverSpec extends ObjectBehavior
         RequestStack $requestStack,
         Request $request,
         ParameterBag $inputBagCookies,
-        ParameterBag $inputBagAttributes
+        ParameterBag $inputBagAttributes,
     ): void {
         $requestStack->getMainRequest()->willReturn($request);
         $inputBagCookies->get('token')->willReturn(null);
@@ -64,7 +65,7 @@ final class WishlistCookieTokenResolverSpec extends ObjectBehavior
         Request $request,
         ParameterBag $inputBagCookies,
         ParameterBag $inputBagAttributes,
-        WishlistToken $wishlistToken
+        WishlistToken $wishlistToken,
     ): void {
         $requestStack->getMainRequest()->willReturn($request);
         $inputBagCookies->get('token')->willReturn(null);

@@ -1,17 +1,17 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistTokenValueAwareInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
@@ -27,12 +27,12 @@ final class AddProductVariantToWishlistHandlerSpec extends ObjectBehavior
     public function let(
         WishlistProductFactoryInterface $wishlistProductFactory,
         ProductVariantRepositoryInterface $productVariantRepository,
-        ObjectManager $wishlistManager
+        ObjectManager $wishlistManager,
     ): void {
         $this->beConstructedWith(
             $wishlistProductFactory,
             $productVariantRepository,
-            $wishlistManager
+            $wishlistManager,
         );
     }
 
@@ -47,9 +47,8 @@ final class AddProductVariantToWishlistHandlerSpec extends ObjectBehavior
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistProductInterface $wishlistProduct,
-        ObjectManager $wishlistManager
-    ): void
-    {
+        ObjectManager $wishlistManager,
+    ): void {
         $productVariantRepository->find(1)->willReturn($productVariant);
 
         $wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant)->willReturn($wishlistProduct);
@@ -70,9 +69,8 @@ final class AddProductVariantToWishlistHandlerSpec extends ObjectBehavior
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistProductInterface $wishlistProduct,
-        ObjectManager $wishlistManager
-    ): void
-    {
+        ObjectManager $wishlistManager,
+    ): void {
         $productVariantRepository->find(1)->willReturn(null);
 
         $wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant)->shouldNotBeCalled();

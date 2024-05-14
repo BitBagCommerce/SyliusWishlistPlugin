@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 final class DomPdfFactorySpec extends ObjectBehavior
 {
     public function let(
-        DomPdfOptionsFactoryInterface $domPdfOptionsFactory
+        DomPdfOptionsFactoryInterface $domPdfOptionsFactory,
     ): void {
         $this->beConstructedWith($domPdfOptionsFactory);
     }
@@ -40,13 +40,13 @@ final class DomPdfFactorySpec extends ObjectBehavior
 
     public function it_creates_new_dom_pdf_with_default_options(
         DomPdfOptionsFactoryInterface $domPdfOptionsFactory,
-        Options $pdfOptions
+        Options $pdfOptions,
     ): void {
         $domPdfOptionsFactory->createNew()->willReturn($pdfOptions);
 
         $pdfOptions->set('isRemoteEnabled', true)->shouldBeCalled();
         $pdfOptions->set('defaultFont', 'Arial')->shouldBeCalled();
-        $pdfOptions->getHttpContext()->willReturn(['http' =>[]]);
+        $pdfOptions->getHttpContext()->willReturn(['http' => []]);
 
         $domPdf = $this->createNewWithDefaultOptions();
         $domPdf->shouldBeAnInstanceOf(Dompdf::class);
