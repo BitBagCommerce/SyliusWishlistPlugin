@@ -15,7 +15,9 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 
 final class AddProductToWishlist implements WishlistTokenValueAwareInterface
 {
-    public function __construct(public int $productId, private WishlistInterface $wishlist)
+    private WishlistInterface $wishlist;
+
+    public function __construct(public int $productId)
     {
     }
 
