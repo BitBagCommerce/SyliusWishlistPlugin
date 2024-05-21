@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -15,20 +16,15 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistHasAnotherShopUserException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class AddWishlistToUserHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class AddWishlistToUserHandler
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        private WishlistRepositoryInterface $wishlistRepository,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
     public function __invoke(AddWishlistToUser $addWishlistsToUser): void
@@ -37,12 +33,12 @@ final class AddWishlistToUserHandler implements MessageHandlerInterface
         $user = $addWishlistsToUser->getShopUser();
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
-        if ($wishlistCookieToken !== $wishlist->getToken()){
+        if ($wishlistCookieToken !== $wishlist->getToken()) {
             throw new WishlistHasAnotherShopUserException();
         }
 
-        if ($this->wishlistRepository->findOneByShopUserAndName($user, $wishlist->getName()) instanceof WishlistInterface) {
-            $wishlist->setName($wishlist->getName().$wishlist->getId());
+        if ($this->wishlistRepository->findOneByShopUserAndName($user, (string) $wishlist->getName()) instanceof WishlistInterface) {
+            $wishlist->setName($wishlist->getName() . $wishlist->getId());
         }
 
         $wishlist->setShopUser($user);

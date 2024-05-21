@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -19,47 +20,24 @@ use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Webmozart\Assert\Assert;
 
-final class CreateWishlistHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class CreateWishlistHandler
 {
-    private TokenStorageInterface $tokenStorage;
-
-    private WishlistFactoryInterface $wishlistFactory;
-
-    private ShopUserWishlistResolverInterface $shopUserWishlistResolver;
-
-    private ObjectManager $wishlistManager;
-
-    private ChannelRepositoryInterface $channelRepository;
-
-    private TokenUserResolverInterface $tokenUserResolver;
-
-    private RequestStack $requestStack;
-
-    private string $wishlistCookieToken;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        WishlistFactoryInterface $wishlistFactory,
-        ShopUserWishlistResolverInterface $shopUserWishlistResolver,
-        ObjectManager $wishlistManager,
-        ChannelRepositoryInterface $channelRepository,
-        TokenUserResolverInterface $tokenUserResolver,
-        RequestStack $requestStack,
-        string $wishlistCookieToken,
+        private TokenStorageInterface $tokenStorage,
+        private WishlistFactoryInterface $wishlistFactory,
+        private ShopUserWishlistResolverInterface $shopUserWishlistResolver,
+        private ObjectManager $wishlistManager,
+        private ChannelRepositoryInterface $channelRepository,
+        private TokenUserResolverInterface $tokenUserResolver,
+        private RequestStack $requestStack,
+        private string $wishlistCookieToken,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->shopUserWishlistResolver = $shopUserWishlistResolver;
-        $this->wishlistManager = $wishlistManager;
-        $this->channelRepository = $channelRepository;
-        $this->tokenUserResolver = $tokenUserResolver;
-        $this->requestStack = $requestStack;
-        $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
     public function __invoke(CreateWishlist $createWishlist): WishlistInterface
@@ -76,8 +54,7 @@ final class CreateWishlistHandler implements MessageHandlerInterface
             $wishlist = $this->shopUserWishlistResolver->resolve($user);
         }
 
-        if (null !== $createWishlist->getTokenValue())
-        {
+        if (null !== $createWishlist->getTokenValue()) {
             $wishlist->setToken($createWishlist->getTokenValue());
             $mainRequest = $this->requestStack->getMainRequest();
 

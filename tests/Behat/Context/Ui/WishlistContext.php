@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -24,8 +25,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
@@ -37,68 +37,22 @@ use Webmozart\Assert\Assert;
 
 final class WishlistContext extends RawMinkContext implements Context
 {
-    private ProductRepositoryInterface $productRepository;
-
-    private ProductIndexPageInterface $productIndexPage;
-
-    private ProductShowPageInterface $productShowPage;
-
-    private WishlistPageInterface $wishlistPage;
-
-    private NotificationCheckerInterface $notificationChecker;
-
-    private LoginerInterface $loginer;
-
-    private WishlistCreatorInterface $wishlistCreator;
-
-    private ProductVariantResolverInterface $defaultVariantResolver;
-
-    private RequestStack $requestStack;
-
-    private RouterInterface $router;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private string $wishlistCookieToken;
-
-    private SharedStorageInterface $sharedStorage;
-
-    private CookieSetterInterface $cookieSetter;
-
-    private ChannelRepositoryInterface $channelRepository;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        ProductIndexPageInterface $productIndexPage,
-        ProductShowPageInterface $productShowPage,
-        WishlistPageInterface $wishlistPage,
-        NotificationCheckerInterface $notificationChecker,
-        LoginerInterface $loginer,
-        WishlistCreatorInterface $wishlistCreator,
-        ProductVariantResolverInterface $defaultVariantResolver,
-        RequestStack $requestStack,
-        RouterInterface $router,
-        WishlistRepositoryInterface $wishlistRepository,
-        string $wishlistCookieToken,
-        SharedStorageInterface $sharedStorage,
-        CookieSetterInterface $cookieSetter,
-        ChannelRepositoryInterface $channelRepository
+        private ProductRepositoryInterface $productRepository,
+        private ProductIndexPageInterface $productIndexPage,
+        private ProductShowPageInterface $productShowPage,
+        private WishlistPageInterface $wishlistPage,
+        private NotificationCheckerInterface $notificationChecker,
+        private LoginerInterface $loginer,
+        private WishlistCreatorInterface $wishlistCreator,
+        private ProductVariantResolverInterface $defaultVariantResolver,
+        private RouterInterface $router,
+        private WishlistRepositoryInterface $wishlistRepository,
+        private string $wishlistCookieToken,
+        private SharedStorageInterface $sharedStorage,
+        private CookieSetterInterface $cookieSetter,
+        private ChannelRepositoryInterface $channelRepository,
     ) {
-        $this->productRepository = $productRepository;
-        $this->productIndexPage = $productIndexPage;
-        $this->wishlistPage = $wishlistPage;
-        $this->notificationChecker = $notificationChecker;
-        $this->loginer = $loginer;
-        $this->wishlistCreator = $wishlistCreator;
-        $this->productShowPage = $productShowPage;
-        $this->defaultVariantResolver = $defaultVariantResolver;
-        $this->requestStack = $requestStack;
-        $this->router = $router;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->wishlistCookieToken = $wishlistCookieToken;
-        $this->sharedStorage = $sharedStorage;
-        $this->cookieSetter = $cookieSetter;
-        $this->channelRepository = $channelRepository;
     }
 
     /**
@@ -108,10 +62,14 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         $this->productIndexPage->open(['slug' => 'main']);
 
-        /** @var ProductInterface $product */
+        /** @var ?ProductInterface $product */
         $product = $this->productRepository->findOneBy([]);
+        Assert::notNull($product);
+        /** @var ?string $productName */
+        $productName = $product->getName();
+        Assert::notNull($productName);
 
-        $this->productIndexPage->addProductToWishlist($product->getName());
+        $this->productIndexPage->addProductToWishlist($productName);
     }
 
     /**
@@ -161,12 +119,15 @@ final class WishlistContext extends RawMinkContext implements Context
         $wishlist->setName($name);
         $wishlist->setChannel($channel);
 
-        if ($cookie) {
+        if (null !== $cookie) {
             $wishlist->setToken($cookie);
         }
 
+        /** @var ?string $wishlistName */
+        $wishlistName = $wishlist->getName();
+        Assert::notNull($wishlistName);
         $this->wishlistRepository->add($wishlist);
-        $this->sharedStorage->set($wishlist->getName(), $wishlist);
+        $this->sharedStorage->set($wishlistName, $wishlist);
         $this->cookieSetter->setCookie($this->wishlistCookieToken, $wishlist->getToken());
     }
 
@@ -204,11 +165,13 @@ final class WishlistContext extends RawMinkContext implements Context
         $user = $this->loginer->createUser();
         $wishlistCookieToken = $this->getSession()->getCookie($this->wishlistCookieToken);
 
-        if (!$wishlistCookieToken) {
+        if (null === $wishlistCookieToken) {
             throw new \Exception('Wishlist token not found');
         }
 
+        /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->findByToken($wishlistCookieToken);
+        Assert::notNull($wishlist);
 
         $this->wishlistCreator->createWishlistWithProductAndUser($user, $product, $wishlist);
         $this->loginer->logIn();
@@ -294,11 +257,15 @@ final class WishlistContext extends RawMinkContext implements Context
             'variantCode' => $productVariant->getCode(),
         ];
 
-        if (!$this->getMinkParameter('files_path')) {
+        if ('' === (string) $this->getMinkParameter('files_path')) {
             return;
         }
-        $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR . $filename;
+
+        $realFilesPath = realpath($this->getMinkParameter('files_path'));
+        Assert::string($realFilesPath);
+        $fullPath = rtrim($realFilesPath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR . $filename;
         $fileResource = fopen($fullPath, 'w+');
+        Assert::notFalse($fileResource);
         fputcsv($fileResource, array_keys($data));
         fputcsv($fileResource, $data);
         fclose($fileResource);
@@ -327,7 +294,13 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function iRemoveThisProduct(): void
     {
-        $this->wishlistPage->removeProduct($this->productRepository->findOneBy([])->getName());
+        /** @var ?ProductInterface $product */
+        $product = $this->productRepository->findOneBy([]);
+        if (null === $product) {
+            throw new ResourceNotFoundException();
+        }
+
+        $this->wishlistPage->removeProduct((string) $product->getName());
     }
 
     /**
@@ -358,7 +331,9 @@ final class WishlistContext extends RawMinkContext implements Context
         $guzzle = new \GuzzleHttp\Client([
             'timeout' => 10,
         ]);
+        /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->findOneBy([]);
+        Assert::notNull($wishlist);
 
         $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf', ['wishlistId' => $wishlist->getId()], UrlGeneratorInterface::RELATIVE_PATH);
 
@@ -432,7 +407,7 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         Assert::true(
             $this->wishlistPage->hasProductInCart($productName),
-            sprintf('Product %s was not found in the cart.', $productName)
+            sprintf('Product %s was not found in the cart.', $productName),
         );
     }
 
@@ -463,7 +438,7 @@ final class WishlistContext extends RawMinkContext implements Context
     /**
      * @Then I should wait for one second
      */
-    public function iShouldWaitForOneSecond()
+    public function iShouldWaitForOneSecond(): void
     {
         $this->wishlistPage->waitForOneSecond();
     }

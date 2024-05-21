@@ -17,8 +17,8 @@ final class WishlistNameChecker implements WishlistNameCheckerInterface
     {
         if ($existingWishlistName == $wishlistToCreate) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

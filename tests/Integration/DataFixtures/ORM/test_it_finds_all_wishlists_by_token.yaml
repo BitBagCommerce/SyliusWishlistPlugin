@@ -1,0 +1,26 @@
+Sylius\Component\Locale\Model\Locale:
+    locale:
+        createdAt: '<dateTimeBetween("-200 days", "now")>'
+        code: 'en_US'
+Sylius\Component\Currency\Model\Currency:
+    dollar:
+        code: 'USD'
+Sylius\Component\Core\Model\Channel:
+    channel_us:
+        code: 'US'
+        name: 'name'
+        defaultLocale: '@locale'
+        locales: [ '@locale' ]
+        taxCalculationStrategy: 'order_items_based'
+        baseCurrency: '@dollar'
+        enabled: true
+BitBag\SyliusWishlistPlugin\Entity\Wishlist:
+    wishlist_one:
+        name: 'Wishlist One'
+        channel: '@channel_us'
+        token: 'token'
+    wishlist_two:
+        name: 'Wishlist Two'
+        channel: '@channel_us'
+        token: 'token'
+

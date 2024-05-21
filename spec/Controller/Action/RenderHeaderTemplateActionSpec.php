@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -21,11 +22,11 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
 {
     public function let(
         Environment $twigEnvironment,
-        WishlistsResolverInterface $wishlistsResolver
+        WishlistsResolverInterface $wishlistsResolver,
     ): void {
         $this->beConstructedWith(
             $twigEnvironment,
-            $wishlistsResolver
+            $wishlistsResolver,
         );
     }
 
@@ -37,7 +38,7 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
     public function it_renders_header_template(
         Request $request,
         WishlistsResolverInterface $wishlistsResolver,
-        Environment $twigEnvironment
+        Environment $twigEnvironment,
     ): void {
         $wishlists = [];
         $wishlistsResolver->resolve()->willReturn($wishlists);

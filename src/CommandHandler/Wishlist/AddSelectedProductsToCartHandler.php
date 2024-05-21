@@ -1,46 +1,37 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker;
 use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductCantBeAddedToCartException;
 use Doctrine\Common\Collections\Collection;
+use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class AddSelectedProductsToCartHandler
 {
-    private OrderItemQuantityModifierInterface $itemQuantityModifier;
-
-    private OrderModifierInterface $orderModifier;
-
-    private OrderRepositoryInterface $orderRepository;
-
-    private ProductProcessingCheckerInterface $productProcessingChecker;
-
     public function __construct(
-        OrderItemQuantityModifierInterface $itemQuantityModifier,
-        OrderModifierInterface $orderModifier,
-        OrderRepositoryInterface $orderRepository,
-        ProductProcessingCheckerInterface $productProcessingChecker
+        private OrderItemQuantityModifierInterface $itemQuantityModifier,
+        private OrderModifierInterface $orderModifier,
+        private OrderRepositoryInterface $orderRepository,
+        private ProductProcessingCheckerInterface $productProcessingChecker,
     ) {
-        $this->itemQuantityModifier = $itemQuantityModifier;
-        $this->orderModifier = $orderModifier;
-        $this->orderRepository = $orderRepository;
-        $this->productProcessingChecker = $productProcessingChecker;
     }
 
     public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
@@ -50,7 +41,7 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
 
     private function addSelectedProductsToCart(Collection $wishlistProducts): void
     {
-        /** @var WishlistItem $wishlistProduct */
+        /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             if ($this->productProcessingChecker->canBeProcessed($wishlistProduct)) {
                 $this->addProductToWishlist($wishlistProduct);
@@ -60,10 +51,17 @@ final class AddSelectedProductsToCartHandler implements MessageHandlerInterface
         }
     }
 
-    private function addProductToWishlist(WishlistItem $wishlistProduct): void
+    private function addProductToWishlist(WishlistItemInterface $wishlistProduct): void
     {
-        $cart = $wishlistProduct->getCartItem()->getCart();
-        $cartItem = $wishlistProduct->getCartItem()->getCartItem();
+        /** @var ?AddToCartCommandInterface $addToCartCommand */
+        $addToCartCommand = $wishlistProduct->getCartItem();
+
+        if (null === $addToCartCommand) {
+            throw new ResourceNotFoundException();
+        }
+
+        $cart = $addToCartCommand->getCart();
+        $cartItem = $addToCartCommand->getCartItem();
 
         if (0 === $cartItem->getQuantity()) {
             $this->itemQuantityModifier->modify($cartItem, 1);

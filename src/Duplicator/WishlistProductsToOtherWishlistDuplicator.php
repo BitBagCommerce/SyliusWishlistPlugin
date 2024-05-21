@@ -11,12 +11,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Duplicator;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
-use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -24,35 +23,24 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WishlistProductsToOtherWishlistDuplicator implements WishlistProductsToOtherWishlistDuplicatorInterface
 {
-    private WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory;
-
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        WishlistRepositoryInterface $wishlistRepository,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
+        private WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
+        private ProductVariantRepositoryInterface $productVariantRepository,
+        private WishlistRepositoryInterface $wishlistRepository,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator,
     ) {
-        $this->wishlistProductVariantFactory = $wishlistProductVariantFactory;
-        $this->productVariantRepository = $productVariantRepository;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
     }
 
     public function copyWishlistProductsToOtherWishlist(Collection $wishlistProducts, WishlistInterface $destinedWishlist): void
     {
-        /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
+            /** @var ?ProductVariantInterface $variant */
             $variant = $this->productVariantRepository->find($wishlistProduct['variant']);
+
+            if (null === $variant) {
+                continue;
+            }
 
             if ($destinedWishlist->hasProductVariant($variant)) {
                 $message = $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.product_variant_exists_in_another_wishlist');
@@ -62,7 +50,7 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
 
                 $session->getFlashBag()->add(
                     'error',
-                    sprintf("%s".$message, $variant)
+                    sprintf('%s' . $message, $variant->getName()),
                 );
             } else {
                 $this->wishlistProductVariantFactory->createWithProductVariant($destinedWishlist, $variant);

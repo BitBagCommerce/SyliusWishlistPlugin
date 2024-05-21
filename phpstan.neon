@@ -1,0 +1,11 @@
+includes:
+    - vendor/bitbag/coding-standard/phpstan.neon
+parameters:
+    level: 8
+    excludePaths:
+    	- src/Exception
+    	- tests/Integration
+    	- tests/Functional
+    paths:
+        - src
+        - tests

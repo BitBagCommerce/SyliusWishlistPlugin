@@ -22,10 +22,10 @@ use PhpSpec\ObjectBehavior;
 final class VariantPdfModelProcessorSpec extends ObjectBehavior
 {
     public function let(
-        ModelCreatorInterface $pdfModelCreator
+        ModelCreatorInterface $pdfModelCreator,
     ) {
         $this->beConstructedWith(
-            $pdfModelCreator
+            $pdfModelCreator,
         );
     }
 
@@ -40,7 +40,7 @@ final class VariantPdfModelProcessorSpec extends ObjectBehavior
         WishlistItem $wishlistItem2,
         VariantPdfModelInterface $pdfModel,
         VariantPdfModelInterface $pdfModel2,
-        ModelCreatorInterface $pdfModelCreator
+        ModelCreatorInterface $pdfModelCreator,
     ): void {
         $pdfModelCreator->createWishlistItemToPdf($wishlistItem)->willReturn($pdfModel);
         $pdfModelCreator->createWishlistItemToPdf($wishlistItem2)->willReturn($pdfModel2);

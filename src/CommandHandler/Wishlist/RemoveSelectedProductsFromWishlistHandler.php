@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -12,36 +13,27 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class RemoveSelectedProductsFromWishlistHandler
 {
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private EntityManagerInterface $wishlistProductManager;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        ProductVariantRepositoryInterface $productVariantRepository,
-        EntityManagerInterface $wishlistProductManager,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
+        private ProductVariantRepositoryInterface $productVariantRepository,
+        private EntityManagerInterface $wishlistProductManager,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator,
     ) {
-        $this->productVariantRepository = $productVariantRepository;
-        $this->wishlistProductManager = $wishlistProductManager;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
     }
 
     public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlistCommand): void
@@ -62,14 +54,21 @@ final class RemoveSelectedProductsFromWishlistHandler implements MessageHandlerI
         }
     }
 
-    private function removeProductFromWishlist(WishlistItem $wishlistProduct): void
+    private function removeProductFromWishlist(WishlistItemInterface $wishlistItem): void
     {
-        $productVariant = $this->productVariantRepository->find($wishlistProduct->getWishlistProduct()->getVariant());
+        /** @var ?WishlistProductInterface $wishlistProduct */
+        $wishlistProduct = $wishlistItem->getWishlistProduct();
+
+        if (null === $wishlistProduct) {
+            throw new ResourceNotFoundException();
+        }
+
+        $productVariant = $this->productVariantRepository->find($wishlistProduct->getVariant());
 
         if (null === $productVariant) {
             throw new NotFoundHttpException();
         }
 
-        $this->wishlistProductManager->remove($wishlistProduct->getWishlistProduct());
+        $this->wishlistProductManager->remove($wishlistProduct);
     }
 }

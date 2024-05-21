@@ -23,20 +23,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CopySelectedProductsToOtherWishlistAction
 {
-    private MessageBusInterface $commandBus;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        MessageBusInterface $commandBus,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
+        private MessageBusInterface $commandBus,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator,
     ) {
-        $this->commandBus = $commandBus;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
     }
 
     public function __invoke(Request $request): Response
@@ -58,7 +49,7 @@ final class CopySelectedProductsToOtherWishlistAction
 
         $session->getFlashBag()->add(
             'success',
-            $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.copied_selected_wishlist_items')
+            $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.copied_selected_wishlist_items'),
         );
 
         return new JsonResponse();

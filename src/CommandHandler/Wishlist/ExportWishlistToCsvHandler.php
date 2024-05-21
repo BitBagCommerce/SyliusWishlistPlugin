@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -12,30 +13,30 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Webmozart\Assert\Assert;
 
-final class ExportWishlistToCsvHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ExportWishlistToCsvHandler
 {
-    private const CSV_HEADERS = [
+    public const CSV_HEADERS = [
         'variantId',
         'productId',
         'variantCode',
     ];
 
-    private CsvWishlistProductFactoryInterface $csvWishlistProductFactory;
-
-    private CsvSerializerFactoryInterface $csvSerializerFactory;
-
     public function __construct(
-        CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
-        CsvSerializerFactoryInterface $csvSerializerFactory
+        private CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
+        private CsvSerializerFactoryInterface $csvSerializerFactory,
     ) {
-        $this->csvWishlistProductFactory = $csvWishlistProductFactory;
-        $this->csvSerializerFactory = $csvSerializerFactory;
     }
 
     public function __invoke(ExportWishlistToCsv $exportWishlistToCsv): \SplFileObject
@@ -53,19 +54,33 @@ final class ExportWishlistToCsvHandler implements MessageHandlerInterface
         /** @var WishlistItemInterface $wishlistProduct */
         foreach ($wishlistProducts as $wishlistProduct) {
             $csvWishlistProduct = $this->createCsvWishlistProduct($wishlistProduct);
+            $csvData = $this->csvSerializerFactory->createNew()->normalize($csvWishlistProduct, 'csv');
+            Assert::isArray($csvData);
 
-            $file->fputcsv($this->csvSerializerFactory->createNew()->normalize($csvWishlistProduct, 'csv'));
+            $file->fputcsv($csvData);
         }
 
         return $file;
     }
 
-    private function createCsvWishlistProduct(WishlistItemInterface $wishlistProduct): CsvWishlistProductInterface
+    private function createCsvWishlistProduct(WishlistItemInterface $wishlistItem): CsvWishlistProductInterface
     {
+        /** @var ?AddToCartCommandInterface $addToCartCommand */
+        $addToCartCommand = $wishlistItem->getCartItem();
+        Assert::notNull($addToCartCommand);
+        /** @var OrderItemInterface $cartItem */
+        $cartItem = $addToCartCommand->getCartItem();
+        /** @var ?ProductVariantInterface $variant */
+        $variant = $cartItem->getVariant();
+        Assert::notNull($variant);
+        /** @var ?WishlistProductInterface $wishlistProduct */
+        $wishlistProduct = $wishlistItem->getWishlistProduct();
+        Assert::notNull($wishlistProduct);
+
         return $this->csvWishlistProductFactory->createWithProperties(
-            $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getId(),
-            $wishlistProduct->getWishlistProduct()->getProduct()->getId(),
-            $wishlistProduct->getCartItem()->getCartItem()->getVariant()->getCode(),
+            $variant->getId(),
+            $wishlistProduct->getProduct()->getId(),
+            (string) $variant->getCode(),
         );
     }
 }

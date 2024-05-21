@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -26,25 +27,12 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 {
     private const ALLOWED_ENDPOINTS_PREFIX = '/wishlist';
 
-    private string $wishlistCookieToken;
-
-    private WishlistsResolverInterface $wishlistsResolver;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
-    private ?Request $mainRequest = null;
-
     public function __construct(
-        string $wishlistCookieToken,
-        WishlistsResolverInterface $wishlistsResolver,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        RequestStack $requestStack,
+        private string $wishlistCookieToken,
+        private WishlistsResolverInterface $wishlistsResolver,
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        private RequestStack $requestStack,
     ) {
-        $this->wishlistCookieToken = $wishlistCookieToken;
-        $this->wishlistsResolver = $wishlistsResolver;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
-
-        $this->mainRequest = $requestStack->getMainRequest();
     }
 
     public static function getSubscribedEvents(): array
@@ -57,13 +45,13 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        Assert::notNull($this->mainRequest, 'The class has to be used in HTTP context only');
-
         if (!$event->isMainRequest()) {
             return;
         }
 
-        $currentPath = $this->mainRequest->getPathInfo();
+        $mainRequest = $this->getMainRequest();
+
+        $currentPath = $mainRequest->getPathInfo();
         $isWishlistUrl = str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX);
         if (!$isWishlistUrl) {
             return;
@@ -72,11 +60,11 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
         /** @var WishlistInterface[] $wishlists */
         $wishlists = $this->wishlistsResolver->resolve();
 
-        $wishlistCookieToken = $this->mainRequest->cookies->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $mainRequest->cookies->get($this->wishlistCookieToken);
 
-        if (!empty($wishlists)) {
+        if (0 !== count($wishlists)) {
             if (null === $wishlistCookieToken) {
-                $this->mainRequest->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
+                $mainRequest->attributes->set($this->wishlistCookieToken, reset($wishlists)->getToken());
             }
 
             return;
@@ -86,7 +74,7 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
         }
 
-        $this->mainRequest->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
+        $mainRequest->attributes->set($this->wishlistCookieToken, $wishlistCookieToken);
     }
 
     public function onKernelResponse(ResponseEvent $event): void
@@ -95,27 +83,38 @@ final class CreateNewWishlistSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $tokenWasGenerated = $this->mainRequest->attributes->has($this->wishlistCookieToken);
-        $currentPath = $this->mainRequest->getPathInfo();
+        $mainRequest = $this->getMainRequest();
+
+        $tokenWasGenerated = $mainRequest->attributes->has($this->wishlistCookieToken);
+        $currentPath = $mainRequest->getPathInfo();
         $isWishlistUrl = str_starts_with($currentPath, self::ALLOWED_ENDPOINTS_PREFIX);
         if (!$tokenWasGenerated && !$isWishlistUrl) {
             return;
         }
 
-        if ($this->mainRequest->cookies->has($this->wishlistCookieToken)) {
+        if ($mainRequest->cookies->has($this->wishlistCookieToken)) {
             return;
         }
 
         $response = $event->getResponse();
-        $wishlistCookieToken = $this->mainRequest->attributes->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $mainRequest->attributes->get($this->wishlistCookieToken);
 
-        if (!$wishlistCookieToken) {
+        if (null === $wishlistCookieToken || '' === $wishlistCookieToken) {
             return;
         }
 
         $cookie = new Cookie($this->wishlistCookieToken, $wishlistCookieToken, strtotime('+1 year'));
         $response->headers->setCookie($cookie);
 
-        $this->mainRequest->attributes->remove($this->wishlistCookieToken);
+        $mainRequest->attributes->remove($this->wishlistCookieToken);
+    }
+
+    private function getMainRequest(): Request
+    {
+        /** @var ?Request $mainRequest */
+        $mainRequest = $this->requestStack->getMainRequest();
+        Assert::notNull($mainRequest, 'The class has to be used in HTTP context only');
+
+        return $mainRequest;
     }
 }

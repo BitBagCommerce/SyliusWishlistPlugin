@@ -23,11 +23,11 @@ final class CopySelectedProductsToOtherWishlistHandlerSpec extends ObjectBehavio
 {
     public function let(
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistProductsToOtherWishlistDuplicatorInterface $copyistProductsToWishlist
+        WishlistProductsToOtherWishlistDuplicatorInterface $copyistProductsToWishlist,
     ): void {
         $this->beConstructedWith(
             $wishlistRepository,
-            $copyistProductsToWishlist
+            $copyistProductsToWishlist,
         );
     }
 
@@ -41,7 +41,7 @@ final class CopySelectedProductsToOtherWishlistHandlerSpec extends ObjectBehavio
         Collection $wishlistProducts,
         WishlistRepositoryInterface $wishlistRepository,
         CopySelectedProductsToOtherWishlistInterface $copySelectedProductsToOtherWishlist,
-        WishlistProductsToOtherWishlistDuplicatorInterface $copyistProductsToWishlist
+        WishlistProductsToOtherWishlistDuplicatorInterface $copyistProductsToWishlist,
     ): void {
         $copySelectedProductsToOtherWishlist->getWishlistProducts()->willReturn($wishlistProducts);
         $copySelectedProductsToOtherWishlist->getDestinedWishlistId()->willReturn(2);

@@ -17,16 +17,10 @@ use Twig\Environment;
 
 final class DomPdfWishlistExporter implements DomPdfWishlistExporterInterface
 {
-    private Environment $twigEnvironment;
-
-    private DomPdfFactoryInterface $domPdfFactory;
-
     public function __construct(
-        Environment $twigEnvironment,
-        DomPdfFactoryInterface $domPdfFactory
+        private Environment $twigEnvironment,
+        private DomPdfFactoryInterface $domPdfFactory,
     ) {
-        $this->twigEnvironment = $twigEnvironment;
-        $this->domPdfFactory = $domPdfFactory;
     }
 
     public function export(Collection $data): void
