@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\EventSubscriber;
@@ -22,12 +29,12 @@ final class LoggedUserWishlistSubscriberSpec extends ObjectBehavior
     public function let(
         SectionProviderInterface $uriBasedSectionContext,
         WishlistsResolverInterface $wishlistsResolver,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): void {
         $this->beConstructedWith(
             $uriBasedSectionContext,
             $wishlistsResolver,
-            $entityManager
+            $entityManager,
         );
     }
 
@@ -40,7 +47,7 @@ final class LoggedUserWishlistSubscriberSpec extends ObjectBehavior
     public function it_returns_if_invalid_section_on_implicit_login(
         SectionProviderInterface $uriBasedSectionContext,
         UserEvent $event,
-        AdminSection $adminSection
+        AdminSection $adminSection,
     ): void {
         $uriBasedSectionContext->getSection()->willReturn($adminSection)->shouldBeCalledOnce();
 
@@ -54,7 +61,7 @@ final class LoggedUserWishlistSubscriberSpec extends ObjectBehavior
         UserEvent $event,
         ShopSection $shopSection,
         AdminUserInterface $adminUser,
-        WishlistsResolverInterface $wishlistsResolver
+        WishlistsResolverInterface $wishlistsResolver,
     ): void {
         $uriBasedSectionContext->getSection()->willReturn($shopSection)->shouldBeCalledOnce();
         $event->getUser()->willReturn($adminUser)->shouldBeCalledOnce();
@@ -73,7 +80,7 @@ final class LoggedUserWishlistSubscriberSpec extends ObjectBehavior
         WishlistInterface $wishlist,
         WishlistInterface $wishlist2,
         ShopUserInterface $shopUser2,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): void {
         $wishlists = [
             $wishlist->getWrappedObject(),

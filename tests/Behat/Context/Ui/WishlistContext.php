@@ -26,7 +26,6 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
@@ -140,7 +139,7 @@ final class WishlistContext extends RawMinkContext implements Context
     public function iRemoveWishlistCookieToken(): void
     {
         $this->getSession()->setCookie($this->wishlistCookieToken);
-        $this->cookieSetter->setCookie($this->wishlistCookieToken, null);
+        $this->cookieSetter->setCookie($this->wishlistCookieToken, '');
     }
 
     /**
