@@ -1,10 +1,12 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
@@ -25,12 +27,12 @@ final class ShopUserWishlistResolverSpec extends ObjectBehavior
     public function let(
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
     ): void {
         $this->beConstructedWith(
             $wishlistRepository,
             $wishlistFactory,
-            $channelContext
+            $channelContext,
         );
     }
 
@@ -46,7 +48,7 @@ final class ShopUserWishlistResolverSpec extends ObjectBehavior
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
         WishlistInterface $wishlist,
-        ShopUserInterface $user
+        ShopUserInterface $user,
     ): void {
         $channelContext->getChannel()->willReturn($channel);
         $wishlistRepository->findOneByShopUserAndChannel($user, $channel)->willReturn(null);
@@ -61,7 +63,7 @@ final class ShopUserWishlistResolverSpec extends ObjectBehavior
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
         WishlistInterface $wishlist,
-        ShopUserInterface $user
+        ShopUserInterface $user,
     ): void {
         $channelContext->getChannel()->willReturn($channel);
         $wishlistRepository->findOneByShopUserAndChannel($user, $channel)->willReturn($wishlist);
@@ -75,7 +77,7 @@ final class ShopUserWishlistResolverSpec extends ObjectBehavior
         WishlistFactoryInterface $wishlistFactory,
         ChannelContextInterface $channelContext,
         WishlistInterface $wishlist,
-        ShopUserInterface $user
+        ShopUserInterface $user,
     ): void {
         $channelContext->getChannel()->willThrow(ChannelNotFoundException::class);
         $wishlistRepository->findOneByShopUser($user)->willReturn(null);
@@ -89,7 +91,7 @@ final class ShopUserWishlistResolverSpec extends ObjectBehavior
         WishlistFactoryInterface $wishlistFactory,
         ChannelContextInterface $channelContext,
         WishlistInterface $wishlist,
-        ShopUserInterface $user
+        ShopUserInterface $user,
     ): void {
         $channelContext->getChannel()->willThrow(ChannelNotFoundException::class);
         $wishlistRepository->findOneByShopUser($user)->willReturn($wishlist);

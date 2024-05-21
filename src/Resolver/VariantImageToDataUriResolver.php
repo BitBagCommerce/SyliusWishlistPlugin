@@ -1,33 +1,40 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Webmozart\Assert\Assert;
 
 final class VariantImageToDataUriResolver implements VariantImageToDataUriResolverInterface
 {
     public function __construct(
-        private GenerateDataUriForImageResolverInterface $dataUriForImageResolver
+        private GenerateDataUriForImageResolverInterface $dataUriForImageResolver,
     ) {
     }
 
     public function resolve(ProductVariantInterface $variant, string $baseUrl): string
     {
-        $image = $variant->getProduct()->getImages()->first();
+        /** @var ?ProductInterface $product */
+        $product = $variant->getProduct();
+        Assert::notNull($product);
+
+        $image = $product->getImages()->first();
 
         if (false === $image) {
             return $this->dataUriForImageResolver->resolveWithNoImage();
         }
 
-        $fileExt = explode('.', $image->getPath());
+        $fileExt = explode('.', (string) $image->getPath());
 
         if ('svg' === $fileExt[1]) {
             return $this->dataUriForImageResolver->resolveWithNoImage();

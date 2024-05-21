@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -23,6 +24,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
@@ -31,40 +33,19 @@ final class WishlistContext extends RawMinkContext implements Context
 {
     protected static string $domain;
 
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private UserRepositoryInterface $userRepository;
-
-    private ClientInterface $client;
-
     private WishlistInterface $wishlist;
-
-    private RouterInterface $router;
 
     private ?ShopUserInterface $user;
 
-    private EntityManager $entityManager;
-
     private ?string $token;
 
-    private const PATCH = 'PATCH';
-
-    private const POST = 'POST';
-
-    private const DELETE = 'DELETE';
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        UserRepositoryInterface $userRepository,
-        ClientInterface $client,
-        RouterInterface $router,
-        EntityManager $entityManager
+        private WishlistRepositoryInterface $wishlistRepository,
+        private UserRepositoryInterface $userRepository,
+        private ClientInterface $client,
+        private RouterInterface $router,
+        private EntityManager $entityManager,
     ) {
-        $this->client = $client;
-        $this->wishlistRepository = $wishlistRepository;
-        $this->userRepository = $userRepository;
-        $this->router = $router;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -87,12 +68,12 @@ final class WishlistContext extends RawMinkContext implements Context
         ];
 
         $response = $this->client->request(
-            self::POST,
+            Request::METHOD_POST,
             sprintf('%s%s', self::$domain, $uri),
             [
                 'headers' => $headers,
                 'body' => json_encode($body),
-            ]
+            ],
         );
         Assert::eq($response->getStatusCode(), 200);
 
@@ -122,9 +103,9 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         $uri = $this->router->generate('api_wishlists_shop_create_wishlist_collection');
         $response = $this->client->request(
-            self::POST,
+            Request::METHOD_POST,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::POST, [])
+            $this->getOptions(Request::METHOD_POST, []),
         );
 
         Assert::eq($response->getStatusCode(), 201);
@@ -181,8 +162,8 @@ final class WishlistContext extends RawMinkContext implements Context
         throw new \Exception(
             sprintf(
                 'Product %s was not found in the wishlist',
-                $product->getName()
-            )
+                $product->getName(),
+            ),
         );
     }
 
@@ -194,18 +175,11 @@ final class WishlistContext extends RawMinkContext implements Context
     public function userShouldHaveProductInTheWishlistOnChannel(ProductInterface $product, ChannelInterface $channel): bool
     {
         if (isset($this->user)) {
-            if (null !== $channel) {
-                /** @var WishlistInterface $wishlist */
-                $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel([
-                    $this->user,
-                    $channel,
-                ]);
-            } else {
-                /** @var WishlistInterface $wishlist */
-                $wishlist = $this->wishlistRepository->findOneBy([
-                    'shopUser' => $this->user->getId(),
-                ]);
-            }
+            /** @var WishlistInterface $wishlist */
+            $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel(
+                $this->user,
+                $channel,
+            );
         } else {
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->wishlistRepository->findAllByAnonymousAndChannel(null, $channel)[0];
@@ -220,8 +194,8 @@ final class WishlistContext extends RawMinkContext implements Context
         throw new \Exception(
             sprintf(
                 'Product %s was not found in the wishlist',
-                $product->getName()
-            )
+                $product->getName(),
+            ),
         );
     }
 
@@ -246,7 +220,14 @@ final class WishlistContext extends RawMinkContext implements Context
         $wishlist = $this->wishlistRepository->find($this->wishlist->getId());
 
         foreach ($wishlist->getWishlistProducts() as $wishlistProduct) {
-            if ($variant->getId() === $wishlistProduct->getVariant()->getId()) {
+            /** @var ?ProductVariantInterface $wishlistProductVariant */
+            $wishlistProductVariant = $wishlistProduct->getVariant();
+
+            if (null === $wishlistProductVariant) {
+                return false;
+            }
+
+            if ($variant->getId() === $wishlistProductVariant->getId()) {
                 return true;
             }
         }
@@ -254,8 +235,8 @@ final class WishlistContext extends RawMinkContext implements Context
         throw new \Exception(
             sprintf(
                 'Product variant %s was not found in the wishlist',
-                $variant->getName()
-            )
+                $variant->getName(),
+            ),
         );
     }
 
@@ -270,9 +251,9 @@ final class WishlistContext extends RawMinkContext implements Context
         ]);
 
         $response = $this->client->request(
-            self::DELETE,
+            Request::METHOD_DELETE,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::DELETE, [])
+            $this->getOptions(Request::METHOD_DELETE, []),
         );
 
         Assert::eq($response->getStatusCode(), 204);
@@ -311,9 +292,9 @@ final class WishlistContext extends RawMinkContext implements Context
         ]);
 
         $response = $this->client->request(
-            self::DELETE,
+            Request::METHOD_DELETE,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::DELETE)
+            $this->getOptions(Request::METHOD_DELETE),
         );
 
         Assert::eq($response->getStatusCode(), 204);
@@ -358,7 +339,7 @@ final class WishlistContext extends RawMinkContext implements Context
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->wishlistRepository->findOneByShopUserAndChannel(
                 $this->user,
-                $channel
+                $channel,
             );
         } else {
             /** @var WishlistInterface $wishlist */
@@ -387,9 +368,9 @@ final class WishlistContext extends RawMinkContext implements Context
     {
         $uri = $this->router->generate('api_wishlists_shop_create_wishlist_collection');
         $response = $this->client->request(
-            self::POST,
+            Request::METHOD_POST,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::POST, ['channelCode' => $channel->getCode()])
+            $this->getOptions(Request::METHOD_POST, ['channelCode' => $channel->getCode()]),
         );
 
         $jsonBody = json_decode((string) $response->getBody());
@@ -399,9 +380,9 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->wishlist = $wishlist;
     }
 
-    private function getOptions(string $method, $body = null): array
+    private function getOptions(string $method, mixed $body = null): array
     {
-        if (self::PATCH === $method) {
+        if (Request::METHOD_PATCH === $method) {
             $contentType = 'application/merge-patch+json';
         } else {
             $contentType = 'application/ld+json';
@@ -437,7 +418,7 @@ final class WishlistContext extends RawMinkContext implements Context
     private function addProductToTheWishlist(
         WishlistInterface $wishlist,
         ProductInterface $product,
-        ChannelInterface $channel = null
+        ChannelInterface $channel = null,
     ): ResponseInterface {
         $uri = $this->router->generate('api_wishlists_shop_add_product_to_wishlist_item', [
             'token' => $wishlist->getToken(),
@@ -449,16 +430,16 @@ final class WishlistContext extends RawMinkContext implements Context
 
         if (null !== $channel) {
             return $this->client->request(
-                self::PATCH,
+                Request::METHOD_PATCH,
                 sprintf('%s%s?_channel_code=%s', self::$domain, $uri, $channel->getCode()),
-                $this->getOptions(self::PATCH, $body)
+                $this->getOptions(Request::METHOD_PATCH, $body),
             );
         }
 
         return $this->client->request(
-            self::PATCH,
+            Request::METHOD_PATCH,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::PATCH, $body)
+            $this->getOptions(Request::METHOD_PATCH, $body),
         );
     }
 
@@ -473,9 +454,9 @@ final class WishlistContext extends RawMinkContext implements Context
         ];
 
         return $this->client->request(
-            self::PATCH,
+            Request::METHOD_PATCH,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::PATCH, $body)
+            $this->getOptions(Request::METHOD_PATCH, $body),
         );
     }
 
@@ -490,9 +471,9 @@ final class WishlistContext extends RawMinkContext implements Context
         ]);
 
         return $this->client->request(
-            self::DELETE,
+            Request::METHOD_DELETE,
             sprintf('%s%s', self::$domain, $uri),
-            $this->getOptions(self::DELETE)
+            $this->getOptions(Request::METHOD_DELETE),
         );
     }
 }

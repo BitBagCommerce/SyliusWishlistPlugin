@@ -1,10 +1,11 @@
 <?php
 
 /*
-* This file was created by developers working at BitBag
-* Do you need more information about us and what we do? Visit our https://bitbag.io website!
-* We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -25,8 +26,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
 {
-    private TranslatorInterface $translator;
-
     public function __construct(
         CartContextInterface $cartContext,
         FormFactoryInterface $formFactory,
@@ -35,7 +34,7 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
         MessageBusInterface $messageBus,
         UrlGeneratorInterface $urlGenerator,
         WishlistRepositoryInterface $wishlistRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         parent::__construct(
             $cartContext,
@@ -45,9 +44,8 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
             $messageBus,
             $urlGenerator,
             $wishlistRepository,
-            $translator
+            $translator,
         );
-        $this->translator = $translator;
     }
 
     protected function handleCommand(FormInterface $form): void

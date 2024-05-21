@@ -44,7 +44,6 @@ services:
             - "@bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"
             - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
             - "@sylius.context.channel"
-            - "@bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"
         tags:
             - { name: controller.service_arguments }
 
@@ -106,8 +105,6 @@ services:
     bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart:
         class: BitBag\SyliusWishlistPlugin\Controller\Action\AddSelectedProductsToCartAction
         parent: "bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action"
-        arguments:
-            - "@translator"
         public: true
         tags:
             - { name: controller.service_arguments }

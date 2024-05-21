@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -18,26 +19,22 @@ use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 final class ExportWishlistToCsvHandlerSpec extends ObjectBehavior
 {
     public function let(
         CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
-        CsvSerializerFactoryInterface $csvSerializerFactory
-    ): void
-    {
+        CsvSerializerFactoryInterface $csvSerializerFactory,
+    ): void {
         $this->beConstructedWith(
             $csvWishlistProductFactory,
-            $csvSerializerFactory
+            $csvSerializerFactory,
         );
     }
 
@@ -57,17 +54,11 @@ final class ExportWishlistToCsvHandlerSpec extends ObjectBehavior
         CsvWishlistProductFactoryInterface $csvWishlistProductFactory,
         CsvWishlistProductInterface $csvWishlistProduct,
         CsvSerializerFactoryInterface $csvSerializerFactory,
-        Serializer $serializer
+        Serializer $serializer,
     ): void {
         $wishlistProducts = new ArrayCollection([$wishlistItem->getWrappedObject()]);
 
-        $headers = [
-            'variantId',
-            'productId',
-            'variantCode',
-        ];
-
-        $file->fputcsv($headers)->shouldBeCalled();
+        $file->fputcsv(ExportWishlistToCsvHandler::CSV_HEADERS)->shouldBeCalled();
 
         $wishlistItem->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);

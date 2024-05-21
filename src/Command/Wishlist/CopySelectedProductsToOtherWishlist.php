@@ -15,15 +15,10 @@ use Doctrine\Common\Collections\Collection;
 
 final class CopySelectedProductsToOtherWishlist implements CopySelectedProductsToOtherWishlistInterface
 {
-    /** @var Collection<WishlistItem> */
-    private Collection $wishlistProducts;
-
-    private int $destinedWishlistId;
-
-    public function __construct(Collection $wishlistProducts, int $destinedWishlistId)
-    {
-        $this->wishlistProducts = $wishlistProducts;
-        $this->destinedWishlistId = $destinedWishlistId;
+    public function __construct(
+        private Collection $wishlistProducts,
+        private int $destinedWishlistId,
+    ) {
     }
 
     public function getWishlistProducts(): Collection

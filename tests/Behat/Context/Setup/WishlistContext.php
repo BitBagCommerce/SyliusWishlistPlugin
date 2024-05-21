@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -21,6 +22,7 @@ use Sylius\Behat\Service\Setter\CookieSetterInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductTaxonInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -30,52 +32,19 @@ use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context
 {
-    private ProductRepositoryInterface $productRepository;
-
-    private WishlistContextInterface $wishlistContext;
-
-    private WishlistProductFactoryInterface $wishlistProductFactory;
-
-    private EntityManagerInterface $wishlistManager;
-
-    private FactoryInterface $taxonFactory;
-
-    private FactoryInterface $productTaxonFactory;
-
-    private EntityManagerInterface $productTaxonManager;
-
-    private CookieSetterInterface $cookieSetter;
-
-    private string $wishlistCookieToken;
-
-    private ChannelRepositoryInterface $channelRepository;
-
-    private UserRepositoryInterface $userRepository;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        WishlistContextInterface $wishlistContext,
-        WishlistProductFactoryInterface $wishlistProductFactory,
-        EntityManagerInterface $wishlistManager,
-        FactoryInterface $taxonFactory,
-        FactoryInterface $productTaxonFactory,
-        EntityManagerInterface $productTaxonManager,
-        CookieSetterInterface $cookieSetter,
-        string $wishlistCookieToken,
-        ChannelRepositoryInterface $channelRepository,
-        UserRepositoryInterface $userRepository
+        private ProductRepositoryInterface $productRepository,
+        private WishlistContextInterface $wishlistContext,
+        private WishlistProductFactoryInterface $wishlistProductFactory,
+        private EntityManagerInterface $wishlistManager,
+        private FactoryInterface $taxonFactory,
+        private FactoryInterface $productTaxonFactory,
+        private EntityManagerInterface $productTaxonManager,
+        private CookieSetterInterface $cookieSetter,
+        private string $wishlistCookieToken,
+        private ChannelRepositoryInterface $channelRepository,
+        private UserRepositoryInterface $userRepository,
     ) {
-        $this->productRepository = $productRepository;
-        $this->wishlistContext = $wishlistContext;
-        $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->wishlistManager = $wishlistManager;
-        $this->taxonFactory = $taxonFactory;
-        $this->productTaxonFactory = $productTaxonFactory;
-        $this->productTaxonManager = $productTaxonManager;
-        $this->cookieSetter = $cookieSetter;
-        $this->wishlistCookieToken = $wishlistCookieToken;
-        $this->channelRepository = $channelRepository;
-        $this->userRepository = $userRepository;
     }
 
     /**
@@ -132,7 +101,7 @@ final class WishlistContext implements Context
         $wishlist = $this->wishlistContext->getWishlist(new Request());
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createNew();
-        /** @var ?Collection $productVariants */
+        /** @var Collection $productVariants */
         $productVariants = $product->getVariants();
         $channel = $this->channelRepository->findOneByCode('WEB-US');
 
@@ -154,6 +123,7 @@ final class WishlistContext implements Context
      */
     public function userHasAWishlistNamedWithToken(string $email, string $name, string $token): void
     {
+        /** @var ?ShopUserInterface $user */
         $user = $this->userRepository->findOneByEmail($email);
         Assert::notNull($user);
 

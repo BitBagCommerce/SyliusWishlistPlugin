@@ -1,25 +1,23 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -34,13 +32,13 @@ final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
         ProductVariantRepositoryInterface $productVariantRepository,
         EntityManagerInterface $wishlistProductManager,
         RequestStack $requestStack,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): void {
         $this->beConstructedWith(
             $productVariantRepository,
             $wishlistProductManager,
             $requestStack,
-            $translator
+            $translator,
         );
     }
 
@@ -57,7 +55,7 @@ final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
         RequestStack $requestStack,
         Session $session,
         FlashBagInterface $flashBag,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): void {
         $removeSelectedProductsCommand = new RemoveSelectedProductsFromWishlist(new ArrayCollection([$wishlistItem->getWrappedObject()]));
 
@@ -74,7 +72,7 @@ final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
     public function it_throws_exception_when_variant_not_found(
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistItemInterface $wishlistItem,
-        WishlistProductInterface $wishlistProduct
+        WishlistProductInterface $wishlistProduct,
     ): void {
         $removeSelectedProductsCommand = new RemoveSelectedProductsFromWishlist(new ArrayCollection([$wishlistItem->getWrappedObject()]));
 
@@ -85,4 +83,3 @@ final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
         $this->shouldThrow(NotFoundHttpException::class)->during('__invoke', [$removeSelectedProductsCommand]);
     }
 }
-

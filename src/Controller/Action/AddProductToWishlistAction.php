@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -14,11 +15,11 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,40 +32,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddProductToWishlistAction
 {
-    private ProductRepositoryInterface $productRepository;
-
-    private WishlistProductFactoryInterface $wishlistProductFactory;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
-    private WishlistsResolverInterface $wishlistsResolver;
-
-    private ObjectManager $wishlistManager;
-
-    private ChannelContextInterface $channelContext;
-
-    private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        WishlistProductFactoryInterface $wishlistProductFactory,
-        RequestStack $requestStack,
-        TranslatorInterface $translator,
-        WishlistsResolverInterface $wishlistsResolver,
-        ObjectManager $wishlistManager,
-        ChannelContextInterface $channelContext,
-        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        private ProductRepositoryInterface $productRepository,
+        private WishlistProductFactoryInterface $wishlistProductFactory,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator,
+        private WishlistsResolverInterface $wishlistsResolver,
+        private ObjectManager $wishlistManager,
+        private ChannelContextInterface $channelContext,
     ) {
-        $this->productRepository = $productRepository;
-        $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
-        $this->wishlistsResolver = $wishlistsResolver;
-        $this->wishlistManager = $wishlistManager;
-        $this->channelContext = $channelContext;
-        $this->wishlistCookieTokenResolver = $wishlistCookieTokenResolver;
     }
 
     public function __invoke(Request $request): Response
@@ -78,12 +54,12 @@ final class AddProductToWishlistAction
 
         $wishlists = $this->wishlistsResolver->resolveAndCreate();
 
-        /** @var WishlistInterface $wishlist */
+        /** @var ?WishlistInterface $wishlist */
         $wishlist = array_shift($wishlists);
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_found')
+                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_found'),
             );
         }
 
@@ -93,9 +69,16 @@ final class AddProductToWishlistAction
             $channel = null;
         }
 
-        if (null !== $channel && $wishlist->getChannel()->getId() !== $channel->getId()) {
+        /** @var ?ChannelInterface $wishlistChannel */
+        $wishlistChannel = $wishlist->getChannel();
+
+        if (null === $wishlistChannel) {
+            throw new ChannelNotFoundException();
+        }
+
+        if (null !== $channel && $wishlistChannel->getId() !== $channel->getId()) {
             throw new WishlistNotFoundException(
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_for_channel_not_found')
+                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_for_channel_not_found'),
             );
         }
 
@@ -112,7 +95,7 @@ final class AddProductToWishlistAction
         $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
 
         $referer = $request->headers->get('referer');
-        $refererPathInfo = Request::create($referer)->getPathInfo();
+        $refererPathInfo = Request::create((string) $referer)->getPathInfo();
 
         return new RedirectResponse($refererPathInfo);
     }
