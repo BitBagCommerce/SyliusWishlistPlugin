@@ -1,44 +1,35 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToSelectedWishlist;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToSelectedWishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class AddProductToSelectedWishlistHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class AddProductToSelectedWishlistHandler
 {
-    private WishlistProductFactoryInterface $wishlistProductFactory;
-
-    private WishlistRepositoryInterface $wishlistRepository;
-
     public function __construct(
-        WishlistProductFactoryInterface $wishlistProductFactory,
-        WishlistRepositoryInterface $wishlistRepository
+        private WishlistProductFactoryInterface $wishlistProductFactory,
+        private WishlistRepositoryInterface $wishlistRepository,
     ) {
-        $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->wishlistRepository = $wishlistRepository;
     }
 
-    public function __invoke(AddProductToSelectedWishlist $addProductToSelectedWishlist)
+    public function __invoke(AddProductToSelectedWishlistInterface $addProductToSelectedWishlist): void
     {
         $product = $addProductToSelectedWishlist->getProduct();
         $wishlist = $addProductToSelectedWishlist->getWishlist();
-
-        if (null === $product) {
-            throw new NotFoundHttpException();
-        }
 
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);

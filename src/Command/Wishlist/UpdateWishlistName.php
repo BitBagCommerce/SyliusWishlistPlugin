@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -14,16 +15,10 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 
 final class UpdateWishlistName implements UpdateWishlistNameInterface
 {
-    public string $name;
-
-    public ?string $channelCode = null;
-
-    private WishlistInterface $wishlist;
-
-    public function __construct(string $name, WishlistInterface $wishlist)
-    {
-        $this->name = $name;
-        $this->wishlist = $wishlist;
+    public function __construct(
+        public string $name,
+        private WishlistInterface $wishlist,
+    ) {
     }
 
     public function getName(): string
@@ -36,4 +31,3 @@ final class UpdateWishlistName implements UpdateWishlistNameInterface
         return $this->wishlist;
     }
 }
-

@@ -14,7 +14,6 @@ namespace spec\BitBag\SyliusWishlistPlugin\Duplicator;
 use BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicator;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
-use BitBag\SyliusWishlistPlugin\Guard\ProductVariantInWishlistGuardInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -30,14 +29,14 @@ final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
         ProductVariantRepositoryInterface $productVariantRepository,
         WishlistRepositoryInterface $wishlistRepository,
         RequestStack $requestStack,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): void {
         $this->beConstructedWith(
             $wishlistProductVariantFactory,
             $productVariantRepository,
             $wishlistRepository,
             $requestStack,
-            $translator
+            $translator,
         );
     }
 
@@ -51,10 +50,10 @@ final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
         ProductVariantInterface $variant1,
         ProductVariantInterface $variant2,
         WishlistInterface $destinedWishlist,
-        WishlistRepositoryInterface $wishlistRepository
+        WishlistRepositoryInterface $wishlistRepository,
     ): void {
-        $productVariantRepository->find("1")->willReturn($variant1);
-        $productVariantRepository->find("24")->willReturn($variant2);
+        $productVariantRepository->find('1')->willReturn($variant1);
+        $productVariantRepository->find('24')->willReturn($variant2);
 
         $destinedWishlist->hasProductVariant($variant1)->shouldBeCalled();
         $destinedWishlist->hasProductVariant($variant2)->shouldBeCalled();
@@ -63,11 +62,11 @@ final class WishlistProductsToOtherWishlistDuplicatorSpec extends ObjectBehavior
 
         $this->copyWishlistProductsToOtherWishlist(new ArrayCollection([
             [
-                "variant" => "1"
+                'variant' => '1',
             ],
             [
-                "variant" => "24"
-            ]
+                'variant' => '24',
+            ],
         ]), $destinedWishlist);
     }
 }

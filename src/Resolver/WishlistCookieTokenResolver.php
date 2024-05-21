@@ -12,33 +12,33 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Webmozart\Assert\Assert;
 
 final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverInterface
 {
-    private RequestStack $requestStack;
-
-    private string $wishlistCookieToken;
-
     public function __construct(
-        RequestStack $requestStack,
-        string $wishlistCookieToken
+        private RequestStack $requestStack,
+        private string $wishlistCookieToken,
     ) {
-        $this->requestStack = $requestStack;
-        $this->wishlistCookieToken = $wishlistCookieToken;
     }
 
     public function resolve(): string
     {
-        $wishlistCookieToken = $this->requestStack->getMainRequest()->cookies->get($this->wishlistCookieToken);
+        /** @var ?Request $mainRequest */
+        $mainRequest = $this->requestStack->getMainRequest();
+        Assert::notNull($mainRequest);
+
+        $wishlistCookieToken = $mainRequest->cookies->get($this->wishlistCookieToken);
 
         if (null !== $wishlistCookieToken) {
-            return $wishlistCookieToken;
+            return (string) $wishlistCookieToken;
         }
 
-        $wishlistCookieToken = $this->requestStack->getMainRequest()->attributes->get($this->wishlistCookieToken);
+        $wishlistCookieToken = $mainRequest->attributes->get($this->wishlistCookieToken);
         if (null !== $wishlistCookieToken) {
-            return $wishlistCookieToken;
+            return (string) $wishlistCookieToken;
         }
 
         return (string) new WishlistToken();

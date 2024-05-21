@@ -1,0 +1,49 @@
+Sylius\Component\Locale\Model\Locale:
+    locale:
+        createdAt: '<dateTimeBetween("-200 days", "now")>'
+        code: 'en_US'
+Sylius\Component\Currency\Model\Currency:
+    dollar:
+        code: 'USD'
+Sylius\Component\Core\Model\Channel:
+    channel_us:
+        code: 'US'
+        name: 'name'
+        defaultLocale: '@locale'
+        locales: [ '@locale' ]
+        taxCalculationStrategy: 'order_items_based'
+        baseCurrency: '@dollar'
+        enabled: true
+Sylius\Component\Core\Model\Customer:
+    customer_oliver:
+        firstName: 'John'
+        lastName: 'Nowak'
+        email: 'oliver@queen.com'
+        emailCanonical: 'test2@example.com'
+    customer_bruce:
+        firstName: 'Bruce'
+        lastName: 'Wayne'
+        email: 'bruce@wayne.com'
+        emailCanonical: 'test@example.com'
+Sylius\Component\Core\Model\ShopUser:
+    user_oliver:
+        plainPassword: '123password'
+        roles: [ 'ROLE_USER' ]
+        enabled: 'true'
+        customer: '@customer_oliver'
+        username: 'oliver@queen.com'
+        usernameCanonical: 'oliver@queen.com'
+    user_bruce:
+        plainPassword: '123password'
+        roles: [ 'ROLE_USER' ]
+        enabled: 'true'
+        customer: '@customer_bruce'
+        username: 'bruce@wayne.com'
+        usernameCanonical: 'bruce@wayne.com'
+BitBag\SyliusWishlistPlugin\Entity\Wishlist:
+    olivier_wishlist:
+        name: 'Olivier Wishlist'
+        shopUser: '@user_oliver'
+        token: 'token'
+        channel: '@channel_us'
+

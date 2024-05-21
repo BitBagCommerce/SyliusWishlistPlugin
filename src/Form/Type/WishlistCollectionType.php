@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -18,24 +19,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 final class WishlistCollectionType extends AbstractType
 {
-    private TranslatorInterface $translator;
-
-    private SelectedWishlistProductsProcessorInterface $selectedWishlistProductsProcessor;
-
     public function __construct(
-        TranslatorInterface $translator,
-        SelectedWishlistProductsProcessorInterface $selectedWishlistProductsProcessor
+        private TranslatorInterface $translator,
+        private SelectedWishlistProductsProcessorInterface $selectedWishlistProductsProcessor,
     ) {
-        $this->translator = $translator;
-        $this->selectedWishlistProductsProcessor = $selectedWishlistProductsProcessor;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('items', CollectionType::class, [
@@ -52,21 +50,25 @@ final class WishlistCollectionType extends AbstractType
             ])
             ->addEventListener(
                 FormEvents::SUBMIT,
-                [$this, 'pickSelectedWishlistItems']
+                [$this, 'pickSelectedWishlistItems'],
             )
         ;
     }
 
     public function pickSelectedWishlistItems(FormEvent $event): void
     {
-        if ($event->getForm()->get('addAll')->isClicked()) {
+        /** @var FormInterface $submitButton */
+        $submitButton = $event->getForm()->get('addAll');
+        Assert::isInstanceOf($submitButton, SubmitButton::class);
+
+        if ($submitButton->isClicked()) {
             return;
         }
 
         $selectedProducts = $this->
         selectedWishlistProductsProcessor->
         createSelectedWishlistProductsCollection(
-            $event->getForm()->get('items')->getData()
+            $event->getForm()->get('items')->getData(),
         );
 
         if ($selectedProducts->isEmpty()) {

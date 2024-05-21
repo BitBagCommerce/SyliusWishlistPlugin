@@ -23,7 +23,7 @@ final class ProductQuantityCheckerSpec extends ObjectBehavior
     }
 
     public function it_has_positive_number_of_products(
-        OrderItemInterface $product
+        OrderItemInterface $product,
     ): void {
         $product->getQuantity()->willReturn(4);
 
@@ -31,7 +31,7 @@ final class ProductQuantityCheckerSpec extends ObjectBehavior
     }
 
     public function it_has_zero_products(
-        OrderItemInterface $product
+        OrderItemInterface $product,
     ): void {
         $product->getQuantity()->willReturn(0);
 

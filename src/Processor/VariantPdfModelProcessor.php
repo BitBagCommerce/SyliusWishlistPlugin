@@ -19,11 +19,9 @@ use Doctrine\Common\Collections\Collection;
 
 final class VariantPdfModelProcessor implements VariantPdfModelProcessorInterface
 {
-    private ModelCreatorInterface $pdfModelCreator;
-
-    public function __construct(ModelCreatorInterface $pdfModelCreator)
-    {
-        $this->pdfModelCreator = $pdfModelCreator;
+    public function __construct(
+        private ModelCreatorInterface $pdfModelCreator,
+    ) {
     }
 
     public function createVariantPdfModelCollection(Collection $wishlistProducts): ArrayCollection

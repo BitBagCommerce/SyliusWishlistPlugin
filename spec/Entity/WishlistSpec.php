@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -20,33 +21,35 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class WishlistSpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(Wishlist::class);
     }
 
-    function it_implements_wishlist_interface(): void
+    public function it_implements_wishlist_interface(): void
     {
         $this->shouldHaveType(WishlistInterface::class);
     }
 
-    function it_has_no_products_by_default(): void
+    public function it_has_no_products_by_default(): void
     {
         $this->getProducts()->toArray()->shouldReturn([]);
     }
 
-    function it_has_no_wishlist_products_by_default(): void
+    public function it_has_no_wishlist_products_by_default(): void
     {
         $this->getWishlistProducts()->toArray()->shouldReturn([]);
     }
 
-    function it_does_not_have_product_by_default(ProductInterface $product): void
+    public function it_does_not_have_product_by_default(ProductInterface $product): void
     {
         $this->hasProduct($product)->shouldReturn(false);
     }
 
-    function it_adds_wishlist_product(WishlistProductInterface $wishlistProduct, ProductVariantInterface $productVariant): void
-    {
+    public function it_adds_wishlist_product(
+        WishlistProductInterface $wishlistProduct,
+        ProductVariantInterface $productVariant,
+    ): void {
         $wishlistProduct->getVariant()->willReturn($productVariant);
 
         $wishlistProduct->setWishlist($this)->shouldBeCalled();

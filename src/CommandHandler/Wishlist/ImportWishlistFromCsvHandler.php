@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -21,39 +22,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class ImportWishlistFromCsvHandler
 {
-    private AddProductVariantToWishlistAction $addProductVariantToWishlistAction;
-
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private array $allowedMimeTypes;
-
-    private CsvSerializerFactoryInterface $csvSerializerFactory;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
     public function __construct(
-        AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        array $allowedMimeTypes,
-        CsvSerializerFactoryInterface $csvSerializerFactory,
-        RequestStack $requestStack,
-        TranslatorInterface $translator
+        private AddProductVariantToWishlistAction $addProductVariantToWishlistAction,
+        private ProductVariantRepositoryInterface $productVariantRepository,
+        private array $allowedMimeTypes,
+        private CsvSerializerFactoryInterface $csvSerializerFactory,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator,
     ) {
-        $this->addProductVariantToWishlistAction = $addProductVariantToWishlistAction;
-        $this->productVariantRepository = $productVariantRepository;
-        $this->allowedMimeTypes = $allowedMimeTypes;
-        $this->csvSerializerFactory = $csvSerializerFactory;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
     }
 
     public function __invoke(ImportWishlistFromCsv $importWishlistFromCsv): Response
@@ -80,18 +64,19 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
             CsvEncoder::AS_COLLECTION_KEY => true,
         ]);
 
+        $variantIdRequestAttributes = [];
+
         /** @var CsvWishlistProduct $csvWishlistProduct */
         foreach ($csvWishlistProducts as $csvWishlistProduct) {
             if ($this->csvWishlistProductIsValid($csvWishlistProduct)) {
                 $variantIdRequestAttributes[] = $csvWishlistProduct->getVariantId();
                 $request->attributes->set('variantId', $variantIdRequestAttributes);
-            }
-        }
-        if (!$this->csvWishlistProductIsValid($csvWishlistProduct)) {
-            /** @var Session $session */
-            $session = $this->requestStack->getSession();
+            } else {
+                /** @var Session $session */
+                $session = $this->requestStack->getSession();
 
-            $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
+                $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
+            }
         }
     }
 
@@ -99,7 +84,7 @@ final class ImportWishlistFromCsvHandler implements MessageHandlerInterface
     {
         $finfo = new \finfo(\FILEINFO_MIME_TYPE);
 
-        return in_array($finfo->file($fileInfo->getRealPath()), $this->allowedMimeTypes);
+        return in_array($finfo->file($fileInfo->getRealPath()), $this->allowedMimeTypes, true);
     }
 
     private function csvWishlistProductIsValid(CsvWishlistProductInterface $csvWishlistProduct): bool

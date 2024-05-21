@@ -27,7 +27,7 @@ final class SelectedWishlistProductsProcessorSpec extends ObjectBehavior
 
     public function it_returns_selected_wishlist_items(
         WishlistItem $wishlistItem,
-        WishlistItem $wishlistItem2
+        WishlistItem $wishlistItem2,
     ): void {
         $wishlistItem->isSelected()->willReturn(false);
         $wishlistItem2->isSelected()->willReturn(true);

@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -27,38 +28,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveProductVariantFromWishlistAction
 {
-    private WishlistRepositoryInterface $wishlistRepository;
-
-    private ProductVariantRepositoryInterface $productVariantRepository;
-
-    private EntityManagerInterface $wishlistProductManager;
-
-    private RequestStack $requestStack;
-
-    private TranslatorInterface $translator;
-
-    private UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
-        WishlistRepositoryInterface $wishlistRepository,
-        ProductVariantRepositoryInterface $productVariantRepository,
-        EntityManagerInterface $wishlistProductManager,
-        RequestStack $requestStack,
-        TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator
+        private WishlistRepositoryInterface $wishlistRepository,
+        private ProductVariantRepositoryInterface $productVariantRepository,
+        private EntityManagerInterface $wishlistProductManager,
+        private RequestStack $requestStack,
+        private TranslatorInterface $translator,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
-        $this->wishlistRepository = $wishlistRepository;
-        $this->productVariantRepository = $productVariantRepository;
-        $this->wishlistProductManager = $wishlistProductManager;
-        $this->urlGenerator = $urlGenerator;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
     }
 
     public function __invoke(
         int $wishlistId,
         int $variantId,
-        Request $request
+        Request $request,
     ): Response {
         /** @var ProductVariantInterface|null $variant */
         $variant = $this->productVariantRepository->find($variantId);
@@ -67,12 +50,12 @@ final class RemoveProductVariantFromWishlistAction
             throw new NotFoundHttpException();
         }
 
-        /** @var WishlistInterface $wishlist */
+        /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->find($wishlistId);
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
-                'Wishlist not found.'
+                'Wishlist not found.',
             );
         }
 
@@ -91,7 +74,7 @@ final class RemoveProductVariantFromWishlistAction
         return new RedirectResponse(
             $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                 'wishlistId' => $wishlistId,
-            ])
+            ]),
         );
     }
 }

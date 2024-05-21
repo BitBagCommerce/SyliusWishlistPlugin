@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -30,13 +31,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         WishlistContextInterface $wishlistContext,
         ProductRepositoryInterface $productRepository,
         EntityManagerInterface $wishlistProductManager,
         RequestStack $requestStack,
         TranslatorInterface $translator,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
     ): void {
         $this->beConstructedWith(
             $wishlistContext,
@@ -44,16 +45,16 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
             $wishlistProductManager,
             $requestStack,
             $translator,
-            $urlGenerator
+            $urlGenerator,
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RemoveProductFromWishlistAction::class);
     }
 
-    function it_throws_404_if_product_was_not_found(Request $request, ProductRepositoryInterface $productRepository): void
+    public function it_throws_404_if_product_was_not_found(Request $request, ProductRepositoryInterface $productRepository): void
     {
         $request->get('productId')->willReturn(1);
         $productRepository->find(1)->willReturn(null);
@@ -61,7 +62,7 @@ final class RemoveProductFromWishlistActionSpec extends ObjectBehavior
         $this->shouldThrow(NotFoundHttpException::class)->during('__invoke', [$request]);
     }
 
-    function it_handles_request_and_redirects_to_wishlist(
+    public function it_handles_request_and_redirects_to_wishlist(
         Request $request,
         ProductRepositoryInterface $productRepository,
         ProductInterface $product,

@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file was created by developers working at BitBag
- * Do you need more information about us and what we do? Visit our https://bitbag.io website!
- * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
-*/
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
 
 declare(strict_types=1);
 
@@ -13,29 +14,20 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class AddProductToWishlistHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+final class AddProductToWishlistHandler
 {
-    private WishlistProductFactoryInterface $wishlistProductFactory;
-
-    private ProductRepositoryInterface $productRepository;
-
-    private ObjectManager $wishlistManager;
-
     public function __construct(
-        WishlistProductFactoryInterface $wishlistProductFactory,
-        ProductRepositoryInterface $productRepository,
-        ObjectManager $wishlistManager
+        private WishlistProductFactoryInterface $wishlistProductFactory,
+        private ProductRepositoryInterface $productRepository,
+        private ObjectManager $wishlistManager,
     ) {
-        $this->wishlistProductFactory = $wishlistProductFactory;
-        $this->productRepository = $productRepository;
-        $this->wishlistManager = $wishlistManager;
     }
 
     public function __invoke(AddProductToWishlist $addProductToWishlist): WishlistInterface
@@ -44,17 +36,13 @@ final class AddProductToWishlistHandler implements MessageHandlerInterface
 
         /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($productId);
+
+        /** @var WishlistInterface $wishlist */
         $wishlist = $addProductToWishlist->getWishlist();
 
         if (null === $product) {
             throw new ProductNotFoundException(
-                sprintf('The Product %s does not exist', $productId)
-            );
-        }
-
-        if (null === $wishlist) {
-            throw new WishlistNotFoundException(
-                'bitbag_sylius_wishlist_plugin.ui.wishlist_for_channel_not_found'
+                sprintf('The Product %s does not exist', $productId),
             );
         }
 
