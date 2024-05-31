@@ -20,7 +20,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class Loginer implements LoginerInterface
 {
-    private const EXAMPLE_USER_LOGIN = 'shop@exaple.com';
+    private const EXAMPLE_USER_LOGIN = 'shop@example.com';
 
     private const EXAMPLE_USER_PASSWORD = 'bitbag';
 

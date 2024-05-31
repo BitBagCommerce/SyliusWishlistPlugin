@@ -126,9 +126,20 @@ final class WishlistContext extends RawMinkContext implements Context
         /** @var ?string $wishlistName */
         $wishlistName = $wishlist->getName();
         Assert::notNull($wishlistName);
+
         $this->wishlistRepository->add($wishlist);
         $this->sharedStorage->set($wishlistName, $wishlist);
+        $this->getSession()->setCookie($this->wishlistCookieToken, $wishlist->getToken());
         $this->cookieSetter->setCookie($this->wishlistCookieToken, $wishlist->getToken());
+    }
+
+    /**
+     * @Then I remove wishlist cookie token
+     */
+    public function iRemoveWishlistCookieToken(): void
+    {
+        $this->getSession()->setCookie($this->wishlistCookieToken);
+        $this->cookieSetter->setCookie($this->wishlistCookieToken, '');
     }
 
     /**
