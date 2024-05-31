@@ -51,11 +51,22 @@ final class ShowChosenWishlistAction
         $wishlist = $this->wishlistRepository->find((int) $wishlistId);
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
+        if (null === $wishlist) {
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
+        }
+
         $user = $this->tokenUserResolver->resolve($token);
 
-        if ($wishlist instanceof WishlistInterface && $user instanceof ShopUserInterface ||
-        $wishlist instanceof WishlistInterface && $wishlist->getToken() === $wishlistCookieToken &&
-            null === $wishlist->getShopUser()) {
+        /** @var ?ShopUserInterface $wishlistUser */
+        $wishlistUser = $wishlist->getShopUser();
+
+        if ($user !== $wishlistUser) {
+            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
+        }
+
+        if ($user instanceof ShopUserInterface ||
+            $wishlist->getToken() === $wishlistCookieToken && null === $wishlistUser
+        ) {
             $form = $this->createForm($wishlist);
 
             return new Response(

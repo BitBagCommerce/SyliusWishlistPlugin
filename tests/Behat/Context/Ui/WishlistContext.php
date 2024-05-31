@@ -15,6 +15,7 @@ use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
@@ -23,13 +24,16 @@ use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
+use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\IndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreatorInterface;
@@ -52,6 +56,8 @@ final class WishlistContext extends RawMinkContext implements Context
         private SharedStorageInterface $sharedStorage,
         private CookieSetterInterface $cookieSetter,
         private ChannelRepositoryInterface $channelRepository,
+        private RepositoryInterface $shopUserRepository,
+        private IndexPageInterface $wishlistIndexPage,
     ) {
     }
 
@@ -320,6 +326,36 @@ final class WishlistContext extends RawMinkContext implements Context
     public function iOpenChosenWishlist(string $wishlistName): void
     {
         $this->wishlistPage->showChosenWishlist($wishlistName);
+    }
+
+    /**
+     * @Then I try to access :email wishlist :wishlistName
+     */
+    public function iTryToAccessCustomerWishlist(string $email, string $wishlistName): void
+    {
+        /** @var ?ShopUserInterface $shopUser */
+        $shopUser = $this->shopUserRepository->findOneBy(['username' => $email]);
+
+        if (null === $shopUser) {
+            throw new ResourceNotFoundException();
+        }
+
+        /** @var ?WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->findOneByShopUserAndName($shopUser, $wishlistName);
+
+        if (null === $wishlist) {
+            throw new WishlistNotFoundException();
+        }
+
+        $this->visitPath('/wishlists/' . $wishlist->getId());
+    }
+
+    /**
+     * @Then I should still be on wishlist index page
+     */
+    public function iShouldStillBeOnWishlistIndexPage(): void
+    {
+        $this->wishlistIndexPage->verify();
     }
 
     /**
