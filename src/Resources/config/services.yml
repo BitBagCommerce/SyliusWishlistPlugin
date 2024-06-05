@@ -2,6 +2,11 @@ imports:
     - { resource: "services/**/*.yml" }
 
 services:
+    bitbag_sylius_wishlist_plugin.console.remove_anonymous_wishlists_command:
+        class: BitBag\SyliusWishlistPlugin\Console\RemoveAnonymousWishlistsCommand
+        tags:
+            - { name: console.command }
+
     bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action:
         abstract: true
         class: BitBag\SyliusWishlistPlugin\Controller\Action\BaseWishlistProductsAction
@@ -347,6 +352,14 @@ services:
             - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
             - '@request_stack'
             - "@translator"
+
+    bitbag_sylius_wishlist_plugin.services.anonymous_wishlists_remover:
+        public: true
+        class: BitBag\SyliusWishlistPlugin\Remover\AnonymousWishlistsRemover
+        arguments:
+            - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
+            - "@bitbag_sylius_wishlist_plugin.manager.wishlist"
+            - "%bitbag_sylius_wishlist_plugin.parameters.anonymous_wishlist_expiration_period%"
 
     bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker:
         class: BitBag\SyliusWishlistPlugin\Checker\WishlistNameChecker

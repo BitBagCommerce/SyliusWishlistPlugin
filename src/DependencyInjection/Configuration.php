@@ -45,6 +45,19 @@ final class Configuration implements ConfigurationInterface
                         })
                     ->end()
                 ->end()
+                ->scalarNode('anonymous_wishlist_expiration_period')
+                    ->defaultValue('30 days')
+                    ->cannotBeEmpty()
+                    ->validate()
+                        ->always(function ($value) {
+                            if (!is_string($value)) {
+                                throw new InvalidConfigurationException('anonymous_wishlist_expiration_period must be string');
+                            }
+
+                            return $value;
+                        })
+                    ->end()
+                ->end()
                 ->arrayNode('allowed_mime_types')
                     ->defaultValue([
                         'text/csv',
