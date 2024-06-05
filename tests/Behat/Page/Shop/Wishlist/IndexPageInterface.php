@@ -15,4 +15,15 @@ use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 
 interface IndexPageInterface extends SymfonyPageInterface
 {
+    public function addNewWishlist(): void;
+
+    public function fillNewWishlistName(string $name): void;
+
+    public function saveNewWishlist(): void;
+
+    public function editWishlistName(string $wishlistName): void;
+
+    public function fillEditWishlistName(string $newWishlistName): void;
+
+    public function saveEditWishlist(): void;
 }

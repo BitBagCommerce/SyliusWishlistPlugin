@@ -89,6 +89,54 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
+     * @When I open modal to create new wishlist
+     */
+    public function iOpenModalToCreateNewWishlist(): void
+    {
+        $this->wishlistIndexPage->addNewWishlist();
+    }
+
+    /**
+     * @When I set new wishlist name :wishlistName
+     */
+    public function iSetNewWishlistName(string $wishlistName): void
+    {
+        $this->wishlistIndexPage->fillNewWishlistName($wishlistName);
+    }
+
+    /**
+     * @When I save new wishlist modal
+     */
+    public function iSaveNewWishlistModal(): void
+    {
+        $this->wishlistIndexPage->saveNewWishlist();
+    }
+
+    /**
+     * @When I edit wishlist name :wishlistName
+     */
+    public function iEditWishlistName(string $wishlistName): void
+    {
+        $this->wishlistIndexPage->fillEditWishlistName($wishlistName);
+    }
+
+    /**
+     * @When I edit :wishlistName
+     */
+    public function iEditWishlist(string $wishlistName): void
+    {
+        $this->wishlistIndexPage->editWishlistName($wishlistName);
+    }
+
+    /**
+     * @When I save edit wishlist modal
+     */
+    public function iSaveEditWishlistModal(): void
+    {
+        $this->wishlistIndexPage->saveEditWishlist();
+    }
+
+    /**
      * @Then I should have :productName in selected wishlists :wishlistName
      */
     public function iShouldHaveProductInWishlist(string $productName, string $wishlistName): void
