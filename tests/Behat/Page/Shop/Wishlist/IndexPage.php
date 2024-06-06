@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist;
 
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
+use Webmozart\Assert\Assert;
 
 final class IndexPage extends SymfonyPage implements IndexPageInterface
 {
@@ -37,7 +38,11 @@ final class IndexPage extends SymfonyPage implements IndexPageInterface
 
     public function editWishlistName(string $wishlistName): void
     {
-        $this->getSession()->getPage()->find('css', '#wishlist-edit-button-' . $wishlistName)->click();
+        $button = $this->getSession()->getPage()->find('css', '#wishlist-edit-button-' . $wishlistName);
+
+        Assert::notNull($button, sprintf('There is no wishlist with name "%s" available to edit.', $wishlistName));
+
+        $button->click();
     }
 
     public function fillEditWishlistName(string $newWishlistName): void
