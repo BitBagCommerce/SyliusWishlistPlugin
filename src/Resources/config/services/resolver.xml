@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+               http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="bitbag_sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver" class="BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolver">
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist"/>
+            <argument type="service" id="sylius.context.channel"/>
+        </service>
+
+        <service id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver" class="BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolver">
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+            <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
+            <argument type="service" id="sylius.command_bus"/>
+        </service>
+
+        <service id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver" class="BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolver">
+            <argument type="service" id="request_stack"/>
+            <argument>%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="sylius.context.channel"/>
+        </service>
+
+        <service id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver" class="BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolver"/>
+    </services>
+</container>
