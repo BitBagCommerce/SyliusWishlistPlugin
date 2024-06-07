@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdfInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\ExportSelectedProductsFromWishlistToPdfHandler;
-use BitBag\SyliusWishlistPlugin\Services\Exporter\WishlistToPdfExporterInterface;
+use BitBag\SyliusWishlistPlugin\Exporter\WishlistToPdfExporterInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 

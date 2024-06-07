@@ -5,7 +5,7 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.services.generator.model_creator" class="BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreator">
+        <service id="bitbag_sylius_wishlist_plugin.services.generator.model_creator" class="BitBag\SyliusWishlistPlugin\Generator\ModelCreator">
             <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.variant_image_path_resolver"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory"/>
             <argument type="service" id="request_stack"/>

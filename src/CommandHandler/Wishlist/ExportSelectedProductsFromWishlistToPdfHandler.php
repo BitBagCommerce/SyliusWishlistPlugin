@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdfInterface;
-use BitBag\SyliusWishlistPlugin\Services\Exporter\WishlistToPdfExporterInterface;
+use BitBag\SyliusWishlistPlugin\Exporter\WishlistToPdfExporterInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
