@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Services\Exporter;
+namespace spec\BitBag\SyliusWishlistPlugin\Exporter;
 
 use BitBag\SyliusWishlistPlugin\Exporter\DomPdfWishlistExporter;
 use BitBag\SyliusWishlistPlugin\Exporter\DomPdfWishlistExporterInterface;
