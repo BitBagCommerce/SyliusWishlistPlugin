@@ -19,6 +19,7 @@
             <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist_product"/>
             <tag name="kernel.event_subscriber"/>
         </service>
-    <service id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf_options" class="BitBag\SyliusWishlistPlugin\Factory\DomPdfOptionsFactory"/>
+
+        <service id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf_options" class="BitBag\SyliusWishlistPlugin\Factory\DomPdfOptionsFactory"/>
     </services>
 </container>
