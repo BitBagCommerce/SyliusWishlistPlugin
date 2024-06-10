@@ -182,4 +182,20 @@ final class WishlistRepositoryTest extends JsonApiTestCase
         $missingResult = $this->repository->findOneByShopUserAndName($shopUser, 'Bruce Wishlist');
         $this->assertNull($missingResult);
     }
+
+    public function testItDeleteAllAnonymousUntilWishlists(): void
+    {
+        $this->loadFixturesFromFile('test_it_delete_all_anonymous_until_wishlists.yaml');
+
+        /** @var int $result */
+        $result = $this->repository->deleteAllAnonymousUntil(new \DateTime('2024-01-01 00:00:00'));
+
+        $this->assertIsInt($result);
+        $this->assertSame(1, $result);
+
+        $wishlists = $this->repository->findAll();
+        $this->assertCount(2, $wishlists);
+        $this->assertSame('Wishlist Two', $wishlists[0]->getName());
+        $this->assertSame('Olivier Wishlist', $wishlists[1]->getName());
+    }
 }

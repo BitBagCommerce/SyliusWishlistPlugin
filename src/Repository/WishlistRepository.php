@@ -145,4 +145,16 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
             ->getOneOrNullResult()
         ;
     }
+
+    public function deleteAllAnonymousUntil(\DateTime $until): int
+    {
+        return $this->createQueryBuilder('o')
+            ->delete(WishlistInterface::class, 'o')
+            ->where('o.shopUser IS NULL')
+            ->andWhere('o.updatedAt < :until')
+            ->setParameter('until', $until)
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }

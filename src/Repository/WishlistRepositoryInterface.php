@@ -40,4 +40,9 @@ interface WishlistRepositoryInterface extends RepositoryInterface
     public function findOneByTokenAndName(string $token, string $name): ?WishlistInterface;
 
     public function findOneByShopUserAndName(ShopUserInterface $shopUser, string $name): ?WishlistInterface;
+
+    /**
+     * @return int Number of deleted wishlists.
+     */
+    public function deleteAllAnonymousUntil(\DateTime $until): int;
 }

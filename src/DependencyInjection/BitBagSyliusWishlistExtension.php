@@ -29,6 +29,7 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
         $this->registerResources('bitbag_sylius_wishlist_plugin', 'doctrine/orm', $config['resources'], $container);
         $loader->load('services.yml');
         $container->setParameter('bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token', $config['wishlist_cookie_token']);
+        $container->setParameter('bitbag_sylius_wishlist_plugin.parameters.anonymous_wishlist_expiration_period', $config['anonymous_wishlist_expiration_period']);
         $container->setParameter('bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types', $config['allowed_mime_types']);
     }
 

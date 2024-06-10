@@ -111,3 +111,14 @@ framework:
 ```
 
 All commands from the plugin implement the `WishlistSyncCommandInterface` interface, so there is no need for other configuration.
+
+## Removing anonymous wishlists after expiration period
+
+You can remove anonymous wishlists that have not been updated for a specified period of time. To do so, you need to add `bitbag:remove-anonymous-wishlists` Symfony console command to your cron jobs.
+
+You can specify the expiration period in your parameters file to override the default value of 30 days:
+
+```yaml
+parameters:
+    bitbag_sylius_wishlist_plugin.parameters.anonymous_wishlist_expiration_period: 30 days # Remove all anonymous wishlists that were updated more than 30 days ago.
+```
