@@ -46,11 +46,10 @@ final class CreateNewWishlistAction
         try {
             if (null !== $channel) {
                 $createNewWishlist = new CreateNewWishlist($wishlistName, $channel->getCode());
-                $this->commandBus->dispatch($createNewWishlist);
             } else {
                 $createNewWishlist = new CreateNewWishlist($wishlistName, null);
-                $this->commandBus->dispatch($createNewWishlist);
             }
+            $this->commandBus->dispatch($createNewWishlist);
 
             /** @var Session $session */
             $session = $this->requestStack->getSession();
