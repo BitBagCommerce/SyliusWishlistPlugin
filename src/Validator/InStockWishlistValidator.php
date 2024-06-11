@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Validator;
 
+use BitBag\SyliusWishlistPlugin\Validator\Constraints\InStockWishlistConstraint;
 use Sylius\Bundle\CoreBundle\Validator\Constraints\CartItemAvailability;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
@@ -56,11 +57,11 @@ final class InStockWishlistValidator extends ConstraintValidator
         try {
             $route = $this->router->match($request->getPathInfo());
         } catch (ResourceNotFoundException $exception) {
-            throw new AccessDeniedHttpException('No authorize');
+            throw new AccessDeniedHttpException('Access denied');
         }
 
         if (array_key_exists('_route', $route) &&
-            'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_selected_products' !== $route['_route']) {
+            InStockWishlistConstraint::ADD_PRODUCTS_ROUTE !== $route['_route']) {
             return;
         }
 

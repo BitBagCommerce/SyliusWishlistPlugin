@@ -17,6 +17,8 @@ final class InStockWishlistConstraint extends Constraint
 {
     public string $message = 'sylius.cart_item.not_available';
 
+    public const ADD_PRODUCTS_ROUTE = 'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_selected_products';
+
     public function validatedBy(): string
     {
         return 'bitbag_sylius_wishlist_plugin_validator_wishlist_in_stock_validator';
