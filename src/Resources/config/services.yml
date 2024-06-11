@@ -277,6 +277,7 @@ services:
             - '@request_stack'
             - "@translator"
             - "@sylius.context.channel"
+            - "@router.default"
         tags:
             - { name: controller.service_arguments }
 
