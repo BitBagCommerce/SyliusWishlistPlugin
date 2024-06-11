@@ -65,6 +65,11 @@ wishlist_clean:
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist
 
+wishlist_list_wishlists:
+    path: /wishlists
+    defaults:
+        _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlists
+
 wishlist_create_new_wishlist:
     path: /wishlists/create
     methods: [GET, POST, DELETE]
@@ -78,6 +83,7 @@ wishlist_remove_wishlist:
         _controller: bitbag_sylius_wishlist_plugin.controller.wishlist::deleteAction
         _sylius:
             csrf_protection: false
+            flash: bitbag_sylius_wishlist_plugin.ui.remove_wishlist
             redirect:
                 route: wishlist_list_wishlists
 
@@ -86,11 +92,6 @@ wishlist_edit_wishlist_name:
     methods: [GET, PUT, POST]
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.update_wishlist_name_action
-
-wishlist_list_wishlists:
-    path: /wishlists
-    defaults:
-        _controller: bitbag_sylius_wishlist_plugin.controller.action.list_wishlists
 
 wishlist_show_chosen_wishlist:
     path: /wishlists/{wishlistId}

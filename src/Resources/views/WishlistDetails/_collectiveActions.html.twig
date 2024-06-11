@@ -5,7 +5,7 @@
 {% endif %}
 <div class="ui dropdown button bb-colective-actions disabled">
     <i class="angle down icon"></i>
-    <span class="text">Bulk Actions</span>
+    <span class="text">{{ 'sylius.ui.bulk_actions'|trans }}</span>
     <div class="menu wishlist-dropdown-menu">
         <div class="item wishlist-dropdown-menu__item">
             <button type="submit" class="ui blue button wishlist-item--button" {{ sylius_test_html_attribute('wishlist-add-selected-to-cart') }} formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_selected_products', { wishlistId: wishlist.id }) }}">
@@ -19,7 +19,7 @@
                 {{ 'bitbag_sylius_wishlist_plugin.ui.remove'|trans }}
             </button>
         </div>
-        {% if wishlists|length > 1 %}               
+        {% if wishlists|length > 1 %}
             <div class="item wishlist-dropdown-menu__item">
                 <button type="button" class="ui green button wishlist-item--button" {{ sylius_test_html_attribute('wishlist-copy-to-wishlist') }}
                         data-bb-wl-list-modal-target="choose-wishlist-button"
@@ -31,12 +31,12 @@
                     <i class="copy icon"></i>
                     {{ 'bitbag_sylius_wishlist_plugin.ui.copy_to_wishlist'|trans }}
                 </button>
-            </div>            
+            </div>
         {% endif %}
         <input type="hidden" data-bb-current-wishlist-id="{{ wishlist.id }}">
         {% for wishlistTarget in wishlists  %}
-            {% if wishlist.id != wishlistTarget.id %}               
-                <input type="hidden" data-bb-wishlists="{{ wishlistTarget.name }}" data-bb-wishlists-id="{{ wishlistTarget.id }}">         
+            {% if wishlist.id != wishlistTarget.id %}
+                <input type="hidden" data-bb-wishlists="{{ wishlistTarget.name }}" data-bb-wishlists-id="{{ wishlistTarget.id }}">
             {% endif %}
         {% endfor %}
         <div class="item wishlist-dropdown-menu__item">
