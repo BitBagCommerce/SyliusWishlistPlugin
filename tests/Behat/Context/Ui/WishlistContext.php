@@ -33,6 +33,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
+use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\IndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
@@ -58,6 +59,7 @@ final class WishlistContext extends RawMinkContext implements Context
         private ChannelRepositoryInterface $channelRepository,
         private RepositoryInterface $shopUserRepository,
         private IndexPageInterface $wishlistIndexPage,
+        private ChosenShowPageInterface $chosenShowPage,
     ) {
     }
 
@@ -86,6 +88,45 @@ final class WishlistContext extends RawMinkContext implements Context
         $this->productIndexPage->open(['slug' => 'main']);
 
         $this->wishlistPage->addProductToSelectedWishlist($productName, $wishlistName);
+    }
+
+    /**
+     * @When I open modal to create new wishlist
+     */
+    public function iOpenModalToCreateNewWishlist(): void
+    {
+        $this->wishlistIndexPage->addNewWishlist();
+    }
+
+    /**
+     * @When I set new wishlist name :wishlistName
+     */
+    public function iSetNewWishlistName(string $wishlistName): void
+    {
+        $this->wishlistIndexPage->fillNewWishlistName($wishlistName);
+    }
+
+    /**
+     * @When I save new wishlist modal
+     */
+    public function iSaveNewWishlistModal(): void
+    {
+        $this->wishlistIndexPage->saveNewWishlist();
+    }
+
+    /**
+     * @Then I should be on new wishlist :wishlistName
+     */
+    public function iShouldBeOnNewWishlist(string $wishlistName): void
+    {
+        /** @var ?WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->findOneBy(['name' => $wishlistName]);
+
+        if (null === $wishlist) {
+            throw new WishlistNotFoundException();
+        }
+
+        $this->chosenShowPage->verify(['wishlistId' => $wishlist->getId()]);
     }
 
     /**

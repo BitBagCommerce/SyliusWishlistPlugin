@@ -11,13 +11,12 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist;
 
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
+use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 
-interface IndexPageInterface extends SymfonyPageInterface
+final class ChosenShowPage extends SymfonyPage implements ChosenShowPageInterface
 {
-    public function addNewWishlist(): void;
-
-    public function fillNewWishlistName(string $name): void;
-
-    public function saveNewWishlist(): void;
+    public function getRouteName(): string
+    {
+        return 'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist';
+    }
 }

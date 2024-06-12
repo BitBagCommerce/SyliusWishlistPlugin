@@ -115,6 +115,7 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $wishlistRepository->findAllByAnonymous('token')->willReturn([]);
 
         $newWishlist->setToken('token')->shouldBeCalled();
+        $newWishlist->setName('New wishlist')->shouldBeCalled();
         $channelRepository->findOneByCode('test_channel_code')->willReturn($channel);
         $newWishlist->setChannel($channel)->shouldBeCalled();
 

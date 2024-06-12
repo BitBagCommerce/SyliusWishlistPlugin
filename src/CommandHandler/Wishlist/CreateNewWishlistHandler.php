@@ -68,12 +68,16 @@ final class CreateNewWishlistHandler
             $wishlist->setChannel($channel);
         }
 
-        /** @var WishlistInterface $newWishlist */
-        foreach ($wishlists as $newWishlist) {
-            if (!$this->wishlistNameChecker->check((string) $newWishlist->getName(), $createNewWishlist->getName())) {
-                $wishlist->setName($createNewWishlist->getName());
-            } else {
-                throw new WishlistNameIsTakenException();
+        if (0 === count($wishlists)) {
+            $wishlist->setName($createNewWishlist->getName());
+        } else {
+            /** @var WishlistInterface $newWishlist */
+            foreach ($wishlists as $newWishlist) {
+                if (!$this->wishlistNameChecker->check((string) $newWishlist->getName(), $createNewWishlist->getName())) {
+                    $wishlist->setName($createNewWishlist->getName());
+                } else {
+                    throw new WishlistNameIsTakenException();
+                }
             }
         }
 

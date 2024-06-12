@@ -13,11 +13,6 @@ namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist;
 
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 
-interface IndexPageInterface extends SymfonyPageInterface
+interface ChosenShowPageInterface extends SymfonyPageInterface
 {
-    public function addNewWishlist(): void;
-
-    public function fillNewWishlistName(string $name): void;
-
-    public function saveNewWishlist(): void;
 }

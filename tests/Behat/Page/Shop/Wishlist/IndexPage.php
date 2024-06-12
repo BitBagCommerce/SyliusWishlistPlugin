@@ -19,4 +19,28 @@ final class IndexPage extends SymfonyPage implements IndexPageInterface
     {
         return 'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists';
     }
+
+    public function addNewWishlist(): void
+    {
+        $this->getElement('add_new_wishlist')->click();
+    }
+
+    public function fillNewWishlistName(string $name): void
+    {
+        $this->getElement('new_wishlist_name')->setValue($name);
+    }
+
+    public function saveNewWishlist(): void
+    {
+        $this->getElement('save_new_wishlist')->click();
+    }
+
+    protected function getDefinedElements(): array
+    {
+        return [
+            'add_new_wishlist' => '[data-test-wishlist-add-new-wishlist]',
+            'new_wishlist_name' => '#create_new_wishlist_name',
+            'save_new_wishlist' => '#create_new_wishlist_save',
+        ];
+    }
 }
