@@ -44,7 +44,7 @@ final class CleanWishlistAction
         /** @var Session $session */
         $session = $this->requestStack->getSession();
 
-        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.clear_wishlist'));
+        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.cleared_wishlist'));
 
         return new RedirectResponse(
             $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [

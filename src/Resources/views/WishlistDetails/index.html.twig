@@ -35,7 +35,7 @@
     {% if wishlist.wishlistProducts.count > 0 %}
         <div class="middle aligned column">
             <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
-                <i class="icon remove"></i>Clear wishlist
+                <i class="icon remove"></i>{{ 'bitbag_sylius_wishlist_plugin.ui.clear_wishlist'|trans }}
             </a>
         </div>
 
