@@ -14,13 +14,14 @@
             </h1>
         </div>
         <div class="middle aligned column">
-            <button id="create_new_wishlist_button" class="ui right floated primary  button" data-bb-wishlist-add="add-another-wishlist"
+            <button id="create_new_wishlist_button" class="ui right floated primary button"
                     data-bb-wishlist-add="add-another-wishlist"
                     data-bb-wishlist-add-url="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_create_new_wishlist') }}"
                     data-bb-wishlist-add-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_title'|trans }}"
                     data-bb-wishlist-add-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_perform'|trans }}"
                     data-bb-wishlist-add-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_cancel'|trans }}"
                     data-bb-wishlist-add-error="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_error'|trans }}"
+                    {{ sylius_test_html_attribute('wishlist-add-new-wishlist') }}
             >
                 {{ 'bitbag_sylius_wishlist_plugin.ui.add_another_wishlist'|trans }}
             </button>

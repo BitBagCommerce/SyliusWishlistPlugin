@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Processor;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Generator\ModelCreatorInterface;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModel;
-use BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Services\Exporter;
+namespace BitBag\SyliusWishlistPlugin\Exporter;
 
 use BitBag\SyliusWishlistPlugin\Processor\VariantPdfModelProcessorInterface;
 use Doctrine\Common\Collections\Collection;

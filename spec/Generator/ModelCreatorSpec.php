@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Services\Generator;
+namespace spec\BitBag\SyliusWishlistPlugin\Generator;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\Generator\ModelCreator;
+use BitBag\SyliusWishlistPlugin\Generator\ModelCreatorInterface;
 use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
-use BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreator;
-use BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreatorInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;

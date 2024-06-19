@@ -11,9 +11,9 @@ Feature: Creating a new wishlist
     @ui @javascript
     Scenario: Creating a new wishlist
         When I go to "/wishlists"
-        When I press "create_new_wishlist_button"
-        And I fill in "create_new_wishlist_name" with "WishlistName"
-        Then I press "create_new_wishlist_save"
+        When I open modal to create new wishlist
+        And I set new wishlist name "WishlistName"
+        Then I save new wishlist modal
         Then I should wait for one second
         Then I should be on "/wishlists"
         And I should have 1 wishlists
