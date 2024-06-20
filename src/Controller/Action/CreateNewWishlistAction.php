@@ -52,7 +52,6 @@ final class CreateNewWishlistAction
             } else {
                 $createNewWishlist = new CreateNewWishlist($wishlistName, null);
             }
-            $this->commandBus->dispatch($createNewWishlist);
 
             $envelope = $this->commandBus->dispatch($createNewWishlist);
             /** @var HandledStamp $handledStamp */
