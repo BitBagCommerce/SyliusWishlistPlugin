@@ -13,8 +13,8 @@ Feature: Editing wishlists name
         And the store has a wishlist named "Wishlist1"
         When I go to "/wishlists"
         Then I should see "Wishlist1"
-        When I press "wishlist-edit-button-Wishlist1"
-        And I fill in "edit_wishlist_name" with "Wishlist2"
-        When I press "edit_wishlist_save"
+        When I edit "Wishlist1"
+        And I edit wishlist name "Wishlist2"
+        When I save edit wishlist modal
         Then I go to "/wishlists"
         And I should see "Wishlist2"

@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusWishlistPlugin\Processor;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Generator\ModelCreatorInterface;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 use BitBag\SyliusWishlistPlugin\Processor\VariantPdfModelProcessor;
 use BitBag\SyliusWishlistPlugin\Processor\VariantPdfModelProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Services\Generator\ModelCreatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 

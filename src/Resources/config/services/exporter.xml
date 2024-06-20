@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+               http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="bitbag_sylius_wishlist_plugin.services.exporter" class="BitBag\SyliusWishlistPlugin\Exporter\WishlistToPdfExporter">
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.processor.variant_pdf_model_processor"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.services.exporter.dom_pdf_wishlist_exporter"/>
+        </service>
+
+        <service id="bitbag_sylius_wishlist_plugin.services.exporter.dom_pdf_wishlist_exporter" class="BitBag\SyliusWishlistPlugin\Exporter\DomPdfWishlistExporter">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf"/>
+        </service>
+    </services>
+</container>
