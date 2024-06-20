@@ -39,7 +39,7 @@ final class WishlistExtension extends AbstractExtension
 
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
-        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver
+        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ) {
     }
 

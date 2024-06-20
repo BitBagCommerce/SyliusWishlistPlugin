@@ -148,7 +148,7 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findAllByShopUserAndChannel(
         ShopUserInterface $shopUser,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): array {
         return $this->createQueryBuilder('o')
             ->where('o.shopUser = :shopUser')

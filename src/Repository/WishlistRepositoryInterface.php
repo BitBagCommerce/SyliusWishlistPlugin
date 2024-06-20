@@ -43,6 +43,6 @@ interface WishlistRepositoryInterface extends RepositoryInterface
 
     public function findAllByShopUserAndChannel(
         ShopUserInterface $shopUser,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): array;
 }
