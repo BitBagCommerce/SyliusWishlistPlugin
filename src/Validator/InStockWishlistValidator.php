@@ -28,20 +28,11 @@ use Webmozart\Assert\Assert;
 
 final class InStockWishlistValidator extends ConstraintValidator
 {
-    public RequestStack $request;
-
-    public Router $router;
-
-    public AvailabilityCheckerInterface $availabilityChecker;
-
     public function __construct(
-        AvailabilityCheckerInterface $availabilityChecker,
-        RequestStack $requestStack,
-        Router $router,
+        private AvailabilityCheckerInterface $availabilityChecker,
+        private RequestStack $requestStack,
+        private Router $router,
     ) {
-        $this->request = $requestStack;
-        $this->availabilityChecker = $availabilityChecker;
-        $this->router = $router;
     }
 
     public function validate(mixed $value, Constraint $constraint): void
@@ -50,7 +41,7 @@ final class InStockWishlistValidator extends ConstraintValidator
 
         Assert::isInstanceOf($constraint, CartItemAvailability::class);
 
-        $request = $this->request->getCurrentRequest();
+        $request = $this->requestStack->getCurrentRequest();
 
         Assert::notNull($request);
 
