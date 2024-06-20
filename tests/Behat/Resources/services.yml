@@ -35,6 +35,7 @@ services:
             - "@sylius.repository.channel"
             - "@sylius.repository.shop_user"
             - "@bitbag_wishlist_plugin.behat.page.wishlist.index_page"
+            - "@bitbag_wishlist_plugin.behat.page.wishlist.chosen_show_page"
 
     bitbag_sylius_cms_plugin.behat.page.shop.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage
@@ -43,6 +44,11 @@ services:
 
     bitbag_wishlist_plugin.behat.page.wishlist.index_page:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\IndexPage
+        parent: sylius.behat.symfony_page
+        public: false
+
+    bitbag_wishlist_plugin.behat.page.wishlist.chosen_show_page:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPage
         parent: sylius.behat.symfony_page
         public: false
 

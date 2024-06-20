@@ -147,6 +147,7 @@
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="router.default"/>
             <tag name="controller.service_arguments"/>
         </service>
 

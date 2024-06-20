@@ -1,10 +1,10 @@
-import { WishlistModal } from './wishlistModal';
+import {WishlistModal} from './wishlistModal';
 
 const addWishlistBtn = document.querySelector('[data-bb-wishlist-add="add-another-wishlist"]');
 const wishlistFormName = 'create_new_wishlist';
 
 const setWishlistModal = () => {
-    addWishlistBtn.addEventListener('click', () => {   
+    addWishlistBtn.addEventListener('click', () => {
         new WishlistModal(
             {
                 headerTitle: document.querySelector("[data-bb-wishlist-add-title]").dataset.bbWishlistAddTitle,
@@ -32,19 +32,18 @@ const setWishlistModal = () => {
 
                     const requestConfig = {
                         method: 'POST',
-                        headers: headers, 
+                        headers: headers,
                         body: formData
                     }
-                    
+
                     try {
                         const response = await fetch(url, requestConfig);
                         const data = await response.json();
-                        
+                        window.location.href = `${window.location.origin}${data.url}`;
+
                     } catch (error) {
                         console.error(error);
-                    } finally {
-                        location.reload();
-                    }    
+                    }
                 },
             }
         ).init();
@@ -55,7 +54,7 @@ const turnOnListener = () => {
     if (!addWishlistBtn) {
         return;
     }
-    
+
     setWishlistModal();
 };
 

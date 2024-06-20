@@ -15,5 +15,4 @@ Feature: Creating a new wishlist
         And I set new wishlist name "WishlistName"
         Then I save new wishlist modal
         Then I should wait for one second
-        Then I should be on "/wishlists"
-        And I should have 1 wishlists
+        Then I should be on new wishlist "WishlistName"

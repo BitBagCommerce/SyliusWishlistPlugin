@@ -89,6 +89,7 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $wishlist->setName('New wishlist');
 
         $wishlistRepository->add($wishlist)->shouldBeCalled();
+        $wishlist->getId()->willReturn(1);
 
         $createNewWishlist = new CreateNewWishlist('New wishlist', 'test_channel_code');
 
@@ -119,6 +120,7 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $newWishlist->setChannel($channel)->shouldBeCalled();
 
         $wishlistRepository->add($newWishlist)->shouldBeCalled();
+        $newWishlist->getId()->willReturn(1);
 
         $createNewWishlist = new CreateNewWishlist('New wishlist', 'test_channel_code');
 

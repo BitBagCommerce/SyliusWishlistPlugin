@@ -39,7 +39,7 @@ final class CreateNewWishlistHandler
     ) {
     }
 
-    public function __invoke(CreateNewWishlist $createNewWishlist): void
+    public function __invoke(CreateNewWishlist $createNewWishlist): int
     {
         $token = $this->tokenStorage->getToken();
         $user = $this->tokenUserResolver->resolve($token);
@@ -82,5 +82,7 @@ final class CreateNewWishlistHandler
         }
 
         $this->wishlistRepository->add($wishlist);
+
+        return $wishlist->getId();
     }
 }

@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CreateNewWishlistAction
@@ -30,6 +32,7 @@ final class CreateNewWishlistAction
         private RequestStack $requestStack,
         private TranslatorInterface $translator,
         private ChannelContextInterface $channelContext,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -49,7 +52,11 @@ final class CreateNewWishlistAction
             } else {
                 $createNewWishlist = new CreateNewWishlist($wishlistName, null);
             }
-            $this->commandBus->dispatch($createNewWishlist);
+
+            $envelope = $this->commandBus->dispatch($createNewWishlist);
+            /** @var HandledStamp $handledStamp */
+            $handledStamp = $envelope->last(HandledStamp::class);
+            $result = $handledStamp->getResult();
 
             /** @var Session $session */
             $session = $this->requestStack->getSession();
@@ -66,8 +73,18 @@ final class CreateNewWishlistAction
                 'error',
                 $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_already_exists'),
             );
+
+            return new JsonResponse([]);
         }
 
-        return new JsonResponse();
+        return new JsonResponse(
+            [
+            'url' => $this
+                ->urlGenerator
+                ->generate(
+                    'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist',
+                    ['wishlistId' => $result],
+                )],
+        );
     }
 }

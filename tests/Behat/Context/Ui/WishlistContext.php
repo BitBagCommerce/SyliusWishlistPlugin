@@ -33,6 +33,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
+use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\IndexPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
 use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
@@ -58,6 +59,7 @@ final class WishlistContext extends RawMinkContext implements Context
         private ChannelRepositoryInterface $channelRepository,
         private RepositoryInterface $shopUserRepository,
         private IndexPageInterface $wishlistIndexPage,
+        private ChosenShowPageInterface $chosenShowPage,
     ) {
     }
 
@@ -113,27 +115,18 @@ final class WishlistContext extends RawMinkContext implements Context
     }
 
     /**
-     * @When I edit wishlist name :wishlistName
+     * @Then I should be on new wishlist :wishlistName
      */
-    public function iEditWishlistName(string $wishlistName): void
+    public function iShouldBeOnNewWishlist(string $wishlistName): void
     {
-        $this->wishlistIndexPage->fillEditWishlistName($wishlistName);
-    }
+        /** @var ?WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->findOneBy(['name' => $wishlistName]);
 
-    /**
-     * @When I edit :wishlistName
-     */
-    public function iEditWishlist(string $wishlistName): void
-    {
-        $this->wishlistIndexPage->editWishlistName($wishlistName);
-    }
+        if (null === $wishlist) {
+            throw new WishlistNotFoundException();
+        }
 
-    /**
-     * @When I save edit wishlist modal
-     */
-    public function iSaveEditWishlistModal(): void
-    {
-        $this->wishlistIndexPage->saveEditWishlist();
+        $this->chosenShowPage->verify(['wishlistId' => $wishlist->getId()]);
     }
 
     /**
