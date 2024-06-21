@@ -26,7 +26,7 @@ final class ImportWishlistFromCsvType extends AbstractType
     {
         $builder
             ->add('wishlist_file', FileType::class, [
-                'label' => 'Wishlist (CSV file)',
+                'label' => false,
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
@@ -43,7 +43,7 @@ final class ImportWishlistFromCsvType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Submit',
+                'label' => 'bitbag_sylius_wishlist_plugin.ui.import_from_csv',
             ])
         ;
     }
