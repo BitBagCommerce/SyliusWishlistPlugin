@@ -10,4 +10,5 @@ bitbag_sylius_wishlist_plugin:
         added_to_cart: Norų sąraše esančios prekės pridėtos į krepšelį.
         save_wishlist: Įrašyti norų sąrašą
         variant_not_unique: Šią prekę jūs jau turite savo norų sąraše
+        submit: Invia
 
