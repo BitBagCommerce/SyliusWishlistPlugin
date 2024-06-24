@@ -25,6 +25,7 @@ bitbag_sylius_wishlist_plugin:
         copy_to_wishlist: Copy to another wishlist
         export_to_csv: Export to CSV
         import_from_csv: Import from CSV
+        submit: Submit
         upload_valid_csv: Uploaded file has wrong type
         variant_already_in_wishlist: Variant already in wishlist
         selected_wishlist_items_successfully_exported: Selected products have been successfully exported.
