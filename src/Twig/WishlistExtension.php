@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Twig;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
@@ -22,8 +21,22 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class WishlistExtension extends AbstractExtension
+final class WishlistExtension extends AbstractExtension
 {
+    private const WISHLIST_USER_TOKEN_CACHE_PATTERN = 'user_id_%s_token_%s';
+
+    private const WISHLIST_USER_CHANNEL_CACHE_PATTERN = 'user_id_%s_channel_%s';
+
+    private const WISHLIST_ANONYMOUS_CHANNEL_CACHE_PATTERN = 'anonymous_channel_id_%s';
+
+    private const WISHLIST_ANONYMOUS_CACHE_KEY = 'anonymous_token_%s';
+
+    private const WISHLIST_USER_CACHE_KEY = 'user_id_%s';
+
+    private const WISHLIST_ALL_CACHE_KEY = 'all';
+
+    private array $wishlists = [];
+
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
@@ -44,10 +57,11 @@ class WishlistExtension extends AbstractExtension
 
     public function getWishlists(): ?array
     {
-        /** @var WishlistInterface[] $wishlists */
-        $wishlists = $this->wishlistRepository->findAll();
+        if (false === isset($this->wishlists[self::WISHLIST_ALL_CACHE_KEY])) {
+            $this->wishlists[self::WISHLIST_ALL_CACHE_KEY] = $this->wishlistRepository->findAll();
+        }
 
-        return $wishlists;
+        return $this->wishlists[self::WISHLIST_ALL_CACHE_KEY];
     }
 
     public function findAllByShopUser(UserInterface $user = null): ?array
@@ -56,7 +70,24 @@ class WishlistExtension extends AbstractExtension
             throw new UnsupportedUserException();
         }
 
-        return $this->wishlistRepository->findAllByShopUser($user->getId());
+        $cacheKey = sprintf(self::WISHLIST_USER_CACHE_KEY, $user->getId());
+        if (false === isset($this->wishlists[$cacheKey])) {
+            $this->wishlists[$cacheKey] = $this->wishlistRepository->findAllByShopUser($user->getId());
+        }
+
+        return $this->wishlists[$cacheKey];
+    }
+
+    public function findAllByAnonymous(): ?array
+    {
+        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        $cacheKey = sprintf(self::WISHLIST_ANONYMOUS_CACHE_KEY, $wishlistCookieToken);
+
+        if (false === isset($this->wishlists[$cacheKey])) {
+            $this->wishlists[$cacheKey] = $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+        }
+
+        return $this->wishlists[$cacheKey];
     }
 
     public function findAllByShopUserAndToken(UserInterface $user = null): ?array
@@ -67,14 +98,12 @@ class WishlistExtension extends AbstractExtension
             throw new UnsupportedUserException();
         }
 
-        return $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
-    }
+        $cacheKey = sprintf(self::WISHLIST_USER_TOKEN_CACHE_PATTERN, $user->getId(), $wishlistCookieToken);
+        if (false === isset($this->wishlists[$cacheKey])) {
+            $this->wishlists[$cacheKey] = $this->wishlistRepository->findAllByShopUserAndToken($user->getId(), $wishlistCookieToken);
+        }
 
-    public function findAllByAnonymous(): ?array
-    {
-        $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
-
-        return $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
+        return $this->wishlists[$cacheKey];
     }
 
     public function findAllByShopUserAndChannel(UserInterface $user = null, ChannelInterface $channel = null): ?array
@@ -86,13 +115,23 @@ class WishlistExtension extends AbstractExtension
             throw new ChannelNotFoundException();
         }
 
-        return $this->wishlistRepository->findAllByShopUser($user->getId());
+        $cacheKey = sprintf(self::WISHLIST_USER_CHANNEL_CACHE_PATTERN, $user->getId(), $channel->getCode());
+        if (false === isset($this->wishlists[$cacheKey])) {
+            $this->wishlists[$cacheKey] = $this->wishlistRepository->findAllByShopUserAndChannel($user, $channel);
+        }
+
+        return $this->wishlists[$cacheKey];
     }
 
     public function findAllByAnonymousAndChannel(ChannelInterface $channel): ?array
     {
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
+        $cacheKey = sprintf(self::WISHLIST_ANONYMOUS_CHANNEL_CACHE_PATTERN, $channel->getCode());
 
-        return $this->wishlistRepository->findAllByAnonymousAndChannel($wishlistCookieToken, $channel);
+        if (false === isset($this->wishlists[$cacheKey])) {
+            $this->wishlists[$cacheKey] = $this->wishlistRepository->findAllByAnonymousAndChannel($wishlistCookieToken, $channel);
+        }
+
+        return $this->wishlists[$cacheKey];
     }
 }

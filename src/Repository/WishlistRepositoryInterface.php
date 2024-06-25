@@ -40,4 +40,9 @@ interface WishlistRepositoryInterface extends RepositoryInterface
     public function findOneByTokenAndName(string $token, string $name): ?WishlistInterface;
 
     public function findOneByShopUserAndName(ShopUserInterface $shopUser, string $name): ?WishlistInterface;
+
+    public function findAllByShopUserAndChannel(
+        ShopUserInterface $shopUser,
+        ChannelInterface $channel,
+    ): array;
 }
