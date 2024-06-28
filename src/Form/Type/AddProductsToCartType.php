@@ -59,6 +59,15 @@ final class AddProductsToCartType extends AbstractType
                     'required' => false,
                 ]);
         });
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            $selected = $data['selected'] ?? false;
+
+            if (false === $selected) {
+                $data['cartItem']['cartItem']['quantity'] = 0;
+                $event->setData($data);
+            }
+        });
     }
 
     private function createCartItem(WishlistProductInterface $wishlistProduct): OrderItemInterface
