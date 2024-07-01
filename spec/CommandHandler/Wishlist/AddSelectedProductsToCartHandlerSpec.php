@@ -13,6 +13,7 @@ namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddSelectedProductsToCartHandler;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -96,10 +97,9 @@ final class AddSelectedProductsToCartHandlerSpec extends ObjectBehavior
     }
 
     public function it_doesnt_add_selected_products_to_cart_if_product_cannot_be_processed(
-        WishlistItem $wishlistProduct,
+        WishlistItemInterface $wishlistProduct,
         OrderModifierInterface $orderModifier,
         OrderRepositoryInterface $orderRepository,
-        OrderItemQuantityModifierInterface $itemQuantityModifier,
         OrderInterface $order,
         OrderItemInterface $orderItem,
         AddToCartCommandInterface $addToCartCommand,
@@ -125,6 +125,9 @@ final class AddSelectedProductsToCartHandlerSpec extends ObjectBehavior
 
         $requestStack->getSession()->willReturn($session);
         $session->getFlashBag()->willReturn($flashBag);
+
+        $translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity')->willReturn('Increase the quantity of at least one item.');
+        $flashBag->add('error', 'Increase the quantity of at least one item.')->shouldBeCalled();
 
         $this->__invoke($addSelectedProductsToCart);
     }

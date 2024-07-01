@@ -103,6 +103,9 @@ final class AddSelectedProductsToCartHandler
         if (0 < $product->getQuantity()) {
             return true;
         }
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+        $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
 
         return false;
     }
