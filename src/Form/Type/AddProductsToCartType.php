@@ -24,7 +24,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Valid;
 
 final class AddProductsToCartType extends AbstractType
 {
@@ -32,7 +31,6 @@ final class AddProductsToCartType extends AbstractType
         private AddToCartCommandFactoryInterface $addToCartCommandFactory,
         private CartItemFactoryInterface $cartItemFactory,
         private OrderItemQuantityModifierInterface $orderItemQuantityModifier,
-        private array $validationGroups,
     ) {
     }
 
@@ -45,7 +43,6 @@ final class AddProductsToCartType extends AbstractType
 
             $form
                 ->add('cartItem', AddToCartType::class, [
-                'constraints' => new Valid(),
                 'label' => false,
                 'required' => false,
                 'product' => $wishlistProduct->getProduct(),
@@ -77,7 +74,6 @@ final class AddProductsToCartType extends AbstractType
         $resolver
             ->setRequired('cart')
             ->setDefault('data_class', WishlistItem::class)
-            ->setDefault('allow_extra_fields', true)
-            ->setDefault('validation_groups', $this->validationGroups);
+            ->setDefault('allow_extra_fields', true);
     }
 }
