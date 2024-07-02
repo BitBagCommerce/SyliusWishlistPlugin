@@ -79,13 +79,11 @@ final class AddSelectedProductsToCartHandler
             return false;
         }
 
-        if (null !== $this->availabilityChecker &&
-            $this->availabilityChecker->isStockSufficient($variant, $product->getQuantity())
-        ) {
-            return true;
-        }
-
-        if ($variant->isInStock()) {
+        if (null !== $this->availabilityChecker) {
+            if ($this->availabilityChecker->isStockSufficient($variant, $product->getQuantity())) {
+                return true;
+            }
+        } elseif ($variant->isInStock()) {
             return true;
         }
 
