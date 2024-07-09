@@ -9,7 +9,6 @@
             <argument type="service" id="sylius.factory.add_to_cart_command"/>
             <argument type="service" id="sylius.factory.order_item"/>
             <argument type="service" id="sylius.order_item_quantity_modifier"/>
-            <argument>%sylius.form.type.cart_item.validation_groups%</argument>
             <tag name="form.type"/>
         </service>
 

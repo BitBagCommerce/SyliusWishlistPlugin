@@ -18,8 +18,6 @@ use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -50,15 +48,7 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
 
     protected function handleCommand(FormInterface $form): void
     {
-        /** @var Session $session */
-        $session = $this->requestStack->getSession();
-
-        try {
-            $command = new AddSelectedProductsToCart($form->getData());
-            $this->messageBus->dispatch($command);
-            $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
-        } catch (HandlerFailedException $exception) {
-            $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
-        }
+        $command = new AddSelectedProductsToCart($form->getData());
+        $this->messageBus->dispatch($command);
     }
 }
