@@ -137,11 +137,6 @@ jobs:
                         ${{ runner.os }}-node-${{ matrix.node }}-yarn-
 
             -
-                name: Copy package.json.~1.13.0.dist.dist to package.json.~1.13.0.dist
-                if: matrix.sylius != ''
-                run: (cd tests/Application && cp package.json.~1.13.0.dist.\${{ matrix.sylius }}.dist package.json.~1.13.0.dist)
-
-            -
                 name: Install JS dependencies
                 run: (cd tests/Application && yarn install)
 
