@@ -19,7 +19,10 @@ Products can be added to the wishlist directly from the homepage, taxon product 
     <img src="./images/add_productpage.png"/>
 </div>
 
+
 **Managing created wishlist**
+
+
 User can access wishlists by clicking this button.
 
 <div align="center">
@@ -44,17 +47,21 @@ Once products are added to the wishlist user have a variety of actions to chose 
 
 **Managing multiple created wishlist**
 
+
 It is possible for user to have more than one wishlist at the same time. If the user has only one wishlist, it is possible to create another directly from the view of the first wishlist. Se just has to click Add another wishlist button and choose a name for it.
 
 <div align="center">
     <img src="./images/add_wishlist.png"/>
 </div>
 
+
 Once the client has multiple wishlist, the "Your wishlists" page is available. 
+
 
 <div align="center">
     <img src="./images/wishlists.png"/>
 </div>
+
 
 When it comes to managing wishlists user can remove them, rename them or create another one.
 
