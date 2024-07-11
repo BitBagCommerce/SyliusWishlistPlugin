@@ -42,6 +42,7 @@ This plugin allows you to integrate wishlist features with Sylius platform app.
 - [Customization](./doc/03-customization.md)
 - [Development](./doc/04-development.md)
 - [Testing](./doc/05-testing.md)
+- [Functionalities](https://github.com/BitBagCommerce/SyliusWishlistPlugin/blob/master/doc/functionalities.md)
 
 ## We are here to help
 This **open-source plugin was developed to help the Sylius community**. If you have any additional questions, would like help with installing or configuring the plugin, or need any assistance with your Sylius project - let us know!
