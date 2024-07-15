@@ -4,7 +4,7 @@
     "description": "Wishlist plugin for Sylius.",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.0",
         "sylius/sylius": "^1.12 || ^1.13",
         "symfony/webpack-encore-bundle": "^1.15",
         "dompdf/dompdf": "^2.0"

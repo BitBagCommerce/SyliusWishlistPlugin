@@ -14,7 +14,7 @@ on:
 
 jobs:
     tests:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
 
         name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, 
   MySQL ${{ matrix.mysql }}, State Machine Adapter ${{ matrix.state_machine_adapter }}"
@@ -22,7 +22,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ "8.1", "8.2", "8.3" ]
+                php: [ "8.0", "8.1", "8.2", "8.3" ]
                 symfony: ["^5.4", "^6.4"]
                 sylius: [ "^1.12", "^1.13" ]
                 node: [ "18.x", "20.x" ]
@@ -30,9 +30,11 @@ jobs:
                 state_machine_adapter: ["winzou_state_machine", "symfony_workflow"]
 
                 exclude:
-                    -
-                        sylius: ~1.12.0
-                        state_machine_adapter: "symfony_workflow"
+                    - sylius: ^1.13
+                      php: 8.0
+                    - sylius: ^1.12
+                      php: 8.0
+                      symfony: ^6.4
         env:
             APP_ENV: test
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
