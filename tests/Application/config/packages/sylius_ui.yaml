@@ -1,0 +1,10 @@
+sylius_ui:
+  events:
+    sylius.shop.layout.header.grid:
+      blocks:
+        wishlist_header: '@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig'
+    sylius.shop.product.index.box:
+      blocks:
+        content:
+          template: "@BitBagSyliusWishlistPlugin/Product/Box/_content.html.twig"
+          priority: 10
