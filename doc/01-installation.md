@@ -23,13 +23,37 @@ sylius_order:
 
 ```
 
-3. Clear application cache by using command:
+3. Add plugin templates:
+
+- Inject blocks:
+
+```yaml
+sylius_ui:
+  events:
+    sylius.shop.layout.header.grid:
+      blocks:
+        wishlist_header: '@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig'
+    sylius.shop.product.index.box:
+      blocks:
+        content:
+          template: "@BitBagSyliusWishlistPlugin/Product/Box/_content.html.twig"
+          priority: 10
+        
+```
+
+- Override templates:
+
+```bash
+cp vendor/bitbag/wishlist-plugin/src/Resources/view/Product/Show/_addToCart.html.twig templates/bundles/SyliusShopBundle/Product/Show
+```
+
+4. Clear application cache by using command:
 
 ```bash
 bin/console cache:clear
 ```
 
-4. Update your database
+5. Update your database
 
 ```bash
 bin/console doctrine:migrations:migrate
@@ -37,13 +61,6 @@ bin/console doctrine:migrations:migrate
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
-5. Please add plugin templates into your project:
-
-```bash
-cp -R vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/Product templates/bundles/SyliusShopBundle
-cp vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/_header.html.twig templates/bundles/SyliusShopBundle
-cp vendor/bitbag/wishlist-plugin/tests/Application/templates/bundles/SyliusShopBundle/_logo.html.twig templates/bundles/SyliusShopBundle
-```
 6. Add plugin assets to your project
 
 We recommend you to use Webpack (Encore), for which we have prepared four different instructions on how to add this plugin's assets to your project:
