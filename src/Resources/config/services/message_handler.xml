@@ -113,7 +113,6 @@
             <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <argument type="service" id="sylius.repository.channel"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
             <tag name="messenger.message_handler"/>
         </service>
