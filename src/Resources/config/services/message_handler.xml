@@ -71,8 +71,6 @@
         <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.remove_selected_products_from_wishlist" class="BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler">
             <argument type="service" id="sylius.repository.product_variant"/>
             <argument type="service" id="sylius.manager.order"/>
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="translator"/>
             <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 

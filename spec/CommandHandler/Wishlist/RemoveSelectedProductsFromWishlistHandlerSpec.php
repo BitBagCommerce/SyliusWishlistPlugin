@@ -15,30 +15,23 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishl
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
+use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
+use BitBag\SyliusWishlistPlugin\Exception\WishlistProductNotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
 {
     public function let(
         ProductVariantRepositoryInterface $productVariantRepository,
         EntityManagerInterface $wishlistProductManager,
-        RequestStack $requestStack,
-        TranslatorInterface $translator,
     ): void {
         $this->beConstructedWith(
             $productVariantRepository,
             $wishlistProductManager,
-            $requestStack,
-            $translator,
         );
     }
 
@@ -52,10 +45,6 @@ final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
         WishlistItemInterface $wishlistItem,
         WishlistProductInterface $wishlistProduct,
         ProductVariantInterface $productVariant,
-        RequestStack $requestStack,
-        Session $session,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
     ): void {
         $removeSelectedProductsCommand = new RemoveSelectedProductsFromWishlist(new ArrayCollection([$wishlistItem->getWrappedObject()]));
 
@@ -63,8 +52,6 @@ final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
         $wishlistItem->getWishlistProduct()->willReturn($wishlistProduct);
         $wishlistProduct->getVariant()->willReturn($productVariant);
         $productVariantRepository->find($productVariant)->willReturn($productVariant);
-        $requestStack->getSession()->willReturn($session);
-        $session->getFlashBag()->willReturn($flashBag);
 
         $this->__invoke($removeSelectedProductsCommand);
     }
@@ -80,6 +67,18 @@ final class RemoveSelectedProductsFromWishlistHandlerSpec extends ObjectBehavior
         $wishlistProduct->getVariant()->willReturn(null);
         $productVariantRepository->find(null)->willReturn(null);
 
-        $this->shouldThrow(NotFoundHttpException::class)->during('__invoke', [$removeSelectedProductsCommand]);
+        $this->shouldThrow(ProductNotFoundException::class)->during('__invoke', [$removeSelectedProductsCommand]);
+    }
+
+    public function it_throws_exception_when_wishlist_product_not_found(
+        ProductVariantRepositoryInterface $productVariantRepository,
+        WishlistItemInterface $wishlistItem,
+        WishlistProductInterface $wishlistProduct,
+    ): void {
+        $removeSelectedProductsCommand = new RemoveSelectedProductsFromWishlist(new ArrayCollection([$wishlistItem->getWrappedObject()]));
+
+        $wishlistItem->getWishlistProduct()->willReturn(null);
+
+        $this->shouldThrow(WishlistProductNotFoundException::class)->during('__invoke', [$removeSelectedProductsCommand]);
     }
 }

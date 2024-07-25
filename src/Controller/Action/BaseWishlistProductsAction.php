@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -78,6 +79,14 @@ abstract class BaseWishlistProductsAction
     }
 
     abstract protected function handleCommand(FormInterface $form): void;
+
+    protected function getFlashBag(): FlashBagInterface
+    {
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        return $session->getFlashBag();
+    }
 
     private function createForm(int $wishlistId): ?FormInterface
     {
