@@ -26,7 +26,9 @@ interface WishlistRepositoryInterface extends RepositoryInterface
 
     public function findAllByShopUser(int $shopUser): array;
 
-    public function findAllByAnonymous(?string $token): array;
+    public function findAllByAnonymous(?string $token = null): array;
+
+    public function findAllAnonymousUpdatedAtEarlierThan(\DateTimeInterface $updatedAt): array;
 
     public function findAllByShopUserAndToken(int $shopUser, string $token): array;
 
