@@ -20,8 +20,8 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 {
     public function findOneByShopUser(ShopUserInterface $shopUser): ?WishlistInterface
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.shopUser = :shopUser')
+        return $this->createQueryBuilder('w')
+            ->where('w.shopUser = :shopUser')
             ->setParameter('shopUser', $shopUser)
             ->getQuery()
             ->setMaxResults(1)
@@ -31,8 +31,8 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findByToken(string $token): ?WishlistInterface
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.token = :token')
+        return $this->createQueryBuilder('w')
+            ->where('w.token = :token')
             ->setParameter('token', $token)
             ->getQuery()
             ->setMaxResults(1)
@@ -42,8 +42,8 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findAllByToken(string $token): array
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.token = :token')
+        return $this->createQueryBuilder('w')
+            ->where('w.token = :token')
             ->setParameter('token', $token)
             ->getQuery()
             ->getResult()
@@ -52,8 +52,8 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findAllByShopUser(int $shopUser): array
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.shopUser = :shopUser')
+        return $this->createQueryBuilder('w')
+            ->where('w.shopUser = :shopUser')
             ->setParameter('shopUser', $shopUser)
             ->getQuery()
             ->getResult()
@@ -62,12 +62,12 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findAllByShopUserAndToken(int $shopUser, string $token): array
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('w');
 
-        return $qb->where('o.shopUser = :shopUser')
+        return $qb->where('w.shopUser = :shopUser')
             ->orWhere($qb->expr()->andX(
-                'o.token = :token',
-                'o.shopUser IS NULL',
+                'w.token = :token',
+                'w.shopUser IS NULL',
             ))
             ->setParameter('token', $token)
             ->setParameter('shopUser', $shopUser)
@@ -76,12 +76,30 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         ;
     }
 
-    public function findAllByAnonymous(?string $token): array
+    public function findAllByAnonymous(?string $token = null): array
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.token = :token')
-            ->andWhere('o.shopUser IS NULL')
-            ->setParameter('token', $token)
+        $qb = $this->createQueryBuilder('w')
+            ->andWhere('w.shopUser IS NULL')
+        ;
+
+        if (null !== $token) {
+            $qb
+                ->andWhere('w.token = :token')
+                ->setParameter('token', $token);
+        }
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAllAnonymousUpdatedAtEarlierThan(\DateTimeInterface $updatedAt): array
+    {
+        return $this->createQueryBuilder('w')
+            ->andWhere('w.shopUser IS NULL')
+            ->andWhere('w.updatedAt <= :updatedAt')
+            ->setParameter('updatedAt', $updatedAt)
             ->getQuery()
             ->getResult()
         ;
@@ -91,9 +109,9 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         ShopUserInterface $shopUser,
         ChannelInterface $channel,
     ): ?WishlistInterface {
-        return $this->createQueryBuilder('o')
-            ->where('o.shopUser = :shopUser')
-            ->andWhere('o.channel = :channel')
+        return $this->createQueryBuilder('w')
+            ->where('w.shopUser = :shopUser')
+            ->andWhere('w.channel = :channel')
             ->setParameter('shopUser', $shopUser)
             ->setParameter('channel', $channel)
             ->setMaxResults(1)
@@ -105,15 +123,15 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findAllByAnonymousAndChannel(?string $token, ChannelInterface $channel): array
     {
-        $qb = $this->createQueryBuilder('o')
-            ->andWhere('o.channel = :channel')
-            ->andWhere('o.shopUser IS NULL')
+        $qb = $this->createQueryBuilder('w')
+            ->andWhere('w.channel = :channel')
+            ->andWhere('w.shopUser IS NULL')
             ->setParameter('channel', $channel)
         ;
 
         if (null !== $token) {
             $qb
-                ->andWhere('o.token = :token')
+                ->andWhere('w.token = :token')
                 ->setParameter('token', $token);
         }
 
@@ -122,9 +140,9 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findOneByTokenAndName(string $token, string $name): ?WishlistInterface
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.token = :token')
-            ->andWhere('o.name =:name')
+        return $this->createQueryBuilder('w')
+            ->where('w.token = :token')
+            ->andWhere('w.name =:name')
             ->setParameter('token', $token)
             ->setParameter('name', $name)
             ->getQuery()
@@ -135,9 +153,9 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
 
     public function findOneByShopUserAndName(ShopUserInterface $shopUser, string $name): ?WishlistInterface
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.shopUser = :shopUser')
-            ->andWhere('o.name =:name')
+        return $this->createQueryBuilder('w')
+            ->where('w.shopUser = :shopUser')
+            ->andWhere('w.name =:name')
             ->setParameter('shopUser', $shopUser)
             ->setParameter('name', $name)
             ->getQuery()
@@ -150,9 +168,9 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         ShopUserInterface $shopUser,
         ChannelInterface $channel,
     ): array {
-        return $this->createQueryBuilder('o')
-            ->where('o.shopUser = :shopUser')
-            ->andWhere('o.channel = :channel')
+        return $this->createQueryBuilder('w')
+            ->where('w.shopUser = :shopUser')
+            ->andWhere('w.channel = :channel')
             ->setParameter('shopUser', $shopUser)
             ->setParameter('channel', $channel)
             ->getQuery()
