@@ -14,7 +14,7 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
-use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantity;
+use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
@@ -89,7 +89,7 @@ final class AddProductsToCartHandler
     }
 
     /**
-     * @throws InvalidProductQuantity
+     * @throws InvalidProductQuantityException
      */
     private function productHasPositiveQuantity(OrderItemInterface $product): bool
     {
@@ -97,7 +97,7 @@ final class AddProductsToCartHandler
             return true;
         }
 
-        throw new InvalidProductQuantity();
+        throw new InvalidProductQuantityException();
     }
 
     private function addProductToWishlist(WishlistItemInterface $wishlistProduct): void

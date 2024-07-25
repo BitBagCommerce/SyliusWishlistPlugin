@@ -9,8 +9,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exception;
+namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
-final class WishlistProductNotFoundException extends \Exception
+use Doctrine\Common\Collections\Collection;
+
+interface AddSelectedProductsToCartInterface extends WishlistSyncCommandInterface
 {
+    public function getWishlistProducts(): Collection;
 }

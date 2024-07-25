@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCartInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
-use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantity;
+use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
@@ -23,7 +23,6 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -38,7 +37,7 @@ final class AddSelectedProductsToCartHandler
     ) {
     }
 
-    public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
+    public function __invoke(AddSelectedProductsToCartInterface $addSelectedProductsToCartCommand): void
     {
         $this->addSelectedProductsToCart($addSelectedProductsToCartCommand->getWishlistProducts());
     }
@@ -93,8 +92,8 @@ final class AddSelectedProductsToCartHandler
         if (0 < $product->getQuantity()) {
             return true;
         }
-        /** @var Session $session */
-        throw new InvalidProductQuantity();
+
+        throw new InvalidProductQuantityException();
     }
 
     private function addProductToWishlist(WishlistItemInterface $wishlistProduct): void

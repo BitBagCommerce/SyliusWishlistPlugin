@@ -11,6 +11,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Exception;
 
-final class InvalidProductQuantity extends \Exception
+final class InvalidProductQuantityException extends \Exception
 {
 }
