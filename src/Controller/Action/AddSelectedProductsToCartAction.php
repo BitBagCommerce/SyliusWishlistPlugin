@@ -12,43 +12,40 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
-use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use Sylius\Component\Order\Context\CartContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
+use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
+use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantity;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
 {
-    public function __construct(
-        CartContextInterface $cartContext,
-        FormFactoryInterface $formFactory,
-        RequestStack $requestStack,
-        WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        MessageBusInterface $messageBus,
-        UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository,
-        TranslatorInterface $translator,
-    ) {
-        parent::__construct(
-            $cartContext,
-            $formFactory,
-            $requestStack,
-            $wishlistCommandProcessor,
-            $messageBus,
-            $urlGenerator,
-            $wishlistRepository,
-            $translator,
-        );
-    }
-
     protected function handleCommand(FormInterface $form): void
     {
+        $session = $this->requestStack->getSession();
+        $flashBag = $session->getFlashBag();
+
         $command = new AddSelectedProductsToCart($form->getData());
-        $this->messageBus->dispatch($command);
+
+        try {
+            $this->messageBus->dispatch($command);
+            if (false === $flashBag->has('success')) {
+                $flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+            }
+        } catch (HandlerFailedException $exception) {
+            $flashBag->add('error', $this->getExceptionMessage($exception));
+        }
+    }
+
+    private function getExceptionMessage(HandlerFailedException $exception): string
+    {
+        $previous = $exception->getPrevious();
+        if ($previous instanceof InsufficientProductStockException) {
+            return $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.insufficient_stock', ['%productName%' => $previous->getProductName()]);
+        }
+        if ($previous instanceof InvalidProductQuantity) {
+            return $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity');
+        }
+
+        return $exception->getMessage();
     }
 }
