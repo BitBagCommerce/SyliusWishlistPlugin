@@ -37,6 +37,16 @@ services:
             - "@bitbag_wishlist_plugin.behat.page.wishlist.index_page"
             - "@bitbag_wishlist_plugin.behat.page.wishlist.chosen_show_page"
 
+    bitbag_wishlist_plugin.behat.context.cli.wishlist:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Cli\WishlistContext
+        arguments:
+            - '@kernel'
+
+    bitbag_wishlist_plugin.behat.context.common.wishlist:
+        class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Common\WishlistContext
+        arguments:
+            - '@bitbag_sylius_wishlist_plugin.repository.wishlist'
+
     bitbag_sylius_cms_plugin.behat.page.shop.wishlist:
         class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage
         parent: sylius.behat.symfony_page

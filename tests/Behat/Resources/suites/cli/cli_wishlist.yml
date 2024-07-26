@@ -1,0 +1,17 @@
+default:
+  suites:
+    cli_wishlist:
+      contexts:
+        - sylius.behat.context.hook.doctrine_orm
+        - sylius.behat.context.setup.channel
+        - sylius.behat.context.setup.product
+        - sylius.behat.context.setup.user
+        - sylius.behat.context.transform.lexical
+
+        - bitbag_wishlist_plugin.behat.context.cli.wishlist
+        - bitbag_wishlist_plugin.behat.context.common.wishlist
+        - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
+        - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
+
+      filters:
+        tags: "@cli_wishlist&&@cli"
