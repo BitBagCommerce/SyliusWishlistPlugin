@@ -10,8 +10,8 @@ default:
 
         - bitbag_wishlist_plugin.behat.context.cli.wishlist
         - bitbag_wishlist_plugin.behat.context.common.wishlist
-        - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
-        - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
+        - bitbag_wishlist_plugin.behat.context.ui.wishlist
+        - bitbag_wishlist_plugin.behat.context.setup.wishlist
 
       filters:
         tags: "@cli_wishlist&&@cli"
