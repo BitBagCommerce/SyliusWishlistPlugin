@@ -12,7 +12,36 @@
 composer require bitbag/wishlist-plugin
 ```
 
-2. Override `OrderItemController`
+2. (optional) Add plugin dependencies to your `config/bundles.php` file:
+
+```php
+// config/bundles.php
+
+return [
+    ...
+
+    BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
+];
+```
+
+3. (optional) Import required config in your `config/packages/_sylius.yaml` file:
+
+```yaml
+# config/packages/_sylius.yaml
+imports:
+  ...
+  - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
+```
+
+4. (optional) Import routing in your `config/routes.yaml` file:
+
+  ```yaml
+# config/routes.yaml
+bitbag_sylius_wishlist_plugin:
+    resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing.yml"
+```
+
+5. Override `OrderItemController`
 
 ```yaml
 sylius_order:
@@ -23,7 +52,7 @@ sylius_order:
 
 ```
 
-3. Add plugin templates:
+6. Add plugin templates:
 
 - Inject blocks:
 
@@ -44,16 +73,16 @@ sylius_ui:
 - Override templates:
 
 ```bash
-cp vendor/bitbag/wishlist-plugin/src/Resources/view/Product/Show/_addToCart.html.twig templates/bundles/SyliusShopBundle/Product/Show
+cp vendor/bitbag/wishlist-plugin/src/Resources/views/Product/Show/_addToCart.html.twig templates/bundles/SyliusShopBundle/Product/Show
 ```
 
-4. Clear application cache by using command:
+7. Clear application cache by using command:
 
 ```bash
 bin/console cache:clear
 ```
 
-5. Update your database
+8. Update your database
 
 ```bash
 bin/console doctrine:migrations:migrate
@@ -61,7 +90,7 @@ bin/console doctrine:migrations:migrate
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
-6. Add plugin assets to your project
+9. Add plugin assets to your project
 
 We recommend you to use Webpack (Encore), for which we have prepared four different instructions on how to add this plugin's assets to your project:
 
