@@ -159,15 +159,15 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When there is a guest wishlist which has been inactive for a week
+     * @When there is a guest wishlist which has been inactive for :days days
      */
-    public function thereIsAGuestWishlistInactiveForAWeek(): void
+    public function thereIsAGuestWishlistInactiveForDays(int $days): void
     {
         $wishlist = new Wishlist();
         $channel = $this->channelRepository->findOneByCode('WEB-US');
 
         $updatedAt = new \DateTime();
-        $updatedAt->modify('-7 days');
+        $updatedAt->modify(\sprintf('-%d days', $days));
 
         $wishlist->setChannel($channel);
         $wishlist->setUpdatedAt($updatedAt);
