@@ -35,21 +35,14 @@
         'form': form
     }) }}
 
-    {{ form_widget(form.wishlists) }}
-
     <div class="bb-add-to-cart-container">
         <button type="submit" class="primary ui icon labeled button bb-wishlist-button"
                 {{ sylius_test_html_attribute('add-to-cart-button') }}>
             <i class="cart icon"></i>
             {{ 'sylius.ui.add_to_cart'|trans }}
         </button>
-        <button id="{{ form.addToWishlist.vars.id }}" name="{{ form.addToWishlist.vars.full_name }}"
-                class="{{ form.addToWishlist.vars.attr.class }} ui icon labeled button bb-wishlist-button"
-                data-bb-toggle="wishlist-variant"
-                {{ sylius_test_html_attribute('wishlist-add-variant') }}>
-            <i class="heart icon"></i>
-            {{ form.addToWishlist.vars.label|trans }}
-        </button>
+
+        {% include '@BitBagSyliusWishlistPlugin/Common/_addToWishlist.html.twig' %}
     </div>
     {{ form_row(form._token) }}
     {{ form_end(form, {'render_rest': false}) }}
