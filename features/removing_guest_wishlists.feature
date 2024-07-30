@@ -22,11 +22,12 @@ Feature: Removing guest wishlists
 
   @cli
   Scenario: Removing guest wishlists with date
-    Given there is a guest wishlist which has been inactive for a week
-    And there are 2 wishlists in the database
+    Given there is a guest wishlist which has been inactive for 5 days
+    And there is a guest wishlist which has been inactive for 4 days
+    And there are 3 wishlists in the database
     When I run delete guests wishlists command to delete wishlists inactive for more than 5 days
     Then the command should succeed
-    And there is 1 wishlist in the database
+    And there are 2 wishlists in the database
 
   @cli
   Scenario: Removing guest wishlists with invalid date
