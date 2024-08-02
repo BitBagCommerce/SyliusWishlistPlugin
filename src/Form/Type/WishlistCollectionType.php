@@ -44,9 +44,6 @@ final class WishlistCollectionType extends AbstractType
             ])
             ->add('addAll', SubmitType::class, [
                 'label' => 'bitbag_sylius_wishlist_plugin.ui.add_items_to_cart',
-                'attr' => [
-                    'class' => 'ui primary button',
-                ],
             ])
             ->addEventListener(
                 FormEvents::SUBMIT,

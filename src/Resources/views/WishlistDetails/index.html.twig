@@ -43,23 +43,23 @@
 
         {{ form_start(form, { attr: { class: 'bb-wishlist ui form', id: "wishlist_form" } }) }}
 
-        <div class="ui segment" id="wishlist">
+        <div class="ui stackable" id="wishlist">
 
             <div class="bb-wishlist-item">
                 <div class="bb-wishlist-item-select">
                     <input type="checkbox" id="toggle-checkboxes" class="bb-wishlist-item-select-checkbox">
                 </div>
                 <div class="bb-wishlist-item-image">
-                    {{ 'sylius.ui.product'|trans }}
+                    <span>{{ 'sylius.ui.item'|trans }}</span>
                 </div>
                 <div class="bb-wishlist-item-price">
-                    {{ 'sylius.ui.price'|trans }}
+                    <span>{{ 'sylius.ui.unit_price'|trans }}</span>
                 </div>
                 <div class="bb-wishlist-item-quantity">
-                    {{ 'sylius.ui.quantity'|trans }}
+                    <span>{{ 'sylius.ui.qty'|trans }}</span>
                 </div>
                 <div class="bb-wishlist-item-actions">
-                    {{ 'sylius.ui.actions'|trans }}
+                    <span>{{ 'sylius.ui.actions'|trans }}</span>
                 </div>
             </div>
 

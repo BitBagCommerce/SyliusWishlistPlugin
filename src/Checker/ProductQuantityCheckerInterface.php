@@ -13,6 +13,9 @@ namespace BitBag\SyliusWishlistPlugin\Checker;
 
 use Sylius\Component\Order\Model\OrderItemInterface;
 
+/**
+ * @deprecated
+ */
 interface ProductQuantityCheckerInterface
 {
     public function hasPositiveQuantity(OrderItemInterface $product): bool;

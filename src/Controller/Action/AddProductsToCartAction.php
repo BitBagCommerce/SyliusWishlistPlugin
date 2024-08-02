@@ -12,13 +12,13 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface;
 use Symfony\Component\Form\FormInterface;
 
-final class AddProductsToCartAction extends BaseWishlistProductsAction
+final class AddProductsToCartAction extends BaseAddWishlistProductsAction
 {
-    protected function handleCommand(FormInterface $form): void
+    protected function getCommand(FormInterface $form): WishlistSyncCommandInterface
     {
-        $command = new AddProductsToCart($form->get('items')->getData());
-        $this->messageBus->dispatch($command);
+        return new AddProductsToCart($form->get('items')->getData());
     }
 }

@@ -9,8 +9,6 @@
 
         <service id="bitbag_sylius_wishlist_plugin.services.product_quantity_checker" class="BitBag\SyliusWishlistPlugin\Checker\ProductQuantityChecker"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.services.product_processing_checker" class="BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.services.product_quantity_checker"/>
-        </service>
+        <service id="bitbag_sylius_wishlist_plugin.services.product_processing_checker" class="BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker"/>
     </services>
 </container>

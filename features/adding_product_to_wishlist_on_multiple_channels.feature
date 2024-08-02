@@ -1,4 +1,4 @@
-@wishlist
+@wishlist @api_wishlist
 Feature: Adding a product to wishlist
   In order to compare or buy products later
   As a Visitor
@@ -12,7 +12,7 @@ Feature: Adding a product to wishlist
     And all store products appear under a main taxonomy
 
   @ui
-  Scenario: Adding product to wishlist in the first channel checking wishlist on the second channel.
+  Scenario: Adding product to wishlist in the first channel checking wishlist on the second channel
     Given I change my current channel to "Web-EU"
     When I add "Leprechaun's Silver" product to my wishlist
     And I should be notified that the product has been successfully added to my wishlist
@@ -65,3 +65,38 @@ Feature: Adding a product to wishlist
     And I go to the wishlist page
     And I should have one item in my wishlist
 
+  @api
+  Scenario: Adding product to wishlist with API in the first channel checking wishlist on the second channel
+    Given I am browsing channel "Web-EU"
+    And user has a wishlist
+    When user adds product "Leprechaun's Silver" to the wishlist in "Web-EU"
+    Then user should have product "Leprechaun's Silver" in the wishlist
+    Then I am browsing channel "Web-US"
+    And user has a wishlist in "Web-US"
+    Then user should have an empty wishlist in "Web-US"
+
+  @api
+  Scenario: Adding product to wishlisht with API on both channels
+    Given I change my current channel to "Web-EU"
+    And user has a wishlist in "Web-EU"
+    When user adds product "Leprechaun's Silver" to the wishlist in "Web-EU"
+    Then user should have product "Leprechaun's Silver" in the wishlist
+    Then I change my current channel to "Web-US"
+    And user has a wishlist in "Web-US"
+    When user adds product "Leprechaun's Gold" to the wishlist in "Web-US"
+    Then user should have product "Leprechaun's Gold" in the wishlist
+
+  @api
+  Scenario: Adding product to wishlist with API on both channels and removing from one channel
+    Given I change my current channel to "Web-EU"
+    And user has a wishlist in "Web-EU"
+    When user adds product "Leprechaun's Silver" to the wishlist in "Web-EU"
+    Then user should have product "Leprechaun's Silver" in the wishlist
+    Then I change my current channel to "Web-US"
+    And user has a wishlist in "Web-US"
+    When user adds product "Leprechaun's Gold" to the wishlist in "Web-US"
+    Then user should have product "Leprechaun's Gold" in the wishlist
+    Then user removes product "Leprechaun's Gold" from the wishlist
+    Then user should have an empty wishlist
+    And I change my current channel to "Web-EU"
+    Then user should have product "Leprechaun's Silver" in the wishlist on "Web-EU"

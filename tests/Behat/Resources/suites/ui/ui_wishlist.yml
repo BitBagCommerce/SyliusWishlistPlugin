@@ -1,20 +1,20 @@
 default:
- suites:
-  ui_wishlist:
-   contexts:
-    - sylius.behat.context.hook.doctrine_orm
-    - sylius.behat.context.setup.channel
-    - sylius.behat.context.setup.product
-    - sylius.behat.context.setup.customer
-    - sylius.behat.context.setup.shop_security
-    - sylius.behat.context.transform.lexical
-    - sylius.behat.context.transform.product
-    - sylius.behat.context.transform.channel
-    - sylius.behat.context.ui.shop.product
-    - sylius.behat.context.ui.shop.cart
-    - Behat\MinkExtension\Context\MinkContext
+  suites:
+    ui_wishlist:
+      contexts:
+        - sylius.behat.context.hook.doctrine_orm
+        - sylius.behat.context.setup.channel
+        - sylius.behat.context.setup.product
+        - sylius.behat.context.setup.customer
+        - sylius.behat.context.setup.shop_security
+        - sylius.behat.context.transform.lexical
+        - sylius.behat.context.transform.product
+        - sylius.behat.context.transform.channel
+        - sylius.behat.context.ui.shop.product
+        - sylius.behat.context.ui.shop.cart
+        - Behat\MinkExtension\Context\MinkContext
 
-    - bitbag_sylius_cms_plugin.behat.context.setup.wishlist
-    - bitbag_sylius_cms_plugin.behat.context.ui.wishlist
-   filters:
-    tags: "@wishlist&&@ui"
+        - bitbag_wishlist_plugin.behat.context.setup.wishlist
+        - bitbag_wishlist_plugin.behat.context.ui.wishlist
+      filters:
+        tags: "@wishlist&&@ui"
