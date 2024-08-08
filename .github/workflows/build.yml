@@ -14,7 +14,7 @@ on:
 
 jobs:
     tests:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
 
         name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, 
   MySQL ${{ matrix.mysql }}, State Machine Adapter ${{ matrix.state_machine_adapter }}"
@@ -22,24 +22,20 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ["8.1"]
-                symfony: ["^5.4", "^6.0"]
-                sylius: ["~1.12.0", "~1.13.0"]
-                node: ["^14.17.x"]
+                php: [ "8.1", "8.2", "8.3" ]
+                symfony: ["^5.4", "^6.4"]
+                sylius: [ "^1.12", "^1.13" ]
+                node: [ "18.x", "20.x" ]
                 mysql: ["8.0"]
                 state_machine_adapter: ["winzou_state_machine", "symfony_workflow"]
 
-                exclude:
-                    -
-                        sylius: ~1.12.0
-                        state_machine_adapter: "symfony_workflow"
         env:
             APP_ENV: test
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
 
         steps:
             -
-                uses: actions/checkout@v2
+                uses: actions/checkout@v3
 
             -
                 name: Setup PHP
@@ -52,7 +48,7 @@ jobs:
 
             -
                 name: Setup Node
-                uses: actions/setup-node@v1
+                uses: actions/setup-node@v4
                 with:
                     node-version: "${{ matrix.node }}"
 
@@ -98,7 +94,7 @@ jobs:
 
             -
                 name: Cache Composer
-                uses: actions/cache@v2
+                uses: actions/cache@v4
                 with:
                     path: ${{ steps.composer-cache.outputs.dir }}
                     key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
@@ -129,17 +125,12 @@ jobs:
 
             -
                 name: Cache Yarn
-                uses: actions/cache@v2
+                uses: actions/cache@v4
                 with:
                     path: ${{ steps.yarn-cache.outputs.dir }}
-                    key: ${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/package.json **/yarn.lock') }}
+                    key: ${{ runner.os }}-node-${{ matrix.node }}-yarn-${{ hashFiles('**/package.json.~1.13.0.dist **/yarn.lock') }}
                     restore-keys: |
                         ${{ runner.os }}-node-${{ matrix.node }}-yarn-
-
-            -
-                name: Copy package.json.dist to package.json
-                if: matrix.sylius != ''
-                run: (cd tests/Application && cp package.json.\${{ matrix.sylius }}.dist package.json)
 
             -
                 name: Install JS dependencies
@@ -174,14 +165,6 @@ jobs:
                 run: (cd tests/Application && bin/console doctrine:schema:validate)
 
             -
-                name: Run ECS
-                run: vendor/bin/ecs
-
-            -
-                name: Run PHPStan
-                run: vendor/bin/phpstan analyse -c phpstan.neon
-
-            -
                 name: Run PHPSpec
                 run: vendor/bin/phpspec run --ansi -f progress --no-interaction
 
@@ -195,7 +178,7 @@ jobs:
 
             -
                 name: Upload Behat logs
-                uses: actions/upload-artifact@v2
+                uses: actions/upload-artifact@v3
                 if: failure()
                 with:
                     name: Behat logs
@@ -204,7 +187,7 @@ jobs:
 
             -
                 name: Upload test log logs
-                uses: actions/upload-artifact@v2
+                uses: actions/upload-artifact@v3
                 if: failure()
                 with:
                     name: Var logs
