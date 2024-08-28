@@ -93,6 +93,7 @@ sylius_ui:
 - Override templates:
 
 ```bash
+mkdir -p templates/bundles/SyliusShopBundle/Product/Show
 cp vendor/bitbag/wishlist-plugin/src/Resources/views/Product/Show/_addToCart.html.twig templates/bundles/SyliusShopBundle/Product/Show
 ```
 
