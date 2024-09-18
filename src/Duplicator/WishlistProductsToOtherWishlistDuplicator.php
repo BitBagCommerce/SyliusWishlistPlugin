@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Duplicator;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
+use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -24,7 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class WishlistProductsToOtherWishlistDuplicator implements WishlistProductsToOtherWishlistDuplicatorInterface
 {
     public function __construct(
-        private WishlistProductFactoryFacadeInterface $wishlistProductVariantFactory,
+        private WishlistProductFactoryInterface $wishlistProductFactory,
         private ProductVariantRepositoryInterface $productVariantRepository,
         private WishlistRepositoryInterface $wishlistRepository,
         private RequestStack $requestStack,
@@ -53,7 +53,8 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
                     sprintf('%s' . $message, $variant->getName()),
                 );
             } else {
-                $this->wishlistProductVariantFactory->createWithProductVariant($destinedWishlist, $variant);
+                $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($destinedWishlist, $variant);
+                $destinedWishlist->addWishlistProduct($wishlistProduct);
             }
         }
         $this->wishlistRepository->add($destinedWishlist);

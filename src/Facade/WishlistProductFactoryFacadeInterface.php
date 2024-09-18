@@ -15,6 +15,9 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
+/**
+ * @deprecated
+ */
 interface WishlistProductFactoryFacadeInterface
 {
     public function createWithProduct(WishlistInterface $wishlist, ProductInterface $product): void;

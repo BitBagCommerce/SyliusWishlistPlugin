@@ -16,11 +16,6 @@ use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 
 final class ProductProcessingChecker implements ProductProcessingCheckerInterface
 {
-    public function __construct(
-        private readonly ProductQuantityCheckerInterface $productQuantityChecker,
-    ) {
-    }
-
     public function canBeProcessed(WishlistItemInterface $wishlistItem): bool
     {
         /** @var ?AddToCartCommandInterface $addToCartCommand */
@@ -32,15 +27,6 @@ final class ProductProcessingChecker implements ProductProcessingCheckerInterfac
 
         $cartItem = $addToCartCommand->getCartItem();
 
-        return $this->isInStock($wishlistItem) && $this->productQuantityChecker->hasPositiveQuantity($cartItem);
-    }
-
-    private function isInStock(WishlistItemInterface $wishlistItem): bool
-    {
-        if (0 < $wishlistItem->getOrderItemQuantity()) {
-            return true;
-        }
-
-        return false;
+        return 0 < $cartItem->getQuantity();
     }
 }

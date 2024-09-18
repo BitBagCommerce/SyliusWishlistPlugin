@@ -76,5 +76,11 @@
             align-items: center;
             justify-content: center;
         }
+
+        > * {
+            span {
+                color: $lightgray;
+            }
+        }
     }
 }
