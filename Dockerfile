@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 ARG DEBIAN_FRONTEND=noninteractive
-ARG PHP_VERSION=8.1
+ARG PHP_VERSION=8.3
 ENV LC_ALL=C.UTF-8
 
 # Install basic tools
