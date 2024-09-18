@@ -37,6 +37,9 @@
         "lchrusciel/api-test-case": "^4.1 || ^5.0",
         "nelmio/alice": "^3.10"
     },
+    "conflict": {
+        "symfony/validator": "^6.4.7"
+    },
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
