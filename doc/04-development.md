@@ -8,6 +8,8 @@
 - [Installation](#installation)
 - [Development](#development)
 - [Frontend](#frontend)
+- [Docker](#docker)
+
 
 
 #### Installation
