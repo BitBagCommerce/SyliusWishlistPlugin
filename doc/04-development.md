@@ -66,3 +66,18 @@ $ yarn watch
 It's an infinite process, which will watch your changes in the assets folder and (re)build them. So all of your frontend changes should be done in `{root}/src/Resources/assets` directory. We have configured two independent entry points that should not be combined - `shop` for the storefront and `admin` for the admin panel.
 
 > **⚠ Note**: Before every commit, you should type the `yarn dist` command from the plugin root directory to rebuild dist assets, which are located in `{root}/src/Resources/public`. <br> <br> You also shouldn't add assets to this folder manually because **they will be removed automatically**
+
+#### Docker
+
+To test plugin with docker You can use:
+
+```bash
+$ docker-compose up
+$ docker-compose exec -it app composer install
+$ docker-compose exec -it app yarn install
+$ docker-compose exec -it -w /app/tests/Application app bin/console d:d:c
+$ docker-compose exec -it -w /app/tests/Application app bin/console d:s:c
+$ docker-compose exec -it -w /app/tests/Application app bin/console sy:fi:lo -q
+```
+
+This should make sure test app from docker container is up and running.
