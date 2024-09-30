@@ -63,8 +63,6 @@
         </service>
 
         <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_selected_products_to_cart" class="BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddSelectedProductsToCartHandler">
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="translator"/>
             <argument type="service" id="sylius.order_item_quantity_modifier"/>
             <argument type="service" id="sylius.order_modifier"/>
             <argument type="service" id="sylius.repository.order"/>

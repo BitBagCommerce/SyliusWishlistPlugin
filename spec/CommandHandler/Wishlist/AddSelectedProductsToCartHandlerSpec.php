@@ -15,6 +15,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddSelectedProductsToCartHandler;
+use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
@@ -25,25 +26,16 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Translation\Translator;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddSelectedProductsToCartHandlerSpec extends ObjectBehavior
 {
     public function let(
-        RequestStack $requestStack,
-        Translator $translator,
         OrderItemQuantityModifierInterface $itemQuantityModifier,
         OrderModifierInterface $orderModifier,
         OrderRepositoryInterface $orderRepository,
         AvailabilityCheckerInterface $availabilityChecker,
     ): void {
         $this->beConstructedWith(
-            $requestStack,
-            $translator,
             $itemQuantityModifier,
             $orderModifier,
             $orderRepository,
@@ -60,14 +52,9 @@ final class AddSelectedProductsToCartHandlerSpec extends ObjectBehavior
         WishlistItem $wishlistProduct,
         OrderModifierInterface $orderModifier,
         OrderRepositoryInterface $orderRepository,
-        OrderItemQuantityModifierInterface $itemQuantityModifier,
         OrderInterface $order,
         OrderItemInterface $orderItem,
         AddToCartCommandInterface $addToCartCommand,
-        RequestStack $requestStack,
-        Session $session,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
         AvailabilityCheckerInterface $availabilityChecker,
         ProductVariantInterface $productVariant,
     ): void {
@@ -86,27 +73,16 @@ final class AddSelectedProductsToCartHandlerSpec extends ObjectBehavior
 
         $availabilityChecker->isStockSufficient($productVariant, 1)->willReturn(true);
 
-        $requestStack->getSession()->willReturn($session);
-        $session->getFlashBag()->willReturn($flashBag);
-        $flashBag->has('success')->willReturn(false);
-
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart')->willReturn('Test translation');
-        $flashBag->add('success', 'Test translation')->shouldBeCalled();
-
-        $this->__invoke($addSelectedProductsToCart);
+        $this->shouldNotThrow()->during('__invoke', [$addSelectedProductsToCart]);
     }
 
-    public function it_doesnt_add_selected_products_to_cart_if_product_cannot_be_processed(
+    public function it_doesnt_add_selected_products_to_cart_if_product_cannot_be_processed_but_throws_exception(
         WishlistItemInterface $wishlistProduct,
         OrderModifierInterface $orderModifier,
         OrderRepositoryInterface $orderRepository,
         OrderInterface $order,
         OrderItemInterface $orderItem,
         AddToCartCommandInterface $addToCartCommand,
-        RequestStack $requestStack,
-        Session $session,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
         AvailabilityCheckerInterface $availabilityChecker,
         ProductVariantInterface $productVariant,
     ): void {
@@ -123,12 +99,6 @@ final class AddSelectedProductsToCartHandlerSpec extends ObjectBehavior
         $orderModifier->addToOrder($order, $orderItem)->shouldNotBeCalled();
         $orderRepository->add($order)->shouldNotBeCalled();
 
-        $requestStack->getSession()->willReturn($session);
-        $session->getFlashBag()->willReturn($flashBag);
-
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity')->willReturn('Increase the quantity of at least one item.');
-        $flashBag->add('error', 'Increase the quantity of at least one item.')->shouldBeCalled();
-
-        $this->__invoke($addSelectedProductsToCart);
+        $this->shouldThrow(InvalidProductQuantityException::class)->during('__invoke', [$addSelectedProductsToCart]);
     }
 }
