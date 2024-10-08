@@ -1,0 +1,14 @@
+#!/bin/bash
+
+mkdir -p tests/Application/var/log
+mkdir -p tests/Application/var/cache
+chown www-data:www-data tests/Application/var/log
+chown www-data:www-data tests/Application/var/cache
+
+chown -Rf www-data:www-data tests/Application/public/media
+chown -Rf www-data:www-data tests/Application/public/media/*
+
+tests/Application/bin/console cache:clear
+tests/Application/bin/console doctrine:database:create --if-not-exists
+tests/Application/bin/console doctrine:schema:update --force
+tests/Application/bin/console sylius:fixtures:load -n
