@@ -28,8 +28,35 @@ final class AddProductToSelectedWishlistHandler
 
     public function __invoke(AddProductToSelectedWishlistInterface $addProductToSelectedWishlist): void
     {
-        $product = $addProductToSelectedWishlist->getProduct();
-        $wishlist = $addProductToSelectedWishlist->getWishlist();
+        $product = $addProductToSelectedWishlist->getProductId();
+        $wishlist = $addProductToSelectedWishlist->getWishlistToken();
+
+        /** @var ?ProductInterface $product */
+        $product = $this->productRepository->find($productId);
+
+        /** @var ?WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->findByToken($token);
+
+        /** @var ?WishlistProductInterface $wishlistProduct */
+        $wishlistProduct = $this->wishlistProductRepository->findOneBy(['product' => $product, 'wishlist' => $wishlist]);
+
+        if (null === $product) {
+            throw new ProductNotFoundException(
+                sprintf('The Product %s does not exist', $productId),
+            );
+        }
+
+        if (null === $wishlist) {
+            throw new WishlistNotFoundException(
+                sprintf('The Wishlist %s does not exist', $token),
+            );
+        }
+
+        if (null === $wishlistProduct) {
+            throw new ProductFoundException(
+                sprintf('The Product %s already exists in wishlist', $productId)
+            );
+        }
 
         /** @var WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
