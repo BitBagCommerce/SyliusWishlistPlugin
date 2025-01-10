@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Exception;
 
-final class ProuductFoundException extends Exception
+final class ProductFoundException extends \Exception
 {
     public function __construct(private string $productName)
     {
