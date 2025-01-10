@@ -17,7 +17,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 final class AddProductToSelectedWishlist implements AddProductToSelectedWishlistInterface
 {
     public function __construct(
-        private string $wishlistToken,
+        private string $token,
         private int $productId,
 
     ) {
@@ -25,7 +25,7 @@ final class AddProductToSelectedWishlist implements AddProductToSelectedWishlist
 
     public function getWishlistToken(): string
     {
-        return $this->wishlistToken;
+        return $this->token;
     }
 
     public function getProductId(): int
