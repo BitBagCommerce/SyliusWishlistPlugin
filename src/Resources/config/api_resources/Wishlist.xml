@@ -50,7 +50,6 @@
                 <attribute name="controller">softylines_sylius_wishlist_plugin.controller.action.api_platform.add_product_to_selected_wishlist</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="denormalization_context">
-                    <attribute name="groups">shop:wishlist:add_product</attribute>
                 </attribute>
                 <attribute name="openapi_context">
                     <attribute name="summary">Adds product to wishlist</attribute>
