@@ -62,7 +62,7 @@ final class AddProductToSelectedWishlistHandler
             );
         }
 
-        if (null === $wishlistProduct) {
+        if (null !== $wishlistProduct) {
             throw new ProductFoundException(
                 sprintf('The Product %s already exists in wishlist', $productId)
             );
