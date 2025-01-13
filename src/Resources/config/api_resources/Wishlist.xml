@@ -53,6 +53,14 @@
                 </attribute>
                 <attribute name="openapi_context">
                     <attribute name="summary">Adds product to wishlist</attribute>
+                    <attribute>
+                        <attribute name="name">productId</attribute>
+                        <attribute name="in">body</attribute>
+                        <attribute name="required">true</attribute>
+                        <attribute name="schema">
+                            <attribute name="type">integer</attribute>
+                        </attribute>
+                    </attribute>
                 </attribute>
                 <attribute name="security">is_granted('update', object)</attribute>
             </itemOperation>
