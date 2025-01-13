@@ -29,7 +29,7 @@ final class AddProductToSelectedWishlistAction
     public function __invoke(Request $request): JsonResponse
     {
         $wishlistToken = (string) $request->attributes->get('token');
-        $productId = (int) $request->params->get('productId');
+        $productId = (int) $request->parameters->get('productId');
 
         $addProductToSelectedWishlist = new AddProductToSelectedWishlist($wishlistToken, $productId);
         $this->messageBus->dispatch($addProductToSelectedWishlist);
