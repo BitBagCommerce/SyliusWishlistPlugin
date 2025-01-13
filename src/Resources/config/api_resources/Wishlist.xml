@@ -46,7 +46,7 @@
 
             <itemOperation name="shop_add_product_to_wishlist">
                 <attribute name="method">PATCH</attribute>
-                <attribute name="path">/shop/wishlists/{token}/product</attribute>
+                <attribute name="path">/shop/wishlists/{token}/product/{productId}</attribute>
                 <attribute name="controller">softylines_sylius_wishlist_plugin.controller.action.api_platform.add_product_to_selected_wishlist</attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:add_product</attribute>
