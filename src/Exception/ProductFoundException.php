@@ -11,17 +11,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Exception;
 
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class ProductFoundException extends ConflictHttpException
 {
-    public function __construct(private string $productName)
-    {
-        parent::__construct();
-    }
-
-    public function getProductName(): string
-    {
-        return $this->productName;
-    }
 }
