@@ -68,6 +68,16 @@
                 </attribute>
                 <attribute name="openapi_context">
                     <attribute name="summary">Adds product variant to wishlist</attribute>
+                    <attribute name="parameters">
+                        <attribute>
+                            <attribute name="name">token</attribute>
+                            <attribute name="in">path</attribute>
+                            <attribute name="required">true</attribute>
+                            <attribute name="schema">
+                                <attribute name="type">string</attribute>
+                            </attribute>
+                        </attribute>
+                    </attribute>
                 </attribute>
                 <attribute name="security">is_granted('update', object)</attribute>
             </itemOperation>
