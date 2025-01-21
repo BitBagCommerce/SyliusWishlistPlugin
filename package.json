@@ -5,5 +5,12 @@
   "license": "MIT",
   "scripts": {
     "dist": "yarn encore production --config-name bitbag-plugin-dist"
+  },
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.0.0",
+    "@symfony/stimulus-bridge": "^3.2.0",
+    "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
+    "@symfony/ux-live-component": "file:vendor/symfony/ux-live-component/assets",
+    "tom-select": "^2.2.2"
   }
 }

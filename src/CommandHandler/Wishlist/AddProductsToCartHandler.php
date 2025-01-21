@@ -33,9 +33,9 @@ final class AddProductsToCartHandler
     public function __construct(
         private RequestStack $requestStack,
         private TranslatorInterface $translator,
-        private OrderModifierInterface $orderModifier,
+//        private OrderModifierInterface $orderModifier,
         private OrderRepositoryInterface $orderRepository,
-        private ?AvailabilityCheckerInterface $availabilityChecker = null,
+//        private ?AvailabilityCheckerInterface $availabilityChecker = null,
     ) {
     }
 
@@ -78,13 +78,13 @@ final class AddProductsToCartHandler
             return false;
         }
 
-        if (null !== $this->availabilityChecker) {
-            if ($this->availabilityChecker->isStockSufficient($variant, $product->getQuantity())) {
-                return true;
-            }
-        } elseif ($variant->isInStock()) {
-            return true;
-        }
+//        if (null !== $this->availabilityChecker) {
+//            if ($this->availabilityChecker->isStockSufficient($variant, $product->getQuantity())) {
+//                return true;
+//            }
+//        } elseif ($variant->isInStock()) {
+//            return true;
+//        }
 
         $message = sprintf('%s does not have sufficient stock.', $product->getProductName());
 
@@ -119,7 +119,7 @@ final class AddProductsToCartHandler
         $cart = $addToCartCommand->getCart();
         $cartItem = $addToCartCommand->getCartItem();
 
-        $this->orderModifier->addToOrder($cart, $cartItem);
+//        $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderRepository->add($cart);
 
         /** @var Session $session */

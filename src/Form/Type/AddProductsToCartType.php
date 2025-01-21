@@ -30,7 +30,7 @@ final class AddProductsToCartType extends AbstractType
     public function __construct(
         private AddToCartCommandFactoryInterface $addToCartCommandFactory,
         private CartItemFactoryInterface $cartItemFactory,
-        private OrderItemQuantityModifierInterface $orderItemQuantityModifier,
+//        private OrderItemQuantityModifierInterface $orderItemQuantityModifier,
     ) {
     }
 
@@ -64,7 +64,7 @@ final class AddProductsToCartType extends AbstractType
         $cartItem = $this->cartItemFactory->createForProduct($wishlistProduct->getProduct());
         $cartItem->setVariant($wishlistProduct->getVariant());
 
-        $this->orderItemQuantityModifier->modify($cartItem, 0);
+//        $this->orderItemQuantityModifier->modify($cartItem, 0);
 
         return $cartItem;
     }

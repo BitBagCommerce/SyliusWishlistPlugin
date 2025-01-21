@@ -1,0 +1,12 @@
+sylius_twig_hooks:
+  hooks:
+    'sylius_shop.product.show.content.info.summary.add_to_cart':
+      add_to_wishlist:
+        component: 'sylius_shop:product:add_to_cart_form'
+        props:
+          product: '@=_context.product'
+          template: '@BitBagSyliusWishlistPlugin/Shop/product/show/page/info/summary/add_to_cart/addProductToWishlist.html.twig'
+        priority: 20
+      submit:
+        template: '@BitBagSyliusWishlistPlugin/Shop/product/show/page/info/summary/add_to_cart/submit.html.twig'
+        priority: 0

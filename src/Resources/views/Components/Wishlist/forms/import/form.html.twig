@@ -1,0 +1,32 @@
+{#{{ form_start(form, { attr: { class: 'import-wishlist ui form', id: "wishlist_import_form" } }) }}#}
+{#<div class="mb-4">#}
+{#    <div class="p-4 bg-light">#}
+{#        <div class="input-group field">#}
+{#            {{ form_widget(form.wishlist_file, { attr: { class: "btn btn-outline-gray",  } } ) }}#}
+{#        </div>#}
+{#        <div class="input-group field">#}
+{#            {{ form_widget(form.wishlists, { attr: { class: "btn btn-outline-gray",  } } ) }}#}
+{#        </div>#}
+{#        <div class="input-group field">#}
+{#            {{ form_widget(form.submit, { attr: { class: "btn btn-primary",  } } ) }}#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#{{ form_end(form) }}#}
+
+<div class="card card-md">
+    <div class="card-body">
+        {{ form_start(form, { attr: { class: 'import-wishlist ui form', id: "wishlist_import_form" } }) }}
+            <div class="mb-3 field">
+                {{ form_widget(form.wishlist_file, { attr: { class: "btn btn-outline-gray",  } } ) }}
+            </div>
+            <div class="mb-3 field">
+                {{ form_widget(form.wishlists, { attr: { class: "btn btn-outline-gray",  } } ) }}
+            </div>
+            <div class="mb-3 field">
+                {{ form_widget(form.submit, { attr: { class: "btn btn-primary",  } } ) }}
+            </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

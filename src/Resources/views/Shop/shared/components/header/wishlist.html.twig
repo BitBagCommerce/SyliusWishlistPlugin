@@ -1,0 +1,38 @@
+<div class="col-auto position-relative">
+    <div data-loading>
+        <div class="sylius-shop-loader">
+            <img src="{{ asset('build/shop/images/loader.gif', 'shop') }}" alt="{{ 'sylius.ui.loading'|trans }}" loading="lazy"/>
+        </div>
+    </div>
+    {% if wishlists|length < 2 %}
+
+        {% set wishlistId = 0 %}
+        {% set wishlistProductsCount = 0 %}
+
+        {% for data in wishlists %}
+            {% set wishlistId = data.id %}
+            {% set wishlistProductsCount = data.wishlistProducts.count %}
+        {% endfor %}
+        <div {{ sylius_test_html_attribute('wishlist-button') }}>
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products') }}" class="btn btn-icon btn-transparent px-0 position-relative">
+                {{ ux_icon('tabler:heart') }}
+                {% if  wishlistProductsCount > 0 %}
+                    <span class="position-absolute top-0 start-0 badge rounded-pill bg-primary" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
+                        {{- wishlistProductsCount -}}
+                    </span>
+                {% endif %}
+            </a>
+        </div>
+
+        {% else %}
+            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists') }}" class="btn btn-icon btn-transparent px-0 position-relative">
+                {{ ux_icon('tabler:list') }}
+                {% if  wishlists|length > 0 %}
+                    <span class="position-absolute top-0 start-0 badge rounded-pill bg-primary" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
+                    {{- wishlists|length -}}
+                </span>
+                {% endif %}
+            </a>
+        {% endif %}
+</div>
+

@@ -1,0 +1,63 @@
+<?php
+
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * You can find more information about us on https://bitbag.io and write us
+ * an email on hello@bitbag.io.
+ */
+
+declare(strict_types=1);
+
+namespace BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist;
+
+use Sylius\Bundle\ShopBundle\Twig\Component\Product\Trait\ProductVariantLivePropTrait;
+use Sylius\Bundle\UiBundle\Twig\Component\TemplatePropTrait;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
+use Sylius\TwigHooks\LiveComponent\HookableLiveComponentTrait;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
+use Symfony\UX\LiveComponent\DefaultActionTrait;
+
+class ProductComponent
+{
+    use DefaultActionTrait;
+    use HookableLiveComponentTrait;
+    use ProductVariantLivePropTrait;
+    use TemplatePropTrait;
+
+    public const SYLIUS_SHOP_VARIANT_CHANGED = 'variant_changed';
+
+    /**
+     * @param ProductRepositoryInterface<ProductInterface> $productRepository
+     * @param ProductVariantRepositoryInterface<ProductVariantInterface> $productVariantRepository
+     */
+    public function __construct(
+        protected readonly ProductVariantResolverInterface $productVariantResolver,
+        ProductRepositoryInterface $productRepository,
+        ProductVariantRepositoryInterface $productVariantRepository,
+    ) {
+//        $this->initializeProduct($productRepository);
+        $this->initializeProductVariant($productVariantRepository);
+    }
+
+    #[LiveListener(self::SYLIUS_SHOP_VARIANT_CHANGED)]
+    public function updateProductVariant(#[LiveArg] mixed $variantId): void
+    {
+        if (null === $variantId) {
+            return;
+        }
+
+        $changedVariant = $this->productVariantRepository->find($variantId);
+
+        if ($changedVariant === $this->variant) {
+            return;
+        }
+
+        $this->variant = $changedVariant->isEnabled() ? $changedVariant : null;
+    }
+}

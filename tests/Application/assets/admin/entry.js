@@ -1,1 +1,1 @@
-import 'sylius/bundle/AdminBundle/Resources/private/entry';
+import '../../../../assets/admin/entry';

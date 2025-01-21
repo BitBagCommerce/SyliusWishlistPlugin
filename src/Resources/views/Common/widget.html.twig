@@ -1,25 +1,32 @@
-{% if wishlists|length < 2 %}
+<div class="col-auto">
+    {% if wishlists|length < 2 %}
 
-    {% set wishlistId = 0 %}
-    {% set wishlistProductsCount = 0 %}
+        {% set wishlistId = 0 %}
+        {% set wishlistProductsCount = 0 %}
 
-    {% for data in wishlists %}
-        {% set wishlistId = data.id %}
-        {% set wishlistProductsCount = data.wishlistProducts.count %}
-    {% endfor %}
+        {% for data in wishlists %}
+            {% set wishlistId = data.id %}
+            {% set wishlistProductsCount = data.wishlistProducts.count %}
+        {% endfor %}
 
-    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products') }}" class="ui circular button">
-        <i class="icon heart"></i>
-        <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
-            {{- wishlistProductsCount -}}
-        </span>
-    </a>
-{% else %}
-    <a data-bb-wishlist-enter href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists') }}" class="ui circular button">
+        <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products') }}" class="btn btn-icon btn-transparent px-0 position-relative">
+            {{ ux_icon('tabler:heart') }}
+            {% if  wishlistProductsCount > 0 %}
+                <span class="position-absolute top-0 start-0 badge rounded-pill bg-primary" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
+                {{- wishlistProductsCount -}}
+            </span>
+            {% endif %}
+        </a>
 
-        <i class="icon list"></i>
-        <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlists-count') }}>
-            {{- wishlists|length -}}
-        </span>
-    </a>
-{% endif %}
+    {% else %}
+        <a data-bb-wishlist-enter href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists') }}" class="btn btn-icon btn-transparent px-0 position-relative">
+
+            {{ ux_icon('tabler:list') }}
+            {% if  wishlists|length > 0 %}
+                <span class="position-absolute top-0 start-0 badge rounded-pill bg-primary" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
+                {{- wishlists|length -}}
+            </span>
+            {% endif %}
+        </a>
+    {% endif %}
+</div>

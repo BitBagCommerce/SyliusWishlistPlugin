@@ -1,0 +1,8 @@
+sylius_twig_hooks:
+  hooks:
+    'wishlist.import':
+      form:
+        component: 'wishlist:form:import'
+        props:
+          template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/import/form.html.twig'
+          priority: 0

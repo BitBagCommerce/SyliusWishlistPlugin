@@ -14,6 +14,7 @@ namespace BitBag\SyliusWishlistPlugin\Twig;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
+use Sylius\Component\Core\Calculator\ProductVariantPricesCalculatorInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Model\UserInterface;
@@ -40,6 +41,7 @@ final class WishlistExtension extends AbstractExtension
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        private ProductVariantPricesCalculatorInterface $priceCalculator,
     ) {
     }
 
@@ -52,6 +54,7 @@ final class WishlistExtension extends AbstractExtension
             new TwigFunction('findAllByShopUserAndToken', [$this, 'findAllByShopUserAndToken']),
             new TwigFunction('findAllByShopUserAndChannel', [$this, 'findAllByShopUserAndChannel']),
             new TwigFunction('findAllByAnonymousAndChannel', [$this, 'findAllByAnonymousAndChannel']),
+            new TwigFunction('product_variant_price', [$this, 'calculatePrice']),
         ];
     }
 
@@ -133,5 +136,10 @@ final class WishlistExtension extends AbstractExtension
         }
 
         return $this->wishlists[$cacheKey];
+    }
+
+    public function calculatePrice($productVariant, $channel): int
+    {
+        return $this->priceCalculator->calculate($productVariant, ['channel' => $channel]);
     }
 }

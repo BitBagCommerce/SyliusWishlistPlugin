@@ -1,0 +1,20 @@
+{#{% import '@SyliusShop/shared/buttons.html.twig' as buttons %}#}
+{#{% set form = hookable_metadata.context.form %}#}
+{#{% set variant = form.cartItem.vars.value.variant %}#}
+{#{% set enabled = form.vars.valid and variant is not null and variant.enabled %}#}
+
+{{ form_widget(form.wishlists) }}
+
+<button
+        id="{{ form.addToWishlist.vars.id }}"
+        name="{{ form.addToWishlist.vars.full_name }}"
+        class="btn btn-light"
+        type="button"
+        data-action="live#action:prevent"
+        data-live-action-param="addToWishlist"
+        data-bb-toggle="wishlist-variant"
+        {{ sylius_test_html_attribute('wishlist-add-variant') }}
+>
+    {{ ux_icon('tabler:heart') }}
+    {{ form.addToWishlist.vars.label|trans }}
+</button>

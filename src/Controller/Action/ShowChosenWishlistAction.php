@@ -70,7 +70,7 @@ final class ShowChosenWishlistAction
             $form = $this->createForm($wishlist);
 
             return new Response(
-                $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
+                $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart.html.twig', [
                     'wishlist' => $wishlist,
                     'form' => $form->createView(),
                 ]),

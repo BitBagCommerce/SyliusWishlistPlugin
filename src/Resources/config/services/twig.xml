@@ -8,7 +8,54 @@
         <service id="bitbag_sylius_wishlist_plugin.twig.extension.wishlist_extension" class="BitBag\SyliusWishlistPlugin\Twig\WishlistExtension">
             <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+            <argument type="service" id="sylius.calculator.product_variant_price"/>
             <tag name="twig.extension"/>
         </service>
+
+        <service
+                id="wishlist.twig.component.index.form"
+                class="BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist\WishlistCartFormComponent"
+        >
+            <argument type="service" id="sylius.repository.order" />
+            <argument type="service" id="form.factory" />
+            <argument>%sylius.model.order.class%</argument>
+            <argument>Sylius\Bundle\ShopBundle\Form\Type\CartType</argument>
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="event_dispatcher" />
+
+            <call method="setLiveResponder">
+                <argument type="service" id="ux.live_component.live_responder"/>
+            </call>
+
+            <tag name="sylius.live_component.shop" key="wishlist:form:cart" />
+        </service>
+
+        <service
+                id="wishlist.twig.component.header"
+                class="BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist\WidgetComponent"
+        >
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <tag name="sylius.live_component.shop" key="wishlist:header" />
+        </service>
+
+        <service
+                id="wishlist.twig.component.index.content"
+                class="BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist\WishlistImportFormComponent"
+        >
+            <argument type="service" id="sylius.repository.order" />
+            <argument type="service" id="form.factory" />
+            <argument>%sylius.model.order.class%</argument>
+            <argument>BitBag\SyliusWishlistPlugin\Form\Type\ImportWishlistFromCsvType</argument>
+            <tag name="sylius.live_component.shop" key="wishlist:form:import" />
+        </service>
+
+
+        <service
+                id="wishlist.twig.component.actions.content"
+                class="BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist\WishlistActionsComponent"
+        >
+            <tag name="sylius.live_component.shop" key="wishlist:form:cart:collective" />
+        </service>
+
     </services>
 </container>

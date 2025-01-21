@@ -1,0 +1,9 @@
+sylius_twig_hooks:
+  hooks:
+    'sylius_shop.base.header.content':
+      wishlist:
+        component: 'wishlist:header'
+        props:
+          wishlist: '@=_context.wishlist'
+          template: "@BitBagSyliusWishlistPlugin/Shop/shared/components/header/wishlist.html.twig"
+        priority: 300

@@ -1,0 +1,44 @@
+{% import '@SyliusShop/shared/messages.html.twig' as messages %}
+
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
+
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+{% hook 'add_another_wishlist' %}
+
+{% if wishlist.wishlistProducts.count > 0 %}
+    <div class="ui hidden divider"></div>
+
+    {{ form_start(form, { attr: { class: 'form', id: "wishlist_form" } }) }}
+
+    <div class="col-12 col-xl-8 mb-4 position-relative">
+        <div data-loading>
+            <div class="sylius-shop-loader">
+                <img src="{{ asset('build/shop/images/loader.gif', 'shop') }}" alt="{{ 'sylius.ui.loading'|trans }}"/>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle"  {{ sylius_test_html_attribute('cart-items') }}>
+                {% hook 'form.items' %}
+            </table>
+        </div>
+    </div>
+
+    {{ form_row(form._token) }}
+    {{ form_end(form, {'render_rest': false} ) }}
+{% else %}
+    <div class="container sylius-messages">
+        {{ messages.info('bitbag_sylius_wishlist_plugin.ui.your_wishlist_is_empty'|trans) }}
+    </div>
+
+    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_import_from_csv') }}">
+        <button type="button" class="btn btn-light" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
+            {{ux_icon('tabler:shopping-cart') }}
+            {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}
+        </button>
+    </a>
+
+{% endif %}
+
+{% hook 'actions.collective' with { wishlist } %}
+

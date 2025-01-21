@@ -30,10 +30,10 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 final class AddSelectedProductsToCartHandler
 {
     public function __construct(
-        private OrderItemQuantityModifierInterface $itemQuantityModifier,
-        private OrderModifierInterface $orderModifier,
+//        private OrderItemQuantityModifierInterface $itemQuantityModifier,
+//        private OrderModifierInterface $orderModifier,
         private OrderRepositoryInterface $orderRepository,
-        private ?AvailabilityCheckerInterface $availabilityChecker = null,
+//        private ?AvailabilityCheckerInterface $availabilityChecker = null,
     ) {
     }
 
@@ -76,13 +76,13 @@ final class AddSelectedProductsToCartHandler
             return false;
         }
 
-        if (null !== $this->availabilityChecker) {
-            if ($this->availabilityChecker->isStockSufficient($variant, $product->getQuantity())) {
-                return true;
-            }
-        } elseif ($variant->isInStock()) {
-            return true;
-        }
+//        if (null !== $this->availabilityChecker) {
+//            if ($this->availabilityChecker->isStockSufficient($variant, $product->getQuantity())) {
+//                return true;
+//            }
+//        } elseif ($variant->isInStock()) {
+//            return true;
+//        }
 
         throw new InsufficientProductStockException((string) $product->getProductName());
     }
@@ -108,11 +108,11 @@ final class AddSelectedProductsToCartHandler
         $cart = $addToCartCommand->getCart();
         $cartItem = $addToCartCommand->getCartItem();
 
-        if (0 === $cartItem->getQuantity()) {
-            $this->itemQuantityModifier->modify($cartItem, 1);
-        }
+//        if (0 === $cartItem->getQuantity()) {
+//            $this->itemQuantityModifier->modify($cartItem, 1);
+//        }
 
-        $this->orderModifier->addToOrder($cart, $cartItem);
+//        $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderRepository->add($cart);
     }
 }

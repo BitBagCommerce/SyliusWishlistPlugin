@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\SecurityEvents;
 final class LoggedUserWishlistSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private SectionProviderInterface $uriBasedSectionContext,
+//        private SectionProviderInterface $uriBasedSectionContext,
         private WishlistsResolverInterface $wishlistsResolver,
         private EntityManagerInterface $entityManager,
     ) {
@@ -42,9 +42,9 @@ final class LoggedUserWishlistSubscriber implements EventSubscriberInterface
 
     public function onImplicitLogin(UserEvent $event): void
     {
-        if (!$this->uriBasedSectionContext->getSection() instanceof ShopSection) {
-            return;
-        }
+//        if (!$this->uriBasedSectionContext->getSection() instanceof ShopSection) {
+//            return;
+//        }
 
         $user = $event->getUser();
         if (!$user instanceof ShopUserInterface) {
@@ -56,10 +56,10 @@ final class LoggedUserWishlistSubscriber implements EventSubscriberInterface
 
     public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void
     {
-        $section = $this->uriBasedSectionContext->getSection();
-        if (!$section instanceof ShopSection) {
-            return;
-        }
+//        $section = $this->uriBasedSectionContext->getSection();
+//        if (!$section instanceof ShopSection) {
+//            return;
+//        }
 
         $user = $interactiveLoginEvent->getAuthenticationToken()->getUser();
         if (!$user instanceof ShopUserInterface) {

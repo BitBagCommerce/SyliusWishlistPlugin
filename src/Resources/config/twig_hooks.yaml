@@ -1,0 +1,3 @@
+imports:
+  - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/twig_hooks/wishlist/**/*.yaml" }
+  - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/twig_hooks/product/**/*.yaml" }

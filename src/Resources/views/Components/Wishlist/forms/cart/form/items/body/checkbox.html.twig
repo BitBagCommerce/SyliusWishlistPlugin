@@ -1,0 +1,7 @@
+{% set form = hookable_metadata.context.form %}
+{% set variant = hookable_metadata.context.item.wishlistProduct.variant %}
+{% set product = variant.product %}
+
+<td class="bb-wishlist-item-select" data-bb-checkboxes="checkboxes-update-when-main">
+    {{ form_widget(form.selected, { id: product.name }) }}
+</td>

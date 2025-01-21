@@ -1,0 +1,18 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="mb-5">
+        <h1> {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}</h1>
+    </div>
+    <div class="row">
+        <div class="ui segment position-relative">
+            <div data-loading>
+                <div class="sylius-shop-loader">
+                    <img src="{{ asset('build/shop/images/loader.gif', 'shop') }}" alt="{{ 'sylius.ui.loading'|trans }}"/>
+                </div>
+            </div>
+            {% hook 'wishlist.import' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

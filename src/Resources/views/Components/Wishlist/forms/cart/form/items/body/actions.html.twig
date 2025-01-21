@@ -1,0 +1,36 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+{% set item = hookable_metadata.context.item %}
+{% set variant = hookable_metadata.context.item.wishlistProduct.variant %}
+{% set product = variant.product %}
+<td>
+    <a
+        class="btn btn-sm btn-transparent px-2"
+        type="button"
+        href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_remove_product_variant', { wishlistId: wishlist.id, variantId: variant.id }) }}"
+        data-product-name="{{ product.name }}"
+        data-tooltip="{{ 'bitbag_sylius_wishlist_plugin.ui.remove_from_wishlist'|trans }}"
+        {{ sylius_test_html_attribute('wishlist-remove-item') }}
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M18 6l-12 12"></path>
+            <path d="M6 6l12 12"></path>
+        </svg>
+    </a>
+{#    <button#}
+{#            class="btn btn-sm btn-transparent px-2"#}
+{#            type="button"#}
+{#            href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_remove_product_variant', { wishlistId: wishlist.id, variantId: variant.id }) }}"#}
+{#            data-product-name="{{ product.name }}"#}
+{#            data-tooltip="{{ 'bitbag_sylius_wishlist_plugin.ui.remove_from_wishlist'|trans }}"#}
+{#            data-live-action-param="removeItem"#}
+{#            data-live-index-param="{{ hookable_metadata.context.index }}"#}
+{#            {{ sylius_test_html_attribute('wishlist-remove-item') }}#}
+{#    >#}
+{#        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">#}
+{#            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>#}
+{#            <path d="M18 6l-12 12"></path>#}
+{#            <path d="M6 6l12 12"></path>#}
+{#        </svg>#}
+{#    </button>#}
+</td>

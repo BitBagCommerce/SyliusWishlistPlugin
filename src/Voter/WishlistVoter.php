@@ -15,7 +15,6 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Security;
 
 final class WishlistVoter extends Voter
 {
@@ -24,7 +23,7 @@ final class WishlistVoter extends Voter
     public const DELETE = 'delete';
 
     public function __construct(
-        private Security $security,
+//        private Security $security,
     ) {
     }
 
@@ -70,15 +69,15 @@ final class WishlistVoter extends Voter
 
     public function canUpdate(WishlistInterface $wishlist, ?ShopUserInterface $user): bool
     {
-        if (!$this->security->isGranted('ROLE_USER') && null === $wishlist->getShopUser()) {
-            return true;
-        }
+//        if (!$this->security->isGranted('ROLE_USER') && null === $wishlist->getShopUser()) {
+//            return true;
+//        }
+//
+//        if ($this->security->isGranted('ROLE_USER') && $wishlist->getShopUser() === $user) {
+//            return true;
+//        }
 
-        if ($this->security->isGranted('ROLE_USER') && $wishlist->getShopUser() === $user) {
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     public function canDelete(WishlistInterface $wishlist, ?ShopUserInterface $user): bool
