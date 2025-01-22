@@ -15,32 +15,36 @@
             {{ component('sylius_shop:product:card:price', { variant: variant, template: '@SyliusShop/product/common/price.html.twig' }) }}
             {% if app.user %}
                 {% if findAllByShopUserAndToken(app.user)|length < 2 %}
-                    <a
-                            href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_product', {'productId': product.id}) }}"
-                            class="ui button bb-wishlist-button"
+                    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_product', {'productId': product.id}) }}"
+                            class="btn btn btn-light flex-column col-12 col-xl-12 mt-3"
                             data-product-name="{{ product.name }}"
                             {{ sylius_test_html_attribute('wishlist-add-product') }}
                     >
-                        <span><i class="icon heart"></i></span>
+                        {{ ux_icon('tabler:heart') }}
                         {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
                     </a>
                 {% else %}
-                    <div class="ui dropdown button bb-wishlist-button">
-                        <span><i class="icon heart"></i></span>
-                        <span class="text">Add to wishlist</span>
-                        <div class="menu" data-bb-wishlist-hrefs="hrefs-adding-variant">
-                            {% for wishlist in findAllByShopUserAndToken(app.user)  %}
-                                <a
-                                        href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
-                                        class="item"
-                                        data-product-name="{{ product.name }}"
-                                        {{ sylius_test_html_attribute('bitbag-add-to-wishlist') }}
-                                >
-                                    <span>
-                                        {{ wishlist.name }}
+                    <div class="col-12 col-xl-12 text-center">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle btn btn-light flex-column mt-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="text">
+                                        {{ ux_icon('tabler:heart') }} {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
                                     </span>
-                                </a>
-                            {% endfor %}
+                            </a>
+                            <div class="dropdown-menu " data-bb-wishlist-hrefs="hrefs-adding-variant">
+                                {% for wishlist in findAllByShopUserAndToken(app.user)  %}
+                                    <a
+                                            href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
+                                            class="dropdown-item item btn btn-light col-12 col-xl-12"
+                                            data-product-name="{{ product.name }}"
+                                            {{ sylius_test_html_attribute('bitbag-add-to-wishlist') }}
+                                    >
+                                        <span>
+                                            {{ wishlist.name }}
+                                        </span>
+                                    </a>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 {% endif %}
@@ -48,30 +52,35 @@
                 {% if findAllByAnonymousAndChannel(sylius.channel)|length < 2 %}
                     <a
                             href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_product', {'productId': product.id}) }}"
-                            class="ui button bb-wishlist-button"
+                            class="btn btn btn-light flex-column col-12 col-xl-12 mt-3"
                             data-product-name="{{ product.name }}"
                             {{ sylius_test_html_attribute('wishlist-add-product') }}
                     >
-                        <span><i class="icon heart"></i></span>
+                        {{ ux_icon('tabler:heart') }}
                         {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
                     </a>
                 {% else %}
-                    <div class="ui dropdown button bb-wishlist-button">
-                        <span><i class="icon heart"></i></span>
-                        <span class="text">Add to wishlist</span>
-                        <div class="menu" data-bb-wishlist-hrefs="hrefs-adding-variant">
-                            {% for wishlist in findAllByAnonymousAndChannel(sylius.channel) %}
-                                <a
-                                        href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
-                                        class="item"
-                                        data-product-name="{{ product.name }}"
-                                        {{ sylius_test_html_attribute('wishlist-add-product') }}
-                                >
-                                    <span>
-                                        {{ wishlist.name }}
-                                    </span>
-                                </a>
-                            {% endfor %}
+                    <div class="col-12 col-xl-12 text-center">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle btn btn-light flex-column mt-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="text">
+                                    {{ ux_icon('tabler:heart') }} {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+                                </span>
+                            </a>
+                            <div class="dropdown-menu " data-bb-wishlist-hrefs="hrefs-adding-variant">
+                                {% for wishlist in findAllByAnonymousAndChannel(sylius.channel) %}
+                                    <a
+                                            href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_product_to_selected_wishlist', {'wishlistId': wishlist.id, 'productId': product.id}) }}"
+                                            class="dropdown-item item btn btn-light col-12 col-xl-12"
+                                            data-product-name="{{ product.name }}"
+                                            {{ sylius_test_html_attribute('wishlist-add-product') }}
+                                    >
+                                        <span>
+                                            {{ wishlist.name }}
+                                        </span>
+                                    </a>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 {% endif %}

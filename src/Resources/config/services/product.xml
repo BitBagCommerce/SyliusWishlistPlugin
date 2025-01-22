@@ -34,9 +34,21 @@
                 id="wishlist.twig.component.product"
                 class="BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist\ProductComponent"
         >
-            <argument type="service" id="sylius.resolver.product_variant.default" />
+            <argument type="service" id="form.factory" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="router" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="sylius.context.cart" />
+            <argument type="service" id="sylius.factory.add_to_cart_command" />
+            <argument type="service" id="sylius.factory.order_item" />
+            <argument>Sylius\Bundle\ShopBundle\Form\Type\AddToCartType</argument>
             <argument type="service" id="sylius.repository.product" />
             <argument type="service" id="sylius.repository.product_variant" />
+
+            <call method="setLiveResponder">
+                <argument type="service" id="ux.live_component.live_responder"/>
+            </call>
 
             <tag
                     name="sylius.live_component.shop"

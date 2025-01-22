@@ -34,6 +34,7 @@ const setAddWishlistModal = () => {
                     try {
                         const response = await fetch(url, requestConfig);
                         const data = await response.json();
+                        console.log(data);
                         wishlistsBtn.classList.add('bb-copy-to-wishlist-sukces')
                         setTimeout(() => {
                             wishlistsBtn.classList.remove('bb-copy-to-wishlist-sukces')
@@ -51,7 +52,6 @@ const setAddWishlistModal = () => {
             }
         ).init();
     });
-
 };
 
 const turnOnListener = () => {

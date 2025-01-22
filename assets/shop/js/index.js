@@ -3,7 +3,11 @@ import './handleCopyToWishlistListModal';
 import './handleAddAnotherWishlistModal';
 import './handleRemoveWishlistModal';
 import './handleEditWishlistModal';
-import { WishlistVariantButton } from './WishlistVariantButton';
+import './bulkAddToCart';
+import './bulkRemoveFromWishlist'
+import './bulkExportToCsv'
+import './bulkExportToPdf'
+
 import { WishlistVariantPrice } from './WishlistVariantPrice';
 
 

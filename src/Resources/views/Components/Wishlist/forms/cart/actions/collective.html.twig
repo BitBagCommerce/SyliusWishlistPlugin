@@ -2,18 +2,17 @@
 {% set form = hookable_metadata.context.form %}
 {% set wishlists = getWishlists() %}
 
-<div class="dropdown-toggle btn bb-colective-actions btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <i class="angle down icon"></i>
+<div class="dropdown-toggle button bb-colective-actions disabled btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="text">{{ 'sylius.ui.bulk_actions'|trans }}</span>
     <div class="dropdown-menu wishlist-dropdown-menu">
         <div class="dropdown-item wishlist-dropdown-menu__item">
-            <button type="submit" class="ui blue btn wishlist-item--button" {{ sylius_test_html_attribute('wishlist-add-selected-to-cart') }} formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_selected_products', { wishlistId: wishlist.id }) }}">
+            <button type="submit" class="ui blue btn wishlist-item--button" {{ sylius_test_html_attribute('wishlist-add-selected-to-cart') }} data-wishlist-bulk-add-to-cart="{{ wishlist.id }}">
                 <i class="cart icon"></i>
                 {{ 'bitbag_sylius_wishlist_plugin.ui.add_to_cart'|trans }}
             </button>
         </div>
         <div class="dropdown-item wishlist-dropdown-menu__item">
-            <button type="submit" class="ui red btn wishlist-item--button" {{ sylius_test_html_attribute('wishlist-remove-selected-from-wishlist') }} formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_remove_selected_products', { wishlistId: wishlist.id }) }}">
+            <button type="submit" class="ui red btn wishlist-item--button" {{ sylius_test_html_attribute('wishlist-remove-selected-from-wishlist') }} data-wishlist-bulk-remove-from-wishlist="{{ wishlist.id }}">
                 <i class="times icon"></i>
                 {{ 'bitbag_sylius_wishlist_plugin.ui.remove'|trans }}
             </button>
@@ -39,13 +38,13 @@
             {% endif %}
         {% endfor %}
         <div class="dropdown-item wishlist-dropdown-menu__item">
-            <button type="submit" class="ui green btn wishlist-item--button" {{ sylius_test_html_attribute('wishlist-export-to-csv') }} formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlsit_export_selected_products_to_csv', { wishlistId: wishlist.id }) }}">
+            <button type="submit" class="ui green btn wishlist-item--button" {{ sylius_test_html_attribute('wishlist-export-to-csv') }} data-wishlist-bulk-export-to-csv="{{ wishlist.id }}">
                 <i class="copy icon"></i>
                 {{ 'bitbag_sylius_wishlist_plugin.ui.export_to_csv'|trans }}
             </button>
         </div>
         <div class="dropdown-item wishlist-dropdown-menu__item">
-            <button type="submit" class="ui yellow btn wishlist-item--button" {{ sylius_test_html_attribute('wishlist-export-to-pdf-from-wishlist') }}  formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_export_to_pdf', { wishlistId: wishlist.id }) }}">
+            <button type="submit" class="ui yellow btn wishlist-item--button" {{ sylius_test_html_attribute('wishlist-export-to-pdf-from-wishlist') }}  data-wishlist-bulk-export-to-pdf="{{ wishlist.id }}">
                 <i class="arrow alternate circle down icon"></i>
                 {{ 'bitbag_sylius_wishlist_plugin.ui.export_wishlist_to_pdf'|trans }}
             </button>

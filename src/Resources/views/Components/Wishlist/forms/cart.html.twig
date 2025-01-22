@@ -1,8 +1,7 @@
 {% extends '@SyliusShop/shared/layout/base.html.twig' %}
+{% import '@SyliusShop/shared/messages.html.twig' as messages %}
 
 {% set prefixes = ['wishlist.cart'] %}
-
-{% block title %}{{ 'sylius.ui.your_shopping_cart'|trans }} | {{ parent() }}{% endblock %}
 
 {% block content %}
     <div class="container mt-4 mb-5">
@@ -10,21 +9,31 @@
             <h1>{{ wishlist.name }}</h1>
             {% if wishlist.wishlistProducts.count > 0 %}
                 <div class="middle aligned column">
-                    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
+                    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_clean', {'wishlistId': wishlist.id}) }}"
+                       class="bitbag-clean-wishlist">
                         {{ 'bitbag_sylius_wishlist_plugin.ui.clear_wishlist'|trans }}
                     </a>
                 </div>
             {% endif %}
-
         </div>
+
         <div class="row">
             <div class="ui segment position-relative">
-                <div data-loading>
-                    <div class="sylius-shop-loader">
-                        <img src="{{ asset('build/shop/images/loader.gif', 'shop') }}" alt="{{ 'sylius.ui.loading'|trans }}"/>
+                {% if wishlist.wishlistProducts.count > 0 %}
+                    {% hook 'wishlist.cart' %}
+                {% else %}
+                    <div class="container sylius-messages">
+                        {{ messages.info('bitbag_sylius_wishlist_plugin.ui.your_wishlist_is_empty'|trans) }}
                     </div>
-                </div>
-                {% hook 'wishlist.cart' with { wishlist } %}
+
+                    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_import_from_csv') }}">
+                        <button type="button"
+                                class="btn btn-light" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
+                            {{ ux_icon('tabler:shopping-cart') }}
+                            {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}
+                        </button>
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

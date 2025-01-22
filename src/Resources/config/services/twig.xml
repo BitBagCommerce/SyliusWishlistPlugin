@@ -16,16 +16,23 @@
                 id="wishlist.twig.component.index.form"
                 class="BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist\WishlistCartFormComponent"
         >
-            <argument type="service" id="sylius.repository.order" />
+            <argument type="service" id="BitBag\SyliusWishlistPlugin\Repository\WishlistRepository"/>
             <argument type="service" id="form.factory" />
-            <argument>%sylius.model.order.class%</argument>
-            <argument>Sylius\Bundle\ShopBundle\Form\Type\CartType</argument>
+            <argument>BitBag\SyliusWishlistPlugin\Entity\Wishlist</argument>
+            <argument>BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType</argument>
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="sylius.context.cart"/>
+
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
 
             <call method="setLiveResponder">
                 <argument type="service" id="ux.live_component.live_responder"/>
             </call>
+
 
             <tag name="sylius.live_component.shop" key="wishlist:form:cart" />
         </service>
@@ -54,8 +61,23 @@
                 id="wishlist.twig.component.actions.content"
                 class="BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist\WishlistActionsComponent"
         >
-            <tag name="sylius.live_component.shop" key="wishlist:form:cart:collective" />
+            <tag name="sylius.live_component.shop" key="wishlist:actions:cart" />
         </service>
 
+
+
+        <service
+                id="bitbag.sylius_wishlist_plugin.twig.components.wishlist.wishlist_variant_component"
+                class="BitBag\SyliusWishlistPlugin\Twig\Components\Wishlist\WishlistVariantComponent"
+        >
+            <argument type="service" id="sylius.resolver.product_variant.default" />
+            <argument type="service" id="sylius.repository.product" />
+            <argument type="service" id="sylius.repository.product_variant" />
+
+            <tag
+                    name="sylius.live_component.shop"
+                    key="wishlist:product:variant"
+            />
+        </service>
     </services>
 </container>

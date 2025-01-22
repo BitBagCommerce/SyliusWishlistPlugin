@@ -1,0 +1,30 @@
+{% import "@SyliusShop/shared/macro/money.html.twig" as money %}
+
+{% set item = hookable_metadata.context.item.wishlistProduct %}
+{% set pricing = sylius_product_variants_map(item.product, {'channel': sylius.channel}) %}
+{% set itemId = hookable_metadata.context.itemId %}
+{% set variant = item.variant %}
+{% set prices %}
+    [
+    {%- for price in pricing -%}
+        {
+        {%- for option, value in price -%}
+            "{{- option -}}":
+            {%- if option == 'value' or option == 'original-price' -%}
+                "{{ money.convertAndFormat(value) -}}"
+            {%- elseif not value is iterable -%}
+                "{{ value|replace({'\"': '\''}) -}}"
+            {%- else -%}
+                ""
+            {%- endif -%}
+            {{- not loop.last ? ', '-}}
+        {%- endfor -%}
+        }
+        {{- not loop.last ? ', '-}}
+    {%- endfor -%}
+    ]
+{% endset %}
+
+<td class="text-black-50" data-bb-toggle="wishlist-variant-price" data-bb-target="#{{ itemId }}" data-bb-pricing='{{ prices }}'>
+    {{ money.calculatePrice(variant) -}}
+</td>

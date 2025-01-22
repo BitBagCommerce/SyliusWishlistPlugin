@@ -1,0 +1,40 @@
+{% set form = hookable_metadata.context.form_item %}
+{% set item = hookable_metadata.context.item %}
+{% set variant = hookable_metadata.context.item.wishlistProduct.variant %}
+{% set product = variant.product %}
+{% set productUrl = path('sylius_shop_product_show', { slug: product.slug, _locale: product.translation.locale }) %}
+{% set itemId = "wishlist_item_#{ variant.id }_#{ product.id }" %}
+
+<td {{ sylius_test_html_attribute('cart-item-product' ) }}>
+    <div class="d-flex align-items-center gap-4">
+        <div style="width: 6rem;">
+            <div class="overflow-auto bg-light rounded-3" style="aspect-ratio: 3/4; ">
+                {{ component('sylius_shop:main_image', {
+                        product: variant.hasImages ? variant : product,
+                        class: "w-100 h-100 object-fit-cover",
+                        filter: 'sylius_shop_product_small_thumbnail'
+                }) }}
+            </div>
+        </div>
+        <div class="d-flex flex-column mb-3">
+            <div class="bb-wishlist-item-name">
+                <a href="{{ productUrl }}" {{ sylius_test_html_attribute('wishlist-item-name') }}>
+                    {{ product.name }}
+                </a>
+            </div>
+
+            <div class="bb-wishlist-item-variant">
+                {% if form.cartItem.cartItem.variant is defined %}
+                    <div class="bb-wishlist-variant">
+                        {% for child in form.cartItem.cartItem.variant.children %}
+                            <div class="bb-wishlist-variant-option">
+                                {{ form_label(child, null, { label_attr: { class: 'bb-wishlist-variant-label'} } ) }}
+                                {{ form_widget(child, { attr: { class: 'bb-wishlist-variant-select', 'data-name': child.vars.name } } ) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</td>

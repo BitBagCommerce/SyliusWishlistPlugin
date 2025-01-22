@@ -10,7 +10,8 @@ sylius_twig_hooks:
       form:
         component: 'wishlist:form:cart'
         props:
-          wishlist: '@_context.wishlist'
+          resource: '@=_context.wishlist'
+          form: '@=_context.form'
           template: "@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form.html.twig"
         priority: 100
       actions:
@@ -36,16 +37,24 @@ sylius_twig_hooks:
       head:
         template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/head.html.twig'
         priority: 100
+      product:
+        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/product.html.twig'
+        priority: 0
+
+    'wishlist.cart.form.items.product':
       body:
-        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/body.html.twig'
+        component: 'wishlist:product'
+        props:
+          product: '@=_context.product'
+          template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/product/body.html.twig'
         priority: 0
 
     'wishlist.cart.form.items.head':
       remove:
         template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/head/actions.html.twig'
         priority: 400
-      item:
-        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/head/product.html.twig'
+      variant:
+        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/head/variant.html.twig'
         priority: 300
       unit_price:
         template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/head/price.html.twig'
@@ -57,24 +66,23 @@ sylius_twig_hooks:
         template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/head/checkbox.html.twig'
         priority: 0
 
-    'wishlist.cart.form.items.body':
+    'wishlist.cart.form.items.product.body':
       remove:
-        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/body/actions.html.twig'
+        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/product/body/actions.html.twig'
         priority: 400
-      item:
-        component: 'wishlist:product'
+      variant:
+        component: 'wishlist:product:variant'
         props:
-          product: '@_context.product'
-          form: '@_context.form'
-          template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/body/product.html.twig'
-#        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/body/product.html.twig'
+          product: '@=_context.product'
+          template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/product/body/variant.html.twig'
+#        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/product/body/variant.html.twig'
         priority: 300
       unit_price:
-        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/body/price.html.twig'
+        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/product/body/price.html.twig'
         priority: 200
       quantity:
-        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/body/quantity.html.twig'
+        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/product/body/quantity.html.twig'
         priority: 100
       total:
-        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/body/checkbox.html.twig'
+        template: '@BitBagSyliusWishlistPlugin/Components/Wishlist/forms/cart/form/items/product/body/checkbox.html.twig'
         priority: 0

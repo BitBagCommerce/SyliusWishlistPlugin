@@ -13,6 +13,7 @@
             {% set wishlistId = data.id %}
             {% set wishlistProductsCount = data.wishlistProducts.count %}
         {% endfor %}
+
         <div {{ sylius_test_html_attribute('wishlist-button') }}>
             <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products') }}" class="btn btn-icon btn-transparent px-0 position-relative">
                 {{ ux_icon('tabler:heart') }}
@@ -25,7 +26,7 @@
         </div>
 
         {% else %}
-            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists') }}" class="btn btn-icon btn-transparent px-0 position-relative">
+            <a data-bb-wishlist-enter href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists') }}" class="btn btn-icon btn-transparent px-0 position-relative">
                 {{ ux_icon('tabler:list') }}
                 {% if  wishlists|length > 0 %}
                     <span class="position-absolute top-0 start-0 badge rounded-pill bg-primary" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>

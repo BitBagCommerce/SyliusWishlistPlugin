@@ -7,7 +7,7 @@
         <div class="mb-5">
             <h1>{{ 'bitbag_sylius_wishlist_plugin.ui.your_wishlists'|trans }}</h1>
         </div>
-        <div class="middle aligned column">
+        <div class="mb-3">
             <button id="create_new_wishlist_button" class="ui right floated btn btn-primary"
                     data-bb-wishlist-add="add-another-wishlist"
                     data-bb-wishlist-add-url="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_create_new_wishlist') }}"
@@ -27,57 +27,72 @@
                         <img src="{{ asset('build/shop/images/loader.gif', 'shop') }}" alt="{{ 'sylius.ui.loading'|trans }}"/>
                     </div>
                 </div>
-                <div class="card card-md">
+                <div class="card mb-3">
                     <div class="card-body">
-                        {% for wishlist in wishlists %}
-                            <div class="mb-3 field">
-                                <a
-                                        href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', {'wishlistId': wishlist.id}) }}"
-                                        {{ sylius_test_html_attribute('wishlist-wishlist') }}
-                                        data-wishlist-name="{{ wishlist.name }}"
-                                >
-                                    {{ wishlist.name == null ? 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans : wishlist.name|trans }}
-                                </a>
-                                <div class="">
-                                    {% if wishlist.shopuser is null and app.user is not null %}
-                                        <a
-                                                href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_wishlist_to_user', {'id': wishlist.id}) }}"
-                                                id="wishlist-add-to-user-button-{{ wishlist.name }}" class="ui icon button default"
-                                                data-wishlist-name="{{ wishlist.name }}"
-                                        >
-                                            {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_save'|trans }}
+                        <div class="row">
+                            {% for wishlist in wishlists %}
+                                <div class="col-10 col-md-10">
+                                    <div class="mb-3 field">
+                                        <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', {'wishlistId': wishlist.id}) }}" {{ sylius_test_html_attribute('wishlist-wishlist') }} data-wishlist-name="{{ wishlist.name }}">
+                                            {{ wishlist.name == null ? 'bitbag_sylius_wishlist_plugin.ui.wishlist'|trans : wishlist.name|trans }}
                                         </a>
-                                    {% endif %}
-                                    <button
-                                            id="wishlist-delete-button-{{ wishlist.name }}" class="ui icon button default"
-                                            {{ sylius_test_html_attribute('wishlist-wishlist-remove') }}
-                                            data-wishlist-name="{{ wishlist.name }}"
-                                            data-wishlist-remove-id="{{ wishlist.id }}"
-                                            data-wishlist-remove-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_remove_title'|trans }}"
-                                            data-wishlist-remove-content="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_remove_content'|trans }}"
-                                            data-wishlist-remove-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_remove_perform'|trans }}"
-                                            data-wishlist-remove-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_remove_cancel'|trans }}"
-                                    >
-                                        <i class="icon remove"></i>
-                                    </button>
-                                    <button
-                                            id="wishlist-edit-button-{{ wishlist.name }}" class="ui icon button default"
-                                            {{ sylius_test_html_attribute('wishlist-wishlist-edit') }}
-                                            data-wishlist-name="{{ wishlist.name }}"
-                                            data-wishlist-edit-id="{{ wishlist.id }}"
-                                            data-wishlist-edit-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_title'|trans }}"
-                                            data-wishlist-edit-error="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_error'|trans }}"
-                                            data-wishlist-edit-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_perform'|trans }}"
-                                            data-wishlist-edit-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_cancel'|trans }}"
-                                    >
-                                        {{ ux_icon('tabler:pencil') }}
-                                    </button>
+                                    </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                                <div class="col-2 col-md-2">
+                                    <div class="d-flex gap-1 justify-content-end">
+                                        {% if wishlist.shopuser is null and app.user is not null %}
+                                            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_wishlist_to_user', {'id': wishlist.id}) }}" id="wishlist-add-to-user-button-{{ wishlist.name }}" class="btn btn-icon" data-wishlist-name="{{ wishlist.name }}">
+                                                {{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_save'|trans }}
+                                            </a>
+                                        {% endif %}
+                                        <button
+                                                id="wishlist-delete-button-{{ wishlist.name }}" class="btn btn-icon border-1 border-black rounded-2"
+                                                {{ sylius_test_html_attribute('wishlist-wishlist-remove') }}
+                                                data-wishlist-name="{{ wishlist.name }}"
+                                                data-wishlist-remove-id="{{ wishlist.id }}"
+                                                data-wishlist-remove-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_remove_title'|trans }}"
+                                                data-wishlist-remove-content="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_remove_content'|trans }}"
+                                                data-wishlist-remove-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_remove_perform'|trans }}"
+                                                data-wishlist-remove-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_remove_cancel'|trans }}"
+                                        >
+                                            {{ ux_icon('tabler:trash') }}
+                                        </button>
+                                        <button
+                                                id="wishlist-edit-button-{{ wishlist.name }}" class="btn btn-icon border-1 border-black rounded-2"
+                                                {{ sylius_test_html_attribute('wishlist-wishlist-edit') }}
+                                                data-wishlist-name="{{ wishlist.name }}"
+                                                data-wishlist-edit-id="{{ wishlist.id }}"
+                                                data-wishlist-edit-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_title'|trans }}"
+                                                data-wishlist-edit-error="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_error'|trans }}"
+                                                data-wishlist-edit-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_perform'|trans }}"
+                                                data-wishlist-edit-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_cancel'|trans }}"
+                                        >
+                                            {{ ux_icon('tabler:pencil') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
+
+{#<div class="card-body">#}
+{#    <div class="row">#}
+{#        <!-- BEGIN HOOK | name: "sylius_admin.product_option.create.content.form.sections.general, sylius_admin.common.create.content.form.sections.general" -->#}
+{#        <!-- BEGIN HOOKABLE | hook: "sylius_admin.product_option.create.content.form.sections.general", name: "code", template: "@SyliusAdmin/product_option/form/sections/general/code.html.twig", priority: 100 -->#}
+{#        <div class="col-12 col-md-6">#}
+{#            <div class="mb-3 field"><label for="sylius_admin_product_option_code" class="form-label required">Code</label><input type="text" id="sylius_admin_product_option_code" name="sylius_admin_product_option[code]" required="required" data-test-code="" class="form-control"></div>#}
+{#        </div>#}
+{#        <!--  END HOOKABLE  | hook: "sylius_admin.product_option.create.content.form.sections.general", name: "code", template: "@SyliusAdmin/product_option/form/sections/general/code.html.twig", priority: 100 -->#}
+{#        <!-- BEGIN HOOKABLE | hook: "sylius_admin.product_option.create.content.form.sections.general", name: "position", template: "@SyliusAdmin/product_option/form/sections/general/position.html.twig", priority: 0 -->#}
+{#        <div class="col-12 col-md-6">#}
+{#            <div class="mb-3 field"><label for="sylius_admin_product_option_position" class="form-label">Position</label><input type="number" id="sylius_admin_product_option_position" name="sylius_admin_product_option[position]" data-test-position="" class="form-control"></div>#}
+{#        </div>#}
+{#        <!--  END HOOKABLE  | hook: "sylius_admin.product_option.create.content.form.sections.general", name: "position", template: "@SyliusAdmin/product_option/form/sections/general/position.html.twig", priority: 0 -->#}
+{#        <!--  END HOOK  | name: "sylius_admin.product_option.create.content.form.sections.general, sylius_admin.common.create.content.form.sections.general" -->        </div>#}
+{#</div>#}

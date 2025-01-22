@@ -114,3 +114,14 @@ wishlist_add_wishlist_to_user:
     methods: [GET, PUT, POST]
     defaults:
         _controller: bitbag_sylius_wishlist_plugin.controller.action.add_wishlists_to_user
+
+wishlist_cart_checkout:
+    path: /wishlist/checkout
+    methods: [PATCH]
+    defaults:
+        _controller: sylius.controller.order::saveAction
+        _sylius:
+            template: "@SyliusShop/cart/index.html.twig"
+            redirect: sylius_shop_checkout_start
+            form: Sylius\Bundle\ShopBundle\Form\Type\CartType
+            flash: false

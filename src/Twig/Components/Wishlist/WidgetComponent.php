@@ -18,6 +18,8 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Resource\Model\ResourceInterface;
 use Sylius\TwigHooks\LiveComponent\HookableLiveComponentTrait;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
@@ -53,8 +55,8 @@ class WidgetComponent
         return $this->wishlistsResolver->resolve();
     }
 
-    #[LiveListener(WishlistCartFormComponent::WISHLIST_CHANGED)]
-    public function refreshCart(#[LiveArg] mixed $wishlistId = null): void
+    #[LiveListener(WishlistCartFormComponent::WISHLIST_CART_CHANGED)]
+    public function refreshWishlist(#[LiveArg] mixed $wishlistId = null): void
     {
         dd($wishlistId);
         $this->wishlist = $this->hydrateResource($wishlistId);

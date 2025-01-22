@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Form\Type;
 
 use BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
+use Sylius\Bundle\OrderBundle\Form\Type\CartType as BaseCartType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,6 +24,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use Webmozart\Assert\Assert;
 
 final class WishlistCollectionType extends AbstractType
@@ -36,11 +38,15 @@ final class WishlistCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('items', CollectionType::class, [
+            ->add('items', LiveCollectionType::class, [
                 'entry_type' => AddProductsToCartType::class,
                 'entry_options' => [
                     'cart' => $options['cart'],
                 ],
+                'allow_add' => false,
+                'allow_delete' => false,
+                'by_reference' => false,
+                'label' => false,
             ])
             ->add('addAll', SubmitType::class, [
                 'label' => 'bitbag_sylius_wishlist_plugin.ui.add_items_to_cart',
@@ -83,5 +89,15 @@ final class WishlistCollectionType extends AbstractType
         $resolver
             ->setRequired('cart')
             ->setDefault('data_class', null);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'wishlist_cart';
+    }
+
+    public function getParent(): string
+    {
+        return BaseCartType::class;
     }
 }
