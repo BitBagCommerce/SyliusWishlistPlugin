@@ -3,6 +3,8 @@
 /composer.lock
 /phpspec.yml
 
+compose.yaml
+
 /etc/build/*
 !/etc/build/.gitignore
 
