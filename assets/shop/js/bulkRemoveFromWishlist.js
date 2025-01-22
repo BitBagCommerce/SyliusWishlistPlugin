@@ -10,8 +10,8 @@ const bulkRemoveFromWishlist = () => {
                     performAction: async () => {
                         const form = document.querySelector(`#wishlist_form`);
 
-                        const wishlistId = btn.dataset.wishlistRemoveFromWishlist;
-                        const url = `/en_US/wishlist/${wishlistId}/products/delete`;
+                        const wishlistId = btn.dataset.wishlistBulkRemoveFromWishlist;
+                        const url = `${window.location.href}/products/delete`;
                         const formData = new FormData(form);
                         const csrfToken = document.querySelector("[data-bb-csrf]").dataset.bbCsrf;
 

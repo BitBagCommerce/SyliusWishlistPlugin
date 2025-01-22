@@ -11,7 +11,7 @@ const bulkExportToPdf = () => {
                         const form = document.querySelector(`#wishlist_form`);
 
                         const wishlistId = btn.dataset.wishlistBulkExportToPdf;
-                        const url = `/en_US/wishlist/${wishlistId}/export/pdf`;
+                        const url = `${window.location.href}/export/pdf`;
                         const formData = new FormData(form);
                         const csrfToken = document.querySelector("[data-bb-csrf]").dataset.bbCsrf;
 
@@ -27,8 +27,10 @@ const bulkExportToPdf = () => {
 
                         try {
                             const response = await fetch(url, requestConfig);
-                            const data = await response.json();
-                            console.log(data)
+                            const blob = await response.blob();
+                            const downloadUrl = URL.createObjectURL(blob);
+
+                            window.open(downloadUrl, '_blank');
 
                         } catch (error) {
                             console.error(error);

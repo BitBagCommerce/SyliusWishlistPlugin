@@ -6,6 +6,7 @@
     {% set itemId = "wishlist_item_#{ variant.id }_#{ product.id }" %}
     <tr id="{{ itemId }}" >
         {% hook 'product' with { product: product, form: form_item, item, index, itemId } %}
+        <input type="hidden" name="wishlist_cart[items][{{ loop.index - 1 }}][variant]" value="{{ item.wishlistProduct.variant.id }}"/>
     </tr>
 {% endfor %}
 </tbody>

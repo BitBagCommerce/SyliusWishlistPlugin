@@ -33,7 +33,7 @@ final class CopySelectedProductsToOtherWishlistAction
     public function __invoke(Request $request): Response
     {
         $destinedWishlist = $request->attributes->getInt('destinedWishlistId');
-        $wishlistProducts = new ArrayCollection((array) $request->get('wishlist_collection')['items']);
+        $wishlistProducts = new ArrayCollection((array) $request->get('wishlist_cart')['items']);
         $selectedProducts = new ArrayCollection();
 
         foreach ($wishlistProducts as $wishlistProduct) {

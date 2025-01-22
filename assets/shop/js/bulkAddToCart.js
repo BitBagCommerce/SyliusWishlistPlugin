@@ -12,7 +12,7 @@ const bulkAddToCart = () => {
                         const form = document.querySelector(`#wishlist_form`);
 
                         const wishlistId = btn.dataset.wishlistBulkAddToCart;
-                        const url = `/en_US/wishlist/${wishlistId}/products/add`;
+                        const url = `${window.location.href}/products/add`;
                         const formData = new FormData(form);
                         const csrfToken = document.querySelector("[data-bb-csrf]").dataset.bbCsrf;
 

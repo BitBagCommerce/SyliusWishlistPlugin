@@ -54,11 +54,4 @@ class WidgetComponent
     {
         return $this->wishlistsResolver->resolve();
     }
-
-    #[LiveListener(WishlistCartFormComponent::WISHLIST_CART_CHANGED)]
-    public function refreshWishlist(#[LiveArg] mixed $wishlistId = null): void
-    {
-        dd($wishlistId);
-        $this->wishlist = $this->hydrateResource($wishlistId);
-    }
 }

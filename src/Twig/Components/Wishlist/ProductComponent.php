@@ -86,7 +86,6 @@ class ProductComponent
         ProductRepositoryInterface $productRepository,
         ProductVariantRepositoryInterface $productVariantRepository,
     ) {
-//        dd('hfhf');
         $this->initializeProduct($productRepository);
         $this->initializeProductVariant($productVariantRepository);
     }
@@ -101,7 +100,7 @@ class ProductComponent
     public function variantChanged(): void
     {
         $addToCartCommand = $this->getForm()->getData();
-        dd($addToCartCommand);
+
         $newVariant = $addToCartCommand->getCartItem()->getVariant();
         if ($newVariant === $this->variant) {
             return;
@@ -117,7 +116,6 @@ class ProductComponent
             $this->cartContext->getCart(),
             $this->cartItemFactory->createForProduct($this->product),
         );
-//        dd($addToCartCommand);
 
         return $this->formFactory->create($this->formClass, $addToCartCommand, ['product' => $this->product]);
     }

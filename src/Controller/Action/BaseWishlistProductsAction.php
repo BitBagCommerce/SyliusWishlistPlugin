@@ -19,6 +19,7 @@ use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -44,17 +45,17 @@ abstract class BaseWishlistProductsAction
 
     public function __invoke(int $wishlistId, Request $request): Response
     {
+
         if (null === $this->createForm($wishlistId)) {
             return new RedirectResponse(
                 $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'),
             );
         }
+
         $form = $this->createForm($wishlistId);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handleCommand($form);
-
             return new RedirectResponse(
                 $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                         'wishlistId' => $wishlistId,

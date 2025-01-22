@@ -41,7 +41,6 @@ class WishlistVariantComponent
     #[LiveListener(ProductComponent::WISHLIST_VARIANT_CHANGED)]
     public function updateProductVariant(#[LiveArg] mixed $variantId): void
     {
-        dd('ddd');
         if (null === $variantId) {
             return;
         }
