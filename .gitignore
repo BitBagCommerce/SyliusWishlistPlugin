@@ -2,7 +2,7 @@
 /node_modules/
 /composer.lock
 /phpspec.yml
-
+.idea
 compose.yaml
 
 /etc/build/*

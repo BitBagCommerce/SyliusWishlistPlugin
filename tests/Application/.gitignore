@@ -13,6 +13,7 @@
 /.env.*.local
 /.env.local
 /.env.local.php
+/yarn.lock
 /public/bundles
 /var/
 /vendor/

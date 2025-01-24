@@ -30,7 +30,7 @@ return [
 imports:
     ...
 
-    - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
+    - { resource: "@BitBagSyliusWishlistPlugin/config.yml" }
 ```
 
 4. Import routing in your `config/routes.yaml` file:
