@@ -22,7 +22,7 @@ const getConfig = (pluginName, type) => {
 }
 
 Encore
-    .setOutputPath(`/public/`)
+    .setOutputPath(`src/Resources/public/`)
     .setPublicPath(`/public/`)
     .addEntry(`bitbag-${pluginName}-shop`, path.resolve(__dirname, `./assets/shop/entry.js`))
     .addEntry(`bitbag-${pluginName}-admin`, path.resolve(__dirname, `./assets/admin/entry.js`))
