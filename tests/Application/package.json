@@ -31,6 +31,8 @@
     "sass": "^1.39.2",
     "@hotwired/stimulus": "^3.2.2",
     "@symfony/stimulus-bridge": "^3.2.2",
+    "@sylius-ui/admin": "file:../../vendor/sylius/sylius/src/Sylius/Bundle/AdminBundle",
+    "@sylius-ui/shop": "file:../../vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle",
     "@symfony/ux-autocomplete": "file:../../vendor/symfony/ux-autocomplete/assets",
     "@symfony/ux-live-component": "file:../../vendor/symfony/ux-live-component/assets",
     "sass-loader": "^12.1.0",
