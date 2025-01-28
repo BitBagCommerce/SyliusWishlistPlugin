@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
 
-final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverInterface
+final readonly class WishlistCookieTokenResolver implements WishlistCookieTokenResolverInterface
 {
     public function __construct(
         private RequestStack $requestStack,

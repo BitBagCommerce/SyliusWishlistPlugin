@@ -56,7 +56,7 @@ final class AddProductVariantToWishlistAction
                 throw new NotFoundHttpException();
             }
 
-            /** @var WishlistProductInterface $wishlistProduct */
+            /** WishlistProductInterface $wishlistProduct */
             $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndVariant($wishlist, $variant);
 
             $this->addProductToWishlist($wishlist, $variant, $wishlistProduct);

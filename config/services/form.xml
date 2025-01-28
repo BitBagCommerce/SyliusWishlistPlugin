@@ -7,8 +7,8 @@
     <services>
         <service id="bitbag_sylius_wishlist_plugin.form.type.add_products_to_cart" class="BitBag\SyliusWishlistPlugin\Form\Type\AddProductsToCartType">
             <argument type="service" id="sylius.factory.add_to_cart_command"/>
-            <argument type="service" id="sylius.factory.order_item"/>
-            <argument type="service" id="sylius.order_item_quantity_modifier"/>
+            <argument type="service" id="sylius.custom_factory.order_item"/>
+            <argument type="service" id="sylius.modifier.order_item_quantity"/>
             <tag name="form.type"/>
         </service>
 

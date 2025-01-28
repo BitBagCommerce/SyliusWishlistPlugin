@@ -15,17 +15,13 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class VariantPdfModel implements VariantPdfModelInterface
 {
-    /** @var ProductVariantInterface */
-    private $variant;
+    private ProductVariantInterface $variant;
 
-    /** @var string */
-    private $imagePath;
+    private string $imagePath;
 
-    /** @var int */
-    private $quantity;
+    private int $quantity;
 
-    /** @var string */
-    private $actualVariant;
+    private string $actualVariant;
 
     public function getVariant(): ProductVariantInterface
     {

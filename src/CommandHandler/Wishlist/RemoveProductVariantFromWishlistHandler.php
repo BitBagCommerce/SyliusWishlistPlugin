@@ -24,7 +24,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class RemoveProductVariantFromWishlistHandler
+final readonly class RemoveProductVariantFromWishlistHandler
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

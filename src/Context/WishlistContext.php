@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-final class WishlistContext implements WishlistContextInterface
+final readonly class WishlistContext implements WishlistContextInterface
 {
     public function __construct(
         private TokenStorageInterface $tokenStorage,

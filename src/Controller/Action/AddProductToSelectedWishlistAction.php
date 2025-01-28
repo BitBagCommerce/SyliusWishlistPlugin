@@ -26,7 +26,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class AddProductToSelectedWishlistAction
+final readonly class AddProductToSelectedWishlistAction
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

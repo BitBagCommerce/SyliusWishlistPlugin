@@ -27,7 +27,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 #[AsMessageHandler]
-final class AddSelectedProductsToCartHandler
+final readonly class AddSelectedProductsToCartHandler
 {
     public function __construct(
         private OrderItemQuantityModifierInterface $itemQuantityModifier,

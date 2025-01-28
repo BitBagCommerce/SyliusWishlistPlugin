@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Factory;
 
 use Dompdf\Dompdf;
 
-class DomPdfFactory implements DomPdfFactoryInterface
+readonly class DomPdfFactory implements DomPdfFactoryInterface
 {
     public function __construct(
         private DomPdfOptionsFactoryInterface $domPdfOptionsFactory,

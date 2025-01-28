@@ -14,10 +14,10 @@ namespace BitBag\SyliusWishlistPlugin\Checker;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 
-final class ProductProcessingChecker implements ProductProcessingCheckerInterface
+final readonly class ProductProcessingChecker implements ProductProcessingCheckerInterface
 {
     public function __construct(
-        private readonly ProductQuantityCheckerInterface $productQuantityChecker,
+        private ProductQuantityCheckerInterface $productQuantityChecker,
     ) {
     }
 

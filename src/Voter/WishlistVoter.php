@@ -13,9 +13,9 @@ namespace BitBag\SyliusWishlistPlugin\Voter;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Security;
 
 final class WishlistVoter extends Voter
 {
@@ -24,8 +24,9 @@ final class WishlistVoter extends Voter
     public const DELETE = 'delete';
 
     public function __construct(
-        private Security $security,
-    ) {
+        private readonly Security $security,
+    )
+    {
     }
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -35,20 +36,19 @@ final class WishlistVoter extends Voter
             self::DELETE,
         ];
 
-        if (!in_array($attribute, $attributes, true) ||
-            !$subject instanceof WishlistInterface) {
+        if (!$subject instanceof WishlistInterface || !in_array($attribute, $attributes, true)) {
             return false;
         }
 
         return true;
     }
 
-    /** @param string $attribute */
     protected function voteOnAttribute(
-        $attribute,
-        $subject,
+        string         $attribute,
+                       $subject,
         TokenInterface $token,
-    ): bool {
+    ): bool
+    {
         $user = $token->getUser();
 
         if (!$user instanceof ShopUserInterface) {

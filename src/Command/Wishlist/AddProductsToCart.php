@@ -13,9 +13,10 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-final class AddProductsToCart implements AddProductsToCartInterface
+final readonly class AddProductsToCart implements AddProductsToCartInterface
 {
-    public function __construct(private readonly Collection $wishlistProducts)
+    public function __construct(
+        private readonly Collection $wishlistProducts)
     {
     }
 

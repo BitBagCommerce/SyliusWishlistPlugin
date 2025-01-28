@@ -14,7 +14,7 @@ namespace BitBag\SyliusWishlistPlugin\Exporter;
 use BitBag\SyliusWishlistPlugin\Processor\VariantPdfModelProcessorInterface;
 use Doctrine\Common\Collections\Collection;
 
-final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
+final readonly class WishlistToPdfExporter implements WishlistToPdfExporterInterface
 {
     public function __construct(
         private VariantPdfModelProcessorInterface $variantPdfModelProcessor,

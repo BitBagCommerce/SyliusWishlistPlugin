@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Doctrine\Common\Collections\Collection;
 
-final class RemoveSelectedProductsFromWishlist implements WishlistSyncCommandInterface
+final readonly class RemoveSelectedProductsFromWishlist implements WishlistSyncCommandInterface
 {
     public function __construct(
         private Collection $wishlistProducts,

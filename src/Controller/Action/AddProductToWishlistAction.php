@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class AddProductToWishlistAction
+final readonly class AddProductToWishlistAction
 {
     public function __construct(
         private ProductRepositoryInterface $productRepository,

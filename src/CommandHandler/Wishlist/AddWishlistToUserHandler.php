@@ -19,7 +19,7 @@ use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class AddWishlistToUserHandler
+final readonly class AddWishlistToUserHandler
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

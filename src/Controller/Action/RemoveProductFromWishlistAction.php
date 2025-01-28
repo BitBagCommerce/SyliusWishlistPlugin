@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class RemoveProductFromWishlistAction
+final readonly class RemoveProductFromWishlistAction
 {
     public function __construct(
         private WishlistContextInterface $wishlistContext,

@@ -16,7 +16,7 @@ use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-final class WishlistProductFactoryFacade implements WishlistProductFactoryFacadeInterface
+final readonly class WishlistProductFactoryFacade implements WishlistProductFactoryFacadeInterface
 {
     public function __construct(
         private WishlistProductFactoryInterface $wishlistProductFactory,

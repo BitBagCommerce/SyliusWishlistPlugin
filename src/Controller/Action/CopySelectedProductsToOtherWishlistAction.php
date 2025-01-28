@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class CopySelectedProductsToOtherWishlistAction
+final readonly class CopySelectedProductsToOtherWishlistAction
 {
     public function __construct(
         private MessageBusInterface $commandBus,

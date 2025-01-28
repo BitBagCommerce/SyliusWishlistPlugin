@@ -28,7 +28,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 
-final class ShowChosenWishlistAction
+final readonly class ShowChosenWishlistAction
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

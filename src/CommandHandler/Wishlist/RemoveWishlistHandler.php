@@ -18,7 +18,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class RemoveWishlistHandler
+final readonly class RemoveWishlistHandler
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

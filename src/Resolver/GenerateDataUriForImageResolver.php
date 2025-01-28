@@ -16,7 +16,7 @@ use Sylius\Component\Core\Model\ImageInterface;
 use Symfony\Component\Asset\PackageInterface;
 use Webmozart\Assert\Assert;
 
-final class GenerateDataUriForImageResolver implements GenerateDataUriForImageResolverInterface
+final readonly class GenerateDataUriForImageResolver implements GenerateDataUriForImageResolverInterface
 {
     public function __construct(
         private PackageInterface $package,

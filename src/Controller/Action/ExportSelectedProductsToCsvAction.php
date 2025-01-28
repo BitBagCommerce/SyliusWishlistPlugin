@@ -33,7 +33,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ExportSelectedProductsToCsvAction
+final readonly class ExportSelectedProductsToCsvAction
 {
     use HandleTrait;
 

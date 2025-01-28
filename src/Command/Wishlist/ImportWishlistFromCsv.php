@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use Symfony\Component\HttpFoundation\Request;
 
-final class ImportWishlistFromCsv implements WishlistSyncCommandInterface
+final readonly class ImportWishlistFromCsv implements WishlistSyncCommandInterface
 {
     public function __construct(
         private \SplFileInfo $file,

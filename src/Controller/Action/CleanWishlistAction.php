@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class CleanWishlistAction
+final readonly class CleanWishlistAction
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

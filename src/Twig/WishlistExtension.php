@@ -38,8 +38,8 @@ final class WishlistExtension extends AbstractExtension
     private array $wishlists = [];
 
     public function __construct(
-        private WishlistRepositoryInterface $wishlistRepository,
-        private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
+        private readonly WishlistRepositoryInterface          $wishlistRepository,
+        private readonly WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ) {
     }
 

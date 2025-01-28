@@ -17,7 +17,7 @@ use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 
-final class UpdateWishlistNameHandler
+final readonly class UpdateWishlistNameHandler
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

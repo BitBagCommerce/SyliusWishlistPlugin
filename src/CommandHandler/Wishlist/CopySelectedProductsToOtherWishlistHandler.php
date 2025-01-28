@@ -16,7 +16,7 @@ use BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplic
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 
-final class CopySelectedProductsToOtherWishlistHandler
+final readonly class CopySelectedProductsToOtherWishlistHandler
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsMessageHandler]
-final class RemoveSelectedProductsFromWishlistHandler
+final readonly class RemoveSelectedProductsFromWishlistHandler
 {
     public function __construct(
         private ProductVariantRepositoryInterface $productVariantRepository,

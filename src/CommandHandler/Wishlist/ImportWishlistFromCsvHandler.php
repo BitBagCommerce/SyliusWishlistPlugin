@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsMessageHandler]
-final class ImportWishlistFromCsvHandler
+final readonly class ImportWishlistFromCsvHandler
 {
     public function __construct(
         private AddProductVariantToWishlistAction $addProductVariantToWishlistAction,

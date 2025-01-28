@@ -16,7 +16,7 @@ use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
-final class WishlistFactory implements WishlistFactoryInterface
+final readonly class WishlistFactory implements WishlistFactoryInterface
 {
     public function __construct(
         private FactoryInterface $wishlistFactory,

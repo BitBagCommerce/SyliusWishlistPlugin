@@ -12,12 +12,16 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Repository;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 class WishlistRepository extends EntityRepository implements WishlistRepositoryInterface
 {
+    /**
+     * @throws NonUniqueResultException
+     */
     public function findOneByShopUser(ShopUserInterface $shopUser): ?WishlistInterface
     {
         return $this->createQueryBuilder('o')
@@ -29,6 +33,9 @@ class WishlistRepository extends EntityRepository implements WishlistRepositoryI
         ;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     public function findByToken(string $token): ?WishlistInterface
     {
         return $this->createQueryBuilder('o')

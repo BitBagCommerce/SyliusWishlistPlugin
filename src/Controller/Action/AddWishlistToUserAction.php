@@ -28,7 +28,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class AddWishlistToUserAction
+final readonly class AddWishlistToUserAction
 {
     public function __construct(
         private MessageBusInterface $commandBus,

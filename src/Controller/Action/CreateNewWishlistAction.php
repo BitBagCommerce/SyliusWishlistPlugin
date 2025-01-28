@@ -25,7 +25,7 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class CreateNewWishlistAction
+final readonly class CreateNewWishlistAction
 {
     public function __construct(
         private MessageBusInterface $commandBus,

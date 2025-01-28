@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
-final class CreateNewWishlistHandler
+final readonly class CreateNewWishlistHandler
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
@@ -47,7 +47,6 @@ final class CreateNewWishlistHandler
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         if ($user instanceof ShopUserInterface) {
-            /** @var WishlistInterface $wishlist */
             $wishlist = $this->wishlistFactory->createForUser($user);
             /** @var ?ShopUserInterface $wishlistShopUser */
             $wishlistShopUser = $wishlist->getShopUser();

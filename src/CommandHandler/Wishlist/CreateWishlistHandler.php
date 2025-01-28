@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
-final class CreateWishlistHandler
+final readonly class CreateWishlistHandler
 {
     public function __construct(
         private TokenStorageInterface $tokenStorage,

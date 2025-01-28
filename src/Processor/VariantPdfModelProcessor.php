@@ -17,7 +17,7 @@ use BitBag\SyliusWishlistPlugin\Model\VariantPdfModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-final class VariantPdfModelProcessor implements VariantPdfModelProcessorInterface
+final readonly class VariantPdfModelProcessor implements VariantPdfModelProcessorInterface
 {
     public function __construct(
         private ModelCreatorInterface $pdfModelCreator,

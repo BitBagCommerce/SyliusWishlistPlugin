@@ -28,9 +28,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class AddProductsToCartType extends AbstractType
 {
     public function __construct(
-        private AddToCartCommandFactoryInterface $addToCartCommandFactory,
-        private CartItemFactoryInterface $cartItemFactory,
-        private OrderItemQuantityModifierInterface $orderItemQuantityModifier,
+        private readonly AddToCartCommandFactoryInterface   $addToCartCommandFactory,
+        private readonly CartItemFactoryInterface           $cartItemFactory,
+        private readonly OrderItemQuantityModifierInterface $orderItemQuantityModifier,
     ) {
     }
 
@@ -60,7 +60,6 @@ final class AddProductsToCartType extends AbstractType
 
     private function createCartItem(WishlistProductInterface $wishlistProduct): OrderItemInterface
     {
-        /** @var OrderItemInterface $cartItem */
         $cartItem = $this->cartItemFactory->createForProduct($wishlistProduct->getProduct());
         $cartItem->setVariant($wishlistProduct->getVariant());
 

@@ -29,7 +29,6 @@ final class CsvWishlistProductFactory implements CsvWishlistProductFactoryInterf
         int $productId,
         string $variantCode,
     ): CsvWishlistProductInterface {
-        /** @var CsvWishlistProductInterface $csvWishlistProduct */
         $csvWishlistProduct = $this->createNew();
 
         $csvWishlistProduct->setVariantId($variantId);

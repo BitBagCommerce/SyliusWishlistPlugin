@@ -19,7 +19,7 @@ use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
-final class ShopUserWishlistResolver implements ShopUserWishlistResolverInterface
+final readonly class ShopUserWishlistResolver implements ShopUserWishlistResolverInterface
 {
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,

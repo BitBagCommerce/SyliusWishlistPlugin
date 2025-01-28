@@ -27,7 +27,7 @@ use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Twig\Environment;
 
-final class ImportWishlistFromCsvAction
+final readonly class ImportWishlistFromCsvAction
 {
     use HandleTrait;
 

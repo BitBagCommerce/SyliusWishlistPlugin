@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class AddToCartTypeExtension extends AbstractTypeExtension
 {
     public function __construct(
-        private WishlistsResolverInterface $wishlistsResolver,
+        private readonly WishlistsResolverInterface $wishlistsResolver,
     ) {
     }
 

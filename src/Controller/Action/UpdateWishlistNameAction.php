@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
-final class UpdateWishlistNameAction
+final readonly class UpdateWishlistNameAction
 {
     public function __construct(
         private MessageBusInterface $commandBus,

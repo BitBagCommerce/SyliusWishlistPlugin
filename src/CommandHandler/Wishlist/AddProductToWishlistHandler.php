@@ -21,7 +21,7 @@ use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class AddProductToWishlistHandler
+final readonly class AddProductToWishlistHandler
 {
     public function __construct(
         private WishlistProductFactoryInterface $wishlistProductFactory,
@@ -37,7 +37,6 @@ final class AddProductToWishlistHandler
         /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($productId);
 
-        /** @var WishlistInterface $wishlist */
         $wishlist = $addProductToWishlist->getWishlist();
 
         if (null === $product) {

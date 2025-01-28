@@ -28,12 +28,12 @@ class Wishlist implements WishlistInterface
     protected ?string $name;
 
     /** @var Collection|WishlistProductInterface[] */
-    protected $wishlistProducts;
+    protected Collection $wishlistProducts;
 
     protected ?ShopUserInterface $shopUser = null;
 
     /** @var WishlistTokenInterface|null */
-    protected $token;
+    protected ?WishlistTokenInterface $token;
 
     protected ?ChannelInterface $channel;
 

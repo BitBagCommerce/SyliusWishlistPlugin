@@ -28,7 +28,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsMessageHandler]
-final class AddProductsToCartHandler
+final readonly class AddProductsToCartHandler
 {
     public function __construct(
         private RequestStack $requestStack,

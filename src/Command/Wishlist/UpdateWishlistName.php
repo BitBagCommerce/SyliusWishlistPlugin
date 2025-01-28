@@ -13,7 +13,7 @@ namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 
-final class UpdateWishlistName implements UpdateWishlistNameInterface
+final readonly class UpdateWishlistName implements UpdateWishlistNameInterface
 {
     public function __construct(
         public string $name,

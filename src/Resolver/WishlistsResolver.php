@@ -22,7 +22,7 @@ use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-final class WishlistsResolver implements WishlistsResolverInterface
+final readonly class WishlistsResolver implements WishlistsResolverInterface
 {
     use HandleTrait;
 
