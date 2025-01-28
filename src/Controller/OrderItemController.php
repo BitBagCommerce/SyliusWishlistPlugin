@@ -13,10 +13,8 @@ namespace BitBag\SyliusWishlistPlugin\Controller;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
-use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseController;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Order\CartActions;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +22,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class OrderItemController extends BaseController
+final class OrderItemController
 {
     public function addAction(Request $request): Response
     {
@@ -86,6 +84,5 @@ final class OrderItemController extends BaseController
             ]));
         }
 
-        return parent::addAction($request);
     }
 }
