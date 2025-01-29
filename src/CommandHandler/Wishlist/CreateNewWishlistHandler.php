@@ -29,14 +29,15 @@ use Webmozart\Assert\Assert;
 final class CreateNewWishlistHandler
 {
     public function __construct(
-        private WishlistRepositoryInterface $wishlistRepository,
-        private TokenStorageInterface $tokenStorage,
-        private WishlistFactoryInterface $wishlistFactory,
+        private WishlistRepositoryInterface          $wishlistRepository,
+        private TokenStorageInterface                $tokenStorage,
+        private WishlistFactoryInterface             $wishlistFactory,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        private ChannelRepositoryInterface $channelRepository,
-        private WishlistNameCheckerInterface $wishlistNameChecker,
-        private TokenUserResolverInterface $tokenUserResolver,
-    ) {
+        private ChannelRepositoryInterface           $channelRepository,
+        private WishlistNameCheckerInterface         $wishlistNameChecker,
+        private TokenUserResolverInterface           $tokenUserResolver,
+    )
+    {
     }
 
     public function __invoke(CreateNewWishlist $createNewWishlist): int
@@ -73,7 +74,7 @@ final class CreateNewWishlistHandler
         } else {
             /** @var WishlistInterface $newWishlist */
             foreach ($wishlists as $newWishlist) {
-                if (!$this->wishlistNameChecker->check((string) $newWishlist->getName(), $createNewWishlist->getName())) {
+                if (!$this->wishlistNameChecker->check((string)$newWishlist->getName(), $createNewWishlist->getName())) {
                     $wishlist->setName($createNewWishlist->getName());
                 } else {
                     throw new WishlistNameIsTakenException();
