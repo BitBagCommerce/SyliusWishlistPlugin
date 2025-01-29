@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateWishlistHandler;
+use BitBag\SyliusWishlistPlugin\Command\CreateWishlist;
+use BitBag\SyliusWishlistPlugin\CommandHandler\CreateWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\ShopUserWishlistResolverInterface;

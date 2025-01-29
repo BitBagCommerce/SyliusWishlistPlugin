@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddSelectedProductsToCartHandler;
+use BitBag\SyliusWishlistPlugin\Command\AddSelectedProductsToCart;
+use BitBag\SyliusWishlistPlugin\Command\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\CommandHandler\AddSelectedProductsToCartHandler;
 use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;

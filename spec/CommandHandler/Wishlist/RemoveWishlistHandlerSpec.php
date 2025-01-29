@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveWishlist;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveWishlistHandler;
+use BitBag\SyliusWishlistPlugin\Command\RemoveWishlist;
+use BitBag\SyliusWishlistPlugin\CommandHandler\RemoveWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;

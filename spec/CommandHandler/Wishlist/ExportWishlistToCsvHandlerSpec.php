@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\ExportWishlistToCsvHandler;
+use BitBag\SyliusWishlistPlugin\Command\ExportWishlistToCsv;
+use BitBag\SyliusWishlistPlugin\Command\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\CommandHandler\ExportWishlistToCsvHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactoryInterface;

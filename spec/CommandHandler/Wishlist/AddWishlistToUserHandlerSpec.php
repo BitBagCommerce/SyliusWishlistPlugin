@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistToUser;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddWishlistToUserHandler;
+use BitBag\SyliusWishlistPlugin\Command\AddWishlistToUser;
+use BitBag\SyliusWishlistPlugin\CommandHandler\AddWishlistToUserHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistHasAnotherShopUserException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;

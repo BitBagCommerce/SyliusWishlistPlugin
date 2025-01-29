@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Checker;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\Command\WishlistItemInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 
 final readonly class ProductProcessingChecker implements ProductProcessingCheckerInterface

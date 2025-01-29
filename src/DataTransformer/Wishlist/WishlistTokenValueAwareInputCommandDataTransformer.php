@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\DataTransformer\Wishlist;
 
 use ApiPlatform\Core\Serializer\AbstractItemNormalizer;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistTokenValueAwareInterface;
+use BitBag\SyliusWishlistPlugin\Command\WishlistTokenValueAwareInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\ApiBundle\DataTransformer\CommandDataTransformerInterface;
 

@@ -36,11 +36,7 @@ final class WishlistVoter extends Voter
             self::DELETE,
         ];
 
-        if (!$subject instanceof WishlistInterface || !in_array($attribute, $attributes, true)) {
-            return false;
-        }
-
-        return true;
+        return ($subject instanceof WishlistInterface || in_array($attribute, $attributes, true));
     }
 
     protected function voteOnAttribute(

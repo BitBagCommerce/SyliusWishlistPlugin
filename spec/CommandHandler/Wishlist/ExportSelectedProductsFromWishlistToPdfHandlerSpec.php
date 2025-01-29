@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdfInterface;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\ExportSelectedProductsFromWishlistToPdfHandler;
+use BitBag\SyliusWishlistPlugin\Command\ExportSelectedProductsFromWishlistToPdfInterface;
+use BitBag\SyliusWishlistPlugin\CommandHandler\ExportSelectedProductsFromWishlistToPdfHandler;
 use BitBag\SyliusWishlistPlugin\Exporter\WishlistToPdfExporterInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;

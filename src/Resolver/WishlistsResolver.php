@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist;
+use BitBag\SyliusWishlistPlugin\Command\CreateWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
@@ -24,17 +24,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final readonly class WishlistsResolver implements WishlistsResolverInterface
 {
-    use HandleTrait;
-
     public function __construct(
         private WishlistRepositoryInterface $wishlistRepository,
         private TokenStorageInterface $tokenStorage,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         private ChannelContextInterface $channelContext,
         private TokenUserResolverInterface $tokenUserResolver,
-        MessageBusInterface $messageBus,
+        private MessageBusInterface $messageBus,
     ) {
-        $this->messageBus = $messageBus;
     }
 
     public function resolve(): array
@@ -76,7 +73,7 @@ final readonly class WishlistsResolver implements WishlistsResolverInterface
         if (0 === count($wishlists)) {
             $createWishlist = new CreateWishlist($wishlistCookieToken, $channel?->getCode());
             /** @var WishlistInterface $wishlist */
-            $wishlist = $this->handle($createWishlist);
+            $wishlist = $this->messageBus->dispatch($createWishlist);
 
             $wishlists = [$wishlist];
         }

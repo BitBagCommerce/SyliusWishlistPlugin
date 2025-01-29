@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Generator;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\Command\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
 
 interface ModelCreatorInterface

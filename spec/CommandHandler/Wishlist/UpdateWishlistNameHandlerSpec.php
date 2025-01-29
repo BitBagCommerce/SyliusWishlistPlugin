@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\UpdateWishlistName;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\UpdateWishlistNameHandler;
+use BitBag\SyliusWishlistPlugin\Command\UpdateWishlistName;
+use BitBag\SyliusWishlistPlugin\CommandHandler\UpdateWishlistNameHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;

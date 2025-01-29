@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler;
+use BitBag\SyliusWishlistPlugin\Command\AddProductsToCartInterface;
+use BitBag\SyliusWishlistPlugin\Command\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\CommandHandler\AddProductsToCartHandler;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;

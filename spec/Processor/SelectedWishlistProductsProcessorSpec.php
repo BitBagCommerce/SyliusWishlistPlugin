@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\Processor;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessor;
 use BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
 use Doctrine\Common\Collections\ArrayCollection;

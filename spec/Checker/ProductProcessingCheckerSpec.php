@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusWishlistPlugin\Checker;
 
 use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker;
 use BitBag\SyliusWishlistPlugin\Checker\ProductQuantityCheckerInterface;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use BitBag\SyliusWishlistPlugin\Command\WishlistItem;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
