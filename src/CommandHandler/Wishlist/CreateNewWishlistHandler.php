@@ -44,7 +44,10 @@ final class CreateNewWishlistHandler
         $token = $this->tokenStorage->getToken();
         $user = $this->tokenUserResolver->resolve($token);
 
-        $user instanceof ShopUserInterface ? $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve() : $wishlistCookieToken = $this->wishlistCookieTokenResolver->new();
+        $wishlistCookieToken = $user instanceof ShopUserInterface
+            ? $this->wishlistCookieTokenResolver->resolve()
+            : $this->wishlistCookieTokenResolver->new();
+
 
         if ($user instanceof ShopUserInterface) {
             /** @var WishlistInterface $wishlist */
