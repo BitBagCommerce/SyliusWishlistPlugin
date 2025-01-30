@@ -109,7 +109,7 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn(null);
         $tokenUserResolver->resolve(null)->willReturn(null);
 
-        $wishlistCookieTokenResolver->resolve()->willReturn('token');
+        $wishlistCookieTokenResolver->new()->willReturn('token');
         $wishlistFactory->createNew()->willReturn($newWishlist);
 
         $wishlistRepository->findAllByAnonymous('token')->willReturn([]);
