@@ -74,6 +74,7 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $tokenUserResolver->resolve($token)->willReturn($shopUser);
 
         $wishlistCookieTokenResolver->resolve()->willReturn('token');
+        $wishlistCookieTokenResolver->new()->willReturn('token');
         $wishlistFactory->createForUser($shopUser)->willReturn($wishlist);
 
         $wishlist->getShopUser()->willReturn($shopUser);
@@ -147,6 +148,7 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $tokenUserResolver->resolve($token)->willReturn($shopUser);
 
         $wishlistCookieTokenResolver->resolve()->willReturn('token');
+        $wishlistCookieTokenResolver->new()->willReturn('token');
         $wishlistFactory->createForUser($shopUser)->willReturn($wishlist);
 
         $wishlist->getShopUser()->willReturn($shopUser);

@@ -43,4 +43,9 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
 
         return (string) new WishlistToken();
     }
+
+    public function new(): string
+    {
+        return (string) new WishlistToken();
+    }
 }

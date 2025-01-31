@@ -14,4 +14,6 @@ namespace BitBag\SyliusWishlistPlugin\Resolver;
 interface WishlistCookieTokenResolverInterface
 {
     public function resolve(): string;
+
+    public function new(): string;
 }
