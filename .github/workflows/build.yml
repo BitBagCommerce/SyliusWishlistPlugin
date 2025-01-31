@@ -27,7 +27,7 @@ jobs:
                 sylius: [ "~1.12", "~1.13" ]
                 node: [ "18.x", "20.x" ]
                 mysql: ["8.0"]
-                state_machine_adapter: ["winzou_state_machine", "symfony_workflow"]
+                state_machine_adapter: ["symfony_workflow"]
 
         env:
             APP_ENV: test
