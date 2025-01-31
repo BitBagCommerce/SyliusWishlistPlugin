@@ -32,21 +32,20 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final readonly class ExportSelectedProductsToCsvAction
+final class ExportSelectedProductsToCsvAction
 {
     private string $wishlistName;
 
     public function __construct(
-        private CartContextInterface              $cartContext,
-        private FormFactoryInterface              $formFactory,
-        private RequestStack                      $requestStack,
-        private WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        private UrlGeneratorInterface             $urlGenerator,
-        private TranslatorInterface               $translator,
-        private WishlistRepositoryInterface       $wishlistRepository,
-        private MessageBusInterface               $messageBus,
-    )
-    {
+        private readonly CartContextInterface $cartContext,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly RequestStack $requestStack,
+        private readonly WishlistCommandProcessorInterface $wishlistCommandProcessor,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly TranslatorInterface $translator,
+        private readonly WishlistRepositoryInterface $wishlistRepository,
+        private readonly MessageBusInterface $messageBus,
+    ) {
     }
 
     public function __invoke(int $wishlistId, Request $request): Response
@@ -80,7 +79,7 @@ final readonly class ExportSelectedProductsToCsvAction
         $wishlist = $this->wishlistRepository->find($wishlistId);
         $cart = $this->cartContext->getCart();
 
-        $this->wishlistName = (string)$wishlist->getName();
+        $this->wishlistName = (string) $wishlist->getName();
 
         $commandsArray = $this->wishlistCommandProcessor->createWishlistItemsCollection($wishlist->getWishlistProducts());
 

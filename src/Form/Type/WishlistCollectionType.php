@@ -28,7 +28,7 @@ use Webmozart\Assert\Assert;
 final class WishlistCollectionType extends AbstractType
 {
     public function __construct(
-        private readonly TranslatorInterface                        $translator,
+        private readonly TranslatorInterface $translator,
         private readonly SelectedWishlistProductsProcessorInterface $selectedWishlistProductsProcessor,
     ) {
     }

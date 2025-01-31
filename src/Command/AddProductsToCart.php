@@ -16,7 +16,8 @@ use Doctrine\Common\Collections\Collection;
 final readonly class AddProductsToCart implements AddProductsToCartInterface
 {
     public function __construct(
-        private Collection $wishlistProducts)
+        private Collection $wishlistProducts,
+    )
     {
     }
 

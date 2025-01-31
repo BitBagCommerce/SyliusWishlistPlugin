@@ -28,8 +28,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class AddProductsToCartType extends AbstractType
 {
     public function __construct(
-        private readonly AddToCartCommandFactoryInterface   $addToCartCommandFactory,
-        private readonly CartItemFactoryInterface           $cartItemFactory,
+        private readonly AddToCartCommandFactoryInterface $addToCartCommandFactory,
+        private readonly CartItemFactoryInterface $cartItemFactory,
         private readonly OrderItemQuantityModifierInterface $orderItemQuantityModifier,
     ) {
     }

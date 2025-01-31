@@ -20,9 +20,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final readonly class RemoveWishlistAction
 {
     public function __construct(
-        private MessageBusInterface $messageBus
-    )
-    {
+        private MessageBusInterface $messageBus,
+    ) {
     }
 
     public function __invoke(Request $request): JsonResponse

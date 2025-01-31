@@ -32,7 +32,6 @@ class Wishlist implements WishlistInterface
 
     protected ?ShopUserInterface $shopUser = null;
 
-    /** @var WishlistTokenInterface|null */
     protected ?WishlistTokenInterface $token;
 
     protected ?ChannelInterface $channel;

@@ -25,8 +25,7 @@ final class WishlistVoter extends Voter
 
     public function __construct(
         private readonly Security $security,
-    )
-    {
+    ) {
     }
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -36,15 +35,14 @@ final class WishlistVoter extends Voter
             self::DELETE,
         ];
 
-        return ($subject instanceof WishlistInterface || in_array($attribute, $attributes, true));
+        return $subject instanceof WishlistInterface || in_array($attribute, $attributes, true);
     }
 
     protected function voteOnAttribute(
-        string         $attribute,
-                       $subject,
+        string $attribute,
+        $subject,
         TokenInterface $token,
-    ): bool
-    {
+    ): bool {
         $user = $token->getUser();
 
         if (!$user instanceof ShopUserInterface) {

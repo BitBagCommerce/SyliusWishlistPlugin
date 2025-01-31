@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace spec\BitBag\SyliusWishlistPlugin\Action;
 
 use BitBag\SyliusWishlistPlugin\Action\AddProductToWishlistAction;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;

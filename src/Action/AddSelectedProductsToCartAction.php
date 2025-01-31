@@ -21,7 +21,6 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
 {
-
     protected function handleCommand(FormInterface $form): void
     {
         try {

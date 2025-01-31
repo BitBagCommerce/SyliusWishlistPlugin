@@ -30,12 +30,11 @@ final readonly class ImportWishlistFromCsvAction
 {
     public function __construct(
         private FormFactoryInterface $formFactory,
-        private RequestStack               $requestStack,
-        private Environment                $twigEnvironment,
+        private RequestStack $requestStack,
+        private Environment $twigEnvironment,
         private WishlistsResolverInterface $wishlistsResolver,
-        private MessageBusInterface        $messageBus,
-    )
-    {
+        private MessageBusInterface $messageBus,
+    ) {
     }
 
     public function __invoke(Request $request): Response
@@ -78,7 +77,7 @@ final readonly class ImportWishlistFromCsvAction
         /** @var Wishlist $wishlist */
         $wishlist = $form->get('wishlists')->getData();
 
-        $command = new ImportWishlistFromCsv($file->getFileInfo(), $request, (int)$wishlist->getId());
+        $command = new ImportWishlistFromCsv($file->getFileInfo(), $request, (int) $wishlist->getId());
 
         return $this->messageBus->dispatch($command);
     }

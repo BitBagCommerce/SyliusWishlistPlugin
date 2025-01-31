@@ -83,6 +83,5 @@ final class OrderItemController
                 'variantId' => $variant->getId(),
             ]));
         }
-
     }
 }

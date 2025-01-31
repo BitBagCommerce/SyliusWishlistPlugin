@@ -20,7 +20,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final readonly class RemoveProductVariantFromWishlistAction
 {
     public function __construct(
-        private MessageBusInterface $messageBus)
+        private MessageBusInterface $messageBus,
+    )
     {
     }
 

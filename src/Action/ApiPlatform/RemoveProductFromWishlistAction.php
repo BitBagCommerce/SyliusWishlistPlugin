@@ -19,9 +19,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final readonly class RemoveProductFromWishlistAction
 {
-
     public function __construct(
-        private MessageBusInterface $messageBus)
+        private MessageBusInterface $messageBus,
+    )
     {
     }
 
