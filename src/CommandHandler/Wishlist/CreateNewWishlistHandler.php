@@ -61,9 +61,9 @@ final class CreateNewWishlistHandler
 
         if ('' !== $wishlistCookieToken) {
             if ($user instanceof ShopUserInterface) {
-                $wishlist->setToken($wishlistCookieToken);
-            } else {
                 $wishlist->setToken($this->wishlistCookieTokenResolver->new());
+            } else {
+                $wishlist->setToken($wishlistCookieToken);
             }
         }
 
