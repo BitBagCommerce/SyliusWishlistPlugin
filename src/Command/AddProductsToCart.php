@@ -17,8 +17,7 @@ final readonly class AddProductsToCart implements AddProductsToCartInterface
 {
     public function __construct(
         private Collection $wishlistProducts,
-    )
-    {
+    ) {
     }
 
     public function getWishlistProducts(): Collection

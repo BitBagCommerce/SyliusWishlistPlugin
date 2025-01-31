@@ -79,7 +79,7 @@
         </service>
 
         <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.import_from_csv" class="BitBag\SyliusWishlistPlugin\CommandHandler\ImportWishlistFromCsvHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.action.add_product_variant_to_wishlist"/>
             <argument type="service" id="sylius.repository.product_variant"/>
             <argument>%bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types%</argument>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer"/>

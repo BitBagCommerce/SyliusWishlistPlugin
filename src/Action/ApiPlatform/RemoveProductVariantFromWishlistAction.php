@@ -21,8 +21,7 @@ final readonly class RemoveProductVariantFromWishlistAction
 {
     public function __construct(
         private MessageBusInterface $messageBus,
-    )
-    {
+    ) {
     }
 
     public function __invoke(Request $request): JsonResponse
