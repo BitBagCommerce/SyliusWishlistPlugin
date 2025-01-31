@@ -60,7 +60,11 @@ final class CreateNewWishlistHandler
         }
 
         if ('' !== $wishlistCookieToken) {
-            $wishlist->setToken($wishlistCookieToken);
+            if ($user instanceof ShopUserInterface) {
+                $wishlist->setToken($wishlistCookieToken);
+            } else {
+                $wishlist->setToken($this->wishlistCookieTokenResolver->new());
+            }
         }
 
         if (null !== $createNewWishlist->getChannelCode()) {
