@@ -9,7 +9,11 @@
       "product":{
         "@id":"\/api\/v2\/shop\/products\/@string@",
         "@type":"Product",
-        "id":"@integer@"
+        "id":"@integer@",
+        "variants":[
+          "\/api\/v2\/shop\/product-variants\/@string@"
+        ],
+        "defaultVariant":"\/api\/v2\/shop\/product-variants\/@string@"
       },
       "variant":{
         "@id":"\/api\/v2\/shop\/product-variants\/@string@",
@@ -21,6 +25,7 @@
     }
   ],
   "shopUser":{
+    "@id": "\/api\/v2\/shop\/shop-users\/@integer@",
     "@type":"ShopUser",
     "id":"@integer@",
     "email":"@string@"

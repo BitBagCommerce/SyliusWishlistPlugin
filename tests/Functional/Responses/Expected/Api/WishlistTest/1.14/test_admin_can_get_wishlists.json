@@ -24,6 +24,7 @@
         }
       ],
       "shopUser":{
+        "@id": "\/api\/v2\/admin\/shop-users\/@integer@",
         "@type":"ShopUser",
         "id":"@integer@",
         "email":"@string@"
@@ -36,6 +37,7 @@
       "id":"@integer@",
       "wishlistProducts":"@array@",
       "shopUser":{
+        "@id": "\/api\/v2\/admin\/shop-users\/@integer@",
         "@type":"ShopUser",
         "id":"@integer@",
         "email":"@string@"
@@ -50,6 +52,7 @@
 
       ],
       "shopUser":{
+        "@id": "\/api\/v2\/admin\/shop-users\/@integer@",
         "@type":"ShopUser",
         "id":"@integer@",
         "email":"@string@"
@@ -62,6 +65,7 @@
       "id":"@integer@",
       "wishlistProducts":"@array@",
       "shopUser":{
+        "@id": "\/api\/v2\/admin\/shop-users\/@integer@",
         "@type":"ShopUser",
         "id":"@integer@",
         "email":"@string@"

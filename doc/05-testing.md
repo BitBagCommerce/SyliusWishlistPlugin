@@ -9,11 +9,6 @@ $ composer install
 $ cd tests/Application
 ```
 
-Copy `package.json.~1.xx.dist` file to `package.json` for specific version of Sylius (example for 1.12.0):
-```bash
-$ cp package.json.\~1.12.dist package.json
-```
-
 Then:
 
 ```bash

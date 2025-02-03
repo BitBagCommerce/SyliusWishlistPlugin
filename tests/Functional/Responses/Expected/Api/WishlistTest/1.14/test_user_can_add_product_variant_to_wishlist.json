@@ -21,6 +21,7 @@
     }
   ],
   "shopUser":{
+    "@id": "\/api\/v2\/shop\/shop-users\/@integer@",
     "@type":"ShopUser",
     "id":"@integer@",
     "email":"@string@"
