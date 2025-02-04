@@ -8,9 +8,9 @@
         <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_products_to_wishlist_handler" class="BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler">
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
-            <argument type="service" id="sylius.order_modifier"/>
+            <argument type="service" id="sylius.modifier.order"/>
             <argument type="service" id="sylius.repository.order"/>
-            <argument type="service" id="sylius.availability_checker.default"/>
+            <argument type="service" id="sylius.checker.inventory.availability"/>
             <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
@@ -63,10 +63,10 @@
         </service>
 
         <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_selected_products_to_cart" class="BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddSelectedProductsToCartHandler">
-            <argument type="service" id="sylius.order_item_quantity_modifier"/>
-            <argument type="service" id="sylius.order_modifier"/>
+            <argument type="service" id="sylius.modifier.order_item_quantity"/>
+            <argument type="service" id="sylius.modifier.order"/>
             <argument type="service" id="sylius.repository.order"/>
-            <argument type="service" id="sylius.availability_checker.default"/>
+            <argument type="service" id="sylius.checker.inventory.availability"/>
             <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
