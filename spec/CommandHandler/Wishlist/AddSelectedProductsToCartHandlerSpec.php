@@ -73,10 +73,10 @@ final class AddSelectedProductsToCartHandlerSpec extends ObjectBehavior
 
         $availabilityChecker->isStockSufficient($productVariant, 1)->willReturn(true);
 
-        $this->__invoke($addSelectedProductsToCart);
+        $this->shouldNotThrow()->during('__invoke', [$addSelectedProductsToCart]);
     }
 
-    public function it_doesnt_add_selected_products_to_cart_if_product_cannot_be_processed(
+    public function it_doesnt_add_selected_products_to_cart_if_product_cannot_be_processed_but_throws_exception(
         WishlistItemInterface $wishlistProduct,
         OrderModifierInterface $orderModifier,
         OrderRepositoryInterface $orderRepository,
@@ -98,26 +98,6 @@ final class AddSelectedProductsToCartHandlerSpec extends ObjectBehavior
 
         $orderModifier->addToOrder($order, $orderItem)->shouldNotBeCalled();
         $orderRepository->add($order)->shouldNotBeCalled();
-
-        $this->shouldThrow(InvalidProductQuantityException::class)->during('__invoke', [$addSelectedProductsToCart]);
-    }
-
-    public function it_throws_exception_when_quantity_is_not_positive(
-        AvailabilityCheckerInterface $availabilityChecker,
-        ProductVariantInterface $productVariant,
-        OrderItemInterface $orderItem,
-        WishlistItemInterface $wishlistProduct,
-        AddToCartCommandInterface $addToCartCommand,
-    ): void {
-        $collection = new ArrayCollection([$wishlistProduct->getWrappedObject()]);
-        $addSelectedProductsToCart = new AddSelectedProductsToCart($collection);
-
-        $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
-        $addToCartCommand->getCartItem()->willReturn($orderItem);
-        $orderItem->getVariant()->willReturn($productVariant);
-        $orderItem->getQuantity()->willReturn(0);
-
-        $availabilityChecker->isStockSufficient($productVariant, 0)->willReturn(true);
 
         $this->shouldThrow(InvalidProductQuantityException::class)->during('__invoke', [$addSelectedProductsToCart]);
     }
