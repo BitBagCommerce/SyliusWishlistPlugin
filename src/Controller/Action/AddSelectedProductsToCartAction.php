@@ -77,7 +77,7 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
         return $exception->getMessage();
     }
 
-    private function getFlashBag(): FlashBagInterface
+    protected function getFlashBag(): FlashBagInterface
     {
         /** @var Session $session */
         $session = $this->requestStack->getSession();
