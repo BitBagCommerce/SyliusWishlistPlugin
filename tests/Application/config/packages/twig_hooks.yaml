@@ -1,0 +1,29 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.base#stylesheets':
+            wishlist_styles:
+                template: "@BitBagSyliusWishlistPlugin/Admin/_styles.html.twig"
+
+        'sylius_admin.base#javascripts':
+            wishlist_javascripts:
+                template: "@BitBagSyliusWishlistPlugin/Admin/_scripts.html.twig"
+
+        'sylius_shop.base#stylesheets':
+            wishlist_styles:
+                template: "@BitBagSyliusWishlistPlugin/Shop/_styles.html.twig"
+
+        'sylius_shop.base#javascripts':
+            wishlist_javascripts:
+                template: "@BitBagSyliusWishlistPlugin/Shop/_scripts.html.twig"
+
+# TODO adjust this to render the template propery
+        'sylius_shop.base.header.content':
+            wishlist_header:
+                template: "@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig"
+
+# TODO find the right way to extend product box's content
+#sylius.shop.product.index.box:
+#            blocks:
+#                content:
+#                    template: "@BitBagSyliusWishlistPlugin/Product/Box/_content.html.twig"
+#                    priority: 10

@@ -12,24 +12,13 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusWishlistPlugin\Checker;
 
 use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker;
-use BitBag\SyliusWishlistPlugin\Checker\ProductQuantityCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ProductProcessingCheckerSpec extends ObjectBehavior
 {
-    public function let(
-        ProductQuantityCheckerInterface $productQuantityChecker,
-    ): void {
-        $this->beConstructedWith(
-            $productQuantityChecker,
-        );
-    }
-
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(ProductProcessingChecker::class);
@@ -39,44 +28,22 @@ final class ProductProcessingCheckerSpec extends ObjectBehavior
         WishlistItem $wishlistProduct,
         AddToCartCommandInterface $addToCartCommand,
         OrderItemInterface $orderItem,
-        ProductQuantityCheckerInterface $productQuantityChecker,
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
-        $wishlistProduct->getOrderItemQuantity()->willReturn(5);
-        $productQuantityChecker->hasPositiveQuantity($orderItem)->willReturn(true);
+        $orderItem->getQuantity()->willReturn(5);
 
         $this->canBeProcessed($wishlistProduct)->shouldReturn(true);
     }
 
-    public function it_can_not_be_processed_due_to_lack_in_stock(
+    public function it_cannot_be_processed(
         WishlistItem $wishlistProduct,
         AddToCartCommandInterface $addToCartCommand,
         OrderItemInterface $orderItem,
-        ProductQuantityCheckerInterface $productQuantityChecker,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
     ): void {
         $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
         $addToCartCommand->getCartItem()->willReturn($orderItem);
-        $wishlistProduct->getOrderItemQuantity()->willReturn(5);
-        $productQuantityChecker->hasPositiveQuantity($orderItem)->willReturn(false);
-
-        $this->canBeProcessed($wishlistProduct)->shouldReturn(false);
-    }
-
-    public function it_can_not_be_processed_due_to_lack_in_quantity(
-        WishlistItem $wishlistProduct,
-        AddToCartCommandInterface $addToCartCommand,
-        OrderItemInterface $orderItem,
-        ProductQuantityCheckerInterface $productQuantityChecker,
-        FlashBagInterface $flashBag,
-        TranslatorInterface $translator,
-    ): void {
-        $wishlistProduct->getCartItem()->willReturn($addToCartCommand);
-        $addToCartCommand->getCartItem()->willReturn($orderItem);
-        $wishlistProduct->getOrderItemQuantity()->willReturn(0);
-        $productQuantityChecker->hasPositiveQuantity($orderItem)->willReturn(false);
+        $orderItem->getQuantity()->willReturn(0);
 
         $this->canBeProcessed($wishlistProduct)->shouldReturn(false);
     }

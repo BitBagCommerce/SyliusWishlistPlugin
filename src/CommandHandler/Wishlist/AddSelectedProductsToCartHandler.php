@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
+use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCartInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
 use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
@@ -37,7 +37,7 @@ final class AddSelectedProductsToCartHandler
     ) {
     }
 
-    public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
+    public function __invoke(AddSelectedProductsToCartInterface $addSelectedProductsToCartCommand): void
     {
         $this->addSelectedProductsToCart($addSelectedProductsToCartCommand->getWishlistProducts());
     }
