@@ -15,7 +15,7 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler;
 use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
-use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantity;
+use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
@@ -113,6 +113,6 @@ final class AddProductsToCartHandlerSpec extends ObjectBehavior
 
         $availabilityChecker->isStockSufficient($productVariant, 0)->willReturn(true);
 
-        $this->shouldThrow(InvalidProductQuantity::class)->during('__invoke', [$addProductsToCart]);
+        $this->shouldThrow(InvalidProductQuantityException::class)->during('__invoke', [$addProductsToCart]);
     }
 }
