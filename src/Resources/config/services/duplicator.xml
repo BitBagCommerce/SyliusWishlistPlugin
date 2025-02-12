@@ -6,7 +6,7 @@
 
     <services>
         <service id="bitbag_sylius_wishlist_plugin.services.duplicator" class="BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicator">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade"/>
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product"/>
             <argument type="service" id="sylius.repository.product_variant"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="request_stack"/>

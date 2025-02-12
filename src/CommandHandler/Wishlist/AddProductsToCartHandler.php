@@ -14,6 +14,8 @@ namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
+use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
@@ -21,18 +23,13 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsMessageHandler]
 final class AddProductsToCartHandler
 {
     public function __construct(
-        private RequestStack $requestStack,
-        private TranslatorInterface $translator,
         private OrderModifierInterface $orderModifier,
         private OrderRepositoryInterface $orderRepository,
         private ?AvailabilityCheckerInterface $availabilityChecker = null,
@@ -69,6 +66,9 @@ final class AddProductsToCartHandler
         return $this->productIsStockSufficient($cartItem) && $this->productHasPositiveQuantity($cartItem);
     }
 
+    /**
+     * @throws InsufficientProductStockException
+     */
     private function productIsStockSufficient(OrderItemInterface $product): bool
     {
         /** @var ?ProductVariantInterface $variant */
@@ -86,25 +86,19 @@ final class AddProductsToCartHandler
             return true;
         }
 
-        $message = sprintf('%s does not have sufficient stock.', $product->getProductName());
-
-        /** @var Session $session */
-        $session = $this->requestStack->getSession();
-        $session->getFlashBag()->add('error', $this->translator->trans($message));
-
-        return false;
+        throw new InsufficientProductStockException((string) $product->getProductName());
     }
 
+    /**
+     * @throws InvalidProductQuantityException
+     */
     private function productHasPositiveQuantity(OrderItemInterface $product): bool
     {
         if (0 < $product->getQuantity()) {
             return true;
         }
-        /** @var Session $session */
-        $session = $this->requestStack->getSession();
-        $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity'));
 
-        return false;
+        throw new InvalidProductQuantityException();
     }
 
     private function addProductToWishlist(WishlistItemInterface $wishlistProduct): void
@@ -121,13 +115,5 @@ final class AddProductsToCartHandler
 
         $this->orderModifier->addToOrder($cart, $cartItem);
         $this->orderRepository->add($cart);
-
-        /** @var Session $session */
-        $session = $this->requestStack->getSession();
-        $flashBag = $session->getFlashBag();
-
-        if (false === $flashBag->has('success')) {
-            $flashBag->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
-        }
     }
 }

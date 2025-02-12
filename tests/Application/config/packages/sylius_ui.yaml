@@ -1,0 +1,32 @@
+sylius_ui:
+    events:
+        sylius.shop.layout.header.grid:
+            blocks:
+                cart:
+                    template: "@BitBagSyliusWishlistPlugin/_cart.html.twig"
+                    priority: 10
+        sylius.shop.product.index.box:
+            blocks:
+                content:
+                    template: "@BitBagSyliusWishlistPlugin/Product/Box/_content.html.twig"
+                    priority: 10
+        sylius.shop.layout.javascripts:
+            blocks:
+                plugin_scripts:
+                    template: "@BitBagSyliusWishlistPlugin/Shop/_scripts.html.twig"
+                    priority: 20
+        sylius.shop.layout.stylesheets:
+            blocks:
+                plugin_stylesheets:
+                    template: "@BitBagSyliusWishlistPlugin/Shop/_styles.html.twig"
+                    priority: 20
+        sylius.admin.layout.javascripts:
+            blocks:
+                plugin_scripts:
+                    template: "@BitBagSyliusWishlistPlugin/Admin/_scripts.html.twig"
+                    priority: 20
+        sylius.admin.layout.stylesheets:
+            blocks:
+                plugin_stylesheets:
+                    template: "@BitBagSyliusWishlistPlugin/Admin/_styles.html.twig"
+                    priority: 20

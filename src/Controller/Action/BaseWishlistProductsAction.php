@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
+use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
 use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
 use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
@@ -23,7 +25,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -78,6 +82,27 @@ abstract class BaseWishlistProductsAction
     }
 
     abstract protected function handleCommand(FormInterface $form): void;
+
+    protected function getFlashBag(): FlashBagInterface
+    {
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        return $session->getFlashBag();
+    }
+
+    protected function getExceptionMessage(HandlerFailedException $exception): string
+    {
+        $previous = $exception->getPrevious();
+        if ($previous instanceof InsufficientProductStockException) {
+            return $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.insufficient_stock', ['%productName%' => $previous->getProductName()]);
+        }
+        if ($previous instanceof InvalidProductQuantityException) {
+            return $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity');
+        }
+
+        return $exception->getMessage();
+    }
 
     private function createForm(int $wishlistId): ?FormInterface
     {
