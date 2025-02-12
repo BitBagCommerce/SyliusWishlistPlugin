@@ -4,6 +4,7 @@ bitbag_sylius_wishlist_plugin:
         add_to_wishlist: Dodaj do listy życzeń
         remove_from_wishlist: Usuń z listy życzeń
         your_wishlist_is_empty: Twoja lista życzeń jest pusta
+        your_wishlist: Twoja lista życzeń
         your_wishlists: Twoje listy życzeń
         add_another_wishlist: Dodaj kolejną listę życzeń
         added_wishlist_item: Produkt został dodany do listy życzeń.

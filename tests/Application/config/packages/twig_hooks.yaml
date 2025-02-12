@@ -16,10 +16,10 @@ sylius_twig_hooks:
             wishlist_javascripts:
                 template: "@BitBagSyliusWishlistPlugin/Shop/_scripts.html.twig"
 
-# TODO adjust this to render the template propery
         'sylius_shop.base.header.content':
             wishlist_header:
                 template: "@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig"
+                priority: 150
 
 # TODO find the right way to extend product box's content
 #sylius.shop.product.index.box:
