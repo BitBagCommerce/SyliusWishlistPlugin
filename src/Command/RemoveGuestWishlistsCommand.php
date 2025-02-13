@@ -19,8 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class RemoveGuestWishlistsCommand extends Command
 {
-    protected static $defaultName = 'bitbag:wishlist:remove-guest-wishlists';
-
     public function __construct(private WishlistRepositoryInterface $wishlistRepository)
     {
         parent::__construct();
@@ -30,7 +28,7 @@ final class RemoveGuestWishlistsCommand extends Command
     {
         $this
             ->setDescription('Removes guest wishlists')
-            ->setName(self::$defaultName)
+            ->setName('bitbag:wishlist:remove-guest-wishlists')
             ->addOption(
                 'date',
                 'd',
