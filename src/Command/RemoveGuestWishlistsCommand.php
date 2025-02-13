@@ -30,6 +30,7 @@ final class RemoveGuestWishlistsCommand extends Command
     {
         $this
             ->setDescription('Removes guest wishlists')
+            ->setName(self::$defaultName)
             ->addOption(
                 'date',
                 'd',
