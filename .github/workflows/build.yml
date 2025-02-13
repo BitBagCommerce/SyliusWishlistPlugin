@@ -47,14 +47,14 @@ jobs:
 
             -
                 name: Build test application
-                uses: SyliusLabs/BuildTestAppAction@v1.3
+                uses: SyliusLabs/BuildTestAppAction@v2.3
                 with:
-                    sylius-version: "${{ matrix.sylius }}"
-                    symfony-version: "${{ matrix.symfony }}"
-                    mysql-version: "${{ matrix.mysql }}"
-                    node-version: "${{ matrix.node }}"
-                    working-directory: "."
-                    plugin-build: "yes"
+                    sylius_version: "${{ matrix.sylius }}"
+                    symfony_version: "${{ matrix.symfony }}"
+                    php_version: "${{ matrix.php }}"
+                    database_version: "${{ matrix.mysql }}"
+                    node_version: "${{ matrix.node }}"
+                    build_type: "plugin"
 
             -
                 name: Validate composer.json
