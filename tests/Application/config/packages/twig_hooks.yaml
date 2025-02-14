@@ -1,20 +1,20 @@
 sylius_twig_hooks:
     hooks:
         'sylius_admin.base#stylesheets':
-            wishlist_styles:
-                template: "@BitBagSyliusWishlistPlugin/Admin/_styles.html.twig"
+            app_styles:
+                template: "admin/stylesheets.html.twig"
 
         'sylius_admin.base#javascripts':
-            wishlist_javascripts:
-                template: "@BitBagSyliusWishlistPlugin/Admin/_scripts.html.twig"
+            app_javascripts:
+                template: "admin/javascripts.html.twig"
 
         'sylius_shop.base#stylesheets':
-            wishlist_styles:
-                template: "@BitBagSyliusWishlistPlugin/Shop/_styles.html.twig"
+            app_styles:
+                template: "shop/stylesheets.html.twig"
 
         'sylius_shop.base#javascripts':
-            wishlist_javascripts:
-                template: "@BitBagSyliusWishlistPlugin/Shop/_scripts.html.twig"
+            app_javascripts:
+                template: "shop/javascripts.html.twig"
 
         'sylius_shop.base.header.content':
             wishlist_header:
