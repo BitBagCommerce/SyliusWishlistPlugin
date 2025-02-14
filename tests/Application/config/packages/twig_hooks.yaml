@@ -2,19 +2,19 @@ sylius_twig_hooks:
     hooks:
         'sylius_admin.base#stylesheets':
             app_styles:
-                template: "admin/_styles.html.twig"
+                template: "admin/stylesheets.html.twig"
 
         'sylius_admin.base#javascripts':
             app_javascripts:
-                template: "admin/_scripts.html.twig"
+                template: "admin/javascripts.html.twig"
 
         'sylius_shop.base#stylesheets':
             app_styles:
-                template: "shop/_styles.html.twig"
+                template: "shop/stylesheets.html.twig"
 
         'sylius_shop.base#javascripts':
             app_javascripts:
-                template: "shop/_scripts.html.twig"
+                template: "shop/javascripts.html.twig"
 
         'sylius_shop.base.header.content':
             wishlist_header:
