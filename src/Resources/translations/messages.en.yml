@@ -5,6 +5,7 @@ bitbag_sylius_wishlist_plugin:
         add_to_wishlist: Add to wishlist
         remove_from_wishlist: Remove from wishlist
         your_wishlist_is_empty: Your wishlist is empty
+        your_wishlist: Your wishlist
         your_wishlists: Your wishlists
         add_another_wishlist: Add another wishlist
         added_wishlist_item: Product has been added to your wishlist.

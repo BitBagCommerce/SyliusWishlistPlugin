@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
+>
+    <resource class="%bitbag_sylius_wishlist_plugin.model.wishlist.class%" shortName="Wishlist">
+        <operations>
+            <operation
+                name="admin_get_wishlists"
+                class="ApiPlatform\Metadata\GetCollection"
+                uriTemplate="/admin/wishlists"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>shop:wishlist:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+            </operation>
+
+            <operation
+                name="shop_create_wishlist"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/shop/wishlists"
+                messenger="input"
+                input="BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>shop:wishlist:create</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="shop_get_wishlist"
+                class="ApiPlatform\Metadata\Get"
+                uriTemplate="/shop/wishlists/{token}"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>shop:wishlist:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+            </operation>
+
+            <operation
+                name="shop_add_product_to_wishlist"
+                class="ApiPlatform\Metadata\Patch"
+                uriTemplate="/shop/wishlists/{token}/product"
+                messenger="input"
+                input="BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist"
+                security="is_granted('update', object)"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>shop:wishlist:add_product</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="shop_add_product_variant_to_wishlist"
+                class="ApiPlatform\Metadata\Patch"
+                uriTemplate="/shop/wishlists/{token}/variant"
+                messenger="input"
+                input="BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist"
+                security="is_granted('update', object)"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>shop:wishlist:add_product</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="shop_remove_product_from_wishlist"
+                class="ApiPlatform\Metadata\Delete"
+                uriTemplate="/shop/wishlists/{token}/products/{productId}"
+                security="is_granted('delete', object)"
+                controller="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action"
+                write="false"
+            />
+
+            <operation
+                name="shop_remove_product_variant_from_wishlist"
+                class="ApiPlatform\Metadata\Delete"
+                uriTemplate="/shop/wishlists/{token}/productVariants/{productVariantId}"
+                security="is_granted('delete', object)"
+                controller="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action"
+                write="false"
+            />
+
+            <operation
+                name="shop_remove_wishlist"
+                class="ApiPlatform\Metadata\Delete"
+                uriTemplate="/shop/wishlists/{token}"
+                security="is_granted('delete', object)"
+                controller="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action"
+                write="false"
+            />
+        </operations>
+    </resource>
+</resources>

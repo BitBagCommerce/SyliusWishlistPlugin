@@ -14,7 +14,7 @@
         </service>
 
         <service id="bitbag_sylius_wishlist_plugin.event_subscriber.logged_user_wishlist_subscriber" class="BitBag\SyliusWishlistPlugin\EventSubscriber\LoggedUserWishlistSubscriber">
-            <argument type="service" id="sylius.section_resolver.uri_based_section_resolver"/>
+            <argument type="service" id="sylius.section_resolver.uri_based"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist_product"/>
             <tag name="kernel.event_subscriber"/>
