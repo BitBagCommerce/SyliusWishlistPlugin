@@ -23,7 +23,7 @@ use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -83,7 +83,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
-        ParameterBag $headers,
+        HeaderBag $headers,
         Session $session,
         FlashBagInterface $flashBag,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
@@ -133,7 +133,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
-        ParameterBag $headers,
+        HeaderBag $headers,
         Session $session,
         FlashBagInterface $flashBag,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,

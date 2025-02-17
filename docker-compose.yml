@@ -20,6 +20,7 @@ services:
             - ./.docker/nginx.conf:/etc/nginx/nginx.conf:delegated
         ports:
             - "80:80"
+            - "8080:80"
         depends_on:
             - mysql
         networks:
@@ -58,6 +59,18 @@ services:
             - "${MAILHOG_PORT:-8025}:8025"
         networks:
             - sylius
+
+# use if you want to run Behat tests in the app container
+#    chrome:
+#        image: zenika/alpine-chrome:124
+#        shm_size: "2gb"
+#        command: "--enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*'"
+#        volumes:
+#            - .:/srv/sylius:rw,cached
+#        ports:
+#            - "9222:9222"
+#        networks:
+#            - sylius
 
 networks:
     sylius:

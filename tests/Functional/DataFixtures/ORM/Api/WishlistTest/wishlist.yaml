@@ -56,21 +56,21 @@ Sylius\Component\Core\Model\Product:
         enabled: true
 Sylius\Component\Core\Model\ProductTranslation:
     product_translation_en_{1..10}:
-        translatable: '@product_<current()>'
         name: '<word()>'
         description: '<sentence()>'
         shortDescription: '<sentence()>'
         slug: '<slug()><current()>'
         locale: 'en'
+        translatable: '@product_<current()>'
 Sylius\Component\Core\Model\ProductVariant:
     product_variant_{1..10}:
         code: 'product_variant_<current()>_code'
         product: '@product_<current()>'
 Sylius\Component\Product\Model\ProductVariantTranslation:
     product_variant_translation_en_{1..10}:
-        translatable: '@product_variant_<current()>'
         name: '<word()>'
         locale: 'en'
+        translatable: '@product_variant_<current()>'
 BitBag\SyliusWishlistPlugin\Entity\Wishlist:
     olivier_wishlist:
         name: 'Olivier Wishlist'
@@ -94,4 +94,3 @@ BitBag\SyliusWishlistPlugin\Entity\WishlistProduct:
         product: '@product_1'
         variant: '@product_variant_1'
         quantity: '<numberBetween(1, 200)>'
-

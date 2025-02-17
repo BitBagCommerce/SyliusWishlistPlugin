@@ -11,14 +11,15 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusWishlistPlugin\Functional;
 
-use Sylius\Bundle\CoreBundle\Application\Kernel as SyliusKernel;
-use Sylius\Tests\Api\JsonApiTestCase;
-use Sylius\Tests\Api\Utils\AdminUserLoginTrait;
-use Sylius\Tests\Api\Utils\ShopUserLoginTrait;
+use ApiTestCase\JsonApiTestCase;
+use Tests\BitBag\SyliusWishlistPlugin\Functional\Api\AdminUserLoginTrait;
+use Tests\BitBag\SyliusWishlistPlugin\Functional\Api\ShopUserLoginTrait;
 
 abstract class FunctionalTestCase extends JsonApiTestCase
 {
     use ShopUserLoginTrait, AdminUserLoginTrait;
+
+    public const CONTENT_TYPE_HEADER = ['CONTENT_TYPE' => 'application/ld+json', 'HTTP_ACCEPT' => 'application/ld+json'];
 
     public const PATCH_TYPE = 'application/merge-patch+json';
 
@@ -59,10 +60,5 @@ abstract class FunctionalTestCase extends JsonApiTestCase
         $header['HTTP_' . $authorizationHeader] = 'Bearer ' . $loginData;
 
         return array_merge($header, self::CONTENT_TYPE_HEADER);
-    }
-
-    protected function getSyliusVersion(): string
-    {
-        return SyliusKernel::MAJOR_VERSION . '.' . SyliusKernel::MINOR_VERSION;
     }
 }
