@@ -12,11 +12,16 @@ declare(strict_types=1);
 namespace BitBag\SyliusWishlistPlugin\Command;
 
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'bitbag:wishlist:remove-guest-wishlists',
+    description: 'Removes guest wishlists',
+)]
 final class RemoveGuestWishlistsCommand extends Command
 {
     public function __construct(private WishlistRepositoryInterface $wishlistRepository)
@@ -27,8 +32,6 @@ final class RemoveGuestWishlistsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Removes guest wishlists')
-            ->setName('bitbag:wishlist:remove-guest-wishlists')
             ->addOption(
                 'date',
                 'd',

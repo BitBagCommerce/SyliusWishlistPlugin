@@ -20,6 +20,7 @@ services:
             - ./.docker/nginx.conf:/etc/nginx/nginx.conf:delegated
         ports:
             - "80:80"
+            - "8080:80"
         depends_on:
             - mysql
         networks:
