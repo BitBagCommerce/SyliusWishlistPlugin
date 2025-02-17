@@ -34,42 +34,7 @@
 
     <div class="ui hidden divider"></div>
 
-    {{ form_start(form, { attr: { class: 'bb-wishlist ui form', id: "wishlist_form" } }) }}
-
-    <div class="ui stackable" id="wishlist">
-
-        <div class="bb-wishlist-item">
-            <div class="bb-wishlist-item-select">
-                <input type="checkbox" id="toggle-checkboxes" class="bb-wishlist-item-select-checkbox">
-            </div>
-            <div class="bb-wishlist-item-image">
-                <span>{{ 'sylius.ui.item'|trans }}</span>
-            </div>
-            <div class="bb-wishlist-item-price">
-                <span>{{ 'sylius.ui.unit_price'|trans }}</span>
-            </div>
-            <div class="bb-wishlist-item-quantity">
-                <span>{{ 'sylius.ui.qty'|trans }}</span>
-            </div>
-            <div class="bb-wishlist-item-actions">
-                <span>{{ 'sylius.ui.actions'|trans }}</span>
-            </div>
-        </div>
-
-        {% for itemForm in form.items %}
-            {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_item.html.twig" %}
-            <input type="hidden" name="wishlist_collection[items][{{ loop.index - 1 }}][variant]" value="{{ itemForm.vars.data.wishlistProduct.variant.id }}"/>
-        {% endfor %}
-
-        <div class="bb-wishlist-actions">
-            {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_collectiveActions.html.twig" %}
-            {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_globalActions.html.twig" %}
-        </div>
-        <input type="hidden" data-bb-csrf="{{ csrf_token('some-name') }}"/>
-    </div>
-
-    {{ form_row(form._token) }}
-    {{ form_end(form, {'render_rest': false} ) }}
+    {% hook 'form' with { wishlist, form } %}
 {% else %}
     <div class="ui one column stackable grid">
         <div class="column">

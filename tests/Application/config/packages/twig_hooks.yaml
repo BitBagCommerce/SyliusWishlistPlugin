@@ -29,6 +29,11 @@ sylius_twig_hooks:
                 template: "@BitBagSyliusWishlistPlugin/WishlistDetails/index/content/body.html.twig"
                 priority: 90
 
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form':
+            form:
+                template: "@BitBagSyliusWishlistPlugin/WishlistDetails/index/content/body/form.html.twig"
+                priority: 0
+
         'sylius_shop.base.header.content':
             wishlist_header:
                 template: "@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig"
