@@ -1,13 +1,15 @@
 {% set wishlist = hookable_metadata.context.wishlist %}
 {% set form = hookable_metadata.context.form %}
 
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
+
 {{ form_start(form, { attr: { class: 'bb-wishlist ui form', id: "wishlist_form" } }) }}
 
 <div class="ui stackable" id="wishlist">
 
     <div class="bb-wishlist-item">
         <div class="bb-wishlist-item-select">
-            <input type="checkbox" id="toggle-checkboxes" class="bb-wishlist-item-select-checkbox">
+            <input type="checkbox" id="toggle-checkboxes" class="form-check-input">
         </div>
         <div class="bb-wishlist-item-image">
             <span>{{ 'sylius.ui.item'|trans }}</span>
