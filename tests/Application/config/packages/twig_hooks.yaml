@@ -16,6 +16,19 @@ sylius_twig_hooks:
             app_javascripts:
                 template: "shop/javascripts.html.twig"
 
+        'bitbag_sylius_wishlist_plugin.wishlist.index':
+            content:
+                template: "@BitBagSyliusWishlistPlugin/WishlistDetails/index/content.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content':
+            header:
+                template: "@BitBagSyliusWishlistPlugin/WishlistDetails/index/content/header.html.twig"
+                priority: 100
+            body:
+                template: "@BitBagSyliusWishlistPlugin/WishlistDetails/index/content/body.html.twig"
+                priority: 90
+
         'sylius_shop.base.header.content':
             wishlist_header:
                 template: "@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig"

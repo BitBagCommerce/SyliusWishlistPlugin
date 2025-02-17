@@ -12,7 +12,11 @@
     </div>
 
     <div class="bb-wishlist-item-image">
-        {% include '@SyliusShop/Product/_mainImage.html.twig' %}
+        {{ component('sylius_shop:main_image', {
+            product: variant.hasImages ? variant : product,
+            class: "w-100 h-100 object-fit-cover",
+            filter: 'sylius_shop_product_small_thumbnail'
+        }) }}
     </div>
 
     <div class="bb-wishlist-item-name">
@@ -53,7 +57,4 @@
     <div class="bb-wishlist-item-actions">
         {% include '@BitBagSyliusWishlistPlugin/Common/_removeFromWishlist.html.twig' %}
     </div>
-
-    {{ sonata_block_render_event('sylius.shop.product.index.after_box', {'product': product}) }}
-
 </div>

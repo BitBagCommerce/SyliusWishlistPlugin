@@ -1,10 +1,10 @@
 {% import "@SyliusCore/Common/Macro/money.html.twig" as money %}
 
-{% set pricing = sylius_product_variant_prices(product, sylius.channel) %}
+{% set pricings = sylius_product_variants_map(product, []) %}
 
 {% set prices %}
     [
-    {%- for price in pricing -%}
+    {%- for price in pricings -%}
         {
         {%- for option, value in price -%}
             "{{- option -}}":
@@ -24,5 +24,5 @@
 {% endset %}
 
 <b data-bb-toggle="wishlist-variant-price" data-bb-target="#{{ itemId }}" data-bb-pricing='{{ prices }}'>
-    {{ money.calculatePrice(variant) }}
+{#    {{ money.calculatePrice(variant) }}#}
 </b>

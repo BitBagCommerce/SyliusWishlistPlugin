@@ -2,95 +2,10 @@
 
 {% import '@SyliusShop/shared/messages.html.twig' as messages %}
 
+{% set prefixes = ['bitbag_sylius_wishlist_plugin.wishlist'] %}
+
 {% block title %}{{ 'bitbag_sylius_wishlist_plugin.ui.your_wishlist'|trans }} | {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h1 class="ui header">
-        <i class="circular heart icon"></i>
-        <div class="content bb-wishlist-header">
-            {{ wishlist.name }}
-        </div>
-    </h1>
-    {% if sylius.channel is not null %}
-        {% set wishlists = findAllByAnonymousAndChannel(sylius.channel) %}
-    {% else %}
-        {% set wishlists = findAllByAnonymous() %}
-    {% endif %}
-    {% if wishlists|length > 1 %}
-    {% else %}
-    <div class="middle aligned column">
-        <button id="create_new_wishlist_button" class="ui right floated primary  button"
-                data-bb-wishlist-add="add-another-wishlist"
-                data-bb-wishlist-add-url="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_create_new_wishlist') }}"
-                data-bb-wishlist-add-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_title'|trans }}"
-                data-bb-wishlist-add-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_perform'|trans }}"
-                data-bb-wishlist-add-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_cancel'|trans }}"
-                data-bb-wishlist-add-error="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_add_error'|trans }}"
-        >
-            {{ 'bitbag_sylius_wishlist_plugin.ui.add_another_wishlist'|trans }}
-        </button>
-        <input type="hidden" data-bb-csrf="{{ csrf_token('some-name') }}"/>
-    </div>
-    {% endif %}
-    <div class="ui hidden divider"></div>
-
-    {% if wishlist.wishlistProducts.count > 0 %}
-        <div class="middle aligned column">
-            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist">
-                <i class="icon remove"></i>{{ 'bitbag_sylius_wishlist_plugin.ui.clear_wishlist'|trans }}
-            </a>
-        </div>
-
-        <div class="ui hidden divider"></div>
-
-        {{ form_start(form, { attr: { class: 'bb-wishlist ui form', id: "wishlist_form" } }) }}
-
-        <div class="ui stackable" id="wishlist">
-
-            <div class="bb-wishlist-item">
-                <div class="bb-wishlist-item-select">
-                    <input type="checkbox" id="toggle-checkboxes" class="bb-wishlist-item-select-checkbox">
-                </div>
-                <div class="bb-wishlist-item-image">
-                    <span>{{ 'sylius.ui.item'|trans }}</span>
-                </div>
-                <div class="bb-wishlist-item-price">
-                    <span>{{ 'sylius.ui.unit_price'|trans }}</span>
-                </div>
-                <div class="bb-wishlist-item-quantity">
-                    <span>{{ 'sylius.ui.qty'|trans }}</span>
-                </div>
-                <div class="bb-wishlist-item-actions">
-                    <span>{{ 'sylius.ui.actions'|trans }}</span>
-                </div>
-            </div>
-
-            {% for itemForm in form.items %}
-                {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_item.html.twig" %}
-                <input type="hidden" name="wishlist_collection[items][{{ loop.index - 1 }}][variant]" value="{{ itemForm.vars.data.wishlistProduct.variant.id }}"/>
-            {% endfor %}
-
-            <div class="bb-wishlist-actions">
-                {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_collectiveActions.html.twig" %}
-                {% include "@BitBagSyliusWishlistPlugin/WishlistDetails/_globalActions.html.twig" %}
-            </div>
-            <input type="hidden" data-bb-csrf="{{ csrf_token('some-name') }}"/>
-        </div>
-
-        {{ form_row(form._token) }}
-        {{ form_end(form, {'render_rest': false} ) }}
-    {% else %}
-        <div class="ui one column stackable grid">
-            <div class="column">
-                {{ messages.info('bitbag_sylius_wishlist_plugin.ui.your_wishlist_is_empty'|trans) }}
-            </div>
-            <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_import_from_csv') }}">
-                <button type="button" class="ui secondary button bb-wishlist-actions-import-button" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
-                    <i class="cart icon"></i>
-                    {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}
-                </button>
-            </a>
-        </div>
-    {% endif %}
-
+    {% hook 'index' with { _prefixes: prefixes, wishlist, form } %}
 {% endblock %}
