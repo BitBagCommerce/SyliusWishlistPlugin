@@ -1,0 +1,13 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+{% set form = hookable_metadata.context.form %}
+
+{% for item in form.items %}
+    {% set variant = item.vars.value.wishlistProduct.variant %}
+    {% set product = variant.product %}
+    {% set itemId = "wishlist_item_#{ variant.id }_#{ product.id }" %}
+
+    <div id="{{ itemId }}" class="bb-wishlist-item">
+        {% hook 'body' with { item, product, variant } %}
+    </div>
+    <input type="hidden" name="wishlist_collection[items][{{ loop.index - 1 }}][variant]" value="{{ item.vars.data.wishlistProduct.variant.id }}"/>
+{% endfor %}

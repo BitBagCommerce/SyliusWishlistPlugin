@@ -1,0 +1,8 @@
+{% set product = hookable_metadata.context.product %}
+{% set productUrl = path('sylius_shop_product_show', { slug: product.slug, _locale: product.translation.locale }) %}
+
+<div class="bb-wishlist-item-name">
+    <a href="{{ productUrl }}" {{ sylius_test_html_attribute('wishlist-item-name') }}>
+        {{ product.name }}
+    </a>
+</div>

@@ -1,0 +1,12 @@
+{% set item = hookable_metadata.context.item %}
+{% set product = hookable_metadata.context.product %}
+
+<div class="bb-wishlist-item-quantity" {{ sylius_test_html_attribute('wishlist-item-quantity') }}>
+    {{ form_widget(item.cartItem.cartItem.quantity, {
+        'attr': {
+            'min': 0,
+            'data-product-name': product.name,
+            'value': item.cartItem.cartItem.quantity.vars.value is same as("0") ? 1 : item.cartItem.cartItem.quantity.vars.value
+        }
+    }) }}
+</div>
