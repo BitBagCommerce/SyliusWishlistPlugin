@@ -1,4 +1,4 @@
-{% import "@SyliusCore/Common/Macro/money.html.twig" as money %}
+{% import "@SyliusShop/shared/macro/money.html.twig" as money %}
 
 {% set variant = itemForm.vars.value.wishlistProduct.variant %}
 {% set product = variant.product %}
@@ -40,10 +40,9 @@
 
     <div class="bb-wishlist-item-price">
         {% if not product.variants.empty() %}
-            {{ component('sylius_shop:product:price', {
-                'variant': variant,
-                'template': '@BitBagSyliusWishlistPlugin/Common/price.html.twig'
-            }) }}
+            <b>
+                {{ money.calculatePrice(variant) }}
+            </b>
         {% endif %}
     </div>
 
