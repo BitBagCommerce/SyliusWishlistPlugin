@@ -3,10 +3,10 @@
 {% set product = hookable_metadata.context.product %}
 {% set variant = hookable_metadata.context.variant %}
 
-<div class="bb-wishlist-item-price">
+<div class="bb-wishlist-item-price text-black-50">
     {% if not product.variants.empty() %}
-        <b>
+        <span class="fw-normal">
             {{ money.calculatePrice(variant) }}
-        </b>
+        </span>
     {% endif %}
 </div>

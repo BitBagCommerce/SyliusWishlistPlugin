@@ -1,7 +1,7 @@
 {% set product = hookable_metadata.context.product %}
 {% set variant = hookable_metadata.context.variant %}
 
-<div class="bb-wishlist-item-image">
+<div class="bb-wishlist-item-image overflow-auto rounded-3">
     {{ component('sylius_shop:main_image', {
         product: variant.hasImages ? variant : product,
         class: "w-100 h-100 object-fit-cover",
