@@ -2,7 +2,7 @@ sylius_twig_hooks:
     hooks:
         'sylius_shop.base.header.content':
             wishlist_header:
-                template: "@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig"
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist_header.html.twig"
                 priority: 150
 
 # TODO find the right way to extend product box's content

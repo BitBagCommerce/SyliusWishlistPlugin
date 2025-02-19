@@ -60,7 +60,7 @@ final class ImportWishlistFromCsvAction
         }
 
         return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/importWishlist.html.twig', [
+            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/shop/wishlist/import_wishlist.html.twig', [
                 'form' => $form->createView(),
             ]),
         );
