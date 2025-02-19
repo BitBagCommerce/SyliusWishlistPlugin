@@ -38,12 +38,6 @@
 
         &-image {
             grid-area: image;
-            width: 75%;
-            height: 75%;
-
-            img {
-                margin-bottom: 24px;
-            }
         }
 
         &-name {
@@ -75,12 +69,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        > * {
-            span {
-                color: $lightgray;
-            }
         }
     }
 }

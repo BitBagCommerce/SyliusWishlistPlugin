@@ -1,0 +1,4 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+{% set form = hookable_metadata.context.form %}
+
+{% hook 'items' with { wishlist, form } %}

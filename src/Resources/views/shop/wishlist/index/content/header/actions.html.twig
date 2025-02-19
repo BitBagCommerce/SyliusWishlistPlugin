@@ -1,0 +1,5 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+<div class="d-flex justify-content-between my-3">
+    {% hook 'actions' with { wishlist } %}
+</div>

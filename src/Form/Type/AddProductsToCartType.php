@@ -54,6 +54,7 @@ final class AddProductsToCartType extends AbstractType
                 ])
                 ->add('selected', CheckboxType::class, [
                     'required' => false,
+                    'label' => false,
                 ]);
         });
     }

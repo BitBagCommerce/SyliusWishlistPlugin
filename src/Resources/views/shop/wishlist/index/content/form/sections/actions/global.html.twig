@@ -1,0 +1,4 @@
+{% set form = hookable_metadata.context.form %}
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+{% hook 'global' with { form, wishlist } %}

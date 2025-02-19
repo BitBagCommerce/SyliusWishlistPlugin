@@ -52,7 +52,7 @@ final class DomPdfWishlistExporterSpec extends ObjectBehavior
 
         $html = '';
 
-        $twigEnvironment->render('@BitBagSyliusWishlistPlugin/_wishlist_pdf.html.twig', [
+        $twigEnvironment->render('@BitBagSyliusWishlistPlugin/shop/wishlist/wishlist_pdf.html.twig', [
             'title' => 'My wishlist products',
             'date' => date('d.m.Y'),
             'products' => $data,

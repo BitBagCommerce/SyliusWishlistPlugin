@@ -1,3 +1,4 @@
+//TODO adjust this to work with the new wishlist view
 export class WishlistVariantPrice {
     constructor(node) {
         if (node === null || !node.nodeType) throw new Error("The first parameter must be a NodeElement");
