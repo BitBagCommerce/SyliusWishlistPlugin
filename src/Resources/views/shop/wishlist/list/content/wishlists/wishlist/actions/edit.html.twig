@@ -1,0 +1,14 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+<button
+    id="wishlist-edit-button-{{ wishlist.name }}" class="btn btn-light"
+    {{ sylius_test_html_attribute('wishlist-wishlist-edit') }}
+    data-wishlist-name="{{ wishlist.name }}"
+    data-wishlist-edit-id="{{ wishlist.id }}"
+    data-wishlist-edit-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_title'|trans }}"
+    data-wishlist-edit-error="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_error'|trans }}"
+    data-wishlist-edit-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_perform'|trans }}"
+    data-wishlist-edit-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_edit_cancel'|trans }}"
+>
+    {{ ux_icon('material-symbols:edit') }}
+</button>

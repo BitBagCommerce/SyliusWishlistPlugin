@@ -1,0 +1,5 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+<div class="middle aligned column bb-wishlist-list-wrapper-content-buttons">
+    {% hook 'actions' with { wishlist } %}
+</div>

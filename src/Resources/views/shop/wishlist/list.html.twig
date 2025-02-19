@@ -1,0 +1,9 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% set prefixes = ['bitbag_sylius_wishlist_plugin.wishlist'] %}
+
+{% block title %}{{ 'bitbag_sylius_wishlist_plugin.ui.your_wishlists'|trans }} | {{ parent() }}{% endblock %}
+
+{% block content %}
+    {% hook 'list' with { _prefixes: prefixes, wishlists } %}
+{% endblock %}
