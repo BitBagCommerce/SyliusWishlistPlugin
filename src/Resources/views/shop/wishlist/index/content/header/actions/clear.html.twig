@@ -1,9 +1,12 @@
 {% set wishlist = hookable_metadata.context.wishlist %}
 
 {% if wishlist.wishlistProducts.count > 0 %}
-    <div class="middle aligned column">
+    <div>
         <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_clean', {'wishlistId': wishlist.id}) }}" class="bitbag-clean-wishlist btn btn-light">
-            <i class="icon remove"></i>{{ 'bitbag_sylius_wishlist_plugin.ui.clear_wishlist'|trans }}
+            {{ ux_icon('mdi:remove') }}
+            <span>
+                {{ 'bitbag_sylius_wishlist_plugin.ui.clear_wishlist'|trans }}
+            </span>
         </a>
     </div>
 {% endif %}
