@@ -1,28 +1,9 @@
-.bb-colective-actions {
-    &.disabled {
-        opacity: .45;
-        pointer-events: none;
-    }
-
-    &.enabled {  
-    }
-
-    .wishlist-dropdown-menu {  
-        &__item {
-            .wishlist-item--button {
-                text-align: left;
-                background: #ffffff !important;
-                color: rgba(0, 0, 0, 0.95) !important;
-                width: 100%;
-            }
-    
-            .wishlist-item--button:hover {
-                background: #E0E1E2 !important;
-            }
-        }
-    
-        &__item:hover {
-            background: #ffffff !important;
+.bb-dropdown {
+    .dropdown-item {
+        &:hover,
+        &:focus,
+        &:active{
+            background-color: transparent;
         }
     }
 }

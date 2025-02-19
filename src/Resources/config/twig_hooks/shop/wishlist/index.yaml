@@ -43,11 +43,36 @@ sylius_twig_hooks:
                 priority: 0
 
         'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.actions':
-            collective_actions:
-                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/collective_actions.html.twig"
+            bulk:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk.html.twig"
                 priority: 100
-            global_actions:
-                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/global_actions.html.twig"
+            global:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/global.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.actions.global':
+            import:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/global/import.html.twig"
+                priority: 100
+            add_to_cart:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/global/add_to_cart.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.actions.bulk':
+            add_to_cart:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/add_to_cart.html.twig"
+                priority: 400
+            remove:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/remove.html.twig"
+                priority: 300
+            copy:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/copy.html.twig"
+                priority: 200
+            download_csv:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/download_csv.html.twig"
+                priority: 100
+            download_pdf:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/download_pdf.html.twig"
                 priority: 0
 
         'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.items':

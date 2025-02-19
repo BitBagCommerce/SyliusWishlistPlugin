@@ -6,7 +6,7 @@ export class WishlistMainCheckboxUpdater {
         this.defaultConfig = {
             mainCheckboxId: '#toggle-checkboxes',
             checkboxesData: '[data-bb-checkboxes] input',
-            bulkActionsBtnClass: '.bb-colective-actions',
+            bulkActionsBtnClass: '.bb-collective-actions',
         };
         this.finalConfig = {...this.defaultConfig, ...config};
         this.mainCheckbox = document.querySelector(this.finalConfig.mainCheckboxId)
