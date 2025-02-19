@@ -13,6 +13,22 @@ sylius_twig_hooks:
                 template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form.html.twig"
                 priority: 0
 
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.header':
+            title:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header/title.html.twig"
+                priority: 100
+            actions:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header/actions.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.header.actions':
+            clear:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header/actions/clear.html.twig"
+                priority: 100
+            new:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header/actions/new.html.twig"
+                priority: 0
+
         'bitbag_sylius_wishlist_plugin.wishlist.index.content.form':
             form:
                 template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections.html.twig"
