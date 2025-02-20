@@ -1,0 +1,15 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+{% set product = hookable_metadata.context.product %}
+{% set variant = hookable_metadata.context.variant %}
+
+<div class="bb-wishlist-item-actions">
+    <a
+        href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_remove_product_variant', { wishlistId: wishlist.id, variantId: variant.id }) }}"
+        class="btn btn-icon btn-transparent"
+        data-product-name="{{ product.name }}"
+        data-tooltip="{{ 'bitbag_sylius_wishlist_plugin.ui.remove_from_wishlist'|trans }}"
+        {{ sylius_test_html_attribute('wishlist-remove-item') }}
+    >
+        {{ ux_icon('mdi:remove') }}
+    </a>
+</div>

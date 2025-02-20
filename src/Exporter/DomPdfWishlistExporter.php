@@ -26,7 +26,7 @@ final class DomPdfWishlistExporter implements DomPdfWishlistExporterInterface
     public function export(Collection $data): void
     {
         $dompdf = $this->domPdfFactory->createNewWithDefaultOptions();
-        $html = $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/_wishlist_pdf.html.twig', [
+        $html = $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/shop/wishlist/wishlist_pdf.html.twig', [
             'title' => 'My wishlist products',
             'date' => date('d.m.Y'),
             'products' => $data,

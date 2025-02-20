@@ -1,0 +1,8 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+<div class="dropdown-item">
+    <button type="submit" class="btn btn-light w-100" {{ sylius_test_html_attribute('wishlist-export-to-csv') }} formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlsit_export_selected_products_to_csv', { wishlistId: wishlist.id }) }}">
+        {{ ux_icon('material-symbols:download') }}
+        {{ 'bitbag_sylius_wishlist_plugin.ui.export_to_csv'|trans }}
+    </button>
+</div>

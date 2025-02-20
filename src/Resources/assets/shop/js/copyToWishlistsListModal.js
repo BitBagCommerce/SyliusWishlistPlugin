@@ -86,7 +86,7 @@ export class CreateCopyToWishlistsListModal {
     _getWishlists() {
         const select = document.createElement('select')
         select.name = 'wishlist'
-        select.classList.add('ui', 'selection', 'dropdown')
+        select.classList.add('form-select')
         select.insertAdjacentHTML("beforeend" ,`<option selected disabled>${this.finalConfig.wishlistSelectionPlaceholder}</option>`)
 
         this.wishlistTargets.forEach(wishlist => {

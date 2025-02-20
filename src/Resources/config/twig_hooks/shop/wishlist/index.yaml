@@ -1,0 +1,124 @@
+sylius_twig_hooks:
+    hooks:
+        'bitbag_sylius_wishlist_plugin.wishlist.index':
+            content:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content':
+            header:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header.html.twig"
+                priority: 100
+            form:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.header':
+            title:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header/title.html.twig"
+                priority: 100
+            actions:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header/actions.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.header.actions':
+            clear:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header/actions/clear.html.twig"
+                priority: 100
+            new:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/header/actions/new.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form':
+            form:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections':
+            items:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items.html.twig"
+                priority: 100
+            actions:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.actions':
+            bulk:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk.html.twig"
+                priority: 100
+            global:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/global.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.actions.global':
+            import:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/global/import.html.twig"
+                priority: 100
+            add_to_cart:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/global/add_to_cart.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.actions.bulk':
+            add_to_cart:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/add_to_cart.html.twig"
+                priority: 400
+            remove:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/remove.html.twig"
+                priority: 300
+            copy:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/copy.html.twig"
+                priority: 200
+            download_csv:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/download_csv.html.twig"
+                priority: 100
+            download_pdf:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/actions/bulk/download_pdf.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.items':
+            head:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/head.html.twig"
+                priority: 100
+            body:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/body.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.items.head':
+            select_all:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/head/select_all.html.twig"
+                priority: 400
+            image:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/head/image.html.twig"
+                priority: 300
+            price:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/head/price.html.twig"
+                priority: 200
+            quantity:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/head/quantity.html.twig"
+                priority: 100
+            actions:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/head/actions.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.index.content.form.sections.items.body':
+            checkbox:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/body/checkbox.html.twig"
+                priority: 600
+            image:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/body/image.html.twig"
+                priority: 500
+            name:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/body/name.html.twig"
+                priority: 400
+            variant:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/body/variant.html.twig"
+                priority: 300
+            price:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/body/price.html.twig"
+                priority: 200
+            quantity:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/body/quantity.html.twig"
+                priority: 100
+            remove:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/index/content/form/sections/items/body/remove.html.twig"
+                priority: 0

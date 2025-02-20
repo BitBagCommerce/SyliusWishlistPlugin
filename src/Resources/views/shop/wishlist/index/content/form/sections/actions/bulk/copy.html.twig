@@ -1,0 +1,28 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+{% if app.user %}
+    {% set wishlists = findAllByShopUserAndToken(app.user) %}
+{% else %}
+    {% set wishlists = findAllByAnonymous() %}
+{% endif %}
+
+{% if wishlists|length > 1 %}
+    <div class="dropdown-item">
+        <button type="submit" class="btn btn-light w-100" {{ sylius_test_html_attribute('wishlist-copy-to-wishlist') }}
+            data-bb-wl-list-modal-target="choose-wishlist-button"
+            data-bb-wl-list-modal-title="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_copy_title'|trans }}"
+            data-bb-wl-list-modal-perform="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_copy_perform'|trans }}"
+            data-bb-wl-list-modal-cancel="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_copy_cancel'|trans }}"
+            data-bb-wl-list-modal-placeholder="{{ 'bitbag_sylius_wishlist_plugin.ui.wishlist_modal_placeholder'|trans }}"
+        >
+            {{ ux_icon('mingcute:copy-line') }}
+            {{ 'bitbag_sylius_wishlist_plugin.ui.copy_to_wishlist'|trans }}
+        </button>
+    </div>
+{% endif %}
+<input type="hidden" data-bb-current-wishlist-id="{{ wishlist.id }}">
+{% for wishlistTarget in wishlists  %}
+    {% if wishlist.id != wishlistTarget.id %}
+        <input type="hidden" data-bb-wishlists="{{ wishlistTarget.name }}" data-bb-wishlists-id="{{ wishlistTarget.id }}">
+    {% endif %}
+{% endfor %}

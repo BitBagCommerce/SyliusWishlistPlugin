@@ -1,0 +1,5 @@
+{% set form = hookable_metadata.context.form %}
+
+<div class="container mt-4 mb-5">
+    {% hook 'content' with { form } %}
+</div>

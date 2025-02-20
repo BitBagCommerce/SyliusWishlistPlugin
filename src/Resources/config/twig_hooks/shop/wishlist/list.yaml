@@ -1,0 +1,46 @@
+sylius_twig_hooks:
+    hooks:
+        'bitbag_sylius_wishlist_plugin.wishlist.list':
+            content:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.list.content':
+            header:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/header.html.twig"
+                priority: 100
+            wishlists:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/wishlists.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.list.content.header':
+            title:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/header/title.html.twig"
+                priority: 100
+            new:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/header/new.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.list.content.wishlists':
+            wishlist:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/wishlists/wishlist.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.list.content.wishlists.wishlist':
+            name:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/wishlists/wishlist/name.html.twig"
+                priority: 100
+            actions:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/wishlists/wishlist/actions.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.list.content.wishlists.wishlist.actions':
+            save:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/wishlists/wishlist/actions/save.html.twig"
+                priority: 200
+            remove:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/wishlists/wishlist/actions/remove.html.twig"
+                priority: 100
+            edit:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/list/content/wishlists/wishlist/actions/edit.html.twig"
+                priority: 0

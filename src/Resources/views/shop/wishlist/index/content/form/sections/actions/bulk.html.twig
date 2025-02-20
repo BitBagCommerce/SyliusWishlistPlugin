@@ -1,0 +1,11 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+<div class="dropdown bb-dropdown">
+    <button type="button" class="btn btn-light bb-collective-actions disabled" data-bs-toggle="dropdown">
+        {{ ux_icon('mingcute:down-fill') }}
+        <span class="text">{{ 'sylius.ui.bulk_actions'|trans }}</span>
+    </button>
+    <div class="dropdown-menu">
+        {% hook 'bulk' with { wishlist } %}
+    </div>
+</div>

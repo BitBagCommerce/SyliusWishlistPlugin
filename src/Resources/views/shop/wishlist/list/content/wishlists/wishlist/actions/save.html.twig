@@ -1,0 +1,11 @@
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+{% if wishlist.shopuser is null and app.user is not null %}
+    <a
+        href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_wishlist_to_user', {'id': wishlist.id}) }}"
+        id="wishlist-add-to-user-button-{{ wishlist.name }}" class="btn btn-light"
+        data-wishlist-name="{{ wishlist.name }}"
+    >
+        {{ ux_icon('material-symbols:save') }}
+    </a>
+{% endif %}

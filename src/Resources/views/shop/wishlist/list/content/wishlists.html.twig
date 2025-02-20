@@ -1,0 +1,6 @@
+{% set wishlists = hookable_metadata.context.wishlists %}
+
+<div class="bb-wishlist-list">
+    {% hook 'wishlists' with { wishlists } %}
+</div>
+<input type="hidden" name="_csrf_shop_security_token" value="">

@@ -1,0 +1,14 @@
+{% set form = hookable_metadata.context.form %}
+{% set wishlist = hookable_metadata.context.wishlist %}
+
+<button
+    id="{{ form.addAll.vars.id }}"
+    name="{{ form.addAll.vars.full_name }}"
+    class="btn btn-light"
+    data-bb-toggle="wishlist-add-all"
+    {{ sylius_test_html_attribute('wishlist-add-all-to-cart') }}
+    formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_products', { wishlistId: wishlist.id }) }}"
+>
+    {{ ux_icon('mdi:heart') }}
+    {{ form.addAll.vars.label|trans }}
+</button>

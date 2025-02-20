@@ -29,8 +29,8 @@ return [
 ```yaml
 # config/packages/_sylius.yaml
 imports:
-  ...
-  - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
+    ...
+    - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
 ```
 
 4. (optional) Import routing in your `config/routes.yaml` file:
@@ -45,10 +45,10 @@ bitbag_sylius_wishlist_plugin:
 
 ```yaml
 sylius_order:
-  resources:
-    order_item:
-      classes:
-        controller: BitBag\SyliusWishlistPlugin\Controller\OrderItemController
+    resources:
+        order_item:
+            classes:
+                controller: BitBag\SyliusWishlistPlugin\Controller\OrderItemController
 
 ```
 
@@ -59,11 +59,6 @@ sylius_order:
 ```yaml
 sylius_ui:
     events:
-        sylius.shop.layout.header.grid:
-            blocks:
-                cart:
-                    template: "@BitBagSyliusWishlistPlugin/_cart.html.twig"
-                    priority: 10
         sylius.shop.product.index.box:
             blocks:
                 content:

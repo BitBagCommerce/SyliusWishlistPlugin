@@ -1,0 +1,9 @@
+{% set wishlists = hookable_metadata.context.wishlists %}
+
+{% for wishlist in wishlists %}
+    <article class="ui header bb-wishlist-list-wrapper">
+        <div class="bb-wishlist-list-wrapper-content py-3">
+            {% hook 'wishlist' with { wishlist } %}
+        </div>
+    </article>
+{% endfor %}

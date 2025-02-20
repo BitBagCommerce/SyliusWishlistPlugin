@@ -1,0 +1,12 @@
+{% import "@SyliusShop/shared/macro/money.html.twig" as money %}
+
+{% set product = hookable_metadata.context.product %}
+{% set variant = hookable_metadata.context.variant %}
+
+<div class="bb-wishlist-item-price text-black-50">
+    {% if not product.variants.empty() %}
+        <span class="fw-normal">
+            {{ money.calculatePrice(variant) }}
+        </span>
+    {% endif %}
+</div>
