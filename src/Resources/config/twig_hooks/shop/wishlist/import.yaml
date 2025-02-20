@@ -1,0 +1,15 @@
+sylius_twig_hooks:
+    hooks:
+        'bitbag_sylius_wishlist_plugin.wishlist.import':
+            content:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/import/content.html.twig"
+                priority: 0
+
+        'bitbag_sylius_wishlist_plugin.wishlist.import.content':
+            header:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/import/content/header.html.twig"
+                priority: 100
+            form:
+                template: "@BitBagSyliusWishlistPlugin/shop/wishlist/import/content/form.html.twig"
+                priority: 0
+
