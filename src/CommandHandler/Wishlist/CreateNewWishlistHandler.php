@@ -55,10 +55,13 @@ final class CreateNewWishlistHandler
             /** @var WishlistInterface $wishlist */
             $wishlist = $this->wishlistFactory->createNew();
             $wishlists = $this->wishlistRepository->findAllByAnonymous($wishlistCookieToken);
-        }
 
-        if ('' !== $wishlistCookieToken) {
-            $wishlist->setToken($wishlistCookieToken);
+            if ('' !== $wishlistCookieToken) {
+                // Set token only for guest users, if not allow unique tokens to be generated.
+                // This allows us to use the token in the api's and share whishlists created in the web with those
+                // created with api's.
+                $wishlist->setToken($wishlistCookieToken);
+            }
         }
 
         if (null !== $createNewWishlist->getChannelCode()) {
