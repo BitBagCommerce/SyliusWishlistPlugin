@@ -53,7 +53,7 @@
                 </attribute>
                 <attribute name="openapi_context">
                     <attribute name="summary">Adds product to wishlist</attribute>
-                    <attribute>
+                    <attribute name="parameters">
                         <attribute name="name">productId</attribute>
                         <attribute name="in">body</attribute>
                         <attribute name="required">true</attribute>
