@@ -1,5 +1,5 @@
 {
-    "name": "softylines/wishlist-plugin",
+    "name": "bitbag/wishlist-plugin",
     "type": "sylius-plugin",
     "description": "Wishlist plugin for Sylius.",
     "license": "MIT",
