@@ -1,15 +1,14 @@
 {% extends '@SyliusShop/shared/layout/base.html.twig' %}
 
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
+
 {% block content %}
-
-    <h1 class="ui header">
-        <i class="circular file icon"></i>
-        <div class="content">
+    <div class="container mt-4 mb-5">
+        <h1>
             {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}
-        </div>
-    </h1>
+        </h1>
 
-    {{ form_start(form, { attr: { class: 'import-wishlist ui form', id: "wishlist_import_form" } }) }}
+        {{ form_start(form, { attr: { class: 'import-wishlist ui form', id: "wishlist_import_form" } }) }}
         <div class="wishlist-import">
             <section class="wishlist-import-inputs">
                 {{ form_widget(form.wishlist_file, { attr: { class: "ui input",  } } ) }}
@@ -21,6 +20,6 @@
                 {{ form_widget(form.submit, { attr: { class: "ui primary button",  } } ) }}
             </section>
         </div>
-    {{ form_end(form) }}
-
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

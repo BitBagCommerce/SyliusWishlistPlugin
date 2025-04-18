@@ -1,6 +1,6 @@
 <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_import_from_csv') }}">
-    <button type="button" class="bb-wishlist-actions-import-button ui secondary button" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
-        <i class="cart icon"></i>
+    <button type="button" class="btn btn-icon btn-outline-secondary" {{ sylius_test_html_attribute('wishlist-import-from-csv') }}>
+        {{ ux_icon('mdi:import', {'class': 'icon icon-sm'}) }}
         {{ 'bitbag_sylius_wishlist_plugin.ui.import_from_csv'|trans }}
     </button>
 </a>
@@ -8,12 +8,12 @@
 <button
     id="{{ form.addAll.vars.id }}"
     name="{{ form.addAll.vars.full_name }}"
-    class="ui primary button right floated"
+    class="btn btn-icon btn-primary"
     data-bb-toggle="wishlist-add-all"
     {{ sylius_test_html_attribute('wishlist-add-all-to-cart') }}
     formaction="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_add_products', { wishlistId: wishlist.id }) }}"
 >
-    <i class="heart icon"></i>
+    {{ ux_icon('mdi:heart', {'class': 'icon icon-sm'}) }}
     {{ form.addAll.vars.label|trans }}
 </button>
 

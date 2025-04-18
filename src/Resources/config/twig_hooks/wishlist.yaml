@@ -1,0 +1,26 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.base#stylesheets':
+            wishlist_styles:
+                template: '@BitBagSyliusWishlistPlugin/Admin/_styles.html.twig'
+
+        'sylius_admin.base#javascripts':
+            wishlist_javascripts:
+                template: '@BitBagSyliusWishlistPlugin/Admin/_scripts.html.twig'
+
+        'sylius_shop.base#stylesheets':
+            wishlist_styles:
+                template: '@BitBagSyliusWishlistPlugin/Shop/_styles.html.twig'
+
+        'sylius_shop.base#javascripts':
+            wishlist_javascripts:
+                template: '@BitBagSyliusWishlistPlugin/Shop/_scripts.html.twig'
+
+        'sylius_shop.base.header.content':
+            wishlist_header:
+                template: '@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig'
+                priority: 150
+
+        'sylius_shop.product.show.content.info.summary.add_to_cart':
+            submit:
+                template: '@BitBagSyliusWishlistPlugin/Product/Show/_addToCart.html.twig'

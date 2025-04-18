@@ -1,4 +1,4 @@
-{% import "@SyliusCore/Common/Macro/money.html.twig" as money %}
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
 
 {% set variant = itemForm.vars.value.wishlistProduct.variant %}
 {% set product = variant.product %}
@@ -6,23 +6,19 @@
 {% set itemId = "wishlist_item_#{ variant.id }_#{ product.id }" %}
 
 <div id="{{ itemId }}" class="bb-wishlist-item">
-
     <div class="bb-wishlist-item-select" data-bb-checkboxes="checkboxes-update-when-main">
-        {{ form_widget(itemForm.selected, { id: product.name }) }}
+        {{ form_widget(itemForm.selected, { id: product.name, label: false }) }}
     </div>
-
     <div class="bb-wishlist-item-image">
-        {% include '@SyliusShop/Product/_mainImage.html.twig' %}
+        {{ component('sylius_shop:main_image', { product: product }) }}
     </div>
-
     <div class="bb-wishlist-item-name">
         <a href="{{ productUrl }}" {{ sylius_test_html_attribute('wishlist-item-name') }}>
             {{ product.name }}
         </a>
     </div>
-
     <div class="bb-wishlist-item-variant">
-        {%  if itemForm.cartItem.cartItem.variant is defined  %}
+        {% if itemForm.cartItem.cartItem.variant is defined %}
             <div class="bb-wishlist-variant">
                 {% for child in itemForm.cartItem.cartItem.variant.children %}
                     <div class="bb-wishlist-variant-option">
@@ -33,13 +29,11 @@
             </div>
         {% endif %}
     </div>
-
     <div class="bb-wishlist-item-price">
         {% if not product.variants.empty() %}
             {% include '@BitBagSyliusWishlistPlugin/WishlistDetails/_variantPrice.html.twig' %}
         {% endif %}
     </div>
-
     <div class="bb-wishlist-item-quantity" {{ sylius_test_html_attribute('wishlist-item-quantity') }}>
         {{ form_widget(itemForm.cartItem.cartItem.quantity, {
             'attr': {
@@ -49,11 +43,7 @@
             }
         }) }}
     </div>
-
     <div class="bb-wishlist-item-actions">
         {% include '@BitBagSyliusWishlistPlugin/Common/_removeFromWishlist.html.twig' %}
     </div>
-
-    {{ sonata_block_render_event('sylius.shop.product.index.after_box', {'product': product}) }}
-
 </div>
