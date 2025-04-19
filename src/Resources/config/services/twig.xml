@@ -5,7 +5,7 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.twig.extension.wishlist_extension" class="BitBag\SyliusWishlistPlugin\Twig\WishlistExtension">
+        <service id="bitbag_sylius_wishlist_plugin.twig.extension.wishlist_extension" class="Sylius\WishlistPlugin\Twig\WishlistExtension">
             <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <tag name="twig.extension"/>

@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlistInterface;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CopySelectedProductsToOtherWishlistHandler;
-use BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicatorInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlistInterface;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\CopySelectedProductsToOtherWishlistHandler;
+use Sylius\WishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicatorInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 

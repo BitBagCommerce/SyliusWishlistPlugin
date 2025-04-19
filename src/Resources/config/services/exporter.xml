@@ -5,12 +5,12 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.services.exporter" class="BitBag\SyliusWishlistPlugin\Exporter\WishlistToPdfExporter">
+        <service id="bitbag_sylius_wishlist_plugin.services.exporter" class="Sylius\WishlistPlugin\Exporter\WishlistToPdfExporter">
             <argument type="service" id="bitbag_sylius_wishlist_plugin.processor.variant_pdf_model_processor"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.services.exporter.dom_pdf_wishlist_exporter"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.services.exporter.dom_pdf_wishlist_exporter" class="BitBag\SyliusWishlistPlugin\Exporter\DomPdfWishlistExporter">
+        <service id="bitbag_sylius_wishlist_plugin.services.exporter.dom_pdf_wishlist_exporter" class="Sylius\WishlistPlugin\Exporter\DomPdfWishlistExporter">
             <argument type="service" id="twig"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf"/>
         </service>

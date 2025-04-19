@@ -2,7 +2,7 @@ services:
   _defaults: { public: true }
 
   bitbag_wishlist_plugin.behat.context.setup.wishlist:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Setup\WishlistContext
+    class: Tests\Sylius\WishlistPlugin\Behat\Context\Setup\WishlistContext
     arguments:
       - "@sylius.repository.product"
       - "@bitbag_sylius_wishlist_plugin.context.wishlist"
@@ -17,7 +17,7 @@ services:
       - '@sylius.repository.shop_user'
 
   bitbag_wishlist_plugin.behat.context.ui.wishlist:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui\WishlistContext
+    class: Tests\Sylius\WishlistPlugin\Behat\Context\Ui\WishlistContext
     arguments:
       - "@sylius.repository.product"
       - "@bitbag_wishlist_plugin.behat.page.shop.product_index"
@@ -38,42 +38,42 @@ services:
       - "@bitbag_wishlist_plugin.behat.page.wishlist.chosen_show_page"
 
   bitbag_wishlist_plugin.behat.context.cli.wishlist:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Cli\WishlistContext
+    class: Tests\Sylius\WishlistPlugin\Behat\Context\Cli\WishlistContext
     arguments:
       - '@kernel'
 
   bitbag_wishlist_plugin.behat.context.common.wishlist:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Common\WishlistContext
+    class: Tests\Sylius\WishlistPlugin\Behat\Context\Common\WishlistContext
     arguments:
       - '@bitbag_sylius_wishlist_plugin.repository.wishlist'
 
   bitbag_wishlist_plugin.behat.page.shop.wishlist:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPage
+    class: Tests\Sylius\WishlistPlugin\Behat\Page\Shop\WishlistPage
     parent: sylius.behat.symfony_page
     public: false
 
   bitbag_wishlist_plugin.behat.page.wishlist.index_page:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\IndexPage
+    class: Tests\Sylius\WishlistPlugin\Behat\Page\Shop\Wishlist\IndexPage
     parent: sylius.behat.symfony_page
     public: false
 
   bitbag_wishlist_plugin.behat.page.wishlist.chosen_show_page:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPage
+    class: Tests\Sylius\WishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPage
     parent: sylius.behat.symfony_page
     public: false
 
   bitbag_wishlist_plugin.behat.page.shop.product_index:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPage
+    class: Tests\Sylius\WishlistPlugin\Behat\Page\Shop\ProductIndexPage
     parent: sylius.behat.page.shop.product.index
     public: false
 
   bitbag_wishlist_plugin.behat.page.shop.product_show:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPage
+    class: Tests\Sylius\WishlistPlugin\Behat\Page\Shop\ProductShowPage
     parent: sylius.behat.page.shop.product.show
     public: false
 
   bitbag_wishlist_plugin.behat.loginer:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Service\Loginer
+    class: Tests\Sylius\WishlistPlugin\Behat\Service\Loginer
     arguments:
       - "@sylius.factory.customer"
       - "@sylius.factory.shop_user"
@@ -82,13 +82,13 @@ services:
       - "@sylius.behat.page.shop.home"
 
   bitbag_wishlist_plugin.behat.wishlist_creator:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreator
+    class: Tests\Sylius\WishlistPlugin\Behat\Service\WishlistCreator
     arguments:
       - "@bitbag_sylius_wishlist_plugin.factory.wishlist_product"
       - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
 
   bitbag_wishlist_plugin.behat.context.api.wishlist:
-    class: Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Api\WishlistContext
+    class: Tests\Sylius\WishlistPlugin\Behat\Context\Api\WishlistContext
     arguments:
       - "@bitbag_sylius_wishlist_plugin.repository.wishlist"
       - "@sylius.repository.shop_user"

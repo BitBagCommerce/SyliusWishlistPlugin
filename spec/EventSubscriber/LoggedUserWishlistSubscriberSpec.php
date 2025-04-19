@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\EventSubscriber;
+namespace spec\Sylius\WishlistPlugin\EventSubscriber;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\EventSubscriber\LoggedUserWishlistSubscriber;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\EventSubscriber\LoggedUserWishlistSubscriber;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\AdminBundle\SectionResolver\AdminSection;

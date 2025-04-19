@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistProductNotFoundException;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Exception\ProductNotFoundException;
+use Sylius\WishlistPlugin\Exception\WishlistProductNotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;

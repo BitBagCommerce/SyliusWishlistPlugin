@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\DependencyInjection;
+namespace Sylius\WishlistPlugin\DependencyInjection;
 
 use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
@@ -44,7 +44,7 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
 
     protected function getMigrationsNamespace(): string
     {
-        return 'BitBag\SyliusWishlistPlugin\Migrations';
+        return 'Sylius\WishlistPlugin\Migrations';
     }
 
     protected function getMigrationsDirectory(): string

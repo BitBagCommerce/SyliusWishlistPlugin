@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Factory;
+namespace Sylius\WishlistPlugin\Factory;
 
 use Dompdf\Options;
 

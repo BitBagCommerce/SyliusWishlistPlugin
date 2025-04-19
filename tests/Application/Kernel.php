@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Application;
+namespace Tests\Sylius\WishlistPlugin\Application;
 
 use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;

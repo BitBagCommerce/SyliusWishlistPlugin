@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
+namespace Sylius\WishlistPlugin\Command\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 
 interface WishlistItemInterface extends WishlistSyncCommandInterface

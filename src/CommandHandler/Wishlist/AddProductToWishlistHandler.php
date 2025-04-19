@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddProductToWishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\ProductNotFoundException;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;

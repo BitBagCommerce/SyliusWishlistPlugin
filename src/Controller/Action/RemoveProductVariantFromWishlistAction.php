@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;

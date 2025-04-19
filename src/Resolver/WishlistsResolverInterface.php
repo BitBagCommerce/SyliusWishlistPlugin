@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Resolver;
+namespace Sylius\WishlistPlugin\Resolver;
 
 interface WishlistsResolverInterface
 {

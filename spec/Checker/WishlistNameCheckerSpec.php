@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Checker;
+namespace spec\Sylius\WishlistPlugin\Checker;
 
-use BitBag\SyliusWishlistPlugin\Checker\WishlistNameChecker;
+use Sylius\WishlistPlugin\Checker\WishlistNameChecker;
 use PhpSpec\ObjectBehavior;
 
 final class WishlistNameCheckerSpec extends ObjectBehavior

@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
+namespace Tests\Sylius\WishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Setter\CookieSetterInterface;
@@ -31,13 +31,13 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\IndexPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreatorInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\Wishlist\IndexPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Service\LoginerInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Service\WishlistCreatorInterface;
 use Webmozart\Assert\Assert;
 
 final class WishlistContext extends RawMinkContext implements Context

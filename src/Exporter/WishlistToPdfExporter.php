@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exporter;
+namespace Sylius\WishlistPlugin\Exporter;
 
-use BitBag\SyliusWishlistPlugin\Processor\VariantPdfModelProcessorInterface;
+use Sylius\WishlistPlugin\Processor\VariantPdfModelProcessorInterface;
 use Doctrine\Common\Collections\Collection;
 
 final class WishlistToPdfExporter implements WishlistToPdfExporterInterface

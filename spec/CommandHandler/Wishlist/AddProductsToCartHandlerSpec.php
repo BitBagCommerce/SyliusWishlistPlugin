@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler;
-use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
-use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
+use Sylius\WishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler;
+use Sylius\WishlistPlugin\Exception\InsufficientProductStockException;
+use Sylius\WishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;

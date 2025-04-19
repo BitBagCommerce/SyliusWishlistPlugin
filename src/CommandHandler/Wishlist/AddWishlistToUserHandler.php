@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistToUser;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistHasAnotherShopUserException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddWishlistToUser;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\WishlistHasAnotherShopUserException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

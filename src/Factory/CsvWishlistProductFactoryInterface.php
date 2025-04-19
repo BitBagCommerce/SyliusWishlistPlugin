@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Factory;
+namespace Sylius\WishlistPlugin\Factory;
 
-use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
+use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
 interface CsvWishlistProductFactoryInterface extends FactoryInterface

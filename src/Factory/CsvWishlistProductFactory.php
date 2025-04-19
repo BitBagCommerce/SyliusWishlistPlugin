@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Factory;
+namespace Sylius\WishlistPlugin\Factory;
 
-use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProduct;
-use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
+use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProduct;
+use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 
 final class CsvWishlistProductFactory implements CsvWishlistProductFactoryInterface
 {

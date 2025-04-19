@@ -3,7 +3,7 @@
 
 declare(strict_types=1);
 
-use Tests\BitBag\SyliusWishlistPlugin\Application\Kernel;
+use Tests\Sylius\WishlistPlugin\Application\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;

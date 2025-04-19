@@ -5,11 +5,11 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor" class="BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessor"/>
+        <service id="bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor" class="Sylius\WishlistPlugin\Processor\WishlistCommandProcessor"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.processor.selected_wishlist_products_processor" class="BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessor"/>
+        <service id="bitbag_sylius_wishlist_plugin.processor.selected_wishlist_products_processor" class="Sylius\WishlistPlugin\Processor\SelectedWishlistProductsProcessor"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.processor.variant_pdf_model_processor" class="BitBag\SyliusWishlistPlugin\Processor\VariantPdfModelProcessor">
+        <service id="bitbag_sylius_wishlist_plugin.processor.variant_pdf_model_processor" class="Sylius\WishlistPlugin\Processor\VariantPdfModelProcessor">
             <argument type="service" id="bitbag_sylius_wishlist_plugin.services.generator.model_creator"/>
         </service>
     </services>

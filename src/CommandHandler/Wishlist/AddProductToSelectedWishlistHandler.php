@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToSelectedWishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddProductToSelectedWishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

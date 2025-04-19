@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
+namespace Sylius\WishlistPlugin\Command\Wishlist;
 
 final class RemoveWishlist implements WishlistSyncCommandInterface
 {

@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Model;
+namespace Sylius\WishlistPlugin\Model;
 
 use Sylius\Component\Core\Model\ProductVariantInterface;
 

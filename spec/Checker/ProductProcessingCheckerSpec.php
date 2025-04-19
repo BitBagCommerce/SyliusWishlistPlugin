@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Checker;
+namespace spec\Sylius\WishlistPlugin\Checker;
 
-use BitBag\SyliusWishlistPlugin\Checker\ProductProcessingChecker;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use Sylius\WishlistPlugin\Checker\ProductProcessingChecker;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;

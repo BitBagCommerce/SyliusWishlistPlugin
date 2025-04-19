@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\NoProductSelectedException;
-use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
-use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\NoProductSelectedException;
+use Sylius\WishlistPlugin\Form\Type\WishlistCollectionType;
+use Sylius\WishlistPlugin\Processor\WishlistCommandProcessorInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;

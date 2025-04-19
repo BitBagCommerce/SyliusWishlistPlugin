@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin;
+namespace Sylius\WishlistPlugin;
 
-use BitBag\SyliusWishlistPlugin\DependencyInjection\SyliusMessageBusPolyfillPass;
+use Sylius\WishlistPlugin\DependencyInjection\SyliusMessageBusPolyfillPass;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

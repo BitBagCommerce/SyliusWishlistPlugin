@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddWishlistToUser;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddWishlistToUser;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

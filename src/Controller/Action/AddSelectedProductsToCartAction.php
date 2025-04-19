@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
-use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
-use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
-use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
+use Sylius\WishlistPlugin\Exception\InsufficientProductStockException;
+use Sylius\WishlistPlugin\Exception\InvalidProductQuantityException;
+use Sylius\WishlistPlugin\Processor\WishlistCommandProcessorInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;

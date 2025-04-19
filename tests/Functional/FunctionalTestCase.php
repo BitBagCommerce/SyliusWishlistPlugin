@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Functional;
+namespace Tests\Sylius\WishlistPlugin\Functional;
 
 use Sylius\Bundle\CoreBundle\Application\Kernel as SyliusKernel;
 use Sylius\Tests\Api\JsonApiTestCase;

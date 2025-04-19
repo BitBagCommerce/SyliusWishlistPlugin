@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Duplicator;
+namespace Sylius\WishlistPlugin\Duplicator;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface WishlistProductsToOtherWishlistDuplicatorInterface

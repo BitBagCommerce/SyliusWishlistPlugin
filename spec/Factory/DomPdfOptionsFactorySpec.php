@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Factory;
+namespace spec\Sylius\WishlistPlugin\Factory;
 
-use BitBag\SyliusWishlistPlugin\Factory\DomPdfOptionsFactory;
-use BitBag\SyliusWishlistPlugin\Factory\DomPdfOptionsFactoryInterface;
+use Sylius\WishlistPlugin\Factory\DomPdfOptionsFactory;
+use Sylius\WishlistPlugin\Factory\DomPdfOptionsFactoryInterface;
 use Dompdf\Options;
 use PhpSpec\ObjectBehavior;
 

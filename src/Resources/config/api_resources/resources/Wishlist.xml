@@ -26,7 +26,7 @@
                 class="ApiPlatform\Metadata\Post"
                 uriTemplate="/shop/wishlists"
                 messenger="input"
-                input="BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateWishlist"
+                input="Sylius\WishlistPlugin\Command\Wishlist\CreateWishlist"
             >
                 <denormalizationContext>
                     <values>
@@ -69,7 +69,7 @@
                 class="ApiPlatform\Metadata\Patch"
                 uriTemplate="/shop/wishlists/{token}/product"
                 messenger="input"
-                input="BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist"
+                input="Sylius\WishlistPlugin\Command\Wishlist\AddProductToWishlist"
                 security="is_granted('update', object)"
             >
                 <denormalizationContext>
@@ -97,7 +97,7 @@
                 class="ApiPlatform\Metadata\Patch"
                 uriTemplate="/shop/wishlists/{token}/variant"
                 messenger="input"
-                input="BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist"
+                input="Sylius\WishlistPlugin\Command\Wishlist\AddProductVariantToWishlist"
                 security="is_granted('update', object)"
             >
                 <denormalizationContext>

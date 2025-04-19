@@ -9,15 +9,15 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductVariantFromWishlist;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveProductVariantFromWishlistHandler;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductVariantFromWishlist;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveProductVariantFromWishlistHandler;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Exception\ProductVariantNotFoundException;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;

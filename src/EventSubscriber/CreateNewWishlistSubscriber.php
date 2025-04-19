@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\EventSubscriber;
+namespace Sylius\WishlistPlugin\EventSubscriber;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;

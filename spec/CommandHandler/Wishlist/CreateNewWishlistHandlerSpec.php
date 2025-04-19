@@ -9,16 +9,16 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateNewWishlistHandler;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\CreateNewWishlist;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\CreateNewWishlistHandler;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\WishlistNameIsTakenException;
+use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;

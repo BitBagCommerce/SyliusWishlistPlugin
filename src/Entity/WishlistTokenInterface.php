@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Entity;
+namespace Sylius\WishlistPlugin\Entity;
 
 interface WishlistTokenInterface
 {

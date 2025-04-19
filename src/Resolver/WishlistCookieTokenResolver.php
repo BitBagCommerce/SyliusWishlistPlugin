@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Resolver;
+namespace Sylius\WishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
+use Sylius\WishlistPlugin\Entity\WishlistToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;

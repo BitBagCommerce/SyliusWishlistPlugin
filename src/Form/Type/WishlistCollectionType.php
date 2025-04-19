@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Form\Type;
+namespace Sylius\WishlistPlugin\Form\Type;
 
-use BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
+use Sylius\WishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

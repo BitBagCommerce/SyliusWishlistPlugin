@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
-use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Form\Type\WishlistCollectionType;
+use Sylius\WishlistPlugin\Processor\WishlistCommandProcessorInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;

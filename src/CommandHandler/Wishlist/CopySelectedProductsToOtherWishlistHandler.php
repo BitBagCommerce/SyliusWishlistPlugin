@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlistInterface;
-use BitBag\SyliusWishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicatorInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlistInterface;
+use Sylius\WishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicatorInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 
 final class CopySelectedProductsToOtherWishlistHandler
 {

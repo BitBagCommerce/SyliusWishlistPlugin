@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace spec\Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Sylius\WishlistPlugin\Controller\Action\RenderHeaderTemplateAction;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

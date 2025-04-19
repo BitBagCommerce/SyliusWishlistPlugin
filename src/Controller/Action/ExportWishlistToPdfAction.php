@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdf;
+use Sylius\WishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdf;
 use Symfony\Component\Form\FormInterface;
 
 final class ExportWishlistToPdfAction extends BaseWishlistProductsAction

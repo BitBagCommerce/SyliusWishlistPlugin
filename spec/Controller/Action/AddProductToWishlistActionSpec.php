@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace spec\Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToWishlistAction;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Sylius\WishlistPlugin\Controller\Action\AddProductToWishlistAction;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Context\ChannelContextInterface;

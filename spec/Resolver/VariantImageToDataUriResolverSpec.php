@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
+namespace spec\Sylius\WishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Resolver\GenerateDataUriForImageResolverInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolver;
+use Sylius\WishlistPlugin\Resolver\GenerateDataUriForImageResolverInterface;
+use Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolver;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductImage;

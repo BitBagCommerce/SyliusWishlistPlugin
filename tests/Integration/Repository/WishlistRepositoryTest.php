@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Integration\Repository;
+namespace Tests\Sylius\WishlistPlugin\Integration\Repository;
 
 use ApiTestCase\JsonApiTestCase;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\Channel;
 use Sylius\Component\Core\Model\ShopUser;
 

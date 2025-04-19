@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Form\Type;
+namespace Sylius\WishlistPlugin\Form\Type;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
 use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactoryInterface;
 use Sylius\Component\Core\Factory\CartItemFactoryInterface;

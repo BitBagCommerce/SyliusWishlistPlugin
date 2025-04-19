@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Context;
+namespace spec\Sylius\WishlistPlugin\Context;
 
-use BitBag\SyliusWishlistPlugin\Context\WishlistContext;
-use BitBag\SyliusWishlistPlugin\Context\WishlistContextInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
+use Sylius\WishlistPlugin\Context\WishlistContext;
+use Sylius\WishlistPlugin\Context\WishlistContextInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;

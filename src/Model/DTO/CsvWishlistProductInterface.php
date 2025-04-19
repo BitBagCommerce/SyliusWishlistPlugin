@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Model\DTO;
+namespace Sylius\WishlistPlugin\Model\DTO;
 
 interface CsvWishlistProductInterface
 {

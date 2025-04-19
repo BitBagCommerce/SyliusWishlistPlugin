@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductVariantToWishlist;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddProductVariantToWishlist;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Exception\ProductVariantNotFoundException;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;

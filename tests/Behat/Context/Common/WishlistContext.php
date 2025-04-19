@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Common;
+namespace Tests\Sylius\WishlistPlugin\Behat\Context\Common;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context

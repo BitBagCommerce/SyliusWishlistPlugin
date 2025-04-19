@@ -2,4 +2,4 @@ sylius_order:
     resources:
 #        order_item:
 #            classes:
-#                controller: BitBag\SyliusWishlistPlugin\Controller\OrderItemController
+#                controller: Sylius\WishlistPlugin\Controller\OrderItemController

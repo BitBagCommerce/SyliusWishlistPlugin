@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Command\Wishlist;
+namespace Sylius\WishlistPlugin\Command\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class AddWishlistToUser implements WishlistSyncCommandInterface

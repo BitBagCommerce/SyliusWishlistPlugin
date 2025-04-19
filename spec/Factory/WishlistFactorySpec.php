@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Factory;
+namespace spec\Sylius\WishlistPlugin\Factory;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactory;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Factory\WishlistFactory;
+use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;

@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Twig;
+namespace Sylius\WishlistPlugin\Twig;
 
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;

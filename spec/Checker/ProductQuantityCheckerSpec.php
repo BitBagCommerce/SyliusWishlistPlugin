@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Checker;
+namespace spec\Sylius\WishlistPlugin\Checker;
 
-use BitBag\SyliusWishlistPlugin\Checker\ProductQuantityChecker;
+use Sylius\WishlistPlugin\Checker\ProductQuantityChecker;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Order\Model\OrderItemInterface;
 

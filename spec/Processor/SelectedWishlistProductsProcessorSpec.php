@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Processor;
+namespace spec\Sylius\WishlistPlugin\Processor;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
-use BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessor;
-use BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
+use Sylius\WishlistPlugin\Processor\SelectedWishlistProductsProcessor;
+use Sylius\WishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 

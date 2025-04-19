@@ -20,7 +20,7 @@ composer require bitbag/wishlist-plugin
 return [
     ...
 
-    BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
+    Sylius\WishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
 ];
 ```
 
@@ -48,7 +48,7 @@ sylius_order:
   resources:
     order_item:
       classes:
-        controller: BitBag\SyliusWishlistPlugin\Controller\OrderItemController
+        controller: Sylius\WishlistPlugin\Controller\OrderItemController
 
 ```
 
@@ -140,7 +140,7 @@ framework:
         transports:
             sync: 'sync://'
     routing:
-        'BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface': sync
+        'Sylius\WishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface': sync
 ```
 
 All commands from the plugin implement the `WishlistSyncCommandInterface` interface, so there is no need for other configuration.

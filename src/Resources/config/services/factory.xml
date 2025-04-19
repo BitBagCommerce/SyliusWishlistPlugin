@@ -5,24 +5,24 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist" class="BitBag\SyliusWishlistPlugin\Factory\WishlistFactory" decorates="bitbag_sylius_wishlist_plugin.factory.wishlist" public="false">
+        <service id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist" class="Sylius\WishlistPlugin\Factory\WishlistFactory" decorates="bitbag_sylius_wishlist_plugin.factory.wishlist" public="false">
             <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist.inner"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist_product" class="BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactory" decorates="bitbag_sylius_wishlist_plugin.factory.wishlist_product" public="false">
+        <service id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist_product" class="Sylius\WishlistPlugin\Factory\WishlistProductFactory" decorates="bitbag_sylius_wishlist_plugin.factory.wishlist_product" public="false">
             <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist_product.inner"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.custom_factory.csv_wishlist_product" class="BitBag\SyliusWishlistPlugin\Factory\CsvWishlistProductFactory"/>
+        <service id="bitbag_sylius_wishlist_plugin.custom_factory.csv_wishlist_product" class="Sylius\WishlistPlugin\Factory\CsvWishlistProductFactory"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer" class="BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactory"/>
+        <service id="bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer" class="Sylius\WishlistPlugin\Factory\CsvSerializerFactory"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf" class="BitBag\SyliusWishlistPlugin\Factory\DomPdfFactory">
+        <service id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf" class="Sylius\WishlistPlugin\Factory\DomPdfFactory">
             <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf_options"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf_options" class="BitBag\SyliusWishlistPlugin\Factory\DomPdfOptionsFactory"/>
+        <service id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf_options" class="Sylius\WishlistPlugin\Factory\DomPdfOptionsFactory"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory" class="BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory"/>
+        <service id="bitbag_sylius_wishlist_plugin.model.factory.variant_pdf_model_factory" class="Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactory"/>
     </services>
 </container>

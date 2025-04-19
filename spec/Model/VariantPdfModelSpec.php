@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Model;
+namespace spec\Sylius\WishlistPlugin\Model;
 
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModel;
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
+use Sylius\WishlistPlugin\Model\VariantPdfModel;
+use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 

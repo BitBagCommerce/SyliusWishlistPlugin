@@ -9,16 +9,16 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Functional\Api;
+namespace Tests\Sylius\WishlistPlugin\Functional\Api;
 
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Tests\Api\Utils\AdminUserLoginTrait;
 use Sylius\Tests\Api\Utils\ShopUserLoginTrait;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\BitBag\SyliusWishlistPlugin\Functional\FunctionalTestCase;
+use Tests\Sylius\WishlistPlugin\Functional\FunctionalTestCase;
 
 final class WishlistTest extends FunctionalTestCase
 {

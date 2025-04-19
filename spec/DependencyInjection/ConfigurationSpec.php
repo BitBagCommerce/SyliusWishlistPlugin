@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\DependencyInjection;
+namespace spec\Sylius\WishlistPlugin\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

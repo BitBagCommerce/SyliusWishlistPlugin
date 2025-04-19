@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 

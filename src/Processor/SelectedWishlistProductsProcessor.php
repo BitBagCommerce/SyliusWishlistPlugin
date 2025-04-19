@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Processor;
+namespace Sylius\WishlistPlugin\Processor;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

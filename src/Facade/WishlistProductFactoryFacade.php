@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Facade;
+namespace Sylius\WishlistPlugin\Facade;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 

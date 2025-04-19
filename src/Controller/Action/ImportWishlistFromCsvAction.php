@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
-use BitBag\SyliusWishlistPlugin\Form\Type\ImportWishlistFromCsvType;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Form\Type\ImportWishlistFromCsvType;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;

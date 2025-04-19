@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
+namespace spec\Sylius\WishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolver;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Entity\WishlistToken;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolver;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;

@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Model\Factory;
+namespace Sylius\WishlistPlugin\Model\Factory;
 
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
+use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 interface VariantPdfModelFactoryInterface

@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Exporter;
+namespace spec\Sylius\WishlistPlugin\Exporter;
 
-use BitBag\SyliusWishlistPlugin\Exporter\DomPdfWishlistExporter;
-use BitBag\SyliusWishlistPlugin\Exporter\DomPdfWishlistExporterInterface;
-use BitBag\SyliusWishlistPlugin\Factory\DomPdfFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
+use Sylius\WishlistPlugin\Exporter\DomPdfWishlistExporter;
+use Sylius\WishlistPlugin\Exporter\DomPdfWishlistExporterInterface;
+use Sylius\WishlistPlugin\Factory\DomPdfFactoryInterface;
+use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Dompdf\Dompdf;
 use PhpSpec\ObjectBehavior;

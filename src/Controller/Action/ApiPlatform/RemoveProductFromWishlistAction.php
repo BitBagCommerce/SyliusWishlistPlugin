@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform;
+namespace Sylius\WishlistPlugin\Controller\Action\ApiPlatform;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist;
+namespace Tests\Sylius\WishlistPlugin\Behat\Page\Shop\Wishlist;
 
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 

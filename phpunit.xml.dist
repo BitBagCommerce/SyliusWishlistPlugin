@@ -14,7 +14,7 @@
         <env name="APP_DEBUG" value="0"/>
         <env name="SHELL_VERBOSITY" value="-1" />
 
-        <server name="KERNEL_CLASS" value="Tests\BitBag\SyliusWishlistPlugin\Application\Kernel" />
+        <server name="KERNEL_CLASS" value="Tests\Sylius\WishlistPlugin\Application\Kernel" />
         <server name="KERNEL_CLASS_PATH" value="/tests/Application/Kernel.php" />
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true"/>
         <server name="SHELL_VERBOSITY" value="-1" />

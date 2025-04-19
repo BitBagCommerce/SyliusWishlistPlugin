@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Facade;
+namespace spec\Sylius\WishlistPlugin\Facade;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacade;
-use BitBag\SyliusWishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Facade\WishlistProductFactoryFacade;
+use Sylius\WishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;

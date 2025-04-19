@@ -3,7 +3,7 @@
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
-    <class name="BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductToWishlist">
+    <class name="Sylius\WishlistPlugin\Command\Wishlist\AddProductToWishlist">
         <attribute name="id">
             <group>shop:wishlist:add_product</group>
         </attribute>

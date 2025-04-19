@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddProductsToCart;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface;
 use Symfony\Component\Form\FormInterface;
 
 final class AddProductsToCartAction extends BaseAddWishlistProductsAction

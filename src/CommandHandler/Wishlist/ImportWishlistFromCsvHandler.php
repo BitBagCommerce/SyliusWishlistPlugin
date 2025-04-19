@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
-use BitBag\SyliusWishlistPlugin\Controller\Action\AddProductVariantToWishlistAction;
-use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProduct;
-use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
+use Sylius\WishlistPlugin\Controller\Action\AddProductVariantToWishlistAction;
+use Sylius\WishlistPlugin\Factory\CsvSerializerFactoryInterface;
+use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProduct;
+use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Gedmo\Exception\UploadableInvalidMimeTypeException;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;

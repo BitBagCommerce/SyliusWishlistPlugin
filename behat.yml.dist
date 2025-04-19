@@ -52,7 +52,7 @@ default:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/Application/config/bootstrap.php
             kernel:
-                class: Tests\BitBag\SyliusWishlistPlugin\Application\Kernel
+                class: Tests\Sylius\WishlistPlugin\Application\Kernel
 
         FriendsOfBehat\VariadicExtension: ~
 

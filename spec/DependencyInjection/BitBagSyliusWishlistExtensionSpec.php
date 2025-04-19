@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\DependencyInjection;
+namespace spec\Sylius\WishlistPlugin\DependencyInjection;
 
-use BitBag\SyliusWishlistPlugin\DependencyInjection\BitBagSyliusWishlistExtension;
+use Sylius\WishlistPlugin\DependencyInjection\BitBagSyliusWishlistExtension;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;

@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Generator;
+namespace Sylius\WishlistPlugin\Generator;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 
 interface ModelCreatorInterface
 {

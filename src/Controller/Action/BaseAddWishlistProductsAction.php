@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface;
-use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
-use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface;
+use Sylius\WishlistPlugin\Exception\InsufficientProductStockException;
+use Sylius\WishlistPlugin\Exception\InvalidProductQuantityException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 

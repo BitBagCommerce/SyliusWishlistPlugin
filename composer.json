@@ -1,5 +1,5 @@
 {
-    "name": "bitbag/wishlist-plugin",
+    "name": "sylius/wishlist-plugin",
     "type": "sylius-plugin",
     "description": "Wishlist plugin for Sylius.",
     "license": "MIT",
@@ -52,15 +52,15 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "BitBag\\SyliusWishlistPlugin\\": "src/",
-            "Tests\\BitBag\\SyliusWishlistPlugin\\": "tests/"
+            "Sylius\\WishlistPlugin\\": "src/",
+            "Tests\\Sylius\\WishlistPlugin\\": "tests/"
         }
     },
     "autoload-dev": {
         "classmap": ["tests/Application/Kernel.php"],
         "psr-4": {
-            "BitBag\\SyliusWishlistPlugin\\": "src/",
-            "Tests\\BitBag\\SyliusWishlistPlugin\\": "tests/",
+            "Sylius\\WishlistPlugin\\": "src/",
+            "Tests\\Sylius\\WishlistPlugin\\": "tests/",
             "Sylius\\Tests\\Api\\": ["vendor/sylius/sylius/tests/Api/"]
         }
     },

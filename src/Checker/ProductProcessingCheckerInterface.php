@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Checker;
+namespace Sylius\WishlistPlugin\Checker;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
 
 interface ProductProcessingCheckerInterface
 {

@@ -71,7 +71,7 @@ Sylius\Component\Product\Model\ProductVariantTranslation:
         translatable: '@product_variant_<current()>'
         name: '<word()>'
         locale: 'en'
-BitBag\SyliusWishlistPlugin\Entity\Wishlist:
+Sylius\WishlistPlugin\Entity\Wishlist:
     olivier_wishlist:
         name: 'Olivier Wishlist'
         shopUser: '@user_oliver'
@@ -88,7 +88,7 @@ BitBag\SyliusWishlistPlugin\Entity\Wishlist:
         name: 'Bruce Wishlist'
         shopUser: '@user_bruce'
         channel: '@channel_us'
-BitBag\SyliusWishlistPlugin\Entity\WishlistProduct:
+Sylius\WishlistPlugin\Entity\WishlistProduct:
     wishlist_product_1:
         wishlist: '@olivier_wishlist'
         product: '@product_1'

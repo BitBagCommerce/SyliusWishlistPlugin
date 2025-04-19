@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Cli;
+namespace Tests\Sylius\WishlistPlugin\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

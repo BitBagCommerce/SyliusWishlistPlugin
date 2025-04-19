@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exception;
+namespace Sylius\WishlistPlugin\Exception;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

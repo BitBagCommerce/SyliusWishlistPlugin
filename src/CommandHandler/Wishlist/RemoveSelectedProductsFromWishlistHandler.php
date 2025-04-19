@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistProductNotFoundException;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Exception\ProductNotFoundException;
+use Sylius\WishlistPlugin\Exception\WishlistProductNotFoundException;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;

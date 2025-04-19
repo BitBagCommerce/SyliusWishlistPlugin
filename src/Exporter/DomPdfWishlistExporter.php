@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exporter;
+namespace Sylius\WishlistPlugin\Exporter;
 
-use BitBag\SyliusWishlistPlugin\Factory\DomPdfFactoryInterface;
+use Sylius\WishlistPlugin\Factory\DomPdfFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Twig\Environment;
 

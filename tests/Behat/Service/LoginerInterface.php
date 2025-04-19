@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Service;
+namespace Tests\Sylius\WishlistPlugin\Behat\Service;
 
 use Sylius\Component\Core\Model\ShopUserInterface;
 

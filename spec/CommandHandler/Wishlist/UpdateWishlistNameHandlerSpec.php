@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\UpdateWishlistName;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\UpdateWishlistNameHandler;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\UpdateWishlistName;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\UpdateWishlistNameHandler;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\WishlistNameIsTakenException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use PhpSpec\ObjectBehavior;
 
 final class UpdateWishlistNameHandlerSpec extends ObjectBehavior

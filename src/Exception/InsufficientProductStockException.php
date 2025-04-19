@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exception;
+namespace Sylius\WishlistPlugin\Exception;
 
 final class InsufficientProductStockException extends \Exception
 {

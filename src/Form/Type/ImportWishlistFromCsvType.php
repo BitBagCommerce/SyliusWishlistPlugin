@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Form\Type;
+namespace Sylius\WishlistPlugin\Form\Type;
 
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\Wishlist;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;

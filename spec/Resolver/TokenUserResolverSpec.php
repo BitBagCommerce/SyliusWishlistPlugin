@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
+namespace spec\Sylius\WishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolver;
-use BitBag\SyliusWishlistPlugin\Resolver\TokenUserResolverInterface;
+use Sylius\WishlistPlugin\Resolver\TokenUserResolver;
+use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

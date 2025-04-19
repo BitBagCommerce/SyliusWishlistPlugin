@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Checker;
+namespace Sylius\WishlistPlugin\Checker;
 
 use Sylius\Component\Order\Model\OrderItemInterface;
 

@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Api;
+namespace Tests\Sylius\WishlistPlugin\Behat\Context\Api;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;

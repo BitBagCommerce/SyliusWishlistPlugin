@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exporter;
+namespace Sylius\WishlistPlugin\Exporter;
 
 use Doctrine\Common\Collections\Collection;
 

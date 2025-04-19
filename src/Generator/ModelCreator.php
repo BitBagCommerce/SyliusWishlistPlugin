@@ -9,12 +9,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Generator;
+namespace Sylius\WishlistPlugin\Generator;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
+use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
+use Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exception;
+namespace Sylius\WishlistPlugin\Exception;
 
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Resource\Repository\Exception\ExistingResourceException;
