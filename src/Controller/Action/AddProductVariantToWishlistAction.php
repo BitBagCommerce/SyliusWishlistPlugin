@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Controller\Action;
 
+use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

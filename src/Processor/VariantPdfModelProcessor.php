@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Processor;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 use Sylius\WishlistPlugin\Generator\ModelCreatorInterface;
 use Sylius\WishlistPlugin\Model\VariantPdfModel;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 final class VariantPdfModelProcessor implements VariantPdfModelProcessorInterface
 {

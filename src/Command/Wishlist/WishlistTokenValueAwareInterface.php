@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\WishlistPlugin\Command\Wishlist;
 
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
+
 //use Sylius\Bundle\ApiBundle\Command\CommandAwareDataTransformerInterface;
 
 interface WishlistTokenValueAwareInterface extends /**  CommandAwareDataTransformerInterface, */ WishlistSyncCommandInterface

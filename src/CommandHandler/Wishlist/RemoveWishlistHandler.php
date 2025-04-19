@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use Doctrine\Persistence\ObjectManager;
 use Sylius\WishlistPlugin\Command\Wishlist\RemoveWishlist;
 use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

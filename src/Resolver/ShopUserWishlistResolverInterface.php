@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Resolver;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 
 interface ShopUserWishlistResolverInterface
 {

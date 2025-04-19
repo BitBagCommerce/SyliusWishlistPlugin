@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Exporter;
 
-use Sylius\WishlistPlugin\Processor\VariantPdfModelProcessorInterface;
 use Doctrine\Common\Collections\Collection;
+use Sylius\WishlistPlugin\Processor\VariantPdfModelProcessorInterface;
 
 final class WishlistToPdfExporter implements WishlistToPdfExporterInterface
 {

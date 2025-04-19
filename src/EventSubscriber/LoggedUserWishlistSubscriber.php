@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\EventSubscriber;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Bundle\CoreBundle\SectionResolver\SectionProviderInterface;
 use Sylius\Bundle\ShopBundle\SectionResolver\ShopSection;
 use Sylius\Bundle\UserBundle\Event\UserEvent;
 use Sylius\Bundle\UserBundle\UserEvents;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;

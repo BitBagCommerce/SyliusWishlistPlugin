@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -14,10 +14,6 @@ declare(strict_types=1);
 namespace Tests\Sylius\WishlistPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
-use Sylius\WishlistPlugin\Context\WishlistContextInterface;
-use Sylius\WishlistPlugin\Entity\Wishlist;
-use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
-use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\Setter\CookieSetterInterface;
@@ -29,6 +25,10 @@ use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Sylius\WishlistPlugin\Context\WishlistContextInterface;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 

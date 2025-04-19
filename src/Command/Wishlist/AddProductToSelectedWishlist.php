@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Command\Wishlist;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 
 final class AddProductToSelectedWishlist implements AddProductToSelectedWishlistInterface
 {

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use Doctrine\Persistence\ObjectManager;
+use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\AddProductVariantToWishlist;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Exception\ProductVariantNotFoundException;
 use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
-use Doctrine\Persistence\ObjectManager;
-use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

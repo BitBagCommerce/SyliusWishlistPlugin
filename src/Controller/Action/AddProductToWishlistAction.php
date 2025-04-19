@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Controller\Action;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
-use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
-use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
-use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

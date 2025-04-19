@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Exporter;
 
-use Sylius\WishlistPlugin\Factory\DomPdfFactoryInterface;
 use Doctrine\Common\Collections\Collection;
+use Sylius\WishlistPlugin\Factory\DomPdfFactoryInterface;
 use Twig\Environment;
 
 final class DomPdfWishlistExporter implements DomPdfWishlistExporterInterface

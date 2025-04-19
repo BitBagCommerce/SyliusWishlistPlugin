@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Voter;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Bundle\SecurityBundle\Security;
 
 final class WishlistVoter extends Voter
 {

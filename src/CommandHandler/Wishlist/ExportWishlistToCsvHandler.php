@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use Doctrine\Common\Collections\Collection;
+use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\ExportWishlistToCsv;
 use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Factory\CsvSerializerFactoryInterface;
 use Sylius\WishlistPlugin\Factory\CsvWishlistProductFactoryInterface;
 use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProductInterface;
-use Doctrine\Common\Collections\Collection;
-use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
-use Sylius\Component\Core\Model\OrderItemInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Webmozart\Assert\Assert;
 

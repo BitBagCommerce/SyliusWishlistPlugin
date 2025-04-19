@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Controller\Action;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

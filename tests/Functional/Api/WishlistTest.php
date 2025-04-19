@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Tests\Sylius\WishlistPlugin\Functional\Api;
 
-use Sylius\WishlistPlugin\Entity\Wishlist;
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Tests\Api\Utils\AdminUserLoginTrait;
 use Sylius\Tests\Api\Utils\ShopUserLoginTrait;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Sylius\WishlistPlugin\Functional\FunctionalTestCase;
 

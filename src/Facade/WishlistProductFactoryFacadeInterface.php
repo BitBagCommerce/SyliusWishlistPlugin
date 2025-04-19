@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Facade;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 
 /**
  * @deprecated

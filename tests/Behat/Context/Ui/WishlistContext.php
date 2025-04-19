@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -15,10 +15,6 @@ namespace Tests\Sylius\WishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Sylius\WishlistPlugin\Entity\Wishlist;
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
-use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Setter\CookieSetterInterface;
@@ -30,6 +26,10 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;

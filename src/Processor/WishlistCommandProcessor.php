@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Processor;
 
-use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 
 final class WishlistCommandProcessor implements WishlistCommandProcessorInterface
 {

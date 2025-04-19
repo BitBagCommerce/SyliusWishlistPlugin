@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Form\Type;
 
-use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
-use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
 use Sylius\Bundle\OrderBundle\Factory\AddToCartCommandFactoryInterface;
 use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Controller\Action;
 
-use Sylius\WishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlist;
 use Doctrine\Common\Collections\ArrayCollection;
+use Sylius\WishlistPlugin\Command\Wishlist\CopySelectedProductsToOtherWishlist;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

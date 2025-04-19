@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Duplicator;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
-use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;

@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use Doctrine\Persistence\ObjectManager;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Exception\ProductNotFoundException;
 use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
-use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
