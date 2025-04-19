@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use Doctrine\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveProductFromWishlistHandler;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
@@ -20,11 +25,6 @@ use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Exception\ProductNotFoundException;
 use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class RemoveProductFromWishlistHandlerSpec extends ObjectBehavior
 {

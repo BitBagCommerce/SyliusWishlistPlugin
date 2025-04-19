@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Command\Wishlist\UpdateWishlistName;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\UpdateWishlistNameHandler;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Exception\WishlistNameIsTakenException;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use PhpSpec\ObjectBehavior;
 
 final class UpdateWishlistNameHandlerSpec extends ObjectBehavior
 {

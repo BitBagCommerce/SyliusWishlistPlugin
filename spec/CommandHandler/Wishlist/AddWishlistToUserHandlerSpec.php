@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\AddWishlistToUser;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\AddWishlistToUserHandler;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Exception\WishlistHasAnotherShopUserException;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class AddWishlistToUserHandlerSpec extends ObjectBehavior
 {

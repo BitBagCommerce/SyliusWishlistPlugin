@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Controller\Action;
 
-use Sylius\WishlistPlugin\Controller\Action\AddProductToWishlistAction;
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
-use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
-use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Sylius\WishlistPlugin\Controller\Action\AddProductToWishlistAction;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -85,7 +85,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
-        ParameterBag $headers,
+        HeaderBag $headers,
         Session $session,
         FlashBagInterface $flashBag,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
@@ -135,7 +135,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
-        ParameterBag $headers,
+        HeaderBag $headers,
         Session $session,
         FlashBagInterface $flashBag,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,

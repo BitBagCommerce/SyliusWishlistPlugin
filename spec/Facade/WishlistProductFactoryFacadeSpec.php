@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Facade;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Facade\WishlistProductFactoryFacade;
 use Sylius\WishlistPlugin\Facade\WishlistProductFactoryFacadeInterface;
 use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class WishlistProductFactoryFacadeSpec extends ObjectBehavior
 {

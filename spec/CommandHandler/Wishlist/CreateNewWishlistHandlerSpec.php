@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\CreateNewWishlistHandler;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
@@ -21,10 +25,6 @@ use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
 use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
-use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 

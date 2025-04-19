@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Factory;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
-use Sylius\WishlistPlugin\Factory\WishlistProductFactory;
-use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactory;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 
 final class WishlistProductFactorySpec extends ObjectBehavior
 {

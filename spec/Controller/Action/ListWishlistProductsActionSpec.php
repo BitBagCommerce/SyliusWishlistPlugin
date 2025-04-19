@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Controller\Action;
 
-use Sylius\WishlistPlugin\Controller\Action\ListWishlistProductsAction;
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Form\Type\WishlistCollectionType;
-use Sylius\WishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
+use Sylius\WishlistPlugin\Controller\Action\ListWishlistProductsAction;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Form\Type\WishlistCollectionType;
+use Sylius\WishlistPlugin\Processor\WishlistCommandProcessorInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;

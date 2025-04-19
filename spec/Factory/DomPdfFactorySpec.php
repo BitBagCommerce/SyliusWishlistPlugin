@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Factory;
 
-use Sylius\WishlistPlugin\Factory\DomPdfFactory;
-use Sylius\WishlistPlugin\Factory\DomPdfFactoryInterface;
-use Sylius\WishlistPlugin\Factory\DomPdfOptionsFactoryInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use PhpSpec\ObjectBehavior;
+use Sylius\WishlistPlugin\Factory\DomPdfFactory;
+use Sylius\WishlistPlugin\Factory\DomPdfFactoryInterface;
+use Sylius\WishlistPlugin\Factory\DomPdfOptionsFactoryInterface;
 
 final class DomPdfFactorySpec extends ObjectBehavior
 {

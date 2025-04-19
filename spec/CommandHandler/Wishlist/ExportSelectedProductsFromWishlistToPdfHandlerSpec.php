@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Command\Wishlist\ExportSelectedProductsFromWishlistToPdfInterface;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\ExportSelectedProductsFromWishlistToPdfHandler;
 use Sylius\WishlistPlugin\Exporter\WishlistToPdfExporterInterface;
-use Doctrine\Common\Collections\Collection;
-use PhpSpec\ObjectBehavior;
 
 final class ExportSelectedProductsFromWishlistToPdfHandlerSpec extends ObjectBehavior
 {

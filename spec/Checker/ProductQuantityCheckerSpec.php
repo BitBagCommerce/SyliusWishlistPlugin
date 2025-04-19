@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Checker;
 
-use Sylius\WishlistPlugin\Checker\ProductQuantityChecker;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Order\Model\OrderItemInterface;
+use Sylius\WishlistPlugin\Checker\ProductQuantityChecker;
 
 final class ProductQuantityCheckerSpec extends ObjectBehavior
 {

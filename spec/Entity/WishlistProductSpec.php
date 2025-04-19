@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Entity;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProduct;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductInterface;
 
 final class WishlistProductSpec extends ObjectBehavior
 {

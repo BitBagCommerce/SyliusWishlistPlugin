@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use Doctrine\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Command\Wishlist\RemoveWishlist;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveWishlistHandler;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
-use PhpSpec\ObjectBehavior;
 
 final class RemoveWishlistHandlerSpec extends ObjectBehavior
 {

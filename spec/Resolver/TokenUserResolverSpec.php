@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Resolver;
 
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Resolver\TokenUserResolver;
 use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
-use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

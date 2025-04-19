@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Factory;
 
-use Sylius\WishlistPlugin\Factory\DomPdfOptionsFactory;
-use Sylius\WishlistPlugin\Factory\DomPdfOptionsFactoryInterface;
 use Dompdf\Options;
 use PhpSpec\ObjectBehavior;
+use Sylius\WishlistPlugin\Factory\DomPdfOptionsFactory;
+use Sylius\WishlistPlugin\Factory\DomPdfOptionsFactoryInterface;
 
 final class DomPdfOptionsFactorySpec extends ObjectBehavior
 {

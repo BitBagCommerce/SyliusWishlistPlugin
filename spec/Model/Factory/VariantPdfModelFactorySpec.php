@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Model\Factory;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ProductVariant;
 use Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactory;
 use Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use Sylius\WishlistPlugin\Model\VariantPdfModel;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductVariant;
 
 final class VariantPdfModelFactorySpec extends ObjectBehavior
 {

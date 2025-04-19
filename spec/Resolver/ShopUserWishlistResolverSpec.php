@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Resolver;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
-use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Sylius\WishlistPlugin\Resolver\ShopUserWishlistResolver;
-use Sylius\WishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\WishlistPlugin\Resolver\ShopUserWishlistResolver;
+use Sylius\WishlistPlugin\Resolver\ShopUserWishlistResolverInterface;
 
 final class ShopUserWishlistResolverSpec extends ObjectBehavior
 {

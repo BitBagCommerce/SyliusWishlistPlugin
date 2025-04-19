@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use Doctrine\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\AddProductToWishlist;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductToWishlistHandler;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Exception\ProductNotFoundException;
 use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
-use Doctrine\Persistence\ObjectManager;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 
 final class AddProductToWishlistHandlerSpec extends ObjectBehavior
 {
