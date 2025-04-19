@@ -73,7 +73,7 @@ final class ExportSelectedProductsToCsvAction
         }
 
         return new RedirectResponse(
-            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
+            $this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                 'wishlistId' => $wishlistId,
             ]),
         );
@@ -105,7 +105,7 @@ final class ExportSelectedProductsToCsvAction
 
             $session->getFlashBag()->add('error', $this->translator->trans($e->getMessage()));
 
-            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products'));
+            return new RedirectResponse($this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_list_products'));
         }
 
         return $this->returnCsvFile($file);

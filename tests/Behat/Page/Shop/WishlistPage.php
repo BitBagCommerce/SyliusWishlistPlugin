@@ -212,7 +212,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function getRouteName(): string
     {
-        return 'bitbag_sylius_wishlist_plugin_shop_wishlist_list_products';
+        return 'sylius_wishlist_plugin_shop_wishlist_list_products';
     }
 
     protected function getDefinedElements(): array

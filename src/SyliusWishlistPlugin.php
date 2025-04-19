@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class BitBagSyliusWishlistPlugin extends Bundle
+final class SyliusWishlistPlugin extends Bundle
 {
     use SyliusPluginTrait;
 

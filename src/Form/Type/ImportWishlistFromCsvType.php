@@ -45,7 +45,7 @@ final class ImportWishlistFromCsvType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'bitbag_sylius_wishlist_plugin.ui.submit',
+                'label' => 'sylius_wishlist_plugin.ui.submit',
             ])
         ;
     }

@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context
 {
-    public const REMOVE_GUEST_WISHLISTS_COMMAND = 'bitbag:wishlist:remove-guest-wishlists';
+    public const REMOVE_GUEST_WISHLISTS_COMMAND = 'sylius:wishlist:remove-guest-wishlists';
 
     private Application $application;
 

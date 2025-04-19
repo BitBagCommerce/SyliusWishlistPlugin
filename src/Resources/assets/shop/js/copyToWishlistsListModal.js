@@ -34,14 +34,14 @@ export class CreateCopyToWishlistsListModal {
 
     init() {
         if (this.config && typeof this.config !== 'object') {
-            throw new Error('BitBag - CreateCopyToWishlistsListModal - given config is not valid - expected object');
+            throw new Error('CreateCopyToWishlistsListModal - given config is not valid - expected object');
         }
         this._renderModal();
     }
 
     _renderModal() {
         this.modal = this._modalTemplate();
-        this.modal.classList.add('bitbag', 'copy-modal-initialization');
+        this.modal.classList.add('sylius', 'copy-modal-initialization');
         this._modalActions(this.modal);
         document.querySelector('body').appendChild(this.modal);
         this.modal.classList.remove('copy-modal-initialization');

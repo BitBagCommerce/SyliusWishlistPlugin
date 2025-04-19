@@ -74,7 +74,7 @@ final class ListWishlistProductsAction
 
             /** @var Session $session */
             $session = $request->getSession();
-            $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.go_to_wishlist_failure'));
+            $session->getFlashBag()->add('error', $this->translator->trans('sylius_wishlist_plugin.ui.go_to_wishlist_failure'));
 
             return new RedirectResponse($homepageUrl);
         }
@@ -92,7 +92,7 @@ final class ListWishlistProductsAction
         ]);
 
         return new Response(
-            $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
+            $this->twigEnvironment->render('@SyliusWishlistPlugin/WishlistDetails/index.html.twig', [
                 'wishlist' => $wishlist,
                 'form' => $form->createView(),
             ]),

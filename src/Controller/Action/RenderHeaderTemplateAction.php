@@ -15,7 +15,7 @@ namespace Sylius\WishlistPlugin\Controller\Action;
 
 final class RenderHeaderTemplateAction extends BaseWishlistsListingAction
 {
-    private const FILE_TO_RENDER = '@BitBagSyliusWishlistPlugin/Common/widget.html.twig';
+    private const FILE_TO_RENDER = '@SyliusWishlistPlugin/Common/widget.html.twig';
 
     protected function getTemplateToRender(): string
     {

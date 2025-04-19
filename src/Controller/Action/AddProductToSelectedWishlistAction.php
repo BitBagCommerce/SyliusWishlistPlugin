@@ -66,10 +66,10 @@ final class AddProductToSelectedWishlistAction
         /** @var Session $session */
         $session = $this->requestStack->getSession();
 
-        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+        $session->getFlashBag()->add('success', $this->translator->trans('sylius_wishlist_plugin.ui.added_wishlist_item'));
 
         return new RedirectResponse(
-            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
+            $this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                 'wishlistId' => $wishlistId,
             ]),
         );

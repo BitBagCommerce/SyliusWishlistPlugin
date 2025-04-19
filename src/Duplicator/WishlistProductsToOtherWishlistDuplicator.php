@@ -45,7 +45,7 @@ final class WishlistProductsToOtherWishlistDuplicator implements WishlistProduct
             }
 
             if ($destinedWishlist->hasProductVariant($variant)) {
-                $message = $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.product_variant_exists_in_another_wishlist');
+                $message = $this->translator->trans('sylius_wishlist_plugin.ui.product_variant_exists_in_another_wishlist');
 
                 /** @var Session $session */
                 $session = $this->requestStack->getSession();

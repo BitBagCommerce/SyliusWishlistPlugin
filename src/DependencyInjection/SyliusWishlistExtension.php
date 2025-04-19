@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-final class BitBagSyliusWishlistExtension extends AbstractResourceExtension implements PrependExtensionInterface
+final class SyliusWishlistExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
     use PrependDoctrineMigrationsTrait;
 
@@ -31,8 +31,8 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.xml');
-        $container->setParameter('bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token', $config['wishlist_cookie_token']);
-        $container->setParameter('bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types', $config['allowed_mime_types']);
+        $container->setParameter('sylius_wishlist_plugin.parameters.wishlist_cookie_token', $config['wishlist_cookie_token']);
+        $container->setParameter('sylius_wishlist_plugin.parameters.allowed_mime_types', $config['allowed_mime_types']);
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -41,7 +41,7 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
         $this->prependDoctrineMigrations($container);
 
         $config = $this->getCurrentConfiguration($container);
-        $this->registerResources('bitbag_sylius_wishlist_plugin', 'doctrine/orm', $config['resources'], $container);
+        $this->registerResources('sylius_wishlist_plugin', 'doctrine/orm', $config['resources'], $container);
     }
 
     protected function getMigrationsNamespace(): string
@@ -51,7 +51,7 @@ final class BitBagSyliusWishlistExtension extends AbstractResourceExtension impl
 
     protected function getMigrationsDirectory(): string
     {
-        return '@BitBagSyliusWishlistPlugin/Migrations';
+        return '@SyliusWishlistPlugin/Migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array

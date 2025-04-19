@@ -59,7 +59,7 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
             $command = new AddSelectedProductsToCart($form->getData());
             $this->messageBus->dispatch($command);
             if (false === $this->getFlashBag()->has('success')) {
-                $this->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+                $this->getFlashBag()->add('success', $this->translator->trans('sylius_wishlist_plugin.ui.added_to_cart'));
             }
         } catch (HandlerFailedException $exception) {
             $this->getFlashBag()->add('error', $this->getExceptionMessage($exception));
@@ -70,10 +70,10 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
     {
         $previous = $exception->getPrevious();
         if ($previous instanceof InsufficientProductStockException) {
-            return $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.insufficient_stock', ['%productName%' => $previous->getProductName()]);
+            return $this->translator->trans('sylius_wishlist_plugin.ui.insufficient_stock', ['%productName%' => $previous->getProductName()]);
         }
         if ($previous instanceof InvalidProductQuantityException) {
-            return $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity');
+            return $this->translator->trans('sylius_wishlist_plugin.ui.increase_quantity');
         }
 
         return $exception->getMessage();

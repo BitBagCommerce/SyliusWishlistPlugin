@@ -45,7 +45,7 @@ final class WishlistCollectionType extends AbstractType
                 ],
             ])
             ->add('addAll', SubmitType::class, [
-                'label' => 'bitbag_sylius_wishlist_plugin.ui.add_items_to_cart',
+                'label' => 'sylius_wishlist_plugin.ui.add_items_to_cart',
             ])
             ->addEventListener(
                 FormEvents::SUBMIT,
@@ -71,7 +71,7 @@ final class WishlistCollectionType extends AbstractType
         );
 
         if ($selectedProducts->isEmpty()) {
-            $event->getForm()->addError(new FormError($this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')));
+            $event->getForm()->addError(new FormError($this->translator->trans('sylius_wishlist_plugin.ui.select_products')));
         }
 
         $event->setData($selectedProducts);

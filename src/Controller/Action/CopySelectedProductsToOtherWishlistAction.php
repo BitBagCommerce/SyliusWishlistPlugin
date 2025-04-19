@@ -51,7 +51,7 @@ final class CopySelectedProductsToOtherWishlistAction
 
         $session->getFlashBag()->add(
             'success',
-            $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.copied_selected_wishlist_items'),
+            $this->translator->trans('sylius_wishlist_plugin.ui.copied_selected_wishlist_items'),
         );
 
         return new JsonResponse();

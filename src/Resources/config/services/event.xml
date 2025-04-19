@@ -5,21 +5,21 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.event_listener.create_new_wishlist" class="Sylius\WishlistPlugin\EventSubscriber\CreateNewWishlistSubscriber">
-            <argument>%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+        <service id="sylius_wishlist_plugin.event_listener.create_new_wishlist" class="Sylius\WishlistPlugin\EventSubscriber\CreateNewWishlistSubscriber">
+            <argument>%sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <argument type="service" id="request_stack"/>
             <tag name="kernel.event_subscriber" event="kernel.exception"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.event_subscriber.logged_user_wishlist_subscriber" class="Sylius\WishlistPlugin\EventSubscriber\LoggedUserWishlistSubscriber">
+        <service id="sylius_wishlist_plugin.event_subscriber.logged_user_wishlist_subscriber" class="Sylius\WishlistPlugin\EventSubscriber\LoggedUserWishlistSubscriber">
             <argument type="service" id="sylius.section_resolver.uri_based"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist_product"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.custom_factory.dom_pdf_options" class="Sylius\WishlistPlugin\Factory\DomPdfOptionsFactory"/>
+        <service id="sylius_wishlist_plugin.custom_factory.dom_pdf_options" class="Sylius\WishlistPlugin\Factory\DomPdfOptionsFactory"/>
     </services>
 </container>

@@ -5,10 +5,10 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker" class="Sylius\WishlistPlugin\Checker\WishlistNameChecker"/>
+        <service id="sylius_wishlist_plugin.checker.wishlist_name_checker" class="Sylius\WishlistPlugin\Checker\WishlistNameChecker"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.services.product_quantity_checker" class="Sylius\WishlistPlugin\Checker\ProductQuantityChecker"/>
+        <service id="sylius_wishlist_plugin.services.product_quantity_checker" class="Sylius\WishlistPlugin\Checker\ProductQuantityChecker"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.services.product_processing_checker" class="Sylius\WishlistPlugin\Checker\ProductProcessingChecker"/>
+        <service id="sylius_wishlist_plugin.services.product_processing_checker" class="Sylius\WishlistPlugin\Checker\ProductProcessingChecker"/>
     </services>
 </container>

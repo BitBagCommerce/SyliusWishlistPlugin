@@ -103,7 +103,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $wishlistCookieTokenResolver->resolve()->willReturn('cookie-wishlist-token');
 
         $wishlistProductFactory->createForWishlistAndProduct($wishlist1, $product)->willReturn($wishlistProduct);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
+        $translator->trans('sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
         $channelContext->getChannel()->willReturn($channel);
         $channel->getId()->willReturn(1);
         $wishlist1->getChannel()->willReturn($channel);
@@ -152,7 +152,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $wishlistCookieTokenResolver->resolve()->willReturn('cookie-wishlist-token');
 
         $wishlistProductFactory->createForWishlistAndProduct($wishlist1, $product)->willReturn($wishlistProduct);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
+        $translator->trans('sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
         $channelContext->getChannel()->willReturn($channel);
         $channel->getId()->willReturn(1);
         $wishlist1->getChannel()->willReturn($channel);

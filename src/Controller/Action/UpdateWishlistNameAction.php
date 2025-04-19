@@ -60,15 +60,15 @@ final class UpdateWishlistNameAction
 
             $session->getFlashBag()->add(
                 'success',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_changed'),
+                $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_name_changed'),
             );
         } catch (HandlerFailedException $exception) {
             $session->getFlashBag()->add(
                 'error',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_already_exists'),
+                $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_name_already_exists'),
             );
         }
 
-        return new Response($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products'));
+        return new Response($this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_list_products'));
     }
 }

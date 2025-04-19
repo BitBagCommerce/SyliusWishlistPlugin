@@ -54,7 +54,7 @@ final class ShowChosenWishlistAction
         $wishlistCookieToken = $this->wishlistCookieTokenResolver->resolve();
 
         if (null === $wishlist) {
-            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
+            return new RedirectResponse($this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
         }
 
         $user = $this->tokenUserResolver->resolve($token);
@@ -63,7 +63,7 @@ final class ShowChosenWishlistAction
         $wishlistUser = $wishlist->getShopUser();
 
         if ($user !== $wishlistUser) {
-            return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
+            return new RedirectResponse($this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
         }
 
         if ($user instanceof ShopUserInterface ||
@@ -72,14 +72,14 @@ final class ShowChosenWishlistAction
             $form = $this->createForm($wishlist);
 
             return new Response(
-                $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig', [
+                $this->twigEnvironment->render('@SyliusWishlistPlugin/WishlistDetails/index.html.twig', [
                     'wishlist' => $wishlist,
                     'form' => $form->createView(),
                 ]),
             );
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
+        return new RedirectResponse($this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
     }
 
     private function createForm(WishlistInterface $wishlist): FormInterface

@@ -25,7 +25,7 @@ final class WishlistRepositoryTest extends JsonApiTestCase
         parent::setUp();
 
         $this->entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->repository = $this->getContainer()->get('bitbag_sylius_wishlist_plugin.repository.wishlist');
+        $this->repository = $this->getContainer()->get('sylius_wishlist_plugin.repository.wishlist');
     }
 
     public function testItFindsOneWishlistByShopUser(): void

@@ -5,144 +5,144 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action" class="Sylius\WishlistPlugin\Controller\Action\ApiPlatform\RemoveProductFromWishlistAction">
+        <service id="sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action" class="Sylius\WishlistPlugin\Controller\Action\ApiPlatform\RemoveProductFromWishlistAction">
             <argument type="service" id="api_platform.message_bus"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action" class="Sylius\WishlistPlugin\Controller\Action\ApiPlatform\RemoveProductVariantFromWishlistAction">
+        <service id="sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action" class="Sylius\WishlistPlugin\Controller\Action\ApiPlatform\RemoveProductVariantFromWishlistAction">
             <argument type="service" id="api_platform.message_bus"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action" class="Sylius\WishlistPlugin\Controller\Action\ApiPlatform\RemoveWishlistAction">
+        <service id="sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action" class="Sylius\WishlistPlugin\Controller\Action\ApiPlatform\RemoveWishlistAction">
             <argument type="service" id="api_platform.message_bus"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action" abstract="true" class="Sylius\WishlistPlugin\Controller\Action\BaseWishlistProductsAction">
+        <service id="sylius_wishlist_plugin.controller.action.base_wishlist_products_action" abstract="true" class="Sylius\WishlistPlugin\Controller\Action\BaseWishlistProductsAction">
             <argument type="service" id="sylius.context.cart"/>
             <argument type="service" id="form.factory"/>
             <argument type="service" id="request_stack"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"/>
+            <argument type="service" id="sylius_wishlist_plugin.processor.wishlist_command_processor"/>
             <argument type="service" id="sylius.command_bus"/>
             <argument type="service" id="router"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="translator"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.base_wishlists_listing_action" abstract="true" class="Sylius\WishlistPlugin\Controller\Action\BaseWishlistsListingAction">
+        <service id="sylius_wishlist_plugin.controller.action.base_wishlists_listing_action" abstract="true" class="Sylius\WishlistPlugin\Controller\Action\BaseWishlistsListingAction">
             <argument type="service" id="twig"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.list_wishlists" class="Sylius\WishlistPlugin\Controller\Action\ListWishlistsAction" parent="bitbag_sylius_wishlist_plugin.controller.action.base_wishlists_listing_action">
+        <service id="sylius_wishlist_plugin.controller.action.list_wishlists" class="Sylius\WishlistPlugin\Controller\Action\ListWishlistsAction" parent="sylius_wishlist_plugin.controller.action.base_wishlists_listing_action">
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.render_header_template" class="Sylius\WishlistPlugin\Controller\Action\RenderHeaderTemplateAction" parent="bitbag_sylius_wishlist_plugin.controller.action.base_wishlists_listing_action">
+        <service id="sylius_wishlist_plugin.controller.action.render_header_template" class="Sylius\WishlistPlugin\Controller\Action\RenderHeaderTemplateAction" parent="sylius_wishlist_plugin.controller.action.base_wishlists_listing_action">
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.add_product_to_wishlist" class="Sylius\WishlistPlugin\Controller\Action\AddProductToWishlistAction">
+        <service id="sylius_wishlist_plugin.controller.action.add_product_to_wishlist" class="Sylius\WishlistPlugin\Controller\Action\AddProductToWishlistAction">
             <argument type="service" id="sylius.repository.product"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist_product"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
             <argument type="service" id="sylius.context.channel"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.remove_product_from_wishlist" class="Sylius\WishlistPlugin\Controller\Action\RemoveProductFromWishlistAction">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.context.wishlist"/>
+        <service id="sylius_wishlist_plugin.controller.action.remove_product_from_wishlist" class="Sylius\WishlistPlugin\Controller\Action\RemoveProductFromWishlistAction">
+            <argument type="service" id="sylius_wishlist_plugin.context.wishlist"/>
             <argument type="service" id="sylius.repository.product"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist_product"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="router"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.clean_wishlist" class="Sylius\WishlistPlugin\Controller\Action\CleanWishlistAction">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist_product"/>
+        <service id="sylius_wishlist_plugin.controller.action.clean_wishlist" class="Sylius\WishlistPlugin\Controller\Action\CleanWishlistAction">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist_product"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="router"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist" class="Sylius\WishlistPlugin\Controller\Action\AddProductVariantToWishlistAction">
+        <service id="sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist" class="Sylius\WishlistPlugin\Controller\Action\AddProductVariantToWishlistAction">
             <argument type="service" id="sylius.repository.product_variant"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist_product"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="router"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.remove_product_variant_from_wishlist" class="Sylius\WishlistPlugin\Controller\Action\RemoveProductVariantFromWishlistAction">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+        <service id="sylius_wishlist_plugin.controller.action.remove_product_variant_from_wishlist" class="Sylius\WishlistPlugin\Controller\Action\RemoveProductVariantFromWishlistAction">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="sylius.repository.product_variant"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist_product"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="router"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist" class="Sylius\WishlistPlugin\Controller\Action\RemoveSelectedProductsFromWishlistAction" parent="bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action" public="true">
+        <service id="sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist" class="Sylius\WishlistPlugin\Controller\Action\RemoveSelectedProductsFromWishlistAction" parent="sylius_wishlist_plugin.controller.action.base_wishlist_products_action" public="true">
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.add_selected_products_to_cart" class="Sylius\WishlistPlugin\Controller\Action\AddSelectedProductsToCartAction" parent="bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action" public="true">
+        <service id="sylius_wishlist_plugin.controller.action.add_selected_products_to_cart" class="Sylius\WishlistPlugin\Controller\Action\AddSelectedProductsToCartAction" parent="sylius_wishlist_plugin.controller.action.base_wishlist_products_action" public="true">
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.export_selected_products_to_csv" class="Sylius\WishlistPlugin\Controller\Action\ExportSelectedProductsToCsvAction">
+        <service id="sylius_wishlist_plugin.controller.action.export_selected_products_to_csv" class="Sylius\WishlistPlugin\Controller\Action\ExportSelectedProductsToCsvAction">
             <argument type="service" id="sylius.context.cart.new_shop_based.inner"/>
             <argument type="service" id="form.factory"/>
             <argument type="service" id="request_stack"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"/>
+            <argument type="service" id="sylius_wishlist_plugin.processor.wishlist_command_processor"/>
             <argument type="service" id="router"/>
             <argument type="service" id="translator"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="sylius.command_bus"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.import_from_csv" class="Sylius\WishlistPlugin\Controller\Action\ImportWishlistFromCsvAction">
+        <service id="sylius_wishlist_plugin.controller.action.import_from_csv" class="Sylius\WishlistPlugin\Controller\Action\ImportWishlistFromCsvAction">
             <argument type="service" id="form.factory"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="twig"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
             <argument type="service" id="sylius.command_bus"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.list_wishlist_products" class="Sylius\WishlistPlugin\Controller\Action\ListWishlistProductsAction">
+        <service id="sylius_wishlist_plugin.controller.action.list_wishlist_products" class="Sylius\WishlistPlugin\Controller\Action\ListWishlistProductsAction">
             <argument type="service" id="sylius.context.cart"/>
             <argument type="service" id="form.factory"/>
             <argument type="service" id="twig"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.processor.wishlist_command_processor"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="router"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.add_products_to_wishlist" class="Sylius\WishlistPlugin\Controller\Action\AddProductsToCartAction" parent="bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action" public="true">
+        <service id="sylius_wishlist_plugin.controller.action.add_products_to_wishlist" class="Sylius\WishlistPlugin\Controller\Action\AddProductsToCartAction" parent="sylius_wishlist_plugin.controller.action.base_wishlist_products_action" public="true">
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action" class="Sylius\WishlistPlugin\Controller\Action\ExportWishlistToPdfAction" parent="bitbag_sylius_wishlist_plugin.controller.action.base_wishlist_products_action" public="true">
+        <service id="sylius_wishlist_plugin.controller.action.export_wishlist_to_pdf_action" class="Sylius\WishlistPlugin\Controller\Action\ExportWishlistToPdfAction" parent="sylius_wishlist_plugin.controller.action.base_wishlist_products_action" public="true">
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.create_new_wishlist" class="Sylius\WishlistPlugin\Controller\Action\CreateNewWishlistAction">
+        <service id="sylius_wishlist_plugin.controller.action.create_new_wishlist" class="Sylius\WishlistPlugin\Controller\Action\CreateNewWishlistAction">
             <argument type="service" id="sylius.command_bus"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
@@ -151,21 +151,21 @@
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.show_chosen_wishlist" class="Sylius\WishlistPlugin\Controller\Action\ShowChosenWishlistAction">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+        <service id="sylius_wishlist_plugin.controller.action.show_chosen_wishlist" class="Sylius\WishlistPlugin\Controller\Action\ShowChosenWishlistAction">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="sylius.context.cart"/>
             <argument type="service" id="form.factory"/>
             <argument type="service" id="twig"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.processor.wishlist_command_processor"/>
+            <argument type="service" id="sylius_wishlist_plugin.processor.wishlist_command_processor"/>
             <argument type="service" id="router.default"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.token_user_resolver"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.add_product_to_selected_wishlist" class="Sylius\WishlistPlugin\Controller\Action\AddProductToSelectedWishlistAction">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+        <service id="sylius_wishlist_plugin.controller.action.add_product_to_selected_wishlist" class="Sylius\WishlistPlugin\Controller\Action\AddProductToSelectedWishlistAction">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="sylius.repository.product"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
@@ -174,30 +174,30 @@
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.copy_selected_products_to_other_wishlist" class="Sylius\WishlistPlugin\Controller\Action\CopySelectedProductsToOtherWishlistAction">
+        <service id="sylius_wishlist_plugin.controller.action.copy_selected_products_to_other_wishlist" class="Sylius\WishlistPlugin\Controller\Action\CopySelectedProductsToOtherWishlistAction">
             <argument type="service" id="sylius.command_bus"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.update_wishlist_name_action" class="Sylius\WishlistPlugin\Controller\Action\UpdateWishlistNameAction">
+        <service id="sylius_wishlist_plugin.controller.action.update_wishlist_name_action" class="Sylius\WishlistPlugin\Controller\Action\UpdateWishlistNameAction">
             <argument type="service" id="sylius.command_bus"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="router"/>
             <tag name="controller.service_arguments"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.controller.action.add_wishlists_to_user" class="Sylius\WishlistPlugin\Controller\Action\AddWishlistToUserAction">
+        <service id="sylius_wishlist_plugin.controller.action.add_wishlists_to_user" class="Sylius\WishlistPlugin\Controller\Action\AddWishlistToUserAction">
             <argument type="service" id="sylius.command_bus"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="router"/>
             <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.token_user_resolver"/>
             <tag name="controller.service_arguments"/>
         </service>
     </services>

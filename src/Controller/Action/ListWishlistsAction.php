@@ -15,7 +15,7 @@ namespace Sylius\WishlistPlugin\Controller\Action;
 
 final class ListWishlistsAction extends BaseWishlistsListingAction
 {
-    private const FILE_TO_RENDER = '@BitBagSyliusWishlistPlugin/WishlistGroup/index.html.twig';
+    private const FILE_TO_RENDER = '@SyliusWishlistPlugin/WishlistGroup/index.html.twig';
 
     protected function getTemplateToRender(): string
     {

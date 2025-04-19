@@ -67,15 +67,15 @@ final class AddWishlistToUserAction
 
             $session->getFlashBag()->add(
                 'success',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_saved'),
+                $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_saved'),
             );
         } catch (HandlerFailedException $exception) {
             $session->getFlashBag()->add(
                 'error',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.you_have_no_access_to_that_wishlist'),
+                $this->translator->trans('sylius_wishlist_plugin.ui.you_have_no_access_to_that_wishlist'),
             );
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
+        return new RedirectResponse($this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'));
     }
 }

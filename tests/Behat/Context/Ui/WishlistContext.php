@@ -425,7 +425,7 @@ final class WishlistContext extends RawMinkContext implements Context
         $wishlist = $this->wishlistRepository->findOneBy([]);
         Assert::notNull($wishlist);
 
-        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf', ['wishlistId' => $wishlist->getId()], UrlGeneratorInterface::RELATIVE_PATH);
+        $url = $this->router->generate('sylius_wishlist_plugin_shop_wishlist_export_to_pdf', ['wishlistId' => $wishlist->getId()], UrlGeneratorInterface::RELATIVE_PATH);
 
         $response = $guzzle->get(sprintf('%s%s', $baseUrl, $url));
 

@@ -49,7 +49,7 @@ abstract class BaseWishlistProductsAction
     {
         if (null === $this->createForm($wishlistId)) {
             return new RedirectResponse(
-                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'),
+                $this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'),
             );
         }
         $form = $this->createForm($wishlistId);
@@ -59,7 +59,7 @@ abstract class BaseWishlistProductsAction
             $this->handleCommand($form);
 
             return new RedirectResponse(
-                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
+                $this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                         'wishlistId' => $wishlistId,
                     ]),
             );
@@ -74,7 +74,7 @@ abstract class BaseWishlistProductsAction
         }
 
         return new RedirectResponse(
-            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
+            $this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                 'wishlistId' => $wishlistId,
             ]),
         );
@@ -100,7 +100,7 @@ abstract class BaseWishlistProductsAction
             /** @var Session $session */
             $session = $this->requestStack->getSession();
 
-            $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_exists'));
+            $session->getFlashBag()->add('error', $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_not_exists'));
 
             return null;
         }

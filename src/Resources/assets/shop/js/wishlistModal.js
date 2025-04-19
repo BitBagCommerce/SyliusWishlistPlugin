@@ -29,7 +29,7 @@ export class WishlistModal {
 
     init() {
         if (this.config && typeof this.config !== 'object') {
-            throw new Error('BitBag - WishlistsListModal - given config is not valid - expected object');
+            throw new Error('WishlistsListModal - given config is not valid - expected object');
         }
 
         this._renderModal();
@@ -37,7 +37,7 @@ export class WishlistModal {
 
     _renderModal() {
         this.modal = this._modalTemplate();
-        this.modal.classList.add('bitbag', 'wishlist-modal-initialization');
+        this.modal.classList.add('sylius', 'wishlist-modal-initialization');
         this._modalActions(this.modal);
         document.querySelector('body').appendChild(this.modal);
         this.modal.classList.remove('wishlist-modal-initialization');

@@ -36,7 +36,7 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
         if (false === $isWishlist) {
             $builder
                 ->add('addToWishlist', SubmitType::class, [
-                    'label' => 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist',
+                    'label' => 'sylius_wishlist_plugin.ui.add_to_wishlist',
                     'attr' => [
                         'class' => 'bitbag-add-variant-to-wishlist ui icon labeled button',
                     ],

@@ -8,16 +8,16 @@
         {% set wishlistProductsCount = data.wishlistProducts.count %}
     {% endfor %}
 
-    <a href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_products') }}" class="btn btn-icon btn-transparent px-0 position-relative" aria-label="wishlist button">
+    <a href="{{ path('sylius_wishlist_plugin_shop_locale_wishlist_list_products') }}" class="btn btn-icon btn-transparent px-0 position-relative" aria-label="wishlist button">
         {{ ux_icon('mdi:heart-outline') }}
-        <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
+        <span class="wishlist-items-count" {{ sylius_test_html_attribute('wishlist-primary-items-count') }}>
             {{- wishlistProductsCount -}}
         </span>
     </a>
 {% else %}
-    <a data-bb-wishlist-enter href="{{ path('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists') }}" class="btn btn-icon btn-transparent px-0 position-relative" aria-label="wishlist button">
+    <a data-bb-wishlist-enter href="{{ path('sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists') }}" class="btn btn-icon btn-transparent px-0 position-relative" aria-label="wishlist button">
         {{ ux_icon('material-symbols:list') }}
-        <span class="bitbag-wishlist-items-count" {{ sylius_test_html_attribute('wishlists-count') }}>
+        <span class="wishlist-items-count" {{ sylius_test_html_attribute('wishlists-count') }}>
             {{- wishlists|length -}}
         </span>
     </a>

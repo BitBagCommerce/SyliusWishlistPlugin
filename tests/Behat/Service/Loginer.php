@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -24,7 +24,7 @@ final class Loginer implements LoginerInterface
 {
     private const EXAMPLE_USER_LOGIN = 'shop@example.com';
 
-    private const EXAMPLE_USER_PASSWORD = 'bitbag';
+    private const EXAMPLE_USER_PASSWORD = '123';
 
     public function __construct(
         private FactoryInterface $customerFactory,

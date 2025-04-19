@@ -5,7 +5,7 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.voter.wishlist_voter" class="Sylius\WishlistPlugin\Voter\WishlistVoter">
+        <service id="sylius_wishlist_plugin.voter.wishlist_voter" class="Sylius\WishlistPlugin\Voter\WishlistVoter">
             <argument type="service" id="security.helper"/>
             <tag name="security.voter"/>
         </service>

@@ -6,6 +6,6 @@ framework:
             admin:
                 json_manifest_path: '%kernel.project_dir%/public/build/admin/manifest.json'
             wishlist_shop:
-                json_manifest_path: '%kernel.project_dir%/public/build/bitbag/wishlist/shop/manifest.json'
+                json_manifest_path: '%kernel.project_dir%/public/build/sylius/wishlist/shop/manifest.json'
             wishlist_admin:
-                json_manifest_path: '%kernel.project_dir%/public/build/bitbag/wishlist/admin/manifest.json'
+                json_manifest_path: '%kernel.project_dir%/public/build/sylius/wishlist/admin/manifest.json'

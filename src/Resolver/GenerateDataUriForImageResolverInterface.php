@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -17,7 +17,7 @@ use Sylius\Component\Core\Model\ImageInterface;
 
 interface GenerateDataUriForImageResolverInterface
 {
-    public const PATH_TO_EMPTY_PRODUCT_IMAGE = 'bundles/bitbagsyliuswishlistplugin/images/SyliusLogo.png';
+    public const PATH_TO_EMPTY_PRODUCT_IMAGE = 'bundles/syliuswishlistplugin/images/SyliusLogo.png';
 
     public function resolve(ImageInterface $image): string;
 

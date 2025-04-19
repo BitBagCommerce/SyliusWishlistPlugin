@@ -31,7 +31,7 @@
     </div>
     <div class="bb-wishlist-item-price">
         {% if not product.variants.empty() %}
-            {% include '@BitBagSyliusWishlistPlugin/WishlistDetails/_variantPrice.html.twig' %}
+            {% include '@SyliusWishlistPlugin/WishlistDetails/_variantPrice.html.twig' %}
         {% endif %}
     </div>
     <div class="bb-wishlist-item-quantity" {{ sylius_test_html_attribute('wishlist-item-quantity') }}>
@@ -44,6 +44,6 @@
         }) }}
     </div>
     <div class="bb-wishlist-item-actions">
-        {% include '@BitBagSyliusWishlistPlugin/Common/_removeFromWishlist.html.twig' %}
+        {% include '@SyliusWishlistPlugin/Common/_removeFromWishlist.html.twig' %}
     </div>
 </div>

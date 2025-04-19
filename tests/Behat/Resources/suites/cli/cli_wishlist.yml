@@ -8,10 +8,10 @@ default:
         - sylius.behat.context.setup.user
         - sylius.behat.context.transform.lexical
 
-        - bitbag_wishlist_plugin.behat.context.cli.wishlist
-        - bitbag_wishlist_plugin.behat.context.common.wishlist
-        - bitbag_wishlist_plugin.behat.context.ui.wishlist
-        - bitbag_wishlist_plugin.behat.context.setup.wishlist
+        - sylius_wishlist_plugin.behat.context.cli.wishlist
+        - sylius_wishlist_plugin.behat.context.common.wishlist
+        - sylius_wishlist_plugin.behat.context.ui.wishlist
+        - sylius_wishlist_plugin.behat.context.setup.wishlist
 
       filters:
         tags: "@cli_wishlist&&@cli"

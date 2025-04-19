@@ -3,7 +3,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
 >
-    <resource class="%bitbag_sylius_wishlist_plugin.model.wishlist.class%" shortName="Wishlist">
+    <resource class="%sylius_wishlist_plugin.model.wishlist.class%" shortName="Wishlist">
         <operations>
             <operation
                 name="admin_get_wishlists"
@@ -125,7 +125,7 @@
                 class="ApiPlatform\Metadata\Delete"
                 uriTemplate="/shop/wishlists/{token}/products/{productId}"
                 security="is_granted('delete', object)"
-                controller="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action"
+                controller="sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action"
                 write="false"
             />
 
@@ -134,7 +134,7 @@
                 class="ApiPlatform\Metadata\Delete"
                 uriTemplate="/shop/wishlists/{token}/productVariants/{productVariantId}"
                 security="is_granted('delete', object)"
-                controller="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action"
+                controller="sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action"
                 write="false"
             />
 
@@ -143,7 +143,7 @@
                 class="ApiPlatform\Metadata\Delete"
                 uriTemplate="/shop/wishlists/{token}"
                 security="is_granted('delete', object)"
-                controller="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action"
+                controller="sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action"
                 write="false"
             />
         </operations>

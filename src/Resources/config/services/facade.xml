@@ -5,8 +5,8 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.facade.wishlist_product_factory_facade" class="Sylius\WishlistPlugin\Facade\WishlistProductFactoryFacade">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product"/>
+        <service id="sylius_wishlist_plugin.facade.wishlist_product_factory_facade" class="Sylius\WishlistPlugin\Facade\WishlistProductFactoryFacade">
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist_product"/>
         </service>
     </services>
 </container>

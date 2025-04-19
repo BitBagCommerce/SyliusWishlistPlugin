@@ -61,7 +61,7 @@ final class AddProductToWishlistAction
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_found'),
+                $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_not_found'),
             );
         }
 
@@ -80,7 +80,7 @@ final class AddProductToWishlistAction
 
         if (null !== $channel && $wishlistChannel->getId() !== $channel->getId()) {
             throw new WishlistNotFoundException(
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_for_channel_not_found'),
+                $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_for_channel_not_found'),
             );
         }
 
@@ -94,7 +94,7 @@ final class AddProductToWishlistAction
         /** @var Session $session */
         $session = $this->requestStack->getSession();
 
-        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item'));
+        $session->getFlashBag()->add('success', $this->translator->trans('sylius_wishlist_plugin.ui.added_wishlist_item'));
 
         $referer = $request->headers->get('referer');
         $refererPathInfo = Request::create((string) $referer)->getPathInfo();

@@ -5,36 +5,36 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver" class="Sylius\WishlistPlugin\Resolver\ShopUserWishlistResolver">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist"/>
+        <service id="sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver" class="Sylius\WishlistPlugin\Resolver\ShopUserWishlistResolver">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.custom_factory.wishlist"/>
             <argument type="service" id="sylius.context.channel"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver" class="Sylius\WishlistPlugin\Resolver\WishlistsResolver">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+        <service id="sylius_wishlist_plugin.resolver.wishlists_resolver" class="Sylius\WishlistPlugin\Resolver\WishlistsResolver">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <argument type="service" id="sylius.context.channel"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.token_user_resolver"/>
             <argument type="service" id="sylius.command_bus"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver" class="Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolver">
+        <service id="sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver" class="Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolver">
             <argument type="service" id="request_stack"/>
-            <argument>%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument>%sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="security.token_storage"/>
             <argument type="service" id="sylius.context.channel"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver" class="Sylius\WishlistPlugin\Resolver\TokenUserResolver"/>
+        <service id="sylius_wishlist_plugin.resolver.token_user_resolver" class="Sylius\WishlistPlugin\Resolver\TokenUserResolver"/>
 
-        <service id="bitbag_sylius_wishlist_plugin.resolver.variant_image_path_resolver" class="Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolver">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.generate_data_uri_for_image_resolver"/>
+        <service id="sylius_wishlist_plugin.resolver.variant_image_path_resolver" class="Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolver">
+            <argument type="service" id="sylius_wishlist_plugin.resolver.generate_data_uri_for_image_resolver"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.resolver.generate_data_uri_for_image_resolver" class="Sylius\WishlistPlugin\Resolver\GenerateDataUriForImageResolver">
+        <service id="sylius_wishlist_plugin.resolver.generate_data_uri_for_image_resolver" class="Sylius\WishlistPlugin\Resolver\GenerateDataUriForImageResolver">
             <argument type="service" id="assets.empty_package"/>
             <argument type="service" id="liip_imagine.service.filter"/>
             <argument>sylius_shop_product_thumbnail</argument>

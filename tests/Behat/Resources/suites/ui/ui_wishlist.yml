@@ -14,7 +14,7 @@ default:
         - sylius.behat.context.ui.shop.cart
         - Behat\MinkExtension\Context\MinkContext
 
-        - bitbag_wishlist_plugin.behat.context.setup.wishlist
-        - bitbag_wishlist_plugin.behat.context.ui.wishlist
+        - sylius_wishlist_plugin.behat.context.setup.wishlist
+        - sylius_wishlist_plugin.behat.context.ui.wishlist
       filters:
         tags: "@wishlist&&@ui"

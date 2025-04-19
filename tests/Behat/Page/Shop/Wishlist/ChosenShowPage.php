@@ -19,6 +19,6 @@ final class ChosenShowPage extends SymfonyPage implements ChosenShowPageInterfac
 {
     public function getRouteName(): string
     {
-        return 'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist';
+        return 'sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist';
     }
 }

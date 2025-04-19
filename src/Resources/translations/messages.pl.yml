@@ -1,4 +1,4 @@
-bitbag_sylius_wishlist_plugin:
+sylius_wishlist_plugin:
     ui:
         wishlist: Lista życzeń
         add_to_wishlist: Dodaj do listy życzeń

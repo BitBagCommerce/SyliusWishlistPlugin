@@ -29,7 +29,7 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('bitbag_sylius_wishlist_plugin');
+        $treeBuilder = new TreeBuilder('sylius_wishlist_plugin');
         $rootNode = $treeBuilder->getRootNode();
         /** @phpstan-ignore-next-line  */
         $rootNode

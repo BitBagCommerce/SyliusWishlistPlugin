@@ -1,4 +1,4 @@
-bitbag_sylius_wishlist_plugin:
+sylius_wishlist_plugin:
     ui:
         wishlist: Wishlist
         go_to_wishlist_failure: There was a problem with the redirection. Try again

@@ -20,7 +20,7 @@ composer require bitbag/wishlist-plugin
 return [
     ...
 
-    Sylius\WishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
+    Sylius\WishlistPlugin\SyliusWishlistPlugin::class => ['all' => true],
 ];
 ```
 
@@ -30,15 +30,15 @@ return [
 # config/packages/_sylius.yaml
 imports:
   ...
-  - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
+  - { resource: "@SyliusWishlistPlugin/Resources/config/config.yml" }
 ```
 
 4. (optional) Import routing in your `config/routes.yaml` file:
 
   ```yaml
 # config/routes.yaml
-bitbag_sylius_wishlist_plugin:
-    resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing.yml"
+sylius_wishlist_plugin:
+    resource: "@SyliusWishlistPlugin/Resources/config/routing.yml"
 ```
 
 5. Override `OrderItemController`
@@ -61,31 +61,31 @@ sylius_ui:
   events:
     sylius.shop.layout.header.grid:
       blocks:
-        wishlist_header: '@BitBagSyliusWishlistPlugin/_wishlist_header.html.twig'
+        wishlist_header: '@SyliusWishlistPlugin/_wishlist_header.html.twig'
     sylius.shop.product.index.box:
       blocks:
         content:
-          template: "@BitBagSyliusWishlistPlugin/Product/Box/_content.html.twig"
+          template: "@SyliusWishlistPlugin/Product/Box/_content.html.twig"
           priority: 10
     sylius.shop.layout.javascripts:
       blocks:
         plugin_scripts:
-          template: "@BitBagSyliusWishlistPlugin/Shop/_scripts.html.twig"
+          template: "@SyliusWishlistPlugin/Shop/_scripts.html.twig"
           priority: 20
     sylius.shop.layout.stylesheets:
       blocks:
         plugin_stylesheets:
-          template: "@BitBagSyliusWishlistPlugin/Shop/_styles.html.twig"
+          template: "@SyliusWishlistPlugin/Shop/_styles.html.twig"
           priority: 20
     sylius.admin.layout.javascripts:
       blocks:
         plugin_scripts:
-          template: "@BitBagSyliusWishlistPlugin/Admin/_scripts.html.twig"
+          template: "@SyliusWishlistPlugin/Admin/_scripts.html.twig"
           priority: 20
     sylius.admin.layout.stylesheets:
       blocks:
         plugin_stylesheets:
-          template: "@BitBagSyliusWishlistPlugin/Admin/_styles.html.twig"
+          template: "@SyliusWishlistPlugin/Admin/_styles.html.twig"
           priority: 20
         
 ```

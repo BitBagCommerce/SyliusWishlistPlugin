@@ -25,9 +25,9 @@ final class RemoveSelectedProductsFromWishlistAction extends BaseWishlistProduct
 
         try {
             $this->messageBus->dispatch($command);
-            $this->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
+            $this->getFlashBag()->add('success', $this->translator->trans('sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
         } catch (HandlerFailedException) {
-            $this->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_product_not_found'));
+            $this->getFlashBag()->add('error', $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_product_not_found'));
         }
     }
 }

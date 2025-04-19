@@ -1,6 +1,6 @@
 {
-  "public/bitbag-wishlist-shop.css": "/public/bitbag-wishlist-shop.css",
-  "public/bitbag-wishlist-shop.js": "/public/bitbag-wishlist-shop.js",
-  "public/bitbag-wishlist-admin.css": "/public/bitbag-wishlist-admin.css",
-  "public/bitbag-wishlist-admin.js": "/public/bitbag-wishlist-admin.js"
+  "public/sylius-wishlist-shop.css": "/public/sylius-wishlist-shop.css",
+  "public/sylius-wishlist-shop.js": "/public/sylius-wishlist-shop.js",
+  "public/sylius-wishlist-admin.css": "/public/sylius-wishlist-admin.css",
+  "public/sylius-wishlist-admin.js": "/public/sylius-wishlist-admin.js"
 }

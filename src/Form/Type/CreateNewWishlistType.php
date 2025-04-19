@@ -26,7 +26,7 @@ final class CreateNewWishlistType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'bitbag_sylius_wishlist_plugin.ui.create_new_wishlist_label',
+                'label' => 'sylius_wishlist_plugin.ui.create_new_wishlist_label',
                 'required' => true,
             ])
             ->add('save', SubmitType::class)

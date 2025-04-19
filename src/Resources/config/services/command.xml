@@ -6,7 +6,7 @@
 
     <services>
         <service id="Sylius\WishlistPlugin\Command\RemoveGuestWishlistsCommand">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <tag name="console.command"/>
         </service>
     </services>

@@ -20,7 +20,7 @@ final class IndexPage extends SymfonyPage implements IndexPageInterface
 {
     public function getRouteName(): string
     {
-        return 'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists';
+        return 'sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists';
     }
 
     public function addNewWishlist(): void

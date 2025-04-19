@@ -15,7 +15,7 @@ export class WishlistMainCheckboxUpdater {
 
     init() {
         if (this.config && typeof this.config !== 'object') {
-            throw new Error('BitBag - WishlistMainCheckboxUpdater - given config is not valid - expected object');
+            throw new Error('WishlistMainCheckboxUpdater - given config is not valid - expected object');
         }
         this._connectListeners();
     }

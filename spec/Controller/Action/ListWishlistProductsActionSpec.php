@@ -95,7 +95,7 @@ final class ListWishlistProductsActionSpec extends ObjectBehavior
         $form->createView()->willReturn($formView);
         $twigEnvironment
             ->render(
-                '@BitBagSyliusWishlistPlugin/WishlistDetails/index.html.twig',
+                '@SyliusWishlistPlugin/WishlistDetails/index.html.twig',
                 [
                     'wishlist' => $wishlist,
                     'form' => $formView,

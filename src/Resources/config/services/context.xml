@@ -5,13 +5,13 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.context.wishlist" class="Sylius\WishlistPlugin\Context\WishlistContext" public="true">
+        <service id="sylius_wishlist_plugin.context.wishlist" class="Sylius\WishlistPlugin\Context\WishlistContext" public="true">
             <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist"/>
-            <argument>%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist"/>
+            <argument>%sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
             <argument type="service" id="sylius.context.channel"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.token_user_resolver"/>
         </service>
     </services>
 </container>

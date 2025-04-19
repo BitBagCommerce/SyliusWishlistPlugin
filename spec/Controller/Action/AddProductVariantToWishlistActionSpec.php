@@ -100,8 +100,8 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
 
         $wishlist->hasProductVariant($productVariant)->willReturn(false);
         $wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant)->willReturn($wishlistProduct);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
-        $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', ['wishlistId' => 1])->willReturn('/wishlist/1');
+        $translator->trans('sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
+        $urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', ['wishlistId' => 1])->willReturn('/wishlist/1');
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistRepository->add($wishlist)->shouldBeCalled();
@@ -134,8 +134,8 @@ final class AddProductVariantToWishlistActionSpec extends ObjectBehavior
 
         $wishlist->hasProductVariant($productVariant)->willReturn(false);
         $wishlistProductFactory->createForWishlistAndVariant($wishlist, $productVariant)->willReturn($wishlistProduct);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
-        $urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', ['wishlistId' => 1])->willReturn('/wishlist/1');
+        $translator->trans('sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
+        $urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', ['wishlistId' => 1])->willReturn('/wishlist/1');
 
         $wishlist->addWishlistProduct($wishlistProduct)->shouldBeCalled();
         $wishlistRepository->add($wishlist)->shouldBeCalled();

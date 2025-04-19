@@ -23,7 +23,7 @@ final class SyliusMessageBusPolyfillPass implements CompilerPassInterface
         'sylius.event_bus' => 'sylius_event.bus',
     ];
 
-    public const COMMAND_BUS_TAG = 'bitbag.sylius_wishlist_plugin.command_bus';
+    public const COMMAND_BUS_TAG = 'sylius.wishlist_plugin.command_bus';
 
     private function setupDefaultCommandBus(array $buses, ContainerBuilder $container): void
     {

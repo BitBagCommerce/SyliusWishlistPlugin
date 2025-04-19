@@ -77,7 +77,7 @@ final class ImportWishlistFromCsvHandler
                 /** @var Session $session */
                 $session = $this->requestStack->getSession();
 
-                $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
+                $session->getFlashBag()->add('error', $this->translator->trans('sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
             }
         }
     }

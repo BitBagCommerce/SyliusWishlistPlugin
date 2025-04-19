@@ -5,127 +5,127 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_products_to_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler">
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.add_products_to_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler">
             <argument type="service" id="sylius.modifier.order"/>
             <argument type="service" id="sylius.repository.order"/>
             <argument type="service" id="sylius.checker.inventory.availability"/>
-            <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
+            <tag name="sylius.wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_product_to_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductToWishlistHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.add_product_to_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductToWishlistHandler">
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist_product"/>
             <argument type="service" id="sylius.repository.product"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_product_variant_to_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.add_product_variant_to_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductVariantToWishlistHandler">
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist_product"/>
             <argument type="service" id="sylius.repository.product_variant"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.remove_product_from_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveProductFromWishlistHandler">
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.remove_product_from_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveProductFromWishlistHandler">
             <argument type="service" id="sylius.repository.product"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist_product"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.remove_product_variant_from_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveProductVariantFromWishlistHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.remove_product_variant_from_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveProductVariantFromWishlistHandler">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="sylius.repository.product_variant"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist_product"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.create_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\CreateWishlistHandler">
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.create_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\CreateWishlistHandler">
             <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.custom_factory.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.shop_user_wishlist_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
             <argument type="service" id="sylius.repository.channel"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.token_user_resolver"/>
             <argument type="service" id="request_stack"/>
-            <argument>%bitbag_sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
+            <argument>%sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.remove_wishlist" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveWishlistHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.manager.wishlist"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.remove_wishlist" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveWishlistHandler">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_selected_products_to_cart" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddSelectedProductsToCartHandler">
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.add_selected_products_to_cart" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddSelectedProductsToCartHandler">
             <argument type="service" id="sylius.modifier.order_item_quantity"/>
             <argument type="service" id="sylius.modifier.order"/>
             <argument type="service" id="sylius.repository.order"/>
             <argument type="service" id="sylius.checker.inventory.availability"/>
-            <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
+            <tag name="sylius.wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.remove_selected_products_from_wishlist" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler">
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.remove_selected_products_from_wishlist" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler">
             <argument type="service" id="sylius.repository.product_variant"/>
             <argument type="service" id="sylius.manager.order"/>
-            <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
+            <tag name="sylius.wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.import_from_csv" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\ImportWishlistFromCsvHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.import_from_csv" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\ImportWishlistFromCsvHandler">
+            <argument type="service" id="sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist"/>
             <argument type="service" id="sylius.repository.product_variant"/>
-            <argument>%bitbag_sylius_wishlist_plugin.parameters.allowed_mime_types%</argument>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer"/>
+            <argument>%sylius_wishlist_plugin.parameters.allowed_mime_types%</argument>
+            <argument type="service" id="sylius_wishlist_plugin.custom_factory.csv.serializer"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="translator"/>
-            <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
+            <tag name="sylius.wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.export_to_csv" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\ExportWishlistToCsvHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.csv_wishlist_product"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.custom_factory.csv.serializer"/>
-            <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.export_to_csv" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\ExportWishlistToCsvHandler">
+            <argument type="service" id="sylius_wishlist_plugin.custom_factory.csv_wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.custom_factory.csv.serializer"/>
+            <tag name="sylius.wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.export_selected_products_from_wishlist_to_pdf" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\ExportSelectedProductsFromWishlistToPdfHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.services.exporter"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.export_selected_products_from_wishlist_to_pdf" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\ExportSelectedProductsFromWishlistToPdfHandler">
+            <argument type="service" id="sylius_wishlist_plugin.services.exporter"/>
             <tag name="messenger.message_handler" bus="sylius.command_bus"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_product_to_selected_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductToSelectedWishlistHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.add_product_to_selected_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductToSelectedWishlistHandler">
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist_product"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.create_new_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\CreateNewWishlistHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.create_new_wishlist_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\CreateNewWishlistHandler">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <argument type="service" id="sylius.repository.channel"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.token_user_resolver"/>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.copy_selected_products_to_other_wishlist" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\CopySelectedProductsToOtherWishlistHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.services.duplicator"/>
-            <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.copy_selected_products_to_other_wishlist" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\CopySelectedProductsToOtherWishlistHandler">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.services.duplicator"/>
+            <tag name="sylius.wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.update_wishlist_name_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\UpdateWishlistNameHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.update_wishlist_name_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\UpdateWishlistNameHandler">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <tag name="messenger.message_handler"/>
         </service>
 
-        <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_wishlists_to_user_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddWishlistToUserHandler">
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
+        <service id="sylius_wishlist_plugin.command_handler.wishlist.add_wishlists_to_user_handler" class="Sylius\WishlistPlugin\CommandHandler\Wishlist\AddWishlistToUserHandler">
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <tag name="messenger.message_handler"/>
         </service>
     </services>
