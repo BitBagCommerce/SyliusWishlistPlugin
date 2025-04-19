@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Duplicator;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Doctrine\Common\Collections\Collection;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 
 interface WishlistProductsToOtherWishlistDuplicatorInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Context;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\WishlistPlugin\Context\WishlistContext;
 use Sylius\WishlistPlugin\Context\WishlistContextInterface;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -36,12 +37,13 @@ final class WishlistContextSpec extends ObjectBehavior
         WishlistFactoryInterface $wishlistFactory,
         ChannelContextInterface $channelContext,
         TokenUserResolverInterface $tokenUserResolver,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ) {
         $this->beConstructedWith(
             $tokenStorage,
             $wishlistRepository,
             $wishlistFactory,
-            'sylius_wishlist',
+            $wishlistCookieTokenResolver,
             $channelContext,
             $tokenUserResolver,
         );
@@ -65,9 +67,9 @@ final class WishlistContextSpec extends ObjectBehavior
         WishlistFactoryInterface $wishlistFactory,
         WishlistInterface $wishlist,
         TokenUserResolverInterface $tokenUserResolver,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ): void {
-        $request->cookies = $parameterBag;
-        $parameterBag->get('sylius_wishlist')->willReturn(null);
+        $wishlistCookieTokenResolver->resolve()->willReturn('nonexistent-token');
         $tokenStorage->getToken()->willReturn($token);
         $tokenUserResolver->resolve($token)->willReturn(null);
 
@@ -84,9 +86,9 @@ final class WishlistContextSpec extends ObjectBehavior
         WishlistRepositoryInterface $wishlistRepository,
         WishlistInterface $wishlist,
         TokenUserResolverInterface $tokenUserResolver,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ): void {
-        $request->cookies = $parameterBag;
-        $parameterBag->get('sylius_wishlist')->willReturn('Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId');
+        $wishlistCookieTokenResolver->resolve()->willReturn('Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId');
         $tokenStorage->getToken()->willReturn($token);
         $tokenUserResolver->resolve($token)->willReturn(null);
         $wishlistRepository->findByToken('Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId')->willReturn($wishlist);
@@ -103,9 +105,9 @@ final class WishlistContextSpec extends ObjectBehavior
         WishlistFactoryInterface $wishlistFactory,
         WishlistInterface $wishlist,
         TokenUserResolverInterface $tokenUserResolver,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ): void {
-        $request->cookies = $parameterBag;
-        $parameterBag->get('sylius_wishlist')->willReturn('Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId');
+        $wishlistCookieTokenResolver->resolve()->willReturn('Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId');
         $tokenStorage->getToken()->willReturn($token);
         $tokenUserResolver->resolve($token)->willReturn(null);
         $wishlistRepository->findByToken('Fq8N4W6mk12i9J2HX0U60POGG5UEzSgGW37OWd6sv2dd8FlBId')->willReturn(null);
@@ -125,9 +127,9 @@ final class WishlistContextSpec extends ObjectBehavior
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
         TokenUserResolverInterface $tokenUserResolver,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ): void {
-        $request->cookies = $parameterBag;
-        $parameterBag->get('sylius_wishlist')->willReturn(null);
+        $wishlistCookieTokenResolver->resolve()->willReturn('nonexistent-token');
         $tokenStorage->getToken()->willReturn($token);
         $tokenUserResolver->resolve($token)->willReturn($shopUser);
         $channelContext->getChannel()->willReturn($channel);
@@ -148,9 +150,9 @@ final class WishlistContextSpec extends ObjectBehavior
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
         TokenUserResolverInterface $tokenUserResolver,
+        WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
     ): void {
-        $request->cookies = $parameterBag;
-        $parameterBag->get('sylius_wishlist')->willReturn(null);
+        $wishlistCookieTokenResolver->resolve()->willReturn('nonexistent-token');
         $wishlistFactory->createNew()->willReturn($wishlist);
         $tokenStorage->getToken()->willReturn($token);
         $tokenUserResolver->resolve($token)->willReturn($shopUser);

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Controller;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Bundle\OrderBundle\Controller\OrderItemController as BaseController;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Order\CartActions;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

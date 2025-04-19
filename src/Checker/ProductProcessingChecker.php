@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Checker;
 
-use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
 
 final class ProductProcessingChecker implements ProductProcessingCheckerInterface
 {

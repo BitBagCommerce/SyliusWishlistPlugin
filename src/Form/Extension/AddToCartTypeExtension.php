@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Form\Extension;
 
+use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
 use Sylius\WishlistPlugin\Entity\Wishlist;
 use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
-use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

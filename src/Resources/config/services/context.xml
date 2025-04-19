@@ -9,7 +9,7 @@
             <argument type="service" id="security.token_storage"/>
             <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="sylius_wishlist_plugin.factory.wishlist"/>
-            <argument>%sylius_wishlist_plugin.parameters.wishlist_cookie_token%</argument>
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <argument type="service" id="sylius.context.channel"/>
             <argument type="service" id="sylius_wishlist_plugin.resolver.token_user_resolver"/>
         </service>

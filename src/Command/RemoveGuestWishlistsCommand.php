@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class RemoveGuestWishlistsCommand extends Command
 {
-    protected static $defaultName = 'sylius:wishlist:remove-guest-wishlists';
+    protected static string $defaultName = 'sylius:wishlist:remove-guest-wishlists';
 
     public function __construct(private WishlistRepositoryInterface $wishlistRepository)
     {

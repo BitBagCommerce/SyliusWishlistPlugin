@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\DependencyInjection;
 
-use Sylius\WishlistPlugin\DependencyInjection\SyliusWishlistExtension;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
+use Sylius\WishlistPlugin\DependencyInjection\SyliusWishlistExtension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 
 final class SyliusWishlistExtensionSpec extends ObjectBehavior

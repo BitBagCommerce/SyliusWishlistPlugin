@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use Sylius\WishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
-use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler;
-use Sylius\WishlistPlugin\Exception\InsufficientProductStockException;
-use Sylius\WishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
@@ -27,6 +22,11 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddProductsToCartInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler;
+use Sylius\WishlistPlugin\Exception\InsufficientProductStockException;
+use Sylius\WishlistPlugin\Exception\InvalidProductQuantityException;
 
 final class AddProductsToCartHandlerSpec extends ObjectBehavior
 {

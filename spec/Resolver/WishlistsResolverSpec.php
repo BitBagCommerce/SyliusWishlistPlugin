@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Resolver;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
+use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\WishlistPlugin\Resolver\TokenUserResolverInterface;
 use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\WishlistPlugin\Resolver\WishlistsResolver;
 use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Channel\Context\ChannelNotFoundException;
-use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Model\Factory;
 
-use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 
 interface VariantPdfModelFactoryInterface
 {

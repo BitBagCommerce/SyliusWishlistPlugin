@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Checker;
 
-use Sylius\WishlistPlugin\Checker\WishlistNameChecker;
 use PhpSpec\ObjectBehavior;
+use Sylius\WishlistPlugin\Checker\WishlistNameChecker;
 
 final class WishlistNameCheckerSpec extends ObjectBehavior
 {

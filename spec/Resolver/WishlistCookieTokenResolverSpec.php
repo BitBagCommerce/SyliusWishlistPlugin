@@ -1,31 +1,20 @@
 <?php
 
-/*
- * This file is part of the Sylius package.
- *
- * (c) Sylius Sp. z o.o.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Resolver;
 
-use Sylius\WishlistPlugin\Entity\WishlistToken;
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolver;
 use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class WishlistCookieTokenResolverSpec extends ObjectBehavior
 {
-    public function let(
-        RequestStack $requestStack,
-    ): void {
+    public function let(RequestStack $requestStack): void
+    {
         $this->beConstructedWith($requestStack, 'token');
     }
 
@@ -35,47 +24,32 @@ final class WishlistCookieTokenResolverSpec extends ObjectBehavior
         $this->shouldImplement(WishlistCookieTokenResolverInterface::class);
     }
 
-    public function it_returns_wishlist_cookie_token_from_main_request_cookies(
-        RequestStack $requestStack,
-        Request $request,
-        ParameterBag $inputBag,
-    ): void {
+    public function it_returns_token_from_cookies_if_present(RequestStack $requestStack): void
+    {
+        $request = new Request();
+        $request->cookies = new InputBag(['token' => 'cookie_token']);
         $requestStack->getMainRequest()->willReturn($request);
-        $inputBag->get('token')->willReturn('wishlist_token');
-        $request->cookies = $inputBag;
 
-        $this->resolve()->shouldReturn('wishlist_token');
+        $this->resolve()->shouldReturn('cookie_token');
     }
 
-    public function it_returns_wishlist_cookie_token_from_main_request_attributes(
-        RequestStack $requestStack,
-        Request $request,
-        ParameterBag $inputBagCookies,
-        ParameterBag $inputBagAttributes,
-    ): void {
+    public function it_returns_token_from_attributes_if_not_in_cookies(RequestStack $requestStack): void
+    {
+        $request = new Request();
+        $request->cookies = new InputBag();
+        $request->attributes = new InputBag(['token' => 'attribute_token']);
         $requestStack->getMainRequest()->willReturn($request);
-        $inputBagCookies->get('token')->willReturn(null);
-        $inputBagAttributes->get('token')->willReturn('wishlist_token');
-        $request->cookies = $inputBagCookies;
-        $request->attributes = $inputBagAttributes;
 
-        $this->resolve()->shouldReturn('wishlist_token');
+        $this->resolve()->shouldReturn('attribute_token');
     }
 
-    public function it_returns_new_wishlist_token_class_if_not_found_in_cookies_nor_attributes(
-        RequestStack $requestStack,
-        Request $request,
-        ParameterBag $inputBagCookies,
-        ParameterBag $inputBagAttributes,
-        WishlistToken $wishlistToken,
-    ): void {
+    public function it_returns_new_token_if_not_in_cookies_nor_attributes(RequestStack $requestStack): void
+    {
+        $request = new Request();
+        $request->cookies = new InputBag();
+        $request->attributes = new InputBag();
         $requestStack->getMainRequest()->willReturn($request);
-        $inputBagCookies->get('token')->willReturn(null);
-        $inputBagAttributes->get('token')->willReturn(null);
-        $request->cookies = $inputBagCookies;
-        $request->attributes = $inputBagAttributes;
-        $wishlistToken->getValue()->willReturn('wishlist_token');
 
-        $this->resolve()->shouldBeString();
+        $this->resolve()->shouldMatch("/^([a-f0-9\-]{36})$/");
     }
 }

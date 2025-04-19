@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Repository;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 
 interface WishlistRepositoryInterface extends RepositoryInterface
 {

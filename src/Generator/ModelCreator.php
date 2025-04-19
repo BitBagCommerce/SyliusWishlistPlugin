@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Generator;
 
+use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 use Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
-use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
-use Sylius\Component\Core\Model\OrderItemInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;

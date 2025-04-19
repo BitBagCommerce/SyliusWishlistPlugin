@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Controller\Action;
 
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Controller\Action\RenderHeaderTemplateAction;
 use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
-use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;

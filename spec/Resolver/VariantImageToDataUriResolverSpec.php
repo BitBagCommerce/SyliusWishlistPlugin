@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Resolver;
 
-use Sylius\WishlistPlugin\Resolver\GenerateDataUriForImageResolverInterface;
-use Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolver;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductImage;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\WishlistPlugin\Resolver\GenerateDataUriForImageResolverInterface;
+use Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolver;
 
 final class VariantImageToDataUriResolverSpec extends ObjectBehavior
 {

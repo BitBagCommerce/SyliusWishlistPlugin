@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Factory;
 
-use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 
 interface CsvWishlistProductFactoryInterface extends FactoryInterface
 {

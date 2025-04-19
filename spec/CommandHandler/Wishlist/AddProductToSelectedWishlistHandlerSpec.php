@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\AddProductToSelectedWishlistInterface;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\AddProductToSelectedWishlistHandler;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductInterface;
 
 final class AddProductToSelectedWishlistHandlerSpec extends ObjectBehavior
 {

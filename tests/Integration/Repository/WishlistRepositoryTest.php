@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Tests\Sylius\WishlistPlugin\Integration\Repository;
 
 use ApiTestCase\JsonApiTestCase;
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\Channel;
 use Sylius\Component\Core\Model\ShopUser;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 
 final class WishlistRepositoryTest extends JsonApiTestCase
 {

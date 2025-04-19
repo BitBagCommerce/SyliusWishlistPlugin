@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Processor;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 use Sylius\WishlistPlugin\Generator\ModelCreatorInterface;
 use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 use Sylius\WishlistPlugin\Processor\VariantPdfModelProcessor;
 use Sylius\WishlistPlugin\Processor\VariantPdfModelProcessorInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
 
 final class VariantPdfModelProcessorSpec extends ObjectBehavior
 {

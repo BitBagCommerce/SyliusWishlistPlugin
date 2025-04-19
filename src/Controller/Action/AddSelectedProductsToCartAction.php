@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Controller\Action;
 
+use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use Sylius\WishlistPlugin\Exception\InsufficientProductStockException;
 use Sylius\WishlistPlugin\Exception\InvalidProductQuantityException;
 use Sylius\WishlistPlugin\Processor\WishlistCommandProcessorInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Sylius\Component\Order\Context\CartContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;

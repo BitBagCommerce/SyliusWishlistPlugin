@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Duplicator;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\WishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicator;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

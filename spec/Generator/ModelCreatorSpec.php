@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * This file is part of the Sylius package.
  *
  * (c) Sylius Sp. z o.o.
@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Generator;
 
+use PhpSpec\ObjectBehavior;
+use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use Sylius\WishlistPlugin\Generator\ModelCreator;
 use Sylius\WishlistPlugin\Generator\ModelCreatorInterface;
 use Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
 use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
 use Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
-use PhpSpec\ObjectBehavior;
-use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
-use Sylius\Component\Core\Model\OrderItemInterface;
-use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 

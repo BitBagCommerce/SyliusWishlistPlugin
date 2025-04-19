@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Checker;
 
-use Sylius\WishlistPlugin\Checker\ProductProcessingChecker;
-use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\WishlistPlugin\Checker\ProductProcessingChecker;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 
 final class ProductProcessingCheckerSpec extends ObjectBehavior
 {

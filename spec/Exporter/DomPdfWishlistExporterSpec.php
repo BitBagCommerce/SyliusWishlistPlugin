@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Exporter;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Dompdf\Dompdf;
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Exporter\DomPdfWishlistExporter;
 use Sylius\WishlistPlugin\Exporter\DomPdfWishlistExporterInterface;
 use Sylius\WishlistPlugin\Factory\DomPdfFactoryInterface;
 use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Dompdf\Dompdf;
-use PhpSpec\ObjectBehavior;
 use Twig\Environment;
 
 final class DomPdfWishlistExporterSpec extends ObjectBehavior

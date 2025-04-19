@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Processor;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Sylius\WishlistPlugin\Command\Wishlist\WishlistItem;
 use Sylius\WishlistPlugin\Processor\SelectedWishlistProductsProcessor;
 use Sylius\WishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
 
 final class SelectedWishlistProductsProcessorSpec extends ObjectBehavior
 {

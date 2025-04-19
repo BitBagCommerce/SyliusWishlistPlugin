@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Command\Wishlist;
 
-use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class WishlistItem implements WishlistItemInterface

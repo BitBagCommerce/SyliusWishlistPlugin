@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\Factory;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\Factory\WishlistFactory;
-use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Factory\WishlistFactory;
+use Sylius\WishlistPlugin\Factory\WishlistFactoryInterface;
 
 final class WishlistFactorySpec extends ObjectBehavior
 {

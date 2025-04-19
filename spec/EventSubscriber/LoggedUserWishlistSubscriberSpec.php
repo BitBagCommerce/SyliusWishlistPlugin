@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\EventSubscriber;
 
-use Sylius\WishlistPlugin\Entity\WishlistInterface;
-use Sylius\WishlistPlugin\EventSubscriber\LoggedUserWishlistSubscriber;
-use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\AdminBundle\SectionResolver\AdminSection;
@@ -24,6 +21,9 @@ use Sylius\Bundle\ShopBundle\SectionResolver\ShopSection;
 use Sylius\Bundle\UserBundle\Event\UserEvent;
 use Sylius\Component\Core\Model\AdminUserInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\EventSubscriber\LoggedUserWishlistSubscriber;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class LoggedUserWishlistSubscriberSpec extends ObjectBehavior
