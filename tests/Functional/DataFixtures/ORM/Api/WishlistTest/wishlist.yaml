@@ -51,12 +51,14 @@ Sylius\Component\Core\Model\ShopUser:
         username: 'bruce@wayne.com'
         usernameCanonical: 'bruce@wayne.com'
 Sylius\Component\Core\Model\Product:
-    product_{1..10}:
-        code: 'product_<current()>_code'
+    product_1:
+        code: 'product_code'
         enabled: true
+        channels: ['@channel_us']
+        currentLocale: 'en_US'
 Sylius\Component\Core\Model\ProductTranslation:
-    product_translation_en_{1..10}:
-        translatable: '@product_<current()>'
+    product_translation_en_1:
+        translatable: '@product_1'
         name: '<word()>'
         description: '<sentence()>'
         shortDescription: '<sentence()>'
