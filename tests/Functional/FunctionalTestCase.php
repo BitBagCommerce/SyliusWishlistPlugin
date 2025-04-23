@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Tests\Sylius\WishlistPlugin\Functional;
 
-use Sylius\Bundle\CoreBundle\Application\Kernel as SyliusKernel;
+use Sylius\Bundle\CoreBundle\SyliusCoreBundle as SyliusKernel;
 use Sylius\Tests\Api\JsonApiTestCase;
 use Sylius\Tests\Api\Utils\AdminUserLoginTrait;
 use Sylius\Tests\Api\Utils\ShopUserLoginTrait;

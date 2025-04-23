@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+ This file is part of the Sylius package.
+
+ (c) Sylius Sp. z o.o.
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+
 <resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
@@ -124,18 +136,18 @@
                 name="shop_remove_product_from_wishlist"
                 class="ApiPlatform\Metadata\Delete"
                 uriTemplate="/shop/wishlists/{token}/products/{productId}"
-                security="is_granted('delete', object)"
                 controller="sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action"
                 write="false"
+                read="false"
             />
 
             <operation
                 name="shop_remove_product_variant_from_wishlist"
                 class="ApiPlatform\Metadata\Delete"
                 uriTemplate="/shop/wishlists/{token}/productVariants/{productVariantId}"
-                security="is_granted('delete', object)"
                 controller="sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action"
                 write="false"
+                read="false"
             />
 
             <operation

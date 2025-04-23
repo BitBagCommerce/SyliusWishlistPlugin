@@ -78,6 +78,7 @@ final class WishlistTest extends FunctionalTestCase
         $header['CONTENT_TYPE'] = self::PATCH_TYPE;
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->fixturesData['empty_olivier_wishlist'];
+
         $token = $wishlist->getToken();
         /** @var ProductInterface $product */
         $product = $this->fixturesData['product_1'];
@@ -85,7 +86,6 @@ final class WishlistTest extends FunctionalTestCase
         $this->assertCount(0, $wishlist->getWishlistProducts());
         $this->client->request('PATCH', '/api/v2/shop/wishlists/' . $token . '/product', [], [], $header, json_encode([
             'productId' => $product->getId(),
-            'wishlist' => $wishlist,
         ]));
 
         $response = $this->client->getResponse();
@@ -137,7 +137,6 @@ final class WishlistTest extends FunctionalTestCase
 
         $this->assertCount(1, $wishlist->getWishlistProducts());
         $this->client->request('DELETE', '/api/v2/shop/wishlists/' . $token . '/products/' . $product->getId(), [], [], $header);
-
         $response = $this->client->getResponse();
 
         /** @var ?WishlistInterface $updatedWishlist */

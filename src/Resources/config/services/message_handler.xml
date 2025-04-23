@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+
+ This file is part of the Sylius package.
+
+ (c) Sylius Sp. z o.o.
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services
@@ -31,6 +43,7 @@
             <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <argument type="service" id="sylius_wishlist_plugin.repository.wishlist_product"/>
             <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
+            <argument type="service" id="security.authorization_checker"/>
             <tag name="messenger.message_handler"/>
         </service>
 
@@ -39,6 +52,7 @@
             <argument type="service" id="sylius.repository.product_variant"/>
             <argument type="service" id="sylius_wishlist_plugin.repository.wishlist_product"/>
             <argument type="service" id="sylius_wishlist_plugin.manager.wishlist"/>
+            <argument type="service" id="security.authorization_checker"/>
             <tag name="messenger.message_handler"/>
         </service>
 

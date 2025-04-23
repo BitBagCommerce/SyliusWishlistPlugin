@@ -17,6 +17,7 @@ use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Resource\ResourceActions;
 use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductVariantFromWishlist;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
@@ -24,6 +25,8 @@ use Sylius\WishlistPlugin\Exception\ProductVariantNotFoundException;
 use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[AsMessageHandler]
 final class RemoveProductVariantFromWishlistHandler
@@ -33,6 +36,7 @@ final class RemoveProductVariantFromWishlistHandler
         private ProductVariantRepositoryInterface $productVariantRepository,
         private RepositoryInterface $wishlistProductRepository,
         private ObjectManager $wishlistManager,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -47,6 +51,10 @@ final class RemoveProductVariantFromWishlistHandler
         $wishlistProduct = $this->wishlistProductRepository->findOneBy(['variant' => $variant]);
         /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->findByToken($token);
+
+        if (!$this->authorizationChecker->isGranted(ResourceActions::DELETE, $wishlist)) {
+            throw new AccessDeniedException('You are not allowed to delete from this wishlist.');
+        }
 
         if (null === $variant || null === $wishlistProduct) {
             throw new ProductVariantNotFoundException(
