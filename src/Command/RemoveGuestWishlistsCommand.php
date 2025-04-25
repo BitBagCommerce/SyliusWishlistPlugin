@@ -26,8 +26,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 final class RemoveGuestWishlistsCommand extends Command
 {
-    protected static string $defaultName = 'sylius:wishlist:remove-guest-wishlists';
-
     public function __construct(private WishlistRepositoryInterface $wishlistRepository)
     {
         parent::__construct();
