@@ -14,7 +14,7 @@ Feature: Restricting access to other's user wishlist
   @ui
   Scenario: Restricting access to other users wishlist
     When I go to "/"
-    And I log in as "jdeer@sylius.pl"
+    And I log in as "jdeer@sylius.pl" with "sylius" password
     And I go to "/wishlists"
     Then I should have 1 wishlists
     When I try to access "jdeer2@sylius.pl" wishlist "Wishlist2"

@@ -12,6 +12,7 @@ default:
         - sylius.behat.context.transform.channel
         - sylius.behat.context.ui.shop.product
         - sylius.behat.context.ui.shop.cart
+        - sylius.behat.context.ui.shop.account
         - Behat\MinkExtension\Context\MinkContext
 
         - sylius_wishlist_plugin.behat.context.setup.wishlist

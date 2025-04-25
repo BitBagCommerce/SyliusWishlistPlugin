@@ -16,7 +16,6 @@ namespace Sylius\WishlistPlugin\Resolver;
 use Sylius\WishlistPlugin\Entity\WishlistToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Webmozart\Assert\Assert;
 
 final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverInterface
 {
@@ -30,7 +29,9 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
     {
         /** @var ?Request $mainRequest */
         $mainRequest = $this->requestStack->getMainRequest();
-        Assert::notNull($mainRequest);
+        if (null === $mainRequest) {
+            return (string) new WishlistToken();
+        }
 
         $wishlistCookieToken = $mainRequest->cookies->get($this->wishlistCookieToken);
 

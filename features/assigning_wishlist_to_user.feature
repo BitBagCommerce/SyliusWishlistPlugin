@@ -13,7 +13,7 @@ Feature: Assigning a wishlist to a user
   @ui
   Scenario: Listing wishlists
     When I go to "/"
-    And I log in as "jdeer@sylius.pl"
+    And I log in as "jdeer@sylius.pl" with "sylius" password
     And I go to "/wishlists"
     Then I should have 2 wishlists
 
@@ -23,9 +23,8 @@ Feature: Assigning a wishlist to a user
     And all store products appear under a main taxonomy
     And I add this product to wishlist
     When I go to "/"
-    And I log in as "jdeer@sylius.pl"
+    And I log in as "jdeer@sylius.pl" with "sylius" password
     And I go to "/wishlists"
-    And I follow "Save wishlist"
     Then I should have 3 wishlists
     And I should not see "Save wishlist"
 
@@ -34,7 +33,7 @@ Feature: Assigning a wishlist to a user
     When I go to "/"
     And I go to "/wishlists"
     And I should have 0 wishlists
-    And I log in as "jdeer@sylius.pl"
+    And I log in as "jdeer@sylius.pl" with "sylius" password
     And I go to "/wishlists"
     And I should have 2 wishlists
     And I press "wishlist-edit-button-Wishlist1"

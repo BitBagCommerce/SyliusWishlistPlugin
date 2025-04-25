@@ -7,7 +7,7 @@ Feature: Adding wishlist product to cart
   Background:
     Given the store operates on a single channel in "United States"
 
-  @ui
+  @ui @javascript
   Scenario: Adding a wishlist product to cart
     Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
     And all store products appear under a main taxonomy
@@ -29,7 +29,7 @@ Feature: Adding wishlist product to cart
     And I add my wishlist products to cart
     Then I should be notified that "Jack Daniels Gentleman" does not have sufficient stock
 
-  @ui
+  @ui @javascript
   Scenario: Adding selected wishlist products to cart
     Given the store has a product "Jack Daniels Gentleman" priced at "$10.00"
     And all store products appear under a main taxonomy
