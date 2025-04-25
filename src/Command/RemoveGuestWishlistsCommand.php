@@ -14,11 +14,16 @@ declare(strict_types=1);
 namespace Sylius\WishlistPlugin\Command;
 
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'sylius:wishlist:remove-guest-wishlists',
+    description: 'Removes guest wishlists',
+)]
 final class RemoveGuestWishlistsCommand extends Command
 {
     protected static string $defaultName = 'sylius:wishlist:remove-guest-wishlists';
@@ -30,15 +35,12 @@ final class RemoveGuestWishlistsCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription('Removes guest wishlists')
-            ->setName(self::$defaultName)
-            ->addOption(
-                'date',
-                'd',
-                InputOption::VALUE_OPTIONAL,
-                'The date to remove wishlists updated before (format: d-m-Y)',
-            );
+        $this->addOption(
+            'date',
+            'd',
+            InputOption::VALUE_OPTIONAL,
+            'The date to remove wishlists updated before (format: d-m-Y)',
+        );
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
