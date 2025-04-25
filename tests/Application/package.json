@@ -3,7 +3,8 @@
   "scripts": {
     "build": "encore dev",
     "build:prod": "encore production",
-    "watch": "encore dev --watch"
+    "watch": "encore dev --watch",
+    "prod": "yarn build:prod"
   },
   "dependencies": {
     "@sylius-ui/admin": "file:../../vendor/sylius/sylius/src/Sylius/Bundle/AdminBundle",
