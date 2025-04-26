@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Sylius package.
- *
- * (c) Sylius Sp. z o.o.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
@@ -18,6 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Resource\ResourceActions;
 use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
 use Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveProductFromWishlistHandler;
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
@@ -25,6 +17,7 @@ use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
 use Sylius\WishlistPlugin\Exception\ProductNotFoundException;
 use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class RemoveProductFromWishlistHandlerSpec extends ObjectBehavior
 {
@@ -33,12 +26,16 @@ final class RemoveProductFromWishlistHandlerSpec extends ObjectBehavior
         WishlistRepositoryInterface $wishlistRepository,
         RepositoryInterface $wishlistProductRepository,
         ObjectManager $wishlistManager,
+        AuthorizationCheckerInterface $authorizationChecker,
     ): void {
+        $authorizationChecker->isGranted(ResourceActions::DELETE, null)->willReturn(true);
+
         $this->beConstructedWith(
             $productRepository,
             $wishlistRepository,
             $wishlistProductRepository,
             $wishlistManager,
+            $authorizationChecker,
         );
     }
 
@@ -55,16 +52,17 @@ final class RemoveProductFromWishlistHandlerSpec extends ObjectBehavior
         ProductInterface $product,
         WishlistInterface $wishlist,
         WishlistProductInterface $wishlistProduct,
+        AuthorizationCheckerInterface $authorizationChecker,
     ): void {
         $removeProductCommand = new RemoveProductFromWishlist(1, 'wishlist_token');
 
         $productRepository->find(1)->willReturn($product);
         $wishlistRepository->findByToken('wishlist_token')->willReturn($wishlist);
-        $wishlistProductRepository
-            ->findOneBy(['product' => $product, 'wishlist' => $wishlist])
-            ->willReturn($wishlistProduct);
+        $wishlistProductRepository->findOneBy(['product' => $product, 'wishlist' => $wishlist])->willReturn($wishlistProduct);
 
-        $wishlist->removeProduct($wishlistProduct)->willReturn($wishlist);
+        $authorizationChecker->isGranted(ResourceActions::DELETE, $wishlist)->willReturn(true);
+
+        $wishlist->removeProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
 
         $this->__invoke($removeProductCommand)->shouldReturn($wishlist);
@@ -84,16 +82,10 @@ final class RemoveProductFromWishlistHandlerSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         WishlistRepositoryInterface $wishlistRepository,
         ProductInterface $product,
-        WishlistProductInterface $wishlistProduct,
-        RepositoryInterface $wishlistProductRepository,
     ): void {
         $removeProductCommand = new RemoveProductFromWishlist(1, 'wishlist_token');
 
         $productRepository->find(1)->willReturn($product);
-        $wishlistProductRepository->findOneBy([
-            'product' => $product,
-            'wishlist' => null,
-        ])->willReturn($wishlistProduct);
         $wishlistRepository->findByToken('wishlist_token')->willReturn(null);
 
         $this->shouldThrow(WishlistNotFoundException::class)->during('__invoke', [$removeProductCommand]);

@@ -48,8 +48,20 @@ final class RemoveProductFromWishlistHandler
         /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($productId);
 
+        if (null === $product) {
+            throw new ProductNotFoundException(
+                sprintf('The Product %s does not exist', $productId),
+            );
+        }
+
         /** @var ?WishlistInterface $wishlist */
         $wishlist = $this->wishlistRepository->findByToken($token);
+
+        if (null === $wishlist) {
+            throw new WishlistNotFoundException(
+                sprintf('The Wishlist %s does not exist', $token),
+            );
+        }
 
         if (!$this->authorizationChecker->isGranted(ResourceActions::DELETE, $wishlist)) {
             throw new AccessDeniedException('You are not allowed to delete from this wishlist.');
@@ -58,19 +70,13 @@ final class RemoveProductFromWishlistHandler
         /** @var ?WishlistProductInterface $wishlistProduct */
         $wishlistProduct = $this->wishlistProductRepository->findOneBy(['product' => $product, 'wishlist' => $wishlist]);
 
-        if (null === $product || null === $wishlistProduct) {
+        if (null === $wishlistProduct) {
             throw new ProductNotFoundException(
-                sprintf('The Product %s does not exist', $productId),
+                sprintf('The Product %s was not found in Wishlist %s', $productId, $token),
             );
         }
 
-        if (null === $wishlist) {
-            throw new WishlistNotFoundException(
-                sprintf('The Wishlist %s does not exist', $token),
-            );
-        }
-
-        $wishlist = $wishlist->removeProduct($wishlistProduct);
+        $wishlist->removeProduct($wishlistProduct);
         $this->wishlistManager->flush();
 
         return $wishlist;

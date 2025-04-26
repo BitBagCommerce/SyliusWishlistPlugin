@@ -47,20 +47,15 @@ final class RemoveProductVariantFromWishlistHandler
 
         /** @var ?ProductVariantInterface $variant */
         $variant = $this->productVariantRepository->find($variantId);
-        /** @var ?WishlistProductInterface $wishlistProduct */
-        $wishlistProduct = $this->wishlistProductRepository->findOneBy(['variant' => $variant]);
-        /** @var ?WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->findByToken($token);
 
-        if (!$this->authorizationChecker->isGranted(ResourceActions::DELETE, $wishlist)) {
-            throw new AccessDeniedException('You are not allowed to delete from this wishlist.');
-        }
-
-        if (null === $variant || null === $wishlistProduct) {
+        if (null === $variant) {
             throw new ProductVariantNotFoundException(
-                sprintf('The Product %s does not exist', $variantId),
+                sprintf('The Product Variant %s does not exist', $variantId),
             );
         }
+
+        /** @var ?WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->findByToken($token);
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
@@ -68,7 +63,20 @@ final class RemoveProductVariantFromWishlistHandler
             );
         }
 
-        $wishlist->removeProductVariant($variant);
+        if (!$this->authorizationChecker->isGranted(ResourceActions::DELETE, $wishlist)) {
+            throw new AccessDeniedException('You are not allowed to delete from this wishlist.');
+        }
+
+        /** @var ?WishlistProductInterface $wishlistProduct */
+        $wishlistProduct = $this->wishlistProductRepository->findOneBy(['variant' => $variant, 'wishlist' => $wishlist]);
+
+        if (null === $wishlistProduct) {
+            throw new ProductVariantNotFoundException(
+                sprintf('The Product Variant %s was not found in Wishlist %s', $variantId, $token),
+            );
+        }
+
+        $wishlist->removeProduct($wishlistProduct);
         $this->wishlistManager->flush();
 
         return $wishlist;
