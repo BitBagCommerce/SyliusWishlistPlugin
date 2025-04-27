@@ -5,7 +5,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                                       http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="Sylius\WishlistPlugin\Entity\WishlistProduct" table="bitbag_wishlist_product">
+    <mapped-superclass name="Sylius\WishlistPlugin\Entity\WishlistProduct" table="sylius_wishlist_product">
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
