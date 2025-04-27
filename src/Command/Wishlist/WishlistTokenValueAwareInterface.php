@@ -15,9 +15,7 @@ namespace Sylius\WishlistPlugin\Command\Wishlist;
 
 use Sylius\WishlistPlugin\Entity\WishlistInterface;
 
-//use Sylius\Bundle\ApiBundle\Command\CommandAwareDataTransformerInterface;
-
-interface WishlistTokenValueAwareInterface extends /**  CommandAwareDataTransformerInterface, */ WishlistSyncCommandInterface
+interface WishlistTokenValueAwareInterface extends WishlistSyncCommandInterface
 {
     public function getWishlist(): WishlistInterface;
 

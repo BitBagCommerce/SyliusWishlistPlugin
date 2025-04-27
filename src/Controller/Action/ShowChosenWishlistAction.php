@@ -67,7 +67,7 @@ final class ShowChosenWishlistAction
         }
 
         if ($user instanceof ShopUserInterface ||
-            $wishlist->getToken() === $wishlistCookieToken && null === $wishlistUser
+            ($wishlist->getToken() === $wishlistCookieToken && null === $wishlistUser)
         ) {
             $form = $this->createForm($wishlist);
 
