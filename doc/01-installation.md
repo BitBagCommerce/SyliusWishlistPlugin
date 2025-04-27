@@ -1,4 +1,4 @@
-# BitBag SyliusWishlistPlugin
+# SyliusWishlistPlugin
 
 - [⬅️ Back](../README.md#overview)
 - [➡️ Usage](./02-usage.md)
@@ -9,7 +9,7 @@
 1. *We work on stable, supported and up-to-date versions of packages. We recommend you to do the same.*
 
 ```bash
-composer require bitbag/wishlist-plugin
+composer require sylius/wishlist-bundle
 ```
 
 2. (optional) Add plugin dependencies to your `config/bundles.php` file:
@@ -41,69 +41,20 @@ sylius_wishlist_plugin:
     resource: "@SyliusWishlistPlugin/Resources/config/routing.yml"
 ```
 
-5. Override `OrderItemController`
+5. Override `SyliusShopBundle/product/common/card.html.twig` template in your project and add code below to see `Add to wishlist` button:
 
-```yaml
-sylius_order:
-  resources:
-    order_item:
-      classes:
-        controller: Sylius\WishlistPlugin\Controller\OrderItemController
-
+```twig
+<hr>
+{% include '@SyliusWishlistPlugin/Common/_addToWishlist.html.twig' %} 
 ```
 
-6. Add plugin templates:
-
-- Inject blocks:
-
-```yaml
-sylius_ui:
-  events:
-    sylius.shop.layout.header.grid:
-      blocks:
-        wishlist_header: '@SyliusWishlistPlugin/_wishlist_header.html.twig'
-    sylius.shop.product.index.box:
-      blocks:
-        content:
-          template: "@SyliusWishlistPlugin/Product/Box/_content.html.twig"
-          priority: 10
-    sylius.shop.layout.javascripts:
-      blocks:
-        plugin_scripts:
-          template: "@SyliusWishlistPlugin/Shop/_scripts.html.twig"
-          priority: 20
-    sylius.shop.layout.stylesheets:
-      blocks:
-        plugin_stylesheets:
-          template: "@SyliusWishlistPlugin/Shop/_styles.html.twig"
-          priority: 20
-    sylius.admin.layout.javascripts:
-      blocks:
-        plugin_scripts:
-          template: "@SyliusWishlistPlugin/Admin/_scripts.html.twig"
-          priority: 20
-    sylius.admin.layout.stylesheets:
-      blocks:
-        plugin_stylesheets:
-          template: "@SyliusWishlistPlugin/Admin/_styles.html.twig"
-          priority: 20
-        
-```
-
-- Override templates:
-
-```bash
-mkdir -p templates/bundles/SyliusShopBundle/Product/Show
-cp vendor/bitbag/wishlist-plugin/src/Resources/views/Product/Show/_addToCart.html.twig templates/bundles/SyliusShopBundle/Product/Show
-```
-
-7. Clear application cache by using command:
+6. Clear application cache by using command:
 
 ```bash
 bin/console cache:clear
 ```
 
-8. Update your database
+7. Update your database
 
 ```bash
 bin/console doctrine:migrations:migrate
@@ -111,7 +62,7 @@ bin/console doctrine:migrations:migrate
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
-9. Add plugin assets to your project
+8. Add plugin assets to your project
 
 We recommend you to use Webpack (Encore), for which we have prepared four different instructions on how to add this plugin's assets to your project:
 

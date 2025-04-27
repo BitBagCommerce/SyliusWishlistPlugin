@@ -1,4 +1,4 @@
-# BitBag SyliusWishlistPlugin
+# SyliusWishlistPlugin
 
 - [⬅️ Back](../README.md#overview)
 - [➡️ Development](./04-development.md)
@@ -14,6 +14,5 @@ bin/console debug:container | grep sylius_wishlist_plugin
 
 ### List of parameters you can override in your parameters.yml(.dist) file
 ```bash
-bin/console debug:container --parameters | grep bitbag
 bin/console debug:container --parameters | grep wishlist
 ```
