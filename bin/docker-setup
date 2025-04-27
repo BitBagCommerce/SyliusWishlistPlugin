@@ -1,0 +1,20 @@
+#!/bin/bash
+
+mkdir -p tests/Application/var/log
+mkdir -p tests/Application/var/cache
+chown -Rf www-data:www-data tests/Application/var/log
+chown -Rf www-data:www-data tests/Application/var/cache
+
+chown -Rf www-data:www-data tests/Application/public/media
+chown -Rf www-data:www-data tests/Application/public/media/*
+
+composer install
+
+tests/Application/bin/console cache:clear
+tests/Application/bin/console assets:install
+tests/Application/bin/console doctrine:database:create --if-not-exists
+tests/Application/bin/console doctrine:schema:update --force
+tests/Application/bin/console sylius:fixtures:load -n
+
+(cd tests/Application && yarn install)
+(cd tests/Application && yarn build)
