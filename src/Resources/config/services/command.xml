@@ -5,7 +5,9 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="Sylius\WishlistPlugin\Command\RemoveGuestWishlistsCommand">
+        <service id="sylius.wishlist_plugin.command.remove_guest_wishlists"
+                 class="Sylius\WishlistPlugin\Command\RemoveGuestWishlistsCommand"
+        >
             <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
             <tag name="console.command"/>
         </service>
