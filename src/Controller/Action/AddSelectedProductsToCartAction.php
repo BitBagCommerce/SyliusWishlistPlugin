@@ -13,46 +13,16 @@ declare(strict_types=1);
 
 namespace Sylius\WishlistPlugin\Controller\Action;
 
-use Sylius\Component\Order\Context\CartContextInterface;
 use Sylius\WishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
 use Sylius\WishlistPlugin\Exception\InsufficientProductStockException;
 use Sylius\WishlistPlugin\Exception\InvalidProductQuantityException;
-use Sylius\WishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
 {
-    public function __construct(
-        CartContextInterface $cartContext,
-        FormFactoryInterface $formFactory,
-        RequestStack $requestStack,
-        WishlistCommandProcessorInterface $wishlistCommandProcessor,
-        MessageBusInterface $messageBus,
-        UrlGeneratorInterface $urlGenerator,
-        WishlistRepositoryInterface $wishlistRepository,
-        TranslatorInterface $translator,
-    ) {
-        parent::__construct(
-            $cartContext,
-            $formFactory,
-            $requestStack,
-            $wishlistCommandProcessor,
-            $messageBus,
-            $urlGenerator,
-            $wishlistRepository,
-            $translator,
-        );
-    }
-
     protected function handleCommand(FormInterface $form): void
     {
         try {
@@ -66,6 +36,14 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
         }
     }
 
+    protected function getFlashBag(): FlashBagInterface
+    {
+        /** @var Session $session */
+        $session = $this->requestStack->getSession();
+
+        return $session->getFlashBag();
+    }
+
     private function getExceptionMessage(HandlerFailedException $exception): string
     {
         $previous = $exception->getPrevious();
@@ -77,13 +55,5 @@ final class AddSelectedProductsToCartAction extends BaseWishlistProductsAction
         }
 
         return $exception->getMessage();
-    }
-
-    protected function getFlashBag(): FlashBagInterface
-    {
-        /** @var Session $session */
-        $session = $this->requestStack->getSession();
-
-        return $session->getFlashBag();
     }
 }
