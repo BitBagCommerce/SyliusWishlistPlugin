@@ -1,9 +1,9 @@
-@import "./actions";
-@import "./item";
-@import "./variant";
-@import "./wishlistChooseModal.scss";
-@import "./bulkActions.scss";
-@import "./header";
+@import "actions";
+@import "item";
+@import "variant";
+@import "wishlistChooseModal";
+@import "bulkActions";
+@import "header";
 
 .bb-wishlist {
     font-size: 16px;
@@ -18,8 +18,8 @@
 
 .bb-copy-to-wishlist-sukces {
     animation: beep 1s cubic-bezier(0,0,.2,1) infinite !important;
-} 
+}
 
 .bb-copy-to-wishlist-faliure {
     animation: beep 1s cubic-bezier(0,0,.2,1) infinite !important;
-} 
+}

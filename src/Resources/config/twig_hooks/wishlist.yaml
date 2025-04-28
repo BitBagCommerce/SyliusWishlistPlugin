@@ -8,14 +8,6 @@ sylius_twig_hooks:
             wishlist_javascripts:
                 template: '@SyliusWishlistPlugin/Admin/_scripts.html.twig'
 
-        'sylius_shop.base#stylesheets':
-            wishlist_styles:
-                template: '@SyliusWishlistPlugin/Shop/_styles.html.twig'
-
-        'sylius_shop.base#javascripts':
-            wishlist_javascripts:
-                template: '@SyliusWishlistPlugin/Shop/_scripts.html.twig'
-
         'sylius_shop.base.header.content':
             wishlist_header:
                 template: '@SyliusWishlistPlugin/_wishlist_header.html.twig'
