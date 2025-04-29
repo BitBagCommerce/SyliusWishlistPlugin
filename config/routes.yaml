@@ -1,0 +1,11 @@
+sylius_wishlist_plugin_shop_no_prefix:
+  resource: "@SyliusWishlistPlugin/config/routes/shop.yaml"
+  name_prefix: 'sylius_wishlist_plugin_shop_'
+
+sylius_wishlist_plugin_shop:
+  resource: "@SyliusWishlistPlugin/config/routes/shop.yaml"
+  name_prefix: 'sylius_wishlist_plugin_shop_locale_'
+  prefix: /{_locale}
+  requirements:
+    _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
+

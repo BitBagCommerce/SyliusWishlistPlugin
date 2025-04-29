@@ -1,3 +1,0 @@
-imports:
-    - { resource: "@SyliusWishlistPlugin/Resources/config/services.xml" }
-    - { resource: "@SyliusWishlistPlugin/Resources/config/twig_hooks/wishlist.yaml" }

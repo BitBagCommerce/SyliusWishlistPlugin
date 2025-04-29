@@ -1,0 +1,2 @@
+imports:
+    - { resource: "@SyliusWishlistPlugin/config/app/twig_hooks/**/*.yaml" }

@@ -1,2 +1,2 @@
 sylius_wishlist_plugin:
-    resource: "@SyliusWishlistPlugin/Resources/config/routing.yml"
+    resource: "@SyliusWishlistPlugin/config/routes.yaml"
