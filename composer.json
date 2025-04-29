@@ -37,7 +37,9 @@
         "symfony/web-profiler-bundle": "^6.4 || ^7.1",
         "lchrusciel/api-test-case": "^4.1 || ^5.0",
         "robertfausk/behat-panther-extension": "^1.1",
-        "symfony/webpack-encore-bundle": "^2.1"
+        "symfony/webpack-encore-bundle": "^2.1",
+        "phpstan/phpstan-doctrine": "^1.5",
+        "phpstan/phpstan-webmozart-assert": "^1.2"
     },
     "prefer-stable": true,
     "autoload": {

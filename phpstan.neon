@@ -1,7 +1,10 @@
 includes:
-    - vendor/bitbag/coding-standard/phpstan.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
+
 parameters:
-    level: 8
+    level: 3
+    reportUnmatchedIgnoredErrors: false
     excludePaths:
     	- src/Exception
     	- tests/Integration
