@@ -40,7 +40,8 @@
         "phpstan/phpstan-doctrine": "^1.5",
         "phpstan/phpstan-webmozart-assert": "^1.2",
         "symfony/console": "^6.4.1 || ^7.1",
-        "symfony/dependency-injection": "^6.4.1 || ^7.1"
+        "symfony/dependency-injection": "^6.4.1 || ^7.1",
+        "symfony/doctrine-messenger": "^6.4.1 || ^7.1"
     },
     "prefer-stable": true,
     "autoload": {
