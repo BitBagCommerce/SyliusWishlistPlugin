@@ -102,7 +102,7 @@ jobs:
                     restore-keys: |
                         ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
--
+            -
                 name: Restrict Symfony version
                 if: matrix.symfony != ''
                 run: |
