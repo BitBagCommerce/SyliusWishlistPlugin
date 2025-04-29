@@ -39,7 +39,8 @@
         "symfony/webpack-encore-bundle": "^2.1",
         "phpstan/phpstan-doctrine": "^1.5",
         "phpstan/phpstan-webmozart-assert": "^1.2",
-        "symfony/console": "^6.4.1 || ^7.1"
+        "symfony/console": "^6.4.1 || ^7.1",
+        "symfony/dependency-injection": "^6.4.1 || ^7.1"
     },
     "prefer-stable": true,
     "autoload": {
