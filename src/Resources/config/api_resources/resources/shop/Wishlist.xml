@@ -15,26 +15,10 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
 >
-    <resource class="%sylius_wishlist_plugin.model.wishlist.class%" shortName="Wishlist">
+    <resource class="%sylius_wishlist_plugin.model.wishlist.class%">
         <operations>
             <operation
-                name="admin_get_wishlists"
-                class="ApiPlatform\Metadata\GetCollection"
-                uriTemplate="/admin/wishlists"
-            >
-                <normalizationContext>
-                    <values>
-                        <value name="groups">
-                            <values>
-                                <value>shop:wishlist:read</value>
-                            </values>
-                        </value>
-                    </values>
-                </normalizationContext>
-            </operation>
-
-            <operation
-                name="shop_create_wishlist"
+                name="sylius_wishlist_shop_create_wishlist"
                 class="ApiPlatform\Metadata\Post"
                 uriTemplate="/shop/wishlists"
                 messenger="input"
@@ -61,7 +45,7 @@
             </operation>
 
             <operation
-                name="shop_get_wishlist"
+                name="sylius_wishlist_shop_get_wishlist"
                 class="ApiPlatform\Metadata\Get"
                 uriTemplate="/shop/wishlists/{token}"
             >
@@ -77,7 +61,7 @@
             </operation>
 
             <operation
-                name="shop_add_product_to_wishlist"
+                name="sylius_wishlist_shop_add_product_to_wishlist"
                 class="ApiPlatform\Metadata\Patch"
                 uriTemplate="/shop/wishlists/{token}/product"
                 messenger="input"
@@ -105,7 +89,7 @@
             </operation>
 
             <operation
-                name="shop_add_product_variant_to_wishlist"
+                name="sylius_wishlist_shop_add_product_variant_to_wishlist"
                 class="ApiPlatform\Metadata\Patch"
                 uriTemplate="/shop/wishlists/{token}/variant"
                 messenger="input"
@@ -133,7 +117,7 @@
             </operation>
 
             <operation
-                name="shop_remove_product_from_wishlist"
+                name="sylius_wishlist_shop_remove_product_from_wishlist"
                 class="ApiPlatform\Metadata\Delete"
                 uriTemplate="/shop/wishlists/{token}/products/{productId}"
                 controller="sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action"
@@ -142,7 +126,7 @@
             />
 
             <operation
-                name="shop_remove_product_variant_from_wishlist"
+                name="sylius_wishlist_shop_remove_product_variant_from_wishlist"
                 class="ApiPlatform\Metadata\Delete"
                 uriTemplate="/shop/wishlists/{token}/productVariants/{productVariantId}"
                 controller="sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action"
@@ -151,7 +135,7 @@
             />
 
             <operation
-                name="shop_remove_wishlist"
+                name="sylius_wishlist_shop_remove_wishlist"
                 class="ApiPlatform\Metadata\Delete"
                 uriTemplate="/shop/wishlists/{token}"
                 security="is_granted('delete', object)"
