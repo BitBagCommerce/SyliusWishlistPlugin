@@ -29,6 +29,15 @@ jobs:
                 mysql: [ "8.4" ]
                 state_machine_adapter: ["symfony_workflow"]
 
+                include:
+                    -   php: "8.3"
+                        symfony: "^7.1"
+                        database: "mysql"
+                        sylius: "~2.0.0"
+                        mysql: "8.4"
+                        node: "20.x"
+                        state_machine_adapter: "winzou_state_machine"
+
         env:
             APP_ENV: test
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
@@ -107,8 +116,23 @@ jobs:
                 run: composer require "sylius/sylius:${{ matrix.sylius }}" --no-update --no-scripts --no-interaction
 
             -
+                name: Require Winzou State Machine
+                if: "${{ matrix.state_machine_adapter == 'winzou_state_machine' }}"
+                run: |
+                    composer require winzou/state-machine:^0.4 --no-update   
+                    composer require winzou/state-machine-bundle:^0.6 --no-update   
+
+            -
                 name: Install PHP dependencies
                 run: composer install --no-interaction
+
+            -
+              name: Run PHPStan
+              run: vendor/bin/phpstan analyse -c phpstan.neon -l 8 src/
+
+            -
+              name: Run ECS
+              run: vendor/bin/ecs
 
             -
                 name: Get Yarn cache directory
