@@ -5,7 +5,7 @@
 >
     <class name="Sylius\Component\Core\Model\ProductVariantInterface">
         <attribute name="id">
-            <group>shop:wishlist:read</group>
+            <group>sylius_wishlist:shop:wishlist:read</group>
         </attribute>
     </class>
 </serializer>

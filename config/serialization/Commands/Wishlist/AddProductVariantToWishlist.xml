@@ -5,7 +5,7 @@
 >
     <class name="Sylius\WishlistPlugin\Command\Wishlist\AddProductVariantToWishlist">
         <attribute name="productVariantId">
-            <group>shop:wishlist:add_product</group>
+            <group>sylius_wishlist:shop:wishlist:add_product</group>
         </attribute>
     </class>
 </serializer>

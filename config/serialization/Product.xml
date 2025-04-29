@@ -5,8 +5,8 @@
 >
     <class name="Sylius\Component\Core\Model\Product">
         <attribute name="id">
-            <group>shop:wishlist:read</group>
-            <group>shop:wishlist:create</group>
+            <group>sylius_wishlist:shop:wishlist:read</group>
+            <group>sylius_wishlist:shop:wishlist:create</group>
         </attribute>
     </class>
 </serializer>

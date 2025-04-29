@@ -5,10 +5,10 @@
 >
     <class name="Sylius\WishlistPlugin\Command\Wishlist\AddProductToWishlist">
         <attribute name="id">
-            <group>shop:wishlist:add_product</group>
+            <group>sylius_wishlist:shop:wishlist:add_product</group>
         </attribute>
         <attribute name="productId">
-            <group>shop:wishlist:add_product</group>
+            <group>sylius_wishlist:shop:wishlist:add_product</group>
         </attribute>
     </class>
 </serializer>

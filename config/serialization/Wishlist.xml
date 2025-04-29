@@ -5,16 +5,16 @@
 >
     <class name="Sylius\WishlistPlugin\Entity\Wishlist">
         <attribute name="id">
-            <group>shop:wishlist:read</group>
+            <group>sylius_wishlist:shop:wishlist:read</group>
         </attribute>
         <attribute name="token">
-            <group>shop:wishlist:read</group>
+            <group>sylius_wishlist:shop:wishlist:read</group>
         </attribute>
         <attribute name="shopUser">
-            <group>shop:wishlist:read</group>
+            <group>sylius_wishlist:shop:wishlist:read</group>
         </attribute>
         <attribute name="wishlistProducts">
-            <group>shop:wishlist:read</group>
+            <group>sylius_wishlist:shop:wishlist:read</group>
         </attribute>
     </class>
 </serializer>

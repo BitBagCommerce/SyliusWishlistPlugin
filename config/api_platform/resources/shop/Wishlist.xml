@@ -28,7 +28,7 @@
                     <values>
                         <value name="groups">
                             <values>
-                                <value>shop:wishlist:create</value>
+                                <value>sylius_wishlist:shop:wishlist:create</value>
                             </values>
                         </value>
                     </values>
@@ -53,7 +53,7 @@
                     <values>
                         <value name="groups">
                             <values>
-                                <value>shop:wishlist:read</value>
+                                <value>sylius_wishlist:shop:wishlist:read</value>
                             </values>
                         </value>
                     </values>
@@ -72,7 +72,7 @@
                     <values>
                         <value name="groups">
                             <values>
-                                <value>shop:wishlist:add_product</value>
+                                <value>sylius_wishlist:shop:wishlist:add_product</value>
                             </values>
                         </value>
                     </values>
@@ -100,7 +100,7 @@
                     <values>
                         <value name="groups">
                             <values>
-                                <value>shop:wishlist:add_product</value>
+                                <value>sylius_wishlist:shop:wishlist:add_product</value>
                             </values>
                         </value>
                     </values>

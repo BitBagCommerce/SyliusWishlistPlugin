@@ -5,10 +5,10 @@
 >
     <class name="Sylius\WishlistPlugin\Command\Wishlist\CreateWishlist">
         <attribute name="tokenValue">
-            <group>shop:wishlist:create</group>
+            <group>sylius_wishlist:shop:wishlist:create</group>
         </attribute>
         <attribute name="channelCode">
-            <group>shop:wishlist:create</group>
+            <group>sylius_wishlist:shop:wishlist:create</group>
         </attribute>
     </class>
 </serializer>

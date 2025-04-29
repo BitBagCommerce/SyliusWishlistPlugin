@@ -51,7 +51,7 @@ final class SyliusWishlistExtension extends AbstractResourceExtension implements
 
     protected function getMigrationsDirectory(): string
     {
-        return '@SyliusWishlistPlugin/Migrations';
+        return '@SyliusWishlistPlugin/src/Migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array
