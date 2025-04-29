@@ -43,7 +43,8 @@
         "symfony/dependency-injection": "^6.4.1 || ^7.1",
         "symfony/doctrine-messenger": "^6.4.1 || ^7.1",
         "symfony/form": "^6.4.1 || ^7.1",
-        "symfony/framework-bundle": "^6.4.1 || ^7.1"
+        "symfony/framework-bundle": "^6.4.1 || ^7.1",
+        "symfony/http-kernel": "^6.4.1 || ^7.1"
     },
     "prefer-stable": true,
     "autoload": {
