@@ -24,6 +24,7 @@ use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Webmozart\Assert\Assert;
+use winzou\Bundle\StateMachineBundle\winzouStateMachineBundle;
 
 final class Kernel extends BaseKernel
 {
@@ -49,6 +50,10 @@ final class Kernel extends BaseKernel
                 continue;
             }
             yield from $this->registerBundlesFromFile($bundlesFile);
+        }
+
+        if (class_exists(winzouStateMachineBundle::class)) {
+            yield new winzouStateMachineBundle();
         }
     }
 
