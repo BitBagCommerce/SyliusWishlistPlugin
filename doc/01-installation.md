@@ -30,7 +30,7 @@ return [
 # config/packages/_sylius.yaml
 imports:
   ...
-  - { resource: "@SyliusWishlistPlugin/Resources/config/config.yml" }
+  - { resource: "@SyliusWishlistPlugin/config/config.yaml" }
 ```
 
 4. (optional) Import routing in your `config/routes.yaml` file:
@@ -38,23 +38,35 @@ imports:
   ```yaml
 # config/routes.yaml
 sylius_wishlist_plugin:
-    resource: "@SyliusWishlistPlugin/Resources/config/routing.yml"
+    resource: "@SyliusWishlistPlugin/config/routes.yaml"
 ```
 
-5. Override `SyliusShopBundle/product/common/card.html.twig` template in your project and add code below to see `Add to wishlist` button:
+5. Create `bundles/SyliusShopBundle/product/common` directory in your project `templates` dir if it does not exist yet:
+
+```bash
+mkdir -p templates/bundles/SyliusShopBundle/product/common
+```
+
+6. Copy `@SyliusShopBundle/product/common/card.html.twig` template in your project:
+
+```bash
+cp vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/templates/product/common/card.html.twig templates/bundles/SyliusShopBundle/product/common/card.html.twig
+```
+
+7. Add the following code to the end of the `card.html.twig` file, just before latest closing `</div>` tag:
 
 ```twig
 <hr>
 {% include '@SyliusWishlistPlugin/Common/_addToWishlist.html.twig' %} 
 ```
 
-6. Clear application cache by using command:
+8. Clear application cache by using command:
 
 ```bash
 bin/console cache:clear
 ```
 
-7. Update your database
+9. Update your database
 
 ```bash
 bin/console doctrine:migrations:migrate
@@ -62,21 +74,13 @@ bin/console doctrine:migrations:migrate
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
-8. Add plugin assets to your project
+10. Add plugin assets to your project
 
-We recommend you to use Webpack (Encore), for which we have prepared four different instructions on how to add this plugin's assets to your project:
+Just add to your `asssets/admin/entrypoint.js` and `assets/shop/entrypoint.js` the following line (create these files if it does not exist yet):
 
-- [Import webpack config](./01.1-webpack-config.md)*
-- [Add entry to existing config](./01.2-webpack-entry.md)
-- [Import entries in your entry.js files](./01.3-import-entry.md)
-- [Your own custom config](./01.4-custom-solution.md)
-
-<small>* Default option for plugin development</small>
-
-
-However, if you are not using Webpack, here are instructions on how to add optimized and compressed assets directly to your project templates:
-
-- [Non webpack solution](./01.5-non-webpack.md)
+```javascript
+import '../../vendor/sylius/wishlist-bundle/assets/entrypoint';
+```
 
 ## Asynchronous Messenger case
 
