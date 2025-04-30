@@ -37,7 +37,6 @@ final readonly class WishlistTokenValueAwareDenormalizer implements Denormalizer
         return $object;
     }
 
-
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         if (method_exists($this->decoratedDenormalizer, 'supportsDenormalization') &&
