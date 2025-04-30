@@ -37,10 +37,14 @@ final readonly class WishlistTokenValueAwareDenormalizer implements Denormalizer
         return $object;
     }
 
+
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         if (method_exists($this->decoratedDenormalizer, 'supportsDenormalization') &&
             (new \ReflectionMethod($this->decoratedDenormalizer, 'supportsDenormalization'))->getNumberOfParameters() >= 4) {
+            /**
+             * @phpstan-ignore-next-line Method signature mismatch is handled by runtime reflection logic for Symfony 6.4/7+ compatibility.
+             */
             return  $this->decoratedDenormalizer->supportsDenormalization($data, $type, $format, $context);
         }
 
