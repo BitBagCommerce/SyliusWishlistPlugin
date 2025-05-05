@@ -1,0 +1,65 @@
+{% set is_user = app.user is not null %}
+{% set wishlists = is_user ? findAllByShopUserAndToken(app.user) : findAllByAnonymousAndChannel(sylius.channel) %}
+{% set is_single_wishlist = wishlists|length < 2 %}
+
+{% set is_product_show_page = hookable_metadata.context.is_product_show_page|default(false) %}
+
+{% if is_product_show_page %}
+    {% set variant = hookable_metadata.context.variant %}
+    {% set product = variant.product %}
+
+    {% set single_wishlist_path = path('sylius_wishlist_plugin_shop_wishlist_add_product_variant', {
+        'wishlistId': wishlists[0].id,
+        'variantId': variant.id,
+    }) %}
+{% else %}
+    {% set single_wishlist_path = path('sylius_wishlist_plugin_shop_locale_wishlist_add_product', {'productId': product.id}) %}
+{% endif %}
+
+<div class="mb-3">
+    {% if is_single_wishlist %}
+        <a
+                href="{{ single_wishlist_path }}"
+                class="btn btn-icon btn-outline-secondary {% if not is_product_show_page %}w-100{% endif %}"
+                data-product-name="{{ product.name }}"
+                {{ sylius_test_html_attribute('wishlist-add-product') }}
+        >
+            {{ ux_icon('mdi:heart', {'class': 'icon icon-sm'}) }}
+            {{ 'sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+        </a>
+    {% else %}
+        <div class="dropdown">
+            <button class="btn btn-icon btn-outline-secondary dropdown-toggle {% if not is_product_show_page %}w-100{% endif %}"
+                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
+            >
+                {{ ux_icon('mdi:heart', {'class': 'icon icon-sm'}) }}
+                {{ 'sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+            </button>
+            <ul class="dropdown-menu w-100" data-bb-wishlist-hrefs="hrefs-adding-variant">
+                {% for wishlist in wishlists %}
+                    {% if is_product_show_page %}
+                        {% set path = path('sylius_wishlist_plugin_shop_wishlist_add_product_variant', {
+                            'wishlistId': wishlist.id,
+                            'variantId': variant.id,
+                        }) %}
+                    {% else %}
+                        {% set path = path('sylius_wishlist_plugin_shop_locale_wishlist_add_product_to_selected_wishlist', {
+                            'wishlistId': wishlist.id,
+                            'productId': product.id
+                        }) %}
+                    {% endif %}
+                    <li>
+                        <a
+                                href="{{ path }}"
+                                class="dropdown-item"
+                                data-product-name="{{ product.name }}"
+                                {{ sylius_test_html_attribute('wishlist-add-product') }}
+                        >
+                            <span>{{ wishlist.name }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>

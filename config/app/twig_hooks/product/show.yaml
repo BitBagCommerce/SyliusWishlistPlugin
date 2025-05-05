@@ -1,5 +1,9 @@
 sylius_twig_hooks:
     hooks:
-        'sylius_shop.product.show.content.info.summary.add_to_cart':
-            submit:
-                template: '@SyliusWishlistPlugin/Product/Show/_addToCart.html.twig'
+        'sylius_shop.product.show.content.info.summary':
+            add_to_wishlist:
+                template: '@SyliusWishlistPlugin/Common/_addToWishlist.html.twig'
+                priority: 10
+        'sylius_shop.product.show.content.info.summary.add_to_wishlist':
+            add_to_wishlist:
+                template: '@SyliusWishlistPlugin/Common/AddToWishlist/_button.html.twig'
