@@ -26,5 +26,10 @@
             <argument type="service" id="sylius_wishlist_plugin.processor.selected_wishlist_products_processor"/>
             <tag name="form.type"/>
         </service>
+
+        <service id="sylius.wishlist_plugin.form.type.add_to_wishlist_type" class="Sylius\WishlistPlugin\Form\Type\AddToWishlistType">
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <tag name="form.type"/>
+        </service>
     </services>
 </container>

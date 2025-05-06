@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\WishlistPlugin\Twig;
 
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
-use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Model\UserInterface;
 use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-final class WishlistExtension extends AbstractExtension
+class WishlistExtension extends AbstractExtension
 {
     private const WISHLIST_USER_TOKEN_CACHE_PATTERN = 'user_id_%s_token_%s';
 

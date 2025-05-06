@@ -44,7 +44,7 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
     ): void {
         $wishlists = [];
         $wishlistsResolver->resolve()->willReturn($wishlists);
-        $twigEnvironment->render('@SyliusWishlistPlugin/Common/widget.html.twig', [
+        $twigEnvironment->render('@SyliusWishlistPlugin/common/widget.html.twig', [
             'wishlists' => $wishlists,
         ])->willReturn('TEMPLATE');
         $this->__invoke($request)->shouldImplement(Response::class);

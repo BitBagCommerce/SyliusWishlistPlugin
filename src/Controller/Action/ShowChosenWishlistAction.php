@@ -72,7 +72,7 @@ final class ShowChosenWishlistAction
             $form = $this->createForm($wishlist);
 
             return new Response(
-                $this->twigEnvironment->render('@SyliusWishlistPlugin/WishlistDetails/index.html.twig', [
+                $this->twigEnvironment->render('@SyliusWishlistPlugin/wishlist_details/index.html.twig', [
                     'wishlist' => $wishlist,
                     'form' => $form->createView(),
                 ]),

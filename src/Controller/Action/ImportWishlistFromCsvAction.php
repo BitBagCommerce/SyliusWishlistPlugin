@@ -62,7 +62,7 @@ final class ImportWishlistFromCsvAction
         }
 
         return new Response(
-            $this->twigEnvironment->render('@SyliusWishlistPlugin/importWishlist.html.twig', [
+            $this->twigEnvironment->render('@SyliusWishlistPlugin/import_wishlist.html.twig', [
                 'form' => $form->createView(),
             ]),
         );

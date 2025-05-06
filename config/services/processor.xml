@@ -12,5 +12,16 @@
         <service id="sylius_wishlist_plugin.processor.variant_pdf_model_processor" class="Sylius\WishlistPlugin\Processor\VariantPdfModelProcessor">
             <argument type="service" id="sylius_wishlist_plugin.services.generator.model_creator"/>
         </service>
+
+        <service id="sylius.wishlist_plugin.processor.add_product_variant_to_wishlist" class="Sylius\WishlistPlugin\Processor\AddProductVariantToWishlistProcessor">
+            <argument type="service" id="security.helper"/>
+            <argument type="service" id="sylius_wishlist_plugin.twig.extension.wishlist_extension"/>
+            <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist_product"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+        </service>
     </services>
 </container>

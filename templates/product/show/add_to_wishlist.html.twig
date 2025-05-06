@@ -1,0 +1,48 @@
+{# Rendered with \Sylius\WishlistPlugin\Twig\Component\Product\AddToWishlistComponent #}
+
+{% set product = variant.product %}
+{% set has_multiple_wishlists_to_choose_from = form.wishlists is defined and form.wishlists.vars.choices|length > 0 %}
+
+<div class="mb-3" {{ attributes }}>
+    {{ form_start(form, {'attr': {'data-action': 'live#action:prevent live#$render', 'data-live-action-param': 'addToWishlist'}}) }}
+    {{ form_errors(form) }}
+
+    {% if not has_multiple_wishlists_to_choose_from %}
+        <button
+                type="submit"
+                class="btn btn-icon btn-outline-secondary"
+                data-product-name="{{ product.name }}"
+                {{ sylius_test_html_attribute('wishlist-add-product') }}
+        >
+            {{ ux_icon('mdi:heart', {'class': 'icon icon-sm'}) }}
+            {{ 'sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+        </button>
+    {% else %}
+        <div class="dropdown">
+            <button class="btn btn-icon btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ ux_icon('mdi:heart', {'class': 'icon icon-sm'}) }}
+                {{ 'sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+            </button>
+            <ul class="dropdown-menu">
+                {% for wishlist in form.wishlists.vars.choices %}
+                    <li>
+                        <button
+                                type="button"
+                                class="dropdown-item"
+                                data-action="live#action"
+                                data-live-action-param="addToWishlist"
+                                data-live-wishlist-id-param="{{ wishlist.value }}"
+                                data-product-name="{{ product.name }}"
+                                {{ sylius_test_html_attribute('wishlist-add-product') }}
+                        >
+                            <span>{{ wishlist.label }}</span>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {{ form_row(form._token) }}
+    {{ form_end(form, {'render_rest': false}) }}
+</div>

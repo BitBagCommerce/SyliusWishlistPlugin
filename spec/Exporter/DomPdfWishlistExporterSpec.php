@@ -54,7 +54,7 @@ final class DomPdfWishlistExporterSpec extends ObjectBehavior
 
         $html = '';
 
-        $twigEnvironment->render('@SyliusWishlistPlugin/_wishlist_pdf.html.twig', [
+        $twigEnvironment->render('@SyliusWishlistPlugin/wishlist_pdf.html.twig', [
             'title' => 'My wishlist products',
             'date' => date('d.m.Y'),
             'products' => $data,

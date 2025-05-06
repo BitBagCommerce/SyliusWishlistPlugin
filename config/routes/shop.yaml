@@ -25,11 +25,6 @@ wishlist_remove_selected_products:
     defaults:
         _controller: sylius_wishlist_plugin.controller.action.remove_selected_products_from_wishlist
 
-wishlist_add_product_variant:
-    path: /wishlist/{wishlistId}/add/variant/{variantId}
-    defaults:
-        _controller: sylius_wishlist_plugin.controller.action.add_product_variant_to_wishlist
-
 wishlist_add_selected_products:
     path: /wishlist/{wishlistId}/products/add
     defaults:
