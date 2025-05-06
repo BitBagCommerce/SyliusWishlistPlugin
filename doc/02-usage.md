@@ -11,6 +11,6 @@
 
 You can use these templates to enable adding/removing/displaying wishlist:
 
-- `@SyliusWishlistPlugin/Common/_addToWishlist.html.twig`
-- `@SyliusWishlistPlugin/Common/_removeFromWishlist.html.twig`
-- `@SyliusWishlistPlugin/Common/widget.html.twig`
+- `@SyliusWishlistPlugin/common/add_to_wishlist.html.twig`
+- `@SyliusWishlistPlugin/common/remove_from_wishlist.html.twig`
+- `@SyliusWishlistPlugin/common/widget.html.twig`

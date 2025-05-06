@@ -57,7 +57,7 @@ cp vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/templates/product/common/ca
 
 ```twig
 <hr>
-{% include '@SyliusWishlistPlugin/Common/_addToWishlist.html.twig' %} 
+{% include '@SyliusWishlistPlugin/common/add_to_wishlist.html.twig' %} 
 ```
 
 8. Clear application cache by using command:
