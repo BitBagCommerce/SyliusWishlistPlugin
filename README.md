@@ -12,11 +12,11 @@
 
 ----
 
-[ ![](https://img.shields.io/packagist/l/sylius/wishlist-bundle.svg) ](https://packagist.org/packages/sylius/wishlist-bundle "License")
-[ ![](https://img.shields.io/packagist/v/sylius/wishlist-bundle.svg) ](https://packagist.org/packages/sylius/wishlist-bundle "Version")
+[ ![](https://img.shields.io/packagist/l/sylius/wishlist-plugin.svg) ](https://packagist.org/packages/sylius/wishlist-plugin "License")
+[ ![](https://img.shields.io/packagist/v/sylius/wishlist-plugin.svg) ](https://packagist.org/packages/sylius/wishlist-plugin "Version")
 [ ![](https://img.shields.io/github/actions/workflow/status/BitBagCommerce/SyliusWishlistPlugin/build.yml) ](https://github.com/BitBagCommerce/SyliusWishlistPlugin/actions "Build status")
 [ ![](https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusWishlistPlugin.svg) ](https://scrutinizer-ci.com/g/BitBagCommerce/SyliusWishlistPlugin/ "Scrutinizer")
-[ ![](https://poser.pugx.org/sylius/wishlist-bundle/downloads)](https://packagist.org/packages/sylius/wishlist-bundle "Total Downloads")
+[ ![](https://poser.pugx.org/sylius/wishlist-plugin/downloads)](https://packagist.org/packages/sylius/wishlist-plugin "Total Downloads")
 [ ![Slack](https://img.shields.io/badge/community%20chat-slack-FF1493.svg)](http://sylius-devs.slack.com)
 [ ![Support](https://img.shields.io/badge/support-contact%20author-blue])](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_wishlist)
 

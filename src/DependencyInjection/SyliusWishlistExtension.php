@@ -37,7 +37,7 @@ final class SyliusWishlistExtension extends AbstractResourceExtension implements
 
     public function prepend(ContainerBuilder $container): void
     {
-        trigger_deprecation('sylius/wishlist-bundle', '2.0', 'Doctrine migrations existing in a bundle will be removed, move migrations to the project directory.');
+        trigger_deprecation('sylius/wishlist-plugin', '2.0', 'Doctrine migrations existing in a bundle will be removed, move migrations to the project directory.');
         $this->prependDoctrineMigrations($container);
 
         $config = $this->getCurrentConfiguration($container);

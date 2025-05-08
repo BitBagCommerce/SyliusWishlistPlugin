@@ -9,7 +9,7 @@
 1. *We work on stable, supported and up-to-date versions of packages. We recommend you to do the same.*
 
 ```bash
-composer require sylius/wishlist-bundle
+composer require sylius/wishlist-plugin
 ```
 
 2. (optional) Add plugin dependencies to your `config/bundles.php` file:
@@ -79,7 +79,7 @@ bin/console doctrine:migrations:migrate
 Just add to your `asssets/admin/entrypoint.js` and `assets/shop/entrypoint.js` the following line (create these files if it does not exist yet):
 
 ```javascript
-import '../../vendor/sylius/wishlist-bundle/assets/entrypoint';
+import '../../vendor/sylius/wishlist-plugin/assets/entrypoint';
 ```
 
 ## Asynchronous Messenger case
