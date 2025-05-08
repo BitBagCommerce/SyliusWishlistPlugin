@@ -15,15 +15,12 @@ use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishl
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItem;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
+use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
+use BitBag\SyliusWishlistPlugin\Exception\WishlistProductNotFoundException;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsMessageHandler]
 final class RemoveSelectedProductsFromWishlistHandler
@@ -31,19 +28,12 @@ final class RemoveSelectedProductsFromWishlistHandler
     public function __construct(
         private ProductVariantRepositoryInterface $productVariantRepository,
         private EntityManagerInterface $wishlistProductManager,
-        private RequestStack $requestStack,
-        private TranslatorInterface $translator,
     ) {
     }
 
     public function __invoke(RemoveSelectedProductsFromWishlist $removeSelectedProductsFromWishlistCommand): void
     {
         $this->removeSelectedProductsFromWishlist($removeSelectedProductsFromWishlistCommand->getWishlistProducts());
-
-        /** @var Session $session */
-        $session = $this->requestStack->getSession();
-
-        $session->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
     }
 
     private function removeSelectedProductsFromWishlist(Collection $wishlistProducts): void
@@ -60,13 +50,13 @@ final class RemoveSelectedProductsFromWishlistHandler
         $wishlistProduct = $wishlistItem->getWishlistProduct();
 
         if (null === $wishlistProduct) {
-            throw new ResourceNotFoundException();
+            throw new WishlistProductNotFoundException();
         }
 
         $productVariant = $this->productVariantRepository->find($wishlistProduct->getVariant());
 
         if (null === $productVariant) {
-            throw new NotFoundHttpException();
+            throw new ProductNotFoundException();
         }
 
         $this->wishlistProductManager->remove($wishlistProduct);

@@ -6,8 +6,6 @@
 
     <services>
         <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.add_products_to_wishlist_handler" class="BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\AddProductsToCartHandler">
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="translator"/>
             <argument type="service" id="sylius.order_modifier"/>
             <argument type="service" id="sylius.repository.order"/>
             <argument type="service" id="sylius.availability_checker.default"/>
@@ -73,8 +71,6 @@
         <service id="bitbag_sylius_wishlist_plugin.command_handler.wishlist.remove_selected_products_from_wishlist" class="BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveSelectedProductsFromWishlistHandler">
             <argument type="service" id="sylius.repository.product_variant"/>
             <argument type="service" id="sylius.manager.order"/>
-            <argument type="service" id="request_stack"/>
-            <argument type="service" id="translator"/>
             <tag name="bitbag.sylius_wishlist_plugin.command_bus" bus="sylius.command_bus"/>
         </service>
 
@@ -111,7 +107,6 @@
             <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlist_cookie_token_resolver"/>
             <argument type="service" id="sylius.repository.channel"/>
-            <argument type="service" id="bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker"/>
             <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.token_user_resolver"/>
             <tag name="messenger.message_handler"/>
         </service>

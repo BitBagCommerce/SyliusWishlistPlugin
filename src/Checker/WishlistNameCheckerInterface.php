@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\Checker;
 
+/**
+ * @deprecated
+ */
 interface WishlistNameCheckerInterface
 {
     public function check(string $existingWishlistName, string $wishlistToCreate): bool;

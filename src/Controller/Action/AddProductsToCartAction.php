@@ -13,12 +13,20 @@ namespace BitBag\SyliusWishlistPlugin\Controller\Action;
 
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddProductsToCart;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 final class AddProductsToCartAction extends BaseWishlistProductsAction
 {
     protected function handleCommand(FormInterface $form): void
     {
-        $command = new AddProductsToCart($form->get('items')->getData());
-        $this->messageBus->dispatch($command);
+        try {
+            $command = new AddProductsToCart($form->get('items')->getData());
+            $this->messageBus->dispatch($command);
+            if (false === $this->getFlashBag()->has('success')) {
+                $this->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.added_to_cart'));
+            }
+        } catch (HandlerFailedException $exception) {
+            $this->getFlashBag()->add('error', $this->getExceptionMessage($exception));
+        }
     }
 }

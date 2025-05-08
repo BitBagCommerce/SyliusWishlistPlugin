@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Checker\WishlistNameCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
@@ -34,7 +33,6 @@ final class CreateNewWishlistHandler
         private WishlistFactoryInterface $wishlistFactory,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         private ChannelRepositoryInterface $channelRepository,
-        private WishlistNameCheckerInterface $wishlistNameChecker,
         private TokenUserResolverInterface $tokenUserResolver,
     ) {
     }
@@ -77,7 +75,7 @@ final class CreateNewWishlistHandler
         } else {
             /** @var WishlistInterface $newWishlist */
             foreach ($wishlists as $newWishlist) {
-                if (!$this->wishlistNameChecker->check((string) $newWishlist->getName(), $createNewWishlist->getName())) {
+                if ((string) $newWishlist->getName() !== $createNewWishlist->getName()) {
                     $wishlist->setName($createNewWishlist->getName());
                 } else {
                     throw new WishlistNameIsTakenException();

@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Checker\WishlistNameCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\CreateNewWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
@@ -35,7 +34,6 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
         ChannelRepositoryInterface $channelRepository,
-        WishlistNameCheckerInterface $wishlistNameChecker,
         TokenUserResolverInterface $tokenUserResolver,
     ): void {
         $this->beConstructedWith(
@@ -44,7 +42,6 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
             $wishlistFactory,
             $wishlistCookieTokenResolver,
             $channelRepository,
-            $wishlistNameChecker,
             $tokenUserResolver,
         );
     }
@@ -59,7 +56,6 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        WishlistNameCheckerInterface $wishlistNameChecker,
         ChannelRepositoryInterface $channelRepository,
         TokenInterface $token,
         ShopUserInterface $shopUser,
@@ -86,7 +82,6 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $wishlist->setChannel($channel)->shouldBeCalled();
 
         $existingWishlist->getName()->willReturn('existing');
-        $wishlistNameChecker->check('existing', 'New wishlist')->willReturn(false);
         $wishlist->setName('New wishlist');
 
         $wishlistRepository->add($wishlist)->shouldBeCalled();
@@ -133,7 +128,6 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         WishlistFactoryInterface $wishlistFactory,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        WishlistNameCheckerInterface $wishlistNameChecker,
         ChannelRepositoryInterface $channelRepository,
         TokenInterface $token,
         ShopUserInterface $shopUser,
@@ -160,7 +154,6 @@ final class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $wishlist->setChannel($channel)->shouldBeCalled();
 
         $existingWishlist->getName()->willReturn('existing');
-        $wishlistNameChecker->check('existing', 'existing')->willReturn(true);
         $wishlist->setName('existing')->shouldNotBeCalled();
 
         $wishlistRepository->add($wishlist)->shouldNotBeCalled();

@@ -138,4 +138,41 @@ final class WishlistContext implements Context
         $this->wishlistManager->persist($wishlist);
         $this->wishlistManager->flush();
     }
+
+    /**
+     * @When user :email has a wishlist
+     */
+    public function userHasAWishlist(string $email): void
+    {
+        /** @var ?ShopUserInterface $user */
+        $user = $this->userRepository->findOneByEmail($email);
+        Assert::notNull($user);
+
+        $wishlist = new Wishlist();
+        $channel = $this->channelRepository->findOneByCode('WEB-US');
+
+        $wishlist->setChannel($channel);
+        $wishlist->setShopUser($user);
+
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
+    }
+
+    /**
+     * @When there is a guest wishlist which has been inactive for :days days
+     */
+    public function thereIsAGuestWishlistInactiveForDays(int $days): void
+    {
+        $wishlist = new Wishlist();
+        $channel = $this->channelRepository->findOneByCode('WEB-US');
+
+        $updatedAt = new \DateTime();
+        $updatedAt->modify(\sprintf('-%d days', $days));
+
+        $wishlist->setChannel($channel);
+        $wishlist->setUpdatedAt($updatedAt);
+
+        $this->wishlistManager->persist($wishlist);
+        $this->wishlistManager->flush();
+    }
 }
