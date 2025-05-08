@@ -1,19 +1,21 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
+use Sylius\WishlistPlugin\Command\Wishlist\CreateNewWishlist;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -63,7 +65,7 @@ final class CreateNewWishlistAction
 
             $session->getFlashBag()->add(
                 'success',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.create_new_wishlist'),
+                $this->translator->trans('sylius_wishlist_plugin.ui.create_new_wishlist'),
             );
         } catch (HandlerFailedException $exception) {
             /** @var Session $session */
@@ -71,7 +73,7 @@ final class CreateNewWishlistAction
 
             $session->getFlashBag()->add(
                 'error',
-                $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_name_already_exists'),
+                $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_name_already_exists'),
             );
 
             return new JsonResponse([]);
@@ -82,7 +84,7 @@ final class CreateNewWishlistAction
             'url' => $this
                 ->urlGenerator
                 ->generate(
-                    'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist',
+                    'sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist',
                     ['wishlistId' => $result],
                 )],
         );

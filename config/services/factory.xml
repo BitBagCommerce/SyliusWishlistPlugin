@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+               http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sylius_wishlist_plugin.custom_factory.wishlist" class="Sylius\WishlistPlugin\Factory\WishlistFactory" decorates="sylius_wishlist_plugin.factory.wishlist" public="false">
+            <argument type="service" id="sylius_wishlist_plugin.custom_factory.wishlist.inner"/>
+        </service>
+
+        <service id="sylius_wishlist_plugin.custom_factory.wishlist_product" class="Sylius\WishlistPlugin\Factory\WishlistProductFactory" decorates="sylius_wishlist_plugin.factory.wishlist_product" public="false">
+            <argument type="service" id="sylius_wishlist_plugin.custom_factory.wishlist_product.inner"/>
+        </service>
+
+        <service id="sylius_wishlist_plugin.custom_factory.csv_wishlist_product" class="Sylius\WishlistPlugin\Factory\CsvWishlistProductFactory"/>
+
+        <service id="sylius_wishlist_plugin.custom_factory.csv.serializer" class="Sylius\WishlistPlugin\Factory\CsvSerializerFactory"/>
+
+        <service id="sylius_wishlist_plugin.custom_factory.dom_pdf" class="Sylius\WishlistPlugin\Factory\DomPdfFactory">
+            <argument type="service" id="sylius_wishlist_plugin.custom_factory.dom_pdf_options"/>
+        </service>
+
+        <service id="sylius_wishlist_plugin.custom_factory.dom_pdf_options" class="Sylius\WishlistPlugin\Factory\DomPdfOptionsFactory"/>
+
+        <service id="sylius_wishlist_plugin.model.factory.variant_pdf_model_factory" class="Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactory"/>
+    </services>
+</container>

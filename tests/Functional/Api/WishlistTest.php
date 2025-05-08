@@ -1,24 +1,26 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Functional\Api;
+namespace Tests\Sylius\WishlistPlugin\Functional\Api;
 
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Tests\Api\Utils\AdminUserLoginTrait;
 use Sylius\Tests\Api\Utils\ShopUserLoginTrait;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\BitBag\SyliusWishlistPlugin\Functional\FunctionalTestCase;
+use Tests\Sylius\WishlistPlugin\Functional\FunctionalTestCase;
 
 final class WishlistTest extends FunctionalTestCase
 {
@@ -76,6 +78,7 @@ final class WishlistTest extends FunctionalTestCase
         $header['CONTENT_TYPE'] = self::PATCH_TYPE;
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->fixturesData['empty_olivier_wishlist'];
+
         $token = $wishlist->getToken();
         /** @var ProductInterface $product */
         $product = $this->fixturesData['product_1'];
@@ -83,7 +86,6 @@ final class WishlistTest extends FunctionalTestCase
         $this->assertCount(0, $wishlist->getWishlistProducts());
         $this->client->request('PATCH', '/api/v2/shop/wishlists/' . $token . '/product', [], [], $header, json_encode([
             'productId' => $product->getId(),
-            'wishlist' => $wishlist,
         ]));
 
         $response = $this->client->getResponse();
@@ -135,7 +137,6 @@ final class WishlistTest extends FunctionalTestCase
 
         $this->assertCount(1, $wishlist->getWishlistProducts());
         $this->client->request('DELETE', '/api/v2/shop/wishlists/' . $token . '/products/' . $product->getId(), [], [], $header);
-
         $response = $this->client->getResponse();
 
         /** @var ?WishlistInterface $updatedWishlist */

@@ -1,0 +1,49 @@
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
+
+{% set variant = itemForm.vars.value.wishlistProduct.variant %}
+{% set product = variant.product %}
+{% set productUrl = path('sylius_shop_product_show', { slug: product.slug, _locale: product.translation.locale }) %}
+{% set itemId = "wishlist_item_#{ variant.id }_#{ product.id }" %}
+
+<div id="{{ itemId }}" class="bb-wishlist-item">
+    <div class="bb-wishlist-item-select" data-bb-checkboxes="checkboxes-update-when-main">
+        {{ form_widget(itemForm.selected, { id: product.name, label: false }) }}
+    </div>
+    <div class="bb-wishlist-item-image">
+        {{ component('sylius_shop:main_image', { product: product }) }}
+    </div>
+    <div class="bb-wishlist-item-name">
+        <a href="{{ productUrl }}" {{ sylius_test_html_attribute('wishlist-item-name') }}>
+            {{ product.name }}
+        </a>
+    </div>
+    <div class="bb-wishlist-item-variant">
+        {% if itemForm.cartItem.cartItem.variant is defined %}
+            <div class="bb-wishlist-variant">
+                {% for child in itemForm.cartItem.cartItem.variant.children %}
+                    <div class="bb-wishlist-variant-option">
+                        {{ form_label(child, null, { label_attr: { class: 'bb-wishlist-variant-label'} } ) }}
+                        {{ form_widget(child, { attr: { class: 'bb-wishlist-variant-select', 'data-name': child.vars.name } } ) }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="bb-wishlist-item-price">
+        {% if not product.variants.empty() %}
+            {% include '@SyliusWishlistPlugin/wishlist_details/variant_price.html.twig' %}
+        {% endif %}
+    </div>
+    <div class="bb-wishlist-item-quantity" {{ sylius_test_html_attribute('wishlist-item-quantity') }}>
+        {{ form_widget(itemForm.cartItem.cartItem.quantity, {
+            'attr': {
+                'min': 0,
+                'data-product-name': product.name,
+                'value': itemForm.cartItem.cartItem.quantity.vars.value is same as("0") ? 1 : itemForm.cartItem.cartItem.quantity.vars.value
+            }
+        }) }}
+    </div>
+    <div class="bb-wishlist-item-actions">
+        {% include '@SyliusWishlistPlugin/common/remove_from_wishlist.html.twig' %}
+    </div>
+</div>

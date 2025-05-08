@@ -1,17 +1,19 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Form\Type;
+namespace Sylius\WishlistPlugin\Form\Type;
 
-use BitBag\SyliusWishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
+use Sylius\WishlistPlugin\Processor\SelectedWishlistProductsProcessorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -43,7 +45,7 @@ final class WishlistCollectionType extends AbstractType
                 ],
             ])
             ->add('addAll', SubmitType::class, [
-                'label' => 'bitbag_sylius_wishlist_plugin.ui.add_items_to_cart',
+                'label' => 'sylius_wishlist_plugin.ui.add_items_to_cart',
             ])
             ->addEventListener(
                 FormEvents::SUBMIT,
@@ -69,7 +71,7 @@ final class WishlistCollectionType extends AbstractType
         );
 
         if ($selectedProducts->isEmpty()) {
-            $event->getForm()->addError(new FormError($this->translator->trans('bitbag_sylius_wishlist_plugin.ui.select_products')));
+            $event->getForm()->addError(new FormError($this->translator->trans('sylius_wishlist_plugin.ui.select_products')));
         }
 
         $event->setData($selectedProducts);

@@ -1,29 +1,20 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
-
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Resolver;
+namespace spec\Sylius\WishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolver;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolver;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class WishlistCookieTokenResolverSpec extends ObjectBehavior
 {
-    public function let(
-        RequestStack $requestStack,
-    ): void {
+    public function let(RequestStack $requestStack): void
+    {
         $this->beConstructedWith($requestStack, 'token');
     }
 
@@ -33,47 +24,32 @@ final class WishlistCookieTokenResolverSpec extends ObjectBehavior
         $this->shouldImplement(WishlistCookieTokenResolverInterface::class);
     }
 
-    public function it_returns_wishlist_cookie_token_from_main_request_cookies(
-        RequestStack $requestStack,
-        Request $request,
-        ParameterBag $inputBag,
-    ): void {
+    public function it_returns_token_from_cookies_if_present(RequestStack $requestStack): void
+    {
+        $request = new Request();
+        $request->cookies = new InputBag(['token' => 'cookie_token']);
         $requestStack->getMainRequest()->willReturn($request);
-        $inputBag->get('token')->willReturn('wishlist_token');
-        $request->cookies = $inputBag;
 
-        $this->resolve()->shouldReturn('wishlist_token');
+        $this->resolve()->shouldReturn('cookie_token');
     }
 
-    public function it_returns_wishlist_cookie_token_from_main_request_attributes(
-        RequestStack $requestStack,
-        Request $request,
-        ParameterBag $inputBagCookies,
-        ParameterBag $inputBagAttributes,
-    ): void {
+    public function it_returns_token_from_attributes_if_not_in_cookies(RequestStack $requestStack): void
+    {
+        $request = new Request();
+        $request->cookies = new InputBag();
+        $request->attributes = new InputBag(['token' => 'attribute_token']);
         $requestStack->getMainRequest()->willReturn($request);
-        $inputBagCookies->get('token')->willReturn(null);
-        $inputBagAttributes->get('token')->willReturn('wishlist_token');
-        $request->cookies = $inputBagCookies;
-        $request->attributes = $inputBagAttributes;
 
-        $this->resolve()->shouldReturn('wishlist_token');
+        $this->resolve()->shouldReturn('attribute_token');
     }
 
-    public function it_returns_new_wishlist_token_class_if_not_found_in_cookies_nor_attributes(
-        RequestStack $requestStack,
-        Request $request,
-        ParameterBag $inputBagCookies,
-        ParameterBag $inputBagAttributes,
-        WishlistToken $wishlistToken,
-    ): void {
+    public function it_returns_new_token_if_not_in_cookies_nor_attributes(RequestStack $requestStack): void
+    {
+        $request = new Request();
+        $request->cookies = new InputBag();
+        $request->attributes = new InputBag();
         $requestStack->getMainRequest()->willReturn($request);
-        $inputBagCookies->get('token')->willReturn(null);
-        $inputBagAttributes->get('token')->willReturn(null);
-        $request->cookies = $inputBagCookies;
-        $request->attributes = $inputBagAttributes;
-        $wishlistToken->getValue()->willReturn('wishlist_token');
 
-        $this->resolve()->shouldBeString();
+        $this->resolve()->shouldMatch("/^([a-f0-9\-]{36})$/");
     }
 }

@@ -1,0 +1,15 @@
+{
+  "@context":"\/api\/v2\/contexts\/Wishlist",
+  "@id":"\/api\/v2\/shop\/wishlists\/@string@",
+  "@type":"Wishlist",
+  "id":"@integer@",
+  "name": "@string@",
+  "wishlistProducts":"@array@",
+  "shopUser": "\/api\/v2\/shop\/shop-users\/@integer@",
+  "token":"@string@",
+  "channel": "\/api\/v2\/shop\/channels\/@string@",
+  "createdAt":"@dateTime@",
+  "updatedAt":"@dateTime@",
+  "products": "@array@",
+  "productVariants": "@array@"
+}

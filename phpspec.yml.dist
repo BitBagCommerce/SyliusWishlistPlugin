@@ -1,4 +1,4 @@
 suites:
     main:
-        namespace: BitBag\SyliusWishlistPlugin
-        psr4_prefix: BitBag\SyliusWishlistPlugin
+        namespace: Sylius\WishlistPlugin
+        psr4_prefix: Sylius\WishlistPlugin

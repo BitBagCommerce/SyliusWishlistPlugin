@@ -1,22 +1,24 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Generator;
+namespace Sylius\WishlistPlugin\Generator;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModelInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
+use Sylius\WishlistPlugin\Model\VariantPdfModelInterface;
+use Sylius\WishlistPlugin\Resolver\VariantImageToDataUriResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;

@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Ui;
+namespace Tests\Sylius\WishlistPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Behat\NotificationType;
 use Sylius\Behat\Service\NotificationCheckerInterface;
 use Sylius\Behat\Service\Setter\CookieSetterInterface;
@@ -28,16 +26,20 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist\IndexPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\LoginerInterface;
-use Tests\BitBag\SyliusWishlistPlugin\Behat\Service\WishlistCreatorInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\ProductIndexPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\ProductShowPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\Wishlist\ChosenShowPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\Wishlist\IndexPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Page\Shop\WishlistPageInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Service\LoginerInterface;
+use Tests\Sylius\WishlistPlugin\Behat\Service\WishlistCreatorInterface;
 use Webmozart\Assert\Assert;
 
 final class WishlistContext extends RawMinkContext implements Context
@@ -423,7 +425,7 @@ final class WishlistContext extends RawMinkContext implements Context
         $wishlist = $this->wishlistRepository->findOneBy([]);
         Assert::notNull($wishlist);
 
-        $url = $this->router->generate('bitbag_sylius_wishlist_plugin_shop_wishlist_export_to_pdf', ['wishlistId' => $wishlist->getId()], UrlGeneratorInterface::RELATIVE_PATH);
+        $url = $this->router->generate('sylius_wishlist_plugin_shop_wishlist_export_to_pdf', ['wishlistId' => $wishlist->getId()], UrlGeneratorInterface::RELATIVE_PATH);
 
         $response = $guzzle->get(sprintf('%s%s', $baseUrl, $url));
 
@@ -493,6 +495,8 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function iShouldHaveProductInMyCart(string $productName): void
     {
+        $this->iShouldWaitForOneSecond();
+
         Assert::true(
             $this->wishlistPage->hasProductInCart($productName),
             sprintf('Product %s was not found in the cart.', $productName),

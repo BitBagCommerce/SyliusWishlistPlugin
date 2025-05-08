@@ -1,23 +1,23 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
-use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
-use BitBag\SyliusWishlistPlugin\Form\Type\WishlistCollectionType;
-use BitBag\SyliusWishlistPlugin\Processor\WishlistCommandProcessorInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Order\Context\CartContextInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Form\Type\WishlistCollectionType;
+use Sylius\WishlistPlugin\Processor\WishlistCommandProcessorInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -50,7 +49,7 @@ abstract class BaseWishlistProductsAction
     {
         if (null === $this->createForm($wishlistId)) {
             return new RedirectResponse(
-                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'),
+                $this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists'),
             );
         }
         $form = $this->createForm($wishlistId);
@@ -60,7 +59,7 @@ abstract class BaseWishlistProductsAction
             $this->handleCommand($form);
 
             return new RedirectResponse(
-                $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
+                $this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                         'wishlistId' => $wishlistId,
                     ]),
             );
@@ -70,12 +69,12 @@ abstract class BaseWishlistProductsAction
         $session = $this->requestStack->getSession();
 
         /** @var FormError $error */
-        foreach ($form->getErrors() as $error) {
+        foreach ($form->getErrors(true) as $error) {
             $session->getFlashBag()->add('error', $error->getMessage());
         }
 
         return new RedirectResponse(
-            $this->urlGenerator->generate('bitbag_sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
+            $this->urlGenerator->generate('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', [
                 'wishlistId' => $wishlistId,
             ]),
         );
@@ -91,19 +90,6 @@ abstract class BaseWishlistProductsAction
         return $session->getFlashBag();
     }
 
-    protected function getExceptionMessage(HandlerFailedException $exception): string
-    {
-        $previous = $exception->getPrevious();
-        if ($previous instanceof InsufficientProductStockException) {
-            return $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.insufficient_stock', ['%productName%' => $previous->getProductName()]);
-        }
-        if ($previous instanceof InvalidProductQuantityException) {
-            return $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.increase_quantity');
-        }
-
-        return $exception->getMessage();
-    }
-
     private function createForm(int $wishlistId): ?FormInterface
     {
         /** @var ?WishlistInterface $wishlist */
@@ -114,7 +100,7 @@ abstract class BaseWishlistProductsAction
             /** @var Session $session */
             $session = $this->requestStack->getSession();
 
-            $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_not_exists'));
+            $session->getFlashBag()->add('error', $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_not_exists'));
 
             return null;
         }

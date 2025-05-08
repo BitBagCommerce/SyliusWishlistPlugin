@@ -12,9 +12,10 @@ default:
         - sylius.behat.context.transform.channel
         - sylius.behat.context.ui.shop.product
         - sylius.behat.context.ui.shop.cart
+        - sylius.behat.context.ui.shop.account
         - Behat\MinkExtension\Context\MinkContext
 
-        - bitbag_wishlist_plugin.behat.context.setup.wishlist
-        - bitbag_wishlist_plugin.behat.context.ui.wishlist
+        - sylius_wishlist_plugin.behat.context.setup.wishlist
+        - sylius_wishlist_plugin.behat.context.ui.wishlist
       filters:
         tags: "@wishlist&&@ui"

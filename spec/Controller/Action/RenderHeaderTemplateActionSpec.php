@@ -1,19 +1,21 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace spec\Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Controller\Action\RenderHeaderTemplateAction;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use PhpSpec\ObjectBehavior;
+use Sylius\WishlistPlugin\Controller\Action\RenderHeaderTemplateAction;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
@@ -42,7 +44,7 @@ final class RenderHeaderTemplateActionSpec extends ObjectBehavior
     ): void {
         $wishlists = [];
         $wishlistsResolver->resolve()->willReturn($wishlists);
-        $twigEnvironment->render('@BitBagSyliusWishlistPlugin/Common/widget.html.twig', [
+        $twigEnvironment->render('@SyliusWishlistPlugin/common/widget.html.twig', [
             'wishlists' => $wishlists,
         ])->willReturn('TEMPLATE');
         $this->__invoke($request)->shouldImplement(Response::class);

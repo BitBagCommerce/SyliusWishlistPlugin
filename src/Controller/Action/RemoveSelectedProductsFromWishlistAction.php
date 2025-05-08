@@ -1,17 +1,19 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveSelectedProductsFromWishlist;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
@@ -23,9 +25,9 @@ final class RemoveSelectedProductsFromWishlistAction extends BaseWishlistProduct
 
         try {
             $this->messageBus->dispatch($command);
-            $this->getFlashBag()->add('success', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
+            $this->getFlashBag()->add('success', $this->translator->trans('sylius_wishlist_plugin.ui.removed_selected_wishlist_items'));
         } catch (HandlerFailedException) {
-            $this->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.wishlist_product_not_found'));
+            $this->getFlashBag()->add('error', $this->translator->trans('sylius_wishlist_plugin.ui.wishlist_product_not_found'));
         }
     }
 }

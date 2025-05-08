@@ -1,0 +1,41 @@
+{% set isUser = app.user is not null %}
+{% set wishlists = isUser ? findAllByShopUserAndToken(app.user) : findAllByAnonymousAndChannel(sylius.channel) %}
+{% set is_single_wishlist = wishlists|length < 2 %}
+
+<div class="mb-3">
+    {% if is_single_wishlist %}
+        <a
+                href="{{ path('sylius_wishlist_plugin_shop_locale_wishlist_add_product', {'productId': product.id}) }}"
+                class="btn btn-icon btn-outline-secondary w-100"
+                data-product-name="{{ product.name }}"
+                {{ sylius_test_html_attribute('wishlist-add-product') }}
+        >
+            {{ ux_icon('mdi:heart', {'class': 'icon icon-sm'}) }}
+            {{ 'sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+        </a>
+    {% else %}
+        <div class="dropdown">
+            <button class="btn btn-icon btn-outline-secondary w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ ux_icon('mdi:heart', {'class': 'icon icon-sm'}) }}
+                {{ 'sylius_wishlist_plugin.ui.add_to_wishlist'|trans }}
+            </button>
+            <ul class="dropdown-menu w-100" data-bb-wishlist-hrefs="hrefs-adding-variant">
+                {% for wishlist in wishlists %}
+                    <li>
+                        <a
+                                href="{{ path('sylius_wishlist_plugin_shop_locale_wishlist_add_product_to_selected_wishlist', {
+                                    'wishlistId': wishlist.id,
+                                    'productId': product.id
+                                }) }}"
+                                class="dropdown-item"
+                                data-product-name="{{ product.name }}"
+                                {{ sylius_test_html_attribute('wishlist-add-product') }}
+                        >
+                            <span>{{ wishlist.name }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>

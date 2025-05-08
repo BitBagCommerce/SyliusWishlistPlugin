@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+ This file is part of the Sylius package.
+
+ (c) Sylius Sp. z o.o.
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+
+<resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
+>
+    <resource class="%sylius_wishlist_plugin.model.wishlist.class%">
+        <operations>
+            <operation
+                name="sylius_wishlist_shop_create_wishlist"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/shop/wishlists"
+                messenger="input"
+                input="Sylius\WishlistPlugin\Command\Wishlist\CreateWishlist"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius_wishlist:shop:wishlist:create</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="sylius_wishlist_shop_get_wishlist"
+                class="ApiPlatform\Metadata\Get"
+                uriTemplate="/shop/wishlists/{token}"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius_wishlist:shop:wishlist:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+            </operation>
+
+            <operation
+                name="sylius_wishlist_shop_add_product_to_wishlist"
+                class="ApiPlatform\Metadata\Patch"
+                uriTemplate="/shop/wishlists/{token}/product"
+                messenger="input"
+                input="Sylius\WishlistPlugin\Command\Wishlist\AddProductToWishlist"
+                security="is_granted('update', object)"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius_wishlist:shop:wishlist:add_product</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="sylius_wishlist_shop_add_product_variant_to_wishlist"
+                class="ApiPlatform\Metadata\Patch"
+                uriTemplate="/shop/wishlists/{token}/variant"
+                messenger="input"
+                input="Sylius\WishlistPlugin\Command\Wishlist\AddProductVariantToWishlist"
+                security="is_granted('update', object)"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius_wishlist:shop:wishlist:add_product</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="sylius_wishlist_shop_remove_product_from_wishlist"
+                class="ApiPlatform\Metadata\Delete"
+                uriTemplate="/shop/wishlists/{token}/products/{productId}"
+                controller="sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action"
+                write="false"
+                read="false"
+            />
+
+            <operation
+                name="sylius_wishlist_shop_remove_product_variant_from_wishlist"
+                class="ApiPlatform\Metadata\Delete"
+                uriTemplate="/shop/wishlists/{token}/productVariants/{productVariantId}"
+                controller="sylius_wishlist_plugin.controller.action.api_platform.remove_product_variant_from_wishlist_action"
+                write="false"
+                read="false"
+            />
+
+            <operation
+                name="sylius_wishlist_shop_remove_wishlist"
+                class="ApiPlatform\Metadata\Delete"
+                uriTemplate="/shop/wishlists/{token}"
+                security="is_granted('delete', object)"
+                controller="sylius_wishlist_plugin.controller.action.api_platform.remove_wishlist_action"
+                write="false"
+            />
+        </operations>
+    </resource>
+</resources>

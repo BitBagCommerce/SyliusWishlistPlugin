@@ -1,27 +1,32 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductVariantFromWishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Resource\ResourceActions;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductVariantFromWishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Exception\ProductVariantNotFoundException;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[AsMessageHandler]
 final class RemoveProductVariantFromWishlistHandler
@@ -31,6 +36,7 @@ final class RemoveProductVariantFromWishlistHandler
         private ProductVariantRepositoryInterface $productVariantRepository,
         private RepositoryInterface $wishlistProductRepository,
         private ObjectManager $wishlistManager,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -41,16 +47,15 @@ final class RemoveProductVariantFromWishlistHandler
 
         /** @var ?ProductVariantInterface $variant */
         $variant = $this->productVariantRepository->find($variantId);
-        /** @var ?WishlistProductInterface $wishlistProduct */
-        $wishlistProduct = $this->wishlistProductRepository->findOneBy(['variant' => $variant]);
-        /** @var ?WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->findByToken($token);
 
-        if (null === $variant || null === $wishlistProduct) {
+        if (null === $variant) {
             throw new ProductVariantNotFoundException(
-                sprintf('The Product %s does not exist', $variantId),
+                sprintf('The Product Variant %s does not exist', $variantId),
             );
         }
+
+        /** @var ?WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->findByToken($token);
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
@@ -58,7 +63,20 @@ final class RemoveProductVariantFromWishlistHandler
             );
         }
 
-        $wishlist->removeProductVariant($variant);
+        if (!$this->authorizationChecker->isGranted(ResourceActions::DELETE, $wishlist)) {
+            throw new AccessDeniedException('You are not allowed to delete from this wishlist.');
+        }
+
+        /** @var ?WishlistProductInterface $wishlistProduct */
+        $wishlistProduct = $this->wishlistProductRepository->findOneBy(['variant' => $variant, 'wishlist' => $wishlist]);
+
+        if (null === $wishlistProduct) {
+            throw new ProductVariantNotFoundException(
+                sprintf('The Product Variant %s was not found in Wishlist %s', $variantId, $token),
+            );
+        }
+
+        $wishlist->removeProduct($wishlistProduct);
         $this->wishlistManager->flush();
 
         return $wishlist;

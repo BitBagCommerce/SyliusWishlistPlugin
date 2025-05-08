@@ -1,28 +1,23 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
- */
-
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace spec\Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductVariantFromWishlist;
-use BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist\RemoveProductVariantFromWishlistHandler;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductVariantNotFoundException;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Resource\ResourceActions;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductVariantFromWishlist;
+use Sylius\WishlistPlugin\CommandHandler\Wishlist\RemoveProductVariantFromWishlistHandler;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Exception\ProductVariantNotFoundException;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class RemoveProductVariantFromWishlistHandlerSpec extends ObjectBehavior
 {
@@ -31,12 +26,14 @@ final class RemoveProductVariantFromWishlistHandlerSpec extends ObjectBehavior
         ProductVariantRepositoryInterface $productVariantRepository,
         RepositoryInterface $wishlistProductRepository,
         ObjectManager $wishlistManager,
+        AuthorizationCheckerInterface $authorizationChecker,
     ): void {
         $this->beConstructedWith(
             $wishlistRepository,
             $productVariantRepository,
             $wishlistProductRepository,
             $wishlistManager,
+            $authorizationChecker,
         );
     }
 
@@ -53,14 +50,17 @@ final class RemoveProductVariantFromWishlistHandlerSpec extends ObjectBehavior
         ProductVariantInterface $variant,
         WishlistInterface $wishlist,
         WishlistProductInterface $wishlistProduct,
+        AuthorizationCheckerInterface $authorizationChecker,
     ): void {
         $removeProductVariantCommand = new RemoveProductVariantFromWishlist(1, 'wishlist_token');
 
         $productVariantRepository->find(1)->willReturn($variant);
-        $wishlistProductRepository->findOneBy(['variant' => $variant])->willReturn($wishlistProduct);
         $wishlistRepository->findByToken('wishlist_token')->willReturn($wishlist);
+        $wishlistProductRepository->findOneBy(['variant' => $variant, 'wishlist' => $wishlist])->willReturn($wishlistProduct);
 
-        $wishlist->removeProductVariant($variant)->shouldBeCalled();
+        $authorizationChecker->isGranted(ResourceActions::DELETE, $wishlist)->willReturn(true);
+
+        $wishlist->removeProduct($wishlistProduct)->shouldBeCalled();
         $wishlistManager->flush()->shouldBeCalled();
 
         $this->__invoke($removeProductVariantCommand)->shouldReturn($wishlist);
@@ -81,13 +81,14 @@ final class RemoveProductVariantFromWishlistHandlerSpec extends ObjectBehavior
         WishlistRepositoryInterface $wishlistRepository,
         RepositoryInterface $wishlistProductRepository,
         ProductVariantInterface $variant,
-        WishlistProductInterface $wishlistProduct,
+        AuthorizationCheckerInterface $authorizationChecker,
     ): void {
         $removeProductVariantCommand = new RemoveProductVariantFromWishlist(1, 'wishlist_token');
 
         $productVariantRepository->find(1)->willReturn($variant);
-        $wishlistProductRepository->findOneBy(['variant' => $variant])->willReturn($wishlistProduct);
         $wishlistRepository->findByToken('wishlist_token')->willReturn(null);
+
+        $authorizationChecker->isGranted(ResourceActions::DELETE, null)->willReturn(true);
 
         $this->shouldThrow(WishlistNotFoundException::class)->during('__invoke', [$removeProductVariantCommand]);
     }

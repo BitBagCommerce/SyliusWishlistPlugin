@@ -1,20 +1,20 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Api;
+namespace Tests\Sylius\WishlistPlugin\Behat\Context\Api;
 
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -24,6 +24,8 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -101,7 +103,7 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function userHasAWishlist(): void
     {
-        $uri = $this->router->generate('api_wishlists_shop_create_wishlist_collection');
+        $uri = $this->router->generate('sylius_wishlist_shop_create_wishlist');
         $response = $this->client->request(
             Request::METHOD_POST,
             sprintf('%s%s', self::$domain, $uri),
@@ -245,7 +247,7 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function userRemovesProductFromTheWishlist(ProductInterface $product): void
     {
-        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item', [
+        $uri = $this->router->generate('sylius_wishlist_shop_remove_product_from_wishlist', [
             'token' => $this->wishlist->getToken(),
             'productId' => $product->getId(),
         ]);
@@ -286,7 +288,7 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function userRemovesProductVariantFromTheWishlist(ProductVariantInterface $variant): void
     {
-        $uri = $this->router->generate('api_wishlists_shop_remove_product_variant_from_wishlist_item', [
+        $uri = $this->router->generate('sylius_wishlist_shop_remove_product_variant_from_wishlist', [
             'token' => $this->wishlist->getToken(),
             'productVariantId' => $variant->getId(),
         ]);
@@ -366,7 +368,7 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     public function userHasAWishlistInChannel(ChannelInterface $channel): void
     {
-        $uri = $this->router->generate('api_wishlists_shop_create_wishlist_collection');
+        $uri = $this->router->generate('sylius_wishlist_shop_create_wishlist');
         $response = $this->client->request(
             Request::METHOD_POST,
             sprintf('%s%s', self::$domain, $uri),
@@ -420,7 +422,7 @@ final class WishlistContext extends RawMinkContext implements Context
         ProductInterface $product,
         ChannelInterface $channel = null,
     ): ResponseInterface {
-        $uri = $this->router->generate('api_wishlists_shop_add_product_to_wishlist_item', [
+        $uri = $this->router->generate('sylius_wishlist_shop_add_product_to_wishlist', [
             'token' => $wishlist->getToken(),
         ]);
 
@@ -445,7 +447,7 @@ final class WishlistContext extends RawMinkContext implements Context
 
     private function addProductVariantToTheWishlist(WishlistInterface $wishlist, ProductVariantInterface $variant): ResponseInterface
     {
-        $uri = $this->router->generate('api_wishlists_shop_add_product_variant_to_wishlist_item', [
+        $uri = $this->router->generate('sylius_wishlist_shop_add_product_variant_to_wishlist', [
             'token' => $wishlist->getToken(),
         ]);
 
@@ -465,7 +467,7 @@ final class WishlistContext extends RawMinkContext implements Context
      */
     private function removeProductFromTheWishlist(WishlistInterface $wishlist, ProductInterface $product): ResponseInterface
     {
-        $uri = $this->router->generate('api_wishlists_shop_remove_product_from_wishlist_item', [
+        $uri = $this->router->generate('sylius_wishlist_shop_remove_product_from_wishlist', [
             'token' => $wishlist->getToken(),
             'productId' => $product->getId(),
         ]);

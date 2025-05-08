@@ -1,19 +1,21 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace Sylius\WishlistPlugin\Controller\Action;
 
 final class RenderHeaderTemplateAction extends BaseWishlistsListingAction
 {
-    private const FILE_TO_RENDER = '@BitBagSyliusWishlistPlugin/Common/widget.html.twig';
+    private const FILE_TO_RENDER = '@SyliusWishlistPlugin/common/widget.html.twig';
 
     protected function getTemplateToRender(): string
     {

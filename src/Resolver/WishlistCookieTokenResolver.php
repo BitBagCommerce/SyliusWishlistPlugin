@@ -1,20 +1,21 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Resolver;
+namespace Sylius\WishlistPlugin\Resolver;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistToken;
+use Sylius\WishlistPlugin\Entity\WishlistToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Webmozart\Assert\Assert;
 
 final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverInterface
 {
@@ -28,7 +29,9 @@ final class WishlistCookieTokenResolver implements WishlistCookieTokenResolverIn
     {
         /** @var ?Request $mainRequest */
         $mainRequest = $this->requestStack->getMainRequest();
-        Assert::notNull($mainRequest);
+        if (null === $mainRequest) {
+            return (string) new WishlistToken();
+        }
 
         $wishlistCookieToken = $mainRequest->cookies->get($this->wishlistCookieToken);
 

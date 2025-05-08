@@ -1,19 +1,21 @@
 Sylius\Component\Locale\Model\Locale:
     locale:
-        createdAt: '<dateTimeBetween("-200 days", "now")>'
         code: 'en_US'
+
 Sylius\Component\Currency\Model\Currency:
     dollar:
         code: 'USD'
+
 Sylius\Component\Core\Model\Channel:
     channel_us:
         code: 'US'
-        name: 'name'
+        name: 'United States'
         defaultLocale: '@locale'
-        locales: [ '@locale' ]
+        locales: ['@locale']
         taxCalculationStrategy: 'order_items_based'
         baseCurrency: '@dollar'
         enabled: true
+
 Sylius\Component\Core\Model\AdminUser:
     test_admin:
         enabled: true
@@ -23,75 +25,88 @@ Sylius\Component\Core\Model\AdminUser:
         email: "admin@example.com"
         emailCanonical: "admin@example.com"
         localeCode: 'en_US'
-        roles: ["ROLE_ADMINISTRATION_ACCESS","ROLE_API_ACCESS"]
+        roles: ["ROLE_ADMINISTRATION_ACCESS", "ROLE_API_ACCESS"]
+        plainPassword: 'adminpass'
+
 Sylius\Component\Core\Model\Customer:
     customer_oliver:
         firstName: 'John'
         lastName: 'Nowak'
         email: 'oliver@queen.com'
-        emailCanonical: 'test2@example.com'
+        emailCanonical: 'oliver@queen.com'
+
     customer_bruce:
         firstName: 'Bruce'
         lastName: 'Wayne'
         email: 'bruce@wayne.com'
-        emailCanonical: 'test@example.com'
+        emailCanonical: 'bruce@wayne.com'
+
 Sylius\Component\Core\Model\ShopUser:
     user_oliver:
         plainPassword: '123password'
-        roles: [ 'ROLE_USER' ]
-        enabled: 'true'
+        roles: ['ROLE_USER']
+        enabled: true
         customer: '@customer_oliver'
         username: 'oliver@queen.com'
         usernameCanonical: 'oliver@queen.com'
+
     user_bruce:
         plainPassword: '123password'
-        roles: [ 'ROLE_USER' ]
-        enabled: 'true'
+        roles: ['ROLE_USER']
+        enabled: true
         customer: '@customer_bruce'
         username: 'bruce@wayne.com'
         usernameCanonical: 'bruce@wayne.com'
+
 Sylius\Component\Core\Model\Product:
     product_{1..10}:
         code: 'product_<current()>_code'
         enabled: true
+
 Sylius\Component\Core\Model\ProductTranslation:
     product_translation_en_{1..10}:
-        translatable: '@product_<current()>'
-        name: '<word()>'
-        description: '<sentence()>'
-        shortDescription: '<sentence()>'
+        locale: 'en_US'
+        name: 'Sample product 1'
         slug: '<slug()><current()>'
-        locale: 'en'
+        description: 'A test product'
+        shortDescription: 'Short test'
+        translatable: '@product_<current()>'
+
 Sylius\Component\Core\Model\ProductVariant:
     product_variant_{1..10}:
         code: 'product_variant_<current()>_code'
         product: '@product_<current()>'
+
 Sylius\Component\Product\Model\ProductVariantTranslation:
     product_variant_translation_en_{1..10}:
-        translatable: '@product_variant_<current()>'
         name: '<word()>'
         locale: 'en'
-BitBag\SyliusWishlistPlugin\Entity\Wishlist:
+        translatable: '@product_variant_<current()>'
+
+Sylius\WishlistPlugin\Entity\Wishlist:
     olivier_wishlist:
         name: 'Olivier Wishlist'
         shopUser: '@user_oliver'
         channel: '@channel_us'
+
     olivier_wishlist2:
         name: 'Olivier Wishlist 2'
         shopUser: '@user_oliver'
         channel: '@channel_us'
+
     empty_olivier_wishlist:
         name: 'Empty Olivier Wishlist'
         shopUser: '@user_oliver'
         channel: '@channel_us'
+
     bruce_wishlist:
         name: 'Bruce Wishlist'
         shopUser: '@user_bruce'
         channel: '@channel_us'
-BitBag\SyliusWishlistPlugin\Entity\WishlistProduct:
+
+Sylius\WishlistPlugin\Entity\WishlistProduct:
     wishlist_product_1:
         wishlist: '@olivier_wishlist'
         product: '@product_1'
         variant: '@product_variant_1'
-        quantity: '<numberBetween(1, 200)>'
-
+        quantity: 1

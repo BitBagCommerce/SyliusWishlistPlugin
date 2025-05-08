@@ -1,27 +1,32 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Exception\ProductNotFoundException;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNotFoundException;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Sylius\Resource\ResourceActions;
+use Sylius\WishlistPlugin\Command\Wishlist\RemoveProductFromWishlist;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Exception\ProductNotFoundException;
+use Sylius\WishlistPlugin\Exception\WishlistNotFoundException;
+use Sylius\WishlistPlugin\Repository\WishlistRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[AsMessageHandler]
 final class RemoveProductFromWishlistHandler
@@ -31,6 +36,7 @@ final class RemoveProductFromWishlistHandler
         private WishlistRepositoryInterface $wishlistRepository,
         private RepositoryInterface $wishlistProductRepository,
         private ObjectManager $wishlistManager,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -42,17 +48,14 @@ final class RemoveProductFromWishlistHandler
         /** @var ?ProductInterface $product */
         $product = $this->productRepository->find($productId);
 
-        /** @var ?WishlistInterface $wishlist */
-        $wishlist = $this->wishlistRepository->findByToken($token);
-
-        /** @var ?WishlistProductInterface $wishlistProduct */
-        $wishlistProduct = $this->wishlistProductRepository->findOneBy(['product' => $product, 'wishlist' => $wishlist]);
-
-        if (null === $product || null === $wishlistProduct) {
+        if (null === $product) {
             throw new ProductNotFoundException(
                 sprintf('The Product %s does not exist', $productId),
             );
         }
+
+        /** @var ?WishlistInterface $wishlist */
+        $wishlist = $this->wishlistRepository->findByToken($token);
 
         if (null === $wishlist) {
             throw new WishlistNotFoundException(
@@ -60,7 +63,20 @@ final class RemoveProductFromWishlistHandler
             );
         }
 
-        $wishlist = $wishlist->removeProduct($wishlistProduct);
+        if (!$this->authorizationChecker->isGranted(ResourceActions::DELETE, $wishlist)) {
+            throw new AccessDeniedException('You are not allowed to delete from this wishlist.');
+        }
+
+        /** @var ?WishlistProductInterface $wishlistProduct */
+        $wishlistProduct = $this->wishlistProductRepository->findOneBy(['product' => $product, 'wishlist' => $wishlist]);
+
+        if (null === $wishlistProduct) {
+            throw new ProductNotFoundException(
+                sprintf('The Product %s was not found in Wishlist %s', $productId, $token),
+            );
+        }
+
+        $wishlist->removeProduct($wishlistProduct);
         $this->wishlistManager->flush();
 
         return $wishlist;

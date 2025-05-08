@@ -1,15 +1,17 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Form\Type;
+namespace Sylius\WishlistPlugin\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,7 +24,7 @@ final class EditWishlistNameType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'bitbag_sylius_wishlist_plugin.ui.create_new_wishlist_label',
+                'label' => 'sylius_wishlist_plugin.ui.create_new_wishlist_label',
                 'required' => true,
             ])
             ->add('save', SubmitType::class)

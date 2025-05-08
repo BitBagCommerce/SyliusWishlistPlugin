@@ -1,15 +1,17 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Context\Cli;
+namespace Tests\Sylius\WishlistPlugin\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -19,7 +21,7 @@ use Webmozart\Assert\Assert;
 
 final class WishlistContext implements Context
 {
-    public const REMOVE_GUEST_WISHLISTS_COMMAND = 'bitbag:wishlist:remove-guest-wishlists';
+    public const REMOVE_GUEST_WISHLISTS_COMMAND = 'sylius:wishlist:remove-guest-wishlists';
 
     private Application $application;
 

@@ -1,19 +1,21 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Form\Extension;
+namespace Sylius\WishlistPlugin\Form\Extension;
 
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType;
+use Sylius\WishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -34,9 +36,9 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
         if (false === $isWishlist) {
             $builder
                 ->add('addToWishlist', SubmitType::class, [
-                    'label' => 'bitbag_sylius_wishlist_plugin.ui.add_to_wishlist',
+                    'label' => 'sylius_wishlist_plugin.ui.add_to_wishlist',
                     'attr' => [
-                        'class' => 'bitbag-add-variant-to-wishlist ui icon labeled button',
+                        'class' => 'sylius-add-variant-to-wishlist ui icon labeled button',
                     ],
                 ])
                 ->add('wishlists', EntityType::class, [

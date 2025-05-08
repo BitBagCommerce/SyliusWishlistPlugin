@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+               http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sylius_wishlist_plugin.services.generator.model_creator" class="Sylius\WishlistPlugin\Generator\ModelCreator">
+            <argument type="service" id="sylius_wishlist_plugin.resolver.variant_image_path_resolver"/>
+            <argument type="service" id="sylius_wishlist_plugin.model.factory.variant_pdf_model_factory"/>
+            <argument type="service" id="request_stack"/>
+        </service>
+    </services>
+</container>

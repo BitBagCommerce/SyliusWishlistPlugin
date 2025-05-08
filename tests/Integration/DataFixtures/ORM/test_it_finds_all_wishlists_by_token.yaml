@@ -14,7 +14,7 @@ Sylius\Component\Core\Model\Channel:
         taxCalculationStrategy: 'order_items_based'
         baseCurrency: '@dollar'
         enabled: true
-BitBag\SyliusWishlistPlugin\Entity\Wishlist:
+Sylius\WishlistPlugin\Entity\Wishlist:
     wishlist_one:
         name: 'Wishlist One'
         channel: '@channel_us'

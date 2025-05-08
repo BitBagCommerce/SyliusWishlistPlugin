@@ -1,15 +1,17 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Service;
+namespace Tests\Sylius\WishlistPlugin\Behat\Service;
 
 use Sylius\Behat\Page\Shop\Account\LoginPageInterface;
 use Sylius\Behat\Page\Shop\HomePageInterface;
@@ -22,7 +24,7 @@ final class Loginer implements LoginerInterface
 {
     private const EXAMPLE_USER_LOGIN = 'shop@example.com';
 
-    private const EXAMPLE_USER_PASSWORD = 'bitbag';
+    private const EXAMPLE_USER_PASSWORD = '123';
 
     public function __construct(
         private FactoryInterface $customerFactory,

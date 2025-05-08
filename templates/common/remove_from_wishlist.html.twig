@@ -1,0 +1,9 @@
+<a
+    href="{{ path('sylius_wishlist_plugin_shop_locale_wishlist_remove_product_variant', { wishlistId: wishlist.id, variantId: variant.id }) }}"
+    class="btn btn-sm btn-outline-secondary"
+    data-product-name="{{ product.name }}"
+    data-tooltip="{{ 'sylius_wishlist_plugin.ui.remove_from_wishlist'|trans }}"
+    {{ sylius_test_html_attribute('wishlist-remove-item') }}
+>
+    {{ ux_icon('flowbite:x-outline', {'class': 'icon icon-sm'}) }}
+</a>

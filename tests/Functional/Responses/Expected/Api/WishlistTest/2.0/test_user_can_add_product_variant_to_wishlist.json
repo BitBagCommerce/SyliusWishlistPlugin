@@ -1,0 +1,25 @@
+{
+  "@context": "\/api\/v2\/contexts\/Wishlist",
+  "@id": "\/api\/v2\/shop\/wishlists\/@string@",
+  "@type": "Wishlist",
+  "id": "@integer@",
+  "name": "@string@",
+  "wishlistProducts": [
+    {
+      "@type": "WishlistProduct",
+      "@id": "@string@",
+      "id": "@integer@",
+      "wishlist": "\/api\/v2\/shop\/wishlists\/@string@",
+      "product": "@array@",
+      "variant": "@array@",
+      "quantity": "@integer@"
+    }
+  ],
+  "shopUser": "\/api\/v2\/shop\/shop-users\/@integer@",
+  "token": "@string@",
+  "channel": "\/api\/v2\/shop\/channels\/@string@",
+  "createdAt": "@datetime@",
+  "updatedAt": "@datetime@",
+  "products": "@array@",
+  "productVariants": "@array@"
+}

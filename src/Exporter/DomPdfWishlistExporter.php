@@ -1,18 +1,20 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Exporter;
+namespace Sylius\WishlistPlugin\Exporter;
 
-use BitBag\SyliusWishlistPlugin\Factory\DomPdfFactoryInterface;
 use Doctrine\Common\Collections\Collection;
+use Sylius\WishlistPlugin\Factory\DomPdfFactoryInterface;
 use Twig\Environment;
 
 final class DomPdfWishlistExporter implements DomPdfWishlistExporterInterface
@@ -26,7 +28,7 @@ final class DomPdfWishlistExporter implements DomPdfWishlistExporterInterface
     public function export(Collection $data): void
     {
         $dompdf = $this->domPdfFactory->createNewWithDefaultOptions();
-        $html = $this->twigEnvironment->render('@BitBagSyliusWishlistPlugin/_wishlist_pdf.html.twig', [
+        $html = $this->twigEnvironment->render('@SyliusWishlistPlugin/wishlist_pdf.html.twig', [
             'title' => 'My wishlist products',
             'date' => date('d.m.Y'),
             'products' => $data,

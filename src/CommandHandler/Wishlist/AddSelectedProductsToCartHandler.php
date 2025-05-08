@@ -1,20 +1,18 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\AddSelectedProductsToCart;
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistItemInterface;
-use BitBag\SyliusWishlistPlugin\Exception\InsufficientProductStockException;
-use BitBag\SyliusWishlistPlugin\Exception\InvalidProductQuantityException;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
@@ -23,6 +21,10 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\AddSelectedProductsToCartInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\WishlistItemInterface;
+use Sylius\WishlistPlugin\Exception\InsufficientProductStockException;
+use Sylius\WishlistPlugin\Exception\InvalidProductQuantityException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -37,7 +39,7 @@ final class AddSelectedProductsToCartHandler
     ) {
     }
 
-    public function __invoke(AddSelectedProductsToCart $addSelectedProductsToCartCommand): void
+    public function __invoke(AddSelectedProductsToCartInterface $addSelectedProductsToCartCommand): void
     {
         $this->addSelectedProductsToCart($addSelectedProductsToCartCommand->getWishlistProducts());
     }

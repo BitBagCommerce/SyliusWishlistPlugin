@@ -1,0 +1,6 @@
+{% import "@SyliusCore/Common/Macro/money.html.twig" as money %}
+
+<b data-bb-toggle="wishlist-variant-price" data-bb-target="#{{ itemId }}">
+    {{ money.convertAndFormat(variant|sylius_calculate_price({'channel': sylius.channel})) }}
+</b>
+

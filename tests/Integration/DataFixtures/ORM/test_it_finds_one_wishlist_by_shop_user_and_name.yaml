@@ -40,7 +40,7 @@ Sylius\Component\Core\Model\ShopUser:
         customer: '@customer_bruce'
         username: 'bruce@wayne.com'
         usernameCanonical: 'bruce@wayne.com'
-BitBag\SyliusWishlistPlugin\Entity\Wishlist:
+Sylius\WishlistPlugin\Entity\Wishlist:
     olivier_wishlist:
         name: 'Olivier Wishlist'
         shopUser: '@user_oliver'

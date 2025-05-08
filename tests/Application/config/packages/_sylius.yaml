@@ -3,9 +3,10 @@ imports:
     - { resource: "@SyliusAdminBundle/Resources/config/app/config.yml" }
     - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
     - { resource: "@SyliusApiBundle/Resources/config/app/config.yaml" }
+    - { resource: "@SyliusPayumBundle/Resources/config/app/config.yaml" }
 
 sylius_api:
-    enabled: true      
+    enabled: true
 
 parameters:
     sylius_core.public_dir: '%kernel.project_dir%/public'
@@ -19,3 +20,19 @@ sylius_shop:
 sylius_state_machine_abstraction:
     graphs_to_adapters_mapping:
         sylius_refund_refund_payment: '%test_sylius_state_machine_adapter%'
+
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.base#stylesheets':
+            app_styles:
+                template: 'admin/stylesheets.html.twig'
+        'sylius_admin.base#javascripts':
+            app_javascripts:
+                template: 'admin/javascripts.html.twig'
+
+        'sylius_shop.base#stylesheets':
+            app_styles:
+                template: 'shop/stylesheets.html.twig'
+        'sylius_shop.base#javascripts':
+            app_javascripts:
+                template: 'shop/javascripts.html.twig'

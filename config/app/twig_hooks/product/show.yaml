@@ -1,0 +1,9 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_shop.product.show.content.info.summary':
+            add_to_wishlist:
+                component: 'sylius_shop:product:add_to_wishlist'
+                props:
+                    product: '@=_context.product'
+                    template: '@SyliusWishlistPlugin/product/show/add_to_wishlist.html.twig'
+                priority: 10

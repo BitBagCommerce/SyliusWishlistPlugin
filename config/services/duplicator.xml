@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+               http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sylius_wishlist_plugin.services.duplicator" class="Sylius\WishlistPlugin\Duplicator\WishlistProductsToOtherWishlistDuplicator">
+            <argument type="service" id="sylius_wishlist_plugin.factory.wishlist_product"/>
+            <argument type="service" id="sylius.repository.product_variant"/>
+            <argument type="service" id="sylius_wishlist_plugin.repository.wishlist"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="translator"/>
+        </service>
+    </services>
+</container>

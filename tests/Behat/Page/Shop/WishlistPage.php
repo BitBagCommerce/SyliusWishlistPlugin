@@ -1,15 +1,17 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop;
+namespace Tests\Sylius\WishlistPlugin\Behat\Page\Shop;
 
 use Behat\Mink\Element\NodeElement;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
@@ -158,20 +160,20 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
     public function hasProductInCart(string $productName): bool
     {
         /** @var ?NodeElement $productNameElement */
-        $productNameElement = $this->getDocument()->find('css', '.ui.cart.popup > .list > .item > strong');
+        $productNameElement = $this->getDocument()->find('css', '#offcanvasCart .h6 [data-test-product-name]');
 
         if (null === $productNameElement) {
             return false;
         }
 
-        $productNameOnPage = $productNameElement->getText();
+        $productNameOnPage = $productNameElement->getAttribute('data-test-product-name');
 
         return $productName === $productNameOnPage;
     }
 
     public function hasProductOutOfStockValidationMessage(ProductInterface $product): bool
     {
-        $outOfStockValidationErrorElement = $this->getDocument()->find('css', '.sylius-flash-message p');
+        $outOfStockValidationErrorElement = $this->getDocument()->find('css', '.alert [data-test-flash-messages]');
 
         if (null === $outOfStockValidationErrorElement) {
             return false;
@@ -184,7 +186,7 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function hasWishlistClearedValidationMessage(): bool
     {
-        $hasWishlistClearedValidationMessage = $this->getDocument()->find('css', '.sylius-flash-message p');
+        $hasWishlistClearedValidationMessage = $this->getDocument()->find('css', '.alert [data-test-flash-messages]');
 
         if (null === $hasWishlistClearedValidationMessage) {
             return false;
@@ -197,20 +199,20 @@ class WishlistPage extends SymfonyPage implements WishlistPageInterface
 
     public function addMoreProductsWishlistValidationMessage(): bool
     {
-        $notEnoughQuantityOfItemsValidationError = $this->getDocument()->find('css', '.sylius-flash-message p');
+        $notEnoughQuantityOfItemsValidationError = $this->getDocument()->find('css', '.alert [data-test-flash-messages]');
 
         if (null === $notEnoughQuantityOfItemsValidationError) {
             return false;
         }
 
-        $message = sprintf('Increase the quantity of at least one item.');
+        $message = sprintf('Quantity must be between 1 and 9999.');
 
         return $notEnoughQuantityOfItemsValidationError->getText() === $message;
     }
 
     public function getRouteName(): string
     {
-        return 'bitbag_sylius_wishlist_plugin_shop_wishlist_list_products';
+        return 'sylius_wishlist_plugin_shop_wishlist_list_products';
     }
 
     protected function getDefinedElements(): array

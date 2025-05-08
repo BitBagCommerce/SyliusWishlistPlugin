@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+               http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sylius_wishlist_plugin.form.type.add_products_to_cart" class="Sylius\WishlistPlugin\Form\Type\AddProductsToCartType">
+            <argument type="service" id="sylius.factory.add_to_cart_command"/>
+            <argument type="service" id="sylius.factory.order_item"/>
+            <argument type="service" id="sylius.modifier.order_item_quantity"/>
+            <tag name="form.type"/>
+        </service>
+
+        <service id="sylius_wishlist_plugin.form.type.extension.add_to_cart_type_extension" class="Sylius\WishlistPlugin\Form\Extension\AddToCartTypeExtension">
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <tag name="form.type_extension" extended_type="Sylius\Bundle\CoreBundle\Form\Type\Order\AddToCartType"/>
+        </service>
+
+        <service id="sylius_wishlist_plugin.form.type.create_new_wishlist" class="Sylius\WishlistPlugin\Form\Type\CreateNewWishlistType">
+            <tag name="form.type"/>
+        </service>
+
+        <service id="sylius_wishlist_plugin.form.type.wishlist_collection_type" class="Sylius\WishlistPlugin\Form\Type\WishlistCollectionType">
+            <argument type="service" id="translator"/>
+            <argument type="service" id="sylius_wishlist_plugin.processor.selected_wishlist_products_processor"/>
+            <tag name="form.type"/>
+        </service>
+
+        <service id="sylius.wishlist_plugin.form.type.add_to_wishlist_type" class="Sylius\WishlistPlugin\Form\Type\AddToWishlistType">
+            <argument type="service" id="sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+            <tag name="form.type"/>
+        </service>
+    </services>
+</container>

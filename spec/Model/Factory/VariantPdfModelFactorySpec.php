@@ -1,21 +1,23 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Model\Factory;
+namespace spec\Sylius\WishlistPlugin\Model\Factory;
 
-use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactory;
-use BitBag\SyliusWishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Model\VariantPdfModel;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductVariant;
+use Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactory;
+use Sylius\WishlistPlugin\Model\Factory\VariantPdfModelFactoryInterface;
+use Sylius\WishlistPlugin\Model\VariantPdfModel;
 
 final class VariantPdfModelFactorySpec extends ObjectBehavior
 {

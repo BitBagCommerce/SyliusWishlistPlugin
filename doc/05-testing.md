@@ -1,4 +1,4 @@
-# BitBag SyliusWishlistPlugin
+# SyliusWishlistPlugin
 
 - [⬅️ Back](../README.md#overview)
 
@@ -7,11 +7,7 @@
 ```bash
 composer install
 cd tests/Application
-```
 
-Then:
-
-```bash
 yarn install
 yarn dev
 APP_ENV=test bin/console assets:install public

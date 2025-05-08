@@ -1,29 +1,31 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusWishlistPlugin\Controller\Action;
+namespace spec\Sylius\WishlistPlugin\Controller\Action;
 
-use BitBag\SyliusWishlistPlugin\Controller\Action\AddProductToWishlistAction;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
-use BitBag\SyliusWishlistPlugin\Resolver\WishlistsResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Sylius\WishlistPlugin\Controller\Action\AddProductToWishlistAction;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
+use Sylius\WishlistPlugin\Entity\WishlistProductInterface;
+use Sylius\WishlistPlugin\Factory\WishlistProductFactoryInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
+use Sylius\WishlistPlugin\Resolver\WishlistsResolverInterface;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -83,7 +85,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
-        ParameterBag $headers,
+        HeaderBag $headers,
         Session $session,
         FlashBagInterface $flashBag,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
@@ -101,7 +103,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $wishlistCookieTokenResolver->resolve()->willReturn('cookie-wishlist-token');
 
         $wishlistProductFactory->createForWishlistAndProduct($wishlist1, $product)->willReturn($wishlistProduct);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
+        $translator->trans('sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
         $channelContext->getChannel()->willReturn($channel);
         $channel->getId()->willReturn(1);
         $wishlist1->getChannel()->willReturn($channel);
@@ -133,7 +135,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         ObjectManager $wishlistManager,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel,
-        ParameterBag $headers,
+        HeaderBag $headers,
         Session $session,
         FlashBagInterface $flashBag,
         WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
@@ -150,7 +152,7 @@ final class AddProductToWishlistActionSpec extends ObjectBehavior
         $wishlistCookieTokenResolver->resolve()->willReturn('cookie-wishlist-token');
 
         $wishlistProductFactory->createForWishlistAndProduct($wishlist1, $product)->willReturn($wishlistProduct);
-        $translator->trans('bitbag_sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
+        $translator->trans('sylius_wishlist_plugin.ui.added_wishlist_item')->willReturn('Product has been added to your wishlist.');
         $channelContext->getChannel()->willReturn($channel);
         $channel->getId()->willReturn(1);
         $wishlist1->getChannel()->willReturn($channel);

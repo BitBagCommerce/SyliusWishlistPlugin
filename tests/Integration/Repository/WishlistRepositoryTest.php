@@ -1,20 +1,22 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Integration\Repository;
+namespace Tests\Sylius\WishlistPlugin\Integration\Repository;
 
 use ApiTestCase\JsonApiTestCase;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\Channel;
 use Sylius\Component\Core\Model\ShopUser;
+use Sylius\WishlistPlugin\Entity\WishlistInterface;
 
 final class WishlistRepositoryTest extends JsonApiTestCase
 {
@@ -23,7 +25,7 @@ final class WishlistRepositoryTest extends JsonApiTestCase
         parent::setUp();
 
         $this->entityManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $this->repository = $this->getContainer()->get('bitbag_sylius_wishlist_plugin.repository.wishlist');
+        $this->repository = $this->getContainer()->get('sylius_wishlist_plugin.repository.wishlist');
     }
 
     public function testItFindsOneWishlistByShopUser(): void

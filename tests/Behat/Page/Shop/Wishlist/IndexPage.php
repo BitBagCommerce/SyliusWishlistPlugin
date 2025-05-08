@@ -1,15 +1,17 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusWishlistPlugin\Behat\Page\Shop\Wishlist;
+namespace Tests\Sylius\WishlistPlugin\Behat\Page\Shop\Wishlist;
 
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 use Webmozart\Assert\Assert;
@@ -18,7 +20,7 @@ final class IndexPage extends SymfonyPage implements IndexPageInterface
 {
     public function getRouteName(): string
     {
-        return 'bitbag_sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists';
+        return 'sylius_wishlist_plugin_shop_locale_wishlist_list_wishlists';
     }
 
     public function addNewWishlist(): void

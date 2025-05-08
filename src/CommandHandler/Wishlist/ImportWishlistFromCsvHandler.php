@@ -1,23 +1,25 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\CommandHandler\Wishlist;
+namespace Sylius\WishlistPlugin\CommandHandler\Wishlist;
 
-use BitBag\SyliusWishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
-use BitBag\SyliusWishlistPlugin\Controller\Action\AddProductVariantToWishlistAction;
-use BitBag\SyliusWishlistPlugin\Factory\CsvSerializerFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProduct;
-use BitBag\SyliusWishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Gedmo\Exception\UploadableInvalidMimeTypeException;
 use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Sylius\WishlistPlugin\Command\Wishlist\ImportWishlistFromCsv;
+use Sylius\WishlistPlugin\Controller\Action\AddProductVariantToWishlistAction;
+use Sylius\WishlistPlugin\Factory\CsvSerializerFactoryInterface;
+use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProduct;
+use Sylius\WishlistPlugin\Model\DTO\CsvWishlistProductInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,7 +77,7 @@ final class ImportWishlistFromCsvHandler
                 /** @var Session $session */
                 $session = $this->requestStack->getSession();
 
-                $session->getFlashBag()->add('error', $this->translator->trans('bitbag_sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
+                $session->getFlashBag()->add('error', $this->translator->trans('sylius_wishlist_plugin.ui.csv_file_contains_incorrect_products'));
             }
         }
     }

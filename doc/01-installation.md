@@ -1,4 +1,4 @@
-# BitBag SyliusWishlistPlugin
+# SyliusWishlistPlugin
 
 - [⬅️ Back](../README.md#overview)
 - [➡️ Usage](./02-usage.md)
@@ -9,7 +9,7 @@
 1. *We work on stable, supported and up-to-date versions of packages. We recommend you to do the same.*
 
 ```bash
-composer require bitbag/wishlist-plugin
+composer require sylius/wishlist-plugin
 ```
 
 2. (optional) Add plugin dependencies to your `config/bundles.php` file:
@@ -20,7 +20,7 @@ composer require bitbag/wishlist-plugin
 return [
     ...
 
-    BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
+    Sylius\WishlistPlugin\SyliusWishlistPlugin::class => ['all' => true],
 ];
 ```
 
@@ -30,82 +30,43 @@ return [
 # config/packages/_sylius.yaml
 imports:
   ...
-  - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
+  - { resource: "@SyliusWishlistPlugin/config/config.yaml" }
 ```
 
 4. (optional) Import routing in your `config/routes.yaml` file:
 
   ```yaml
 # config/routes.yaml
-bitbag_sylius_wishlist_plugin:
-    resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing.yml"
+sylius_wishlist_plugin:
+    resource: "@SyliusWishlistPlugin/config/routes.yaml"
 ```
 
-5. Override `OrderItemController`
-
-```yaml
-sylius_order:
-  resources:
-    order_item:
-      classes:
-        controller: BitBag\SyliusWishlistPlugin\Controller\OrderItemController
-
-```
-
-6. Add plugin templates:
-
-- Inject blocks:
-
-```yaml
-sylius_ui:
-    events:
-        sylius.shop.layout.header.grid:
-            blocks:
-                cart:
-                    template: "@BitBagSyliusWishlistPlugin/_cart.html.twig"
-                    priority: 10
-        sylius.shop.product.index.box:
-            blocks:
-                content:
-                    template: "@BitBagSyliusWishlistPlugin/Product/Box/_content.html.twig"
-                    priority: 10
-        sylius.shop.layout.javascripts:
-            blocks:
-                plugin_scripts:
-                    template: "@BitBagSyliusWishlistPlugin/Shop/_scripts.html.twig"
-                    priority: 20
-        sylius.shop.layout.stylesheets:
-            blocks:
-                plugin_stylesheets:
-                    template: "@BitBagSyliusWishlistPlugin/Shop/_styles.html.twig"
-                    priority: 20
-        sylius.admin.layout.javascripts:
-            blocks:
-                plugin_scripts:
-                    template: "@BitBagSyliusWishlistPlugin/Admin/_scripts.html.twig"
-                    priority: 20
-        sylius.admin.layout.stylesheets:
-            blocks:
-                plugin_stylesheets:
-                    template: "@BitBagSyliusWishlistPlugin/Admin/_styles.html.twig"
-                    priority: 20
-        
-```
-
-- Override templates:
+5. Create `bundles/SyliusShopBundle/product/common` directory in your project `templates` dir if it does not exist yet:
 
 ```bash
-mkdir -p templates/bundles/SyliusShopBundle/Product/Show
-cp vendor/bitbag/wishlist-plugin/src/Resources/views/Product/Show/_addToCart.html.twig templates/bundles/SyliusShopBundle/Product/Show
+mkdir -p templates/bundles/SyliusShopBundle/product/common
 ```
 
-7. Clear application cache by using command:
+6. Copy `@SyliusShopBundle/product/common/card.html.twig` template in your project:
+
+```bash
+cp vendor/sylius/sylius/src/Sylius/Bundle/ShopBundle/templates/product/common/card.html.twig templates/bundles/SyliusShopBundle/product/common/card.html.twig
+```
+
+7. Add the following code to the end of the `card.html.twig` file, just before latest closing `</div>` tag:
+
+```twig
+<hr>
+{% include '@SyliusWishlistPlugin/common/add_to_wishlist.html.twig' %} 
+```
+
+8. Clear application cache by using command:
 
 ```bash
 bin/console cache:clear
 ```
 
-8. Update your database
+9. Update your database
 
 ```bash
 bin/console doctrine:migrations:migrate
@@ -113,21 +74,13 @@ bin/console doctrine:migrations:migrate
 
 **Note:** If you are running it on production, add the `-e prod` flag to this command.
 
-9. Add plugin assets to your project
+10. Add plugin assets to your project
 
-We recommend you to use Webpack (Encore), for which we have prepared four different instructions on how to add this plugin's assets to your project:
+Just add to your `asssets/admin/entrypoint.js` and `assets/shop/entrypoint.js` the following line (create these files if it does not exist yet):
 
-- [Import webpack config](./01.1-webpack-config.md)*
-- [Add entry to existing config](./01.2-webpack-entry.md)
-- [Import entries in your entry.js files](./01.3-import-entry.md)
-- [Your own custom config](./01.4-custom-solution.md)
-
-<small>* Default option for plugin development</small>
-
-
-However, if you are not using Webpack, here are instructions on how to add optimized and compressed assets directly to your project templates:
-
-- [Non webpack solution](./01.5-non-webpack.md)
+```javascript
+import '../../vendor/sylius/wishlist-plugin/assets/entrypoint';
+```
 
 ## Asynchronous Messenger case
 
@@ -142,7 +95,7 @@ framework:
         transports:
             sync: 'sync://'
     routing:
-        'BitBag\SyliusWishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface': sync
+        'Sylius\WishlistPlugin\Command\Wishlist\WishlistSyncCommandInterface': sync
 ```
 
 All commands from the plugin implement the `WishlistSyncCommandInterface` interface, so there is no need for other configuration.

@@ -1,17 +1,19 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * You can find more information about us on https://bitbag.io and write us
- * an email on hello@bitbag.io.
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusWishlistPlugin\Form\Type;
+namespace Sylius\WishlistPlugin\Form\Type;
 
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
+use Sylius\WishlistPlugin\Entity\Wishlist;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -43,7 +45,7 @@ final class ImportWishlistFromCsvType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'bitbag_sylius_wishlist_plugin.ui.submit',
+                'label' => 'sylius_wishlist_plugin.ui.submit',
             ])
         ;
     }

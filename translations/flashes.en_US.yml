@@ -1,0 +1,3 @@
+sylius_wishlist_plugin:
+    ui:
+        remove_wishlist: Wishlist has been removed.

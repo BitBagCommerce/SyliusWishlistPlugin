@@ -1,0 +1,83 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% import '@SyliusShop/shared/messages.html.twig' as messages %}
+
+{% block content %}
+    <div class="container mt-4 mb-5">
+        <div class="my-3"></div>
+        <div class="d-flex justify-content-between">
+            <h1>
+                {{ 'sylius_wishlist_plugin.ui.your_wishlists'|trans }}
+            </h1>
+            <div>
+                <button id="create_new_wishlist_button" class="btn btn-primary ms-auto"
+                        data-bb-wishlist-add="add-another-wishlist"
+                        data-bb-wishlist-add-url="{{ path('sylius_wishlist_plugin_shop_locale_wishlist_create_new_wishlist') }}"
+                        data-bb-wishlist-add-title="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_add_title'|trans }}"
+                        data-bb-wishlist-add-perform="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_add_perform'|trans }}"
+                        data-bb-wishlist-add-cancel="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_add_cancel'|trans }}"
+                        data-bb-wishlist-add-error="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_add_error'|trans }}"
+                        {{ sylius_test_html_attribute('wishlist-add-new-wishlist') }}
+                >
+                    {{ 'sylius_wishlist_plugin.ui.add_another_wishlist'|trans }}
+                </button>
+                <input type="hidden" data-bb-csrf="{{ csrf_token('some-name') }}"/>
+            </div>
+        </div>
+        <div class="my-3"></div>
+        <div class="bb-wishlist-list">
+            {% for wishlist in wishlists %}
+                <article class="bb-wishlist-list-wraper {% if not loop.last %}mb-3{% endif %}">
+                    <div class="bb-wishlist-list-wraper-content">
+                        <div class="bb-wishlist-list-wraper-content-name">
+                            <a
+                                href="{{ path('sylius_wishlist_plugin_shop_locale_wishlist_show_chosen_wishlist', {'wishlistId': wishlist.id}) }}"
+                                {{ sylius_test_html_attribute('wishlist-wishlist') }}
+                                data-wishlist-name="{{ wishlist.name }}"
+                            >
+                                {{ wishlist.name == null ? 'sylius_wishlist_plugin.ui.wishlist'|trans : wishlist.name|trans }}
+                            </a>
+                        </div>
+                        <div class="bb-wishlist-list-wraper-content-buttons">
+                            {% if wishlist.shopuser is null and app.user is not null %}
+                                <a
+                                    href="{{ path('sylius_wishlist_plugin_shop_locale_wishlist_add_wishlist_to_user', {'id': wishlist.id}) }}"
+                                    id="wishlist-add-to-user-button-{{ wishlist.name }}"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    data-wishlist-name="{{ wishlist.name }}"
+                                >
+                                    {{ 'sylius_wishlist_plugin.ui.wishlist_save'|trans }}
+                                </a>
+                            {% endif %}
+                            <button
+                                    id="wishlist-delete-button-{{ wishlist.name }}" class="btn btn-sm btn-outline-secondary"
+                                    {{ sylius_test_html_attribute('wishlist-wishlist-remove') }}
+                                    data-wishlist-name="{{ wishlist.name }}"
+                                    data-wishlist-remove-id="{{ wishlist.id }}"
+                                    data-wishlist-remove-title="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_remove_title'|trans }}"
+                                    data-wishlist-remove-content="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_remove_content'|trans }}"
+                                    data-wishlist-remove-perform="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_remove_perform'|trans }}"
+                                    data-wishlist-remove-cancel="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_remove_cancel'|trans }}"
+                            >
+                                {{ ux_icon('flowbite:x-outline', {'class': 'icon icon-sm'}) }}
+                            </button>
+                            <button
+                                    id="wishlist-edit-button-{{ wishlist.name }}" class="btn btn-sm btn-outline-secondary"
+                                    {{ sylius_test_html_attribute('wishlist-wishlist-edit') }}
+                                    data-wishlist-name="{{ wishlist.name }}"
+                                    data-wishlist-edit-id="{{ wishlist.id }}"
+                                    data-wishlist-edit-title="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_edit_title'|trans }}"
+                                    data-wishlist-edit-error="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_edit_error'|trans }}"
+                                    data-wishlist-edit-perform="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_edit_perform'|trans }}"
+                                    data-wishlist-edit-cancel="{{ 'sylius_wishlist_plugin.ui.wishlist_modal_edit_cancel'|trans }}"
+                            >
+                                {{ ux_icon('lucide:edit', {'class': 'icon icon-sm'}) }}
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+        <input type="hidden" name="_csrf_shop_security_token" value="">
+    </div>
+{% endblock %}

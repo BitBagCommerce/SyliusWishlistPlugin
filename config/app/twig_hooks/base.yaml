@@ -1,0 +1,6 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_shop.base.header.content':
+            wishlist_header:
+                template: '@SyliusWishlistPlugin/wishlist_header.html.twig'
+                priority: 150
