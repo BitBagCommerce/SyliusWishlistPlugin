@@ -2,6 +2,8 @@
 
 # BitBag SyliusWishlistPlugin
 
+**Deprecation note.** This repository supports Sylius 1.x versions only. The Sylius 2.x support is currently handled by Sylius team ([link to the repository](https://github.com/Sylius/WishlistPlugin)).
+
 ----
 
 [ ![](https://img.shields.io/packagist/l/bitbag/wishlist-plugin.svg) ](https://packagist.org/packages/bitbag/wishlist-plugin "License")
