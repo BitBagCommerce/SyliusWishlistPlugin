@@ -5,6 +5,12 @@
                http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="softylines_sylius_wishlist_plugin.controller.action.api_platform.add_product_to_selected_wishlist"
+                 class="BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\AddProductToSelectedWishlistAction">
+            <argument type="service" id="api_platform.message_bus"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+
         <service id="bitbag_sylius_wishlist_plugin.controller.action.api_platform.remove_product_from_wishlist_action" class="BitBag\SyliusWishlistPlugin\Controller\Action\ApiPlatform\RemoveProductFromWishlistAction">
             <argument type="service" id="api_platform.message_bus"/>
             <tag name="controller.service_arguments"/>

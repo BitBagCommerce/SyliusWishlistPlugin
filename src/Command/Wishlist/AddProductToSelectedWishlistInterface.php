@@ -16,7 +16,7 @@ use Sylius\Component\Core\Model\ProductInterface;
 
 interface AddProductToSelectedWishlistInterface extends WishlistSyncCommandInterface
 {
-    public function getWishlist(): WishlistInterface;
+    public function getWishlistToken(): string;
 
-    public function getProduct(): ProductInterface;
+    public function getProductId(): int;
 }

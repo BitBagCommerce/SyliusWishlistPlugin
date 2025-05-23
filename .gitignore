@@ -1,5 +1,5 @@
 /vendor/
-/node_modules/
+/node_modules
 /composer.lock
 /phpspec.yml
 
@@ -8,3 +8,6 @@
 
 /behat.yml
 /phpunit.xml
+
+/.idea
+package-lock.json
